@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Pagination from "./Pagination";
 import Search from "./Search";
+import styles from "./index.module.css";
 
 /**
  * Operations component provides search and pagination functionalities.
@@ -17,7 +18,7 @@ const Operations = ({
   filteredData,
 }) => {
   return (
-    <div className="operations">
+    <div className={styles.operations}>
       {/* Search component for filtering data */}
       <Search onFilteredDataChange={onFilteredDataChange} />
       {/* Pagination component for navigating through data */}

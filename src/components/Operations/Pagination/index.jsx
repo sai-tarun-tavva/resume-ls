@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from "./index.module.css";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -31,21 +33,21 @@ const Pagination = ({ onStartIndexChange, filteredData }) => {
   };
 
   return (
-    <div className="pagination">
+    <div className={styles.pagination}>
       <button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage <= 1}
       >
-        Previous
+        <i class="bi bi-arrow-left-short"></i>
       </button>
       <span>
-        Page {currentPage} of {totalPages}
+        {currentPage} of {totalPages}
       </span>
       <button
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage >= totalPages}
       >
-        Next
+        <i class="bi bi-arrow-right-short"></i>
       </button>
     </div>
   );

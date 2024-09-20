@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { data } from "../../../sample";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from "./index.module.css";
 
 /**
  * Search component for filtering data based on search text.
@@ -33,14 +35,16 @@ const Search = ({ onFilteredDataChange }) => {
   };
 
   return (
-    <div className="search">
+    <div className={styles.search}>
       <input
         type="text"
         placeholder="Search..."
         value={searchText}
         onChange={handleSearchChange}
       />
-      <button onClick={handleSearchClick}>Search</button>
+      <button onClick={handleSearchClick}>
+        <i class="bi bi-search"></i>
+      </button>
     </div>
   );
 };
