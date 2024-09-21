@@ -10,7 +10,11 @@ const Candidate = ({ item }) => {
         <div className={styles.name}>
           {item.name}
           {item.linkedin.length > 0 ? (
-            <a href={`https://${item.linkedin}`} target="_blank">
+            <a
+              href={`https://${item.linkedin}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i className="bi bi-linkedin"></i>
             </a>
           ) : (
