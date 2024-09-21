@@ -1,0 +1,16 @@
+.upload {
+  margin-left: auto;
+  background: var(--primary-color);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.upload:hover {
+  background-color: var(--primary-hover);
+}

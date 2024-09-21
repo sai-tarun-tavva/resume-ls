@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 /**
  * Pagination component for navigating through paginated data.
@@ -37,8 +37,9 @@ const Pagination = ({ onStartIndexChange, filteredData }) => {
       <button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage <= 1}
+        title="Previous"
       >
-        <i class="bi bi-arrow-left-short"></i>
+        <i className="bi bi-arrow-left-short"></i>
       </button>
       <span>
         {currentPage} of {totalPages}
@@ -46,8 +47,9 @@ const Pagination = ({ onStartIndexChange, filteredData }) => {
       <button
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage >= totalPages}
+        title="Next"
       >
-        <i class="bi bi-arrow-right-short"></i>
+        <i className="bi bi-arrow-right-short"></i>
       </button>
     </div>
   );

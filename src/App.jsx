@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./App.css";
 import Operations from "./components/Operations";
-import Table from "./components/Table";
+import Candidates from "./components/Candidates";
 import { data as initialData } from "./sample";
+import "./App.css";
 
 /**
  * Main application component
@@ -40,8 +40,8 @@ const App = () => {
         onFilteredDataChange={handleFilteredDataChange}
         onStartIndexChange={handleStartIndexChange}
       />
-      {/* Table component to display the filtered data */}
-      <Table startIndex={startIndex} data={filteredData} />
+      {/* Component to display the filtered data */}
+      <Candidates startIndex={startIndex} data={filteredData} />
     </div>
   );
 };

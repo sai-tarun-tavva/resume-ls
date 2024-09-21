@@ -7,8 +7,8 @@ export const data = [
         "location": "",
         "region": "",
         "linkedin": "",
-        "skills": "nlp,elasticsearch,tableau,llm,sas,sql,data science,power bi,machine learning,python,tensorflow",
-        "total_experience": 2,
+        "skills": "nlp,elasticsearch,tableau,llm,sas,sql,data science,power bi,machine learning,python,tensorflow,python,docker,java,graphql,sql,css,js,kubernetes,agile methodologies,typescript,aws,oracle,git,xml,scrum,html,agile,ui design,jenkins,jira,figma,terraform,rabbitmq,redis,node.js,nosql,github,python,docker,java,graphql,sql,css,js,kubernetes,agile methodologies,typescript,aws,oracle,git,xml,scrum,html,agile,ui design,jenkins,jira,figma,terraform,rabbitmq,redis,node.js,nosql,github,python,docker,java,graphql,sql,css,js,kubernetes,agile methodologies,typescript,aws,oracle,git,xml,scrum,html,agile,ui design,jenkins,jira,figma,terraform,rabbitmq,redis,node.js,nosql,github,python,docker,java,graphql,sql,css,js,kubernetes,agile methodologies,typescript,aws,oracle,git,xml,scrum,html,agile,ui design,jenkins,jira,figma,terraform,rabbitmq,redis,node.js,nosql,github,python,docker,java,graphql,sql,css,js,kubernetes,agile methodologies,typescript,aws,oracle,git,xml,scrum,html,agile,ui design,jenkins,jira,figma,terraform,rabbitmq,redis,node.js,nosql,github",
+        "total_experience": 39,
         "file_path": ""
     },
     {
@@ -78,7 +78,7 @@ export const data = [
         "email": "ukuru1017@gmail.com",
         "location": "",
         "region": "",
-        "linkedin": "http://linkedin.com/in/udaykumar-k-u1017",
+        "linkedin": "www.linkedin.com/in/udaykumar-k-u1017",
         "skills": "computer vision,html,aws,css,data science,java,python",
         "total_experience": 3,
         "file_path": ""

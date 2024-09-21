@@ -34,6 +34,12 @@ const Search = ({ onFilteredDataChange }) => {
     onFilteredDataChange(filteredResults);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearchClick();
+    }
+  };
+
   return (
     <div className={styles.search}>
       <input
@@ -41,9 +47,10 @@ const Search = ({ onFilteredDataChange }) => {
         placeholder="Search..."
         value={searchText}
         onChange={handleSearchChange}
+        onKeyDown={handleKeyPress}
       />
-      <button onClick={handleSearchClick}>
-        <i class="bi bi-search"></i>
+      <button onClick={handleSearchClick} title="Search">
+        <i className="bi bi-search"></i>
       </button>
     </div>
   );

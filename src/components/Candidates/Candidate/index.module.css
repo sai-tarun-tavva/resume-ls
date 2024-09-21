@@ -1,0 +1,144 @@
+.card {
+  display: flex;
+  width: 100%;
+  height: 150px;
+  padding: 15px;
+  margin: 25px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  align-items: center;
+  position: relative;
+  transition: opacity 0.1s ease;
+}
+
+.card > div {
+  height: 100%;
+}
+
+.card-item-1 {
+  flex: 25%;
+}
+
+.card-item-2 {
+  flex: 11%;
+}
+
+.card-item-3 {
+  flex: 60%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  margin-right: 30px;
+}
+
+.hidden-actions {
+  flex: 4%;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.experience {
+  width: 75px;
+  margin-top: 10px;
+  padding: 4px 8px;
+  background-color: var(--primary-color);
+  border-radius: 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.name i {
+  width: 20px;
+  margin-left: 7px;
+  color: var(--primary-color);
+}
+
+.name > i.disabled {
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.phone,
+.email,
+.location,
+.region {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+  font-family: "Roboto", sans-serif;
+}
+
+.location {
+  margin-top: 6px;
+}
+
+.phone > span,
+.email > span,
+.location > span,
+.region > span {
+  margin-right: 7px;
+}
+
+.skill-bubble {
+  background-color: #e0e0e0;
+  border-radius: 15px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.card:hover .actions {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.actions button {
+  background: #1975d2;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  margin-bottom: 5px;
+  padding: 7px 9px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:last-child {
+  margin-bottom: 0;
+}
+
+.actions button:hover {
+  background-color: var(--primary-hover);
+}

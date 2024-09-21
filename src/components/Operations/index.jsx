@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Pagination from "./Pagination";
+import Upload from "./Upload";
 import Search from "./Search";
 import styles from "./index.module.css";
+import Logout from "./LogOut";
 
 /**
  * Operations component provides search and pagination functionalities.
@@ -22,10 +24,12 @@ const Operations = ({
       {/* Search component for filtering data */}
       <Search onFilteredDataChange={onFilteredDataChange} />
       {/* Pagination component for navigating through data */}
+      <Upload />
       <Pagination
         onStartIndexChange={onStartIndexChange}
         filteredData={filteredData}
       />
+      <Logout />
     </div>
   );
 };
