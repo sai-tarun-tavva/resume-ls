@@ -10,6 +10,7 @@
   align-items: center;
   position: relative;
   transition: opacity 0.1s ease;
+  cursor: default;
 }
 
 .card > div {
@@ -101,6 +102,10 @@
   border-radius: 15px;
   padding: 5px 10px;
   font-size: 12px;
+}
+
+.skill-bubble:hover {
+  background-color: #e3f2fd;
 }
 
 .actions {
