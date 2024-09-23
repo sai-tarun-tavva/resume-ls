@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import Candidate from "./Candidate";
+import { DataContext } from "../../store/DataContextProvider";
 import { ITEMS_PER_PAGE } from "../../utilities/constants";
 import styles from "./index.module.css";
 
-const Candidates = ({ startIndex, data }) => {
-  const candidates = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+const Candidates = () => {
+  const { startIndex, candidateData } = useContext(DataContext);
+
+  const candidates = candidateData.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
   return (
     <div className={styles.cards}>
       {candidates.length === 0
