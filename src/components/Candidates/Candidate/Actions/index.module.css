@@ -1,0 +1,22 @@
+.action-button {
+  background: #1975d2;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  margin-bottom: 5px;
+  padding: 7px 9px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:last-child {
+  margin-bottom: 0;
+}
+
+.action-button:hover {
+  background-color: var(--primary-hover);
+}

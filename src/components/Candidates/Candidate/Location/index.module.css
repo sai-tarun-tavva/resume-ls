@@ -1,0 +1,21 @@
+.location {
+  flex: 11%;
+}
+
+.location > div:first-child {
+  margin-top: 6px;
+}
+
+.experience {
+  width: 75px;
+  margin-top: 10px;
+  padding: 4px 8px;
+  background-color: var(--primary-color);
+  border-radius: 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+}

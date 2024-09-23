@@ -4,12 +4,14 @@ import { ITEMS_PER_PAGE } from "../../utilities/constants";
 import styles from "./index.module.css";
 
 const Candidates = ({ startIndex, data }) => {
-  const currentItems = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const candidates = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   return (
     <div className={styles.cards}>
-      {currentItems.length === 0
+      {candidates.length === 0
         ? "No results found"
-        : currentItems.map((item) => <Candidate key={item.id} item={item} />)}
+        : candidates.map((candidate) => (
+            <Candidate key={candidate.id} candidate={candidate} />
+          ))}
     </div>
   );
 };
