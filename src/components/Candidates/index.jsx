@@ -13,13 +13,13 @@ const Candidates = () => {
   );
 
   return (
-    <div className={styles.cards}>
+    <section className={styles.cards}>
       {candidates.length === 0
         ? "No results found"
         : candidates.map((candidate) => (
             <Candidate key={candidate.id} candidate={candidate} />
           ))}
-    </div>
+    </section>
   );
 };
 

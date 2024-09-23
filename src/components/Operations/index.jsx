@@ -11,12 +11,12 @@ import Logout from "./LogOut";
  */
 const Operations = () => {
   return (
-    <div className={styles.operations}>
+    <section className={styles.operations}>
       <Search />
       <Upload />
       <Pagination />
       <Logout />
-    </div>
+    </section>
   );
 };
 

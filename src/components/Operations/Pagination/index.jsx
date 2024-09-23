@@ -31,7 +31,7 @@ const Pagination = () => {
   };
 
   return (
-    <div className={styles.pagination}>
+    <nav className={styles.pagination}>
       <Button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage <= 1}
@@ -51,7 +51,7 @@ const Pagination = () => {
       >
         <i className="bi bi-arrow-right-short"></i>
       </Button>
-    </div>
+    </nav>
   );
 };
 

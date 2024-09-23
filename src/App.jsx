@@ -12,12 +12,12 @@ import "./App.css";
 const App = () => {
   return (
     <DataContextProvider>
-      <div className="app-container">
+      <main className="app-container">
         {/* Operations component for filtering and index management */}
         <Operations />
         {/* Component to display the filtered data */}
         <Candidates />
-      </div>
+      </main>
     </DataContextProvider>
   );
 };

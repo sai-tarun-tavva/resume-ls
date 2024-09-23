@@ -8,7 +8,7 @@ import styles from "./index.module.css";
 
 const Candidate = ({ candidate: info }) => {
   return (
-    <div className={styles.card}>
+    <article className={styles.card}>
       <MainInfo info={info} />
       <Location info={info} />
       <Skills info={info} />
@@ -18,7 +18,7 @@ const Candidate = ({ candidate: info }) => {
           <Actions />
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./index.module.css";
 
-const IconText = ({ iconName, children }) => {
+const IconText = ({ children, iconName }) => {
   return (
     <div className={styles["icon-text"]}>
       <span>
