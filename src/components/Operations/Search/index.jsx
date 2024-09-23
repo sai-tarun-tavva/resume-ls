@@ -18,29 +18,24 @@ const Search = ({ onFilteredDataChange }) => {
     setSearchText(e.target.value);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearchClick(searchText, data, onFilteredDataChange);
-    }
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSearchClick(searchText, data, onFilteredDataChange);
   };
 
   return (
     <div className={styles.search}>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchText}
-        onChange={handleSearchChange}
-        onKeyDown={handleKeyPress}
-      />
-      <button
-        onClick={() =>
-          handleSearchClick(searchText, data, onFilteredDataChange)
-        }
-        title="Search"
-      >
-        <i className="bi bi-search"></i>
-      </button>
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchText}
+          onChange={handleSearchChange}
+        />
+        <button type="submit" title="Search">
+          <i className="bi bi-search"></i>
+        </button>
+      </form>
     </div>
   );
 };
