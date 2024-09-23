@@ -29,6 +29,7 @@ const App = () => {
    */
   const handleFilteredDataChange = (data) => {
     setFilteredData(data);
+    setStartIndex(0);
   };
 
   return (

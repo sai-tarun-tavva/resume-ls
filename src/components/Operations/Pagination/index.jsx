@@ -18,18 +18,18 @@ const Pagination = ({ onStartIndexChange, filteredData }) => {
   const totalItems = filteredData.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
-  // Calculate the starting index for the current page
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-
   useEffect(() => {
-    // Update the start index when currentPage or startIndex changes
-    onStartIndexChange(startIndex);
-  }, [onStartIndexChange, startIndex]);
+    // re-initiate current page to 1 whenever user clicks on search and filtered data updates
+    setCurrentPage(1);
+  }, [filteredData]);
 
   const handlePageClick = (page) => {
     // Ensure page number is within valid range
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
+
+    const startIndex = (page - 1) * ITEMS_PER_PAGE;
+    onStartIndexChange(startIndex);
   };
 
   return (
