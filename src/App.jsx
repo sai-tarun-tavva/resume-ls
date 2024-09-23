@@ -1,6 +1,5 @@
 import React from "react";
-import Operations from "./components/Operations";
-import Candidates from "./components/Candidates";
+import Home from "./components/Pages/Home";
 import DataContextProvider from "./store/DataContextProvider";
 import "./App.css";
 
@@ -13,10 +12,7 @@ const App = () => {
   return (
     <DataContextProvider>
       <main className="app-container">
-        {/* Operations component for filtering and index management */}
-        <Operations />
-        {/* Component to display the filtered data */}
-        <Candidates />
+        <Home />
       </main>
     </DataContextProvider>
   );
