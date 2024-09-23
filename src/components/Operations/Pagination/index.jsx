@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import Button from "../../Atoms/Button";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { ITEMS_PER_PAGE } from "../../../utilities/constants";
 import styles from "./index.module.css";
@@ -33,23 +34,25 @@ const Pagination = ({ onStartIndexChange, filteredData }) => {
 
   return (
     <div className={styles.pagination}>
-      <button
+      <Button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage <= 1}
         title="Previous"
+        className={styles.prevButton}
       >
         <i className="bi bi-arrow-left-short"></i>
-      </button>
+      </Button>
       <span>
         {currentPage} of {totalPages}
       </span>
-      <button
+      <Button
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage >= totalPages}
         title="Next"
+        className={styles.nextButton}
       >
         <i className="bi bi-arrow-right-short"></i>
-      </button>
+      </Button>
     </div>
   );
 };

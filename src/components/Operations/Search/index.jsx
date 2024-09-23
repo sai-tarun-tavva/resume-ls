@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
+import Button from "../../Atoms/Button";
 import { data } from "../../../sample";
 import { handleSearchClick } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -23,9 +24,9 @@ const Search = ({ onFilteredDataChange }) => {
     <div className={styles.search}>
       <form onSubmit={handleFormSubmit}>
         <input type="text" placeholder="Search..." ref={searchTextRef} />
-        <button type="submit" title="Search">
+        <Button type="submit" title="Search" className={styles.searchButton}>
           <i className="bi bi-search"></i>
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -20,19 +20,8 @@
   box-shadow: 0 0 10px var(--primary-shadow);
 }
 
-.search button {
-  padding: 12px 20px;
-  border: none;
+.searchButton {
   border-radius: 0 50px 50px 0;
-  background-color: var(--primary-color);
-  color: rgb(255, 255, 255);
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.search button:hover {
-  background-color: var(--primary-hover);
 }
 
 @media (max-width: 600px) {
@@ -40,7 +29,7 @@
     width: 180px;
   }
 
-  .search button {
+  .searchButton {
     padding: 10px 15px;
   }
 }

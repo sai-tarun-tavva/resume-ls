@@ -1,17 +1,14 @@
 .logout {
   border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  font-size: 20px;
-  font-weight: bold;
   border-radius: 50%;
   padding: 12px;
   margin-right: 20px;
-  cursor: pointer;
-  text-align: center;
-  transition: border-color 0.3s ease, color 0.3s ease;
+  background-color: transparent;
+  color: var(--primary-color);
 }
 
 .logout:hover {
   border-color: var(--primary-hover);
   color: var(--primary-hover);
+  background-color: transparent;
 }
