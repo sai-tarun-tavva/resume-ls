@@ -1,0 +1,10 @@
+.skillBubble {
+  background-color: #e0e0e0;
+  border-radius: 15px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.skillBubble:hover {
+  background-color: #e3f2fd;
+}
