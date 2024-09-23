@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { data } from "../../../sample";
 import { handleSearchClick } from "../../../utilities";
@@ -12,26 +12,17 @@ import styles from "./index.module.css";
  * @returns {JSX.Element} The rendered search component.
  */
 const Search = ({ onFilteredDataChange }) => {
-  const [searchText, setSearchText] = useState("");
-
-  const handleSearchChange = (e) => {
-    setSearchText(e.target.value);
-  };
+  const searchTextRef = useRef("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    handleSearchClick(searchText, data, onFilteredDataChange);
+    handleSearchClick(searchTextRef.current.value, data, onFilteredDataChange);
   };
 
   return (
     <div className={styles.search}>
       <form onSubmit={handleFormSubmit}>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchText}
-          onChange={handleSearchChange}
-        />
+        <input type="text" placeholder="Search..." ref={searchTextRef} />
         <button type="submit" title="Search">
           <i className="bi bi-search"></i>
         </button>
