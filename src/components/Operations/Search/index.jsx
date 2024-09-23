@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { data } from "../../../sample";
+import { handleSearchClick } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
@@ -17,26 +18,9 @@ const Search = ({ onFilteredDataChange }) => {
     setSearchText(e.target.value);
   };
 
-  const handleSearchClick = () => {
-    const lowerCaseSearchText = searchText.toLowerCase();
-    const filteredResults = data.filter((item) => {
-      return (
-        item.name.toLowerCase().includes(lowerCaseSearchText) ||
-        item.phone_numbers.includes(lowerCaseSearchText) ||
-        item.email.toLowerCase().includes(lowerCaseSearchText) ||
-        item.location.toLowerCase().includes(lowerCaseSearchText) ||
-        item.region.toLowerCase().includes(lowerCaseSearchText) ||
-        item.linkedin.toLowerCase().includes(lowerCaseSearchText) ||
-        item.skills.toLowerCase().includes(lowerCaseSearchText) ||
-        item.total_experience.toString().includes(lowerCaseSearchText)
-      );
-    });
-    onFilteredDataChange(filteredResults);
-  };
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleSearchClick();
+      handleSearchClick(searchText, data, onFilteredDataChange);
     }
   };
 
@@ -49,7 +33,12 @@ const Search = ({ onFilteredDataChange }) => {
         onChange={handleSearchChange}
         onKeyDown={handleKeyPress}
       />
-      <button onClick={handleSearchClick} title="Search">
+      <button
+        onClick={() =>
+          handleSearchClick(searchText, data, onFilteredDataChange)
+        }
+        title="Search"
+      >
         <i className="bi bi-search"></i>
       </button>
     </div>

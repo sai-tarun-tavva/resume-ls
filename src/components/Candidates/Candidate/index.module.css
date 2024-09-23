@@ -63,6 +63,7 @@
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 16px;
+  color: var(--primary-color);
 }
 
 .name i {

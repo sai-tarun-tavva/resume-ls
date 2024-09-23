@@ -8,7 +8,9 @@ const Candidate = ({ item }) => {
     <div className={styles.card}>
       <div className={styles["card-item-1"]}>
         <div className={styles.name}>
-          {item.name}
+          {item.name
+            .toLowerCase()
+            .replace(/\b\w/g, (char) => char.toUpperCase())}
           {item.linkedin.length > 0 ? (
             <a
               href={`https://${item.linkedin}`}
