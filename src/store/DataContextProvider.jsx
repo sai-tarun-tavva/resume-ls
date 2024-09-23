@@ -9,14 +9,8 @@ const initialData = {
 export const DataContext = createContext(initialData);
 
 const dataReducer = (state, action) => {
-  switch (action.type) {
-    case "index":
-      return { ...state, startIndex: action.payload };
-    case "data":
-      return { ...state, candidateData: action.payload };
-    default:
-      return state;
-  }
+  const { type, payload } = action;
+  return { ...state, [type]: payload };
 };
 
 const DataContextProvider = ({ children }) => {
@@ -27,7 +21,7 @@ const DataContextProvider = ({ children }) => {
    * @param {number} index - The new starting index.
    */
   const handleStartIndexChange = (index) => {
-    dataDispatch({ type: "index", payload: index });
+    dataDispatch({ type: "startIndex", payload: index });
   };
 
   /**
@@ -35,13 +29,13 @@ const DataContextProvider = ({ children }) => {
    * @param {Array} data - The new filtered data.
    */
   const handleFilteredDataChange = (data) => {
-    dataDispatch({ type: "data", payload: data });
-    dataDispatch({ type: "index", payload: 0 }); // Resets statIndex to 0
+    dataDispatch({ type: "candidateData", payload: data });
+    dataDispatch({ type: "startIndex", payload: 0 }); // Resets statIndex to 0
   };
 
   // Initialize candidateData with sampleData on page load
   useEffect(() => {
-    dataDispatch({ type: "data", payload: sampleData });
+    dataDispatch({ type: "candidateData", payload: sampleData });
   }, []);
 
   const dataCtx = {

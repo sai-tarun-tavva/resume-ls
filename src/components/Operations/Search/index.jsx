@@ -23,7 +23,7 @@ const Search = () => {
     <aside className={styles.search}>
       <form onSubmit={handleFormSubmit}>
         <input type="text" placeholder="Search..." ref={searchTextRef} />
-        <Button type="submit" title="Search" className={styles.searchButton}>
+        <Button title="Search" className={styles.searchButton}>
           <i className="bi bi-search"></i>
         </Button>
       </form>
