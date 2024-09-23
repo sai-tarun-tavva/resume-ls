@@ -1,8 +1,7 @@
 import React from "react";
 import Candidate from "./Candidate";
+import { ITEMS_PER_PAGE } from "../../utilities/constants";
 import styles from "./index.module.css";
-
-const ITEMS_PER_PAGE = 10;
 
 const Candidates = ({ startIndex, data }) => {
   const currentItems = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { ITEMS_PER_PAGE } from "../../../utilities/constants";
 import styles from "./index.module.css";
-
-const ITEMS_PER_PAGE = 10;
 
 /**
  * Pagination component for navigating through paginated data.
