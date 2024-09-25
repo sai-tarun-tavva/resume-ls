@@ -273,7 +273,6 @@ const CandidateForm = ({ info, handleClose }) => {
         </div>
       </div>
       <div className={styles["section-3"]}>
-        <p className={styles["http"]}>Some Error Text</p>
         <Button
           title="Close"
           className={styles["close-button"]}
