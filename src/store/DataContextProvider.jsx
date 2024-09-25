@@ -11,7 +11,18 @@ export const DataContext = createContext(initialData);
 
 const dataReducer = (state, action) => {
   const { type, payload } = action;
-  return { ...state, [type]: payload };
+
+  switch (type) {
+    case "candidate":
+      // Find and update a specific candidate in the candidateData array
+      const updatedCandidateData = state.candidateData.map((candidate) =>
+        candidate.id === payload.id ? { ...candidate, ...payload } : candidate
+      );
+      return { ...state, candidateData: updatedCandidateData };
+
+    default:
+      return { ...state, [type]: payload };
+  }
 };
 
 const DataContextProvider = ({ children }) => {
@@ -34,6 +45,10 @@ const DataContextProvider = ({ children }) => {
     dataDispatch({ type: "startIndex", payload: 0 }); // Resets statIndex to 0
   };
 
+  const handleUpdateSingleDataItem = (data) => {
+    dataDispatch({ type: "candidate", payload: data });
+  };
+
   // Initialize candidateData with sampleData on page load
   useEffect(() => {
     dataDispatch({
@@ -46,6 +61,7 @@ const DataContextProvider = ({ children }) => {
     ...data,
     onStartIndexChange: handleStartIndexChange,
     onFilteredDataChange: handleFilteredDataChange,
+    onUpdateSingleDataItem: handleUpdateSingleDataItem,
   };
 
   return (

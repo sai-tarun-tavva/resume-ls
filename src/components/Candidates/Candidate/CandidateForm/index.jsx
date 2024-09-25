@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Skills from "../Skills";
 import Button from "../../../Atoms/Button";
 import Input from "../../../Atoms/Input";
@@ -10,8 +10,10 @@ import {
 } from "../../../../utilities";
 import { candidateValidations } from "../../../../utilities/validation";
 import styles from "./index.module.css";
+import { DataContext } from "../../../../store/DataContextProvider";
 
 const CandidateForm = ({ info, handleClose }) => {
+  const { onUpdateSingleDataItem } = useContext(DataContext);
   const [localSkills, setLocalSkills] = useState(info.skills);
 
   const handleAddSkill = (newSkill) => {
@@ -156,7 +158,9 @@ const CandidateForm = ({ info, handleClose }) => {
       file_path: info.file_path || "",
     };
 
-    console.log("Form data to send:", formData);
+    // if api call suceeds
+    formData.skills = localSkills;
+    onUpdateSingleDataItem(formData);
   };
 
   return (
