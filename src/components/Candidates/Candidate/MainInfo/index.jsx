@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 
 const getLinkedIn = (url) => {
   return url ? (
-    <a href={`https://${url}`} target="_blank" rel="noopener noreferrer">
+    <a href={url} target="_blank" rel="noopener noreferrer">
       <i className="bi bi-linkedin"></i>
     </a>
   ) : (
