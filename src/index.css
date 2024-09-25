@@ -1,6 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,700,900");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
+/* Base Styles */
+html {
+  font-size: 8px; /* Default for small screens (less than 640px) */
+}
+
 :root {
   --primary-color: rgb(0, 123, 255);
   --primary-shadow: rgba(0, 123, 255, 0.5);
@@ -28,7 +33,45 @@ body {
   width: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+/* Responsive Font Sizes */
+@media (min-width: 640px) {
+  html {
+    font-size: 10px; /* For screens 640px and up */
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 12px; /* For screens 768px and up (tablets) */
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 14px; /* For screens 1024px and up (small laptops) */
+  }
+}
+
+@media (min-width: 1366px) {
+  html {
+    font-size: 16px; /* For screens 1366px and up (large laptops) */
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 20px; /* For screens 1920px and up (full HD TVs) */
+  }
+}
+
+@media (min-width: 2560px) {
+  html {
+    font-size: 24px; /* For screens 2560px and up (2K displays) */
+  }
+}
+
+@media (min-width: 3840px) {
+  html {
+    font-size: 45px; /* For screens 3840px and up (4K displays) */
+  }
 }

@@ -1,3 +1,8 @@
 .cards {
-  margin: 150px 100px 0px;
+  margin: 9.3rem 6.25rem 0;
+}
+
+.cards p {
+  font-size: 1.5rem;
+  text-align: center;
 }

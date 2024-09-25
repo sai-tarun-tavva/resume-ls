@@ -14,11 +14,13 @@ const Candidates = () => {
 
   return (
     <section className={styles.cards}>
-      {candidates.length === 0
-        ? "No results found"
-        : candidates.map((candidate) => (
-            <Candidate key={candidate.id} candidate={candidate} />
-          ))}
+      {candidates.length === 0 ? (
+        <p>Failed to fetch records.</p>
+      ) : (
+        candidates.map((candidate) => (
+          <Candidate key={candidate.id} candidate={candidate} />
+        ))
+      )}
     </section>
   );
 };
