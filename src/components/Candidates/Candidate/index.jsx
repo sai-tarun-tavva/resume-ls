@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Skills from "./Skills";
@@ -7,14 +7,7 @@ import CandidateForm from "./CandidateForm";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
-const Candidate = ({ candidate: info }) => {
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleEdit = (event) => {
-    event.preventDefault();
-    setIsEditing((prevValue) => !prevValue);
-  };
-
+const Candidate = ({ candidate: info, isEditing, onEdit }) => {
   return (
     <article className={`${styles.card} ${isEditing ? styles.enlarged : ""}`}>
       <div className={styles["card-static"]}>
@@ -24,12 +17,17 @@ const Candidate = ({ candidate: info }) => {
 
         <div className={styles["hidden-actions"]}>
           <div className={styles.actions}>
-            <Actions handleEdit={handleEdit} />
+            <Actions handleEdit={(event) => onEdit(event, info.id)} />
           </div>
         </div>
       </div>
 
-      {isEditing && <CandidateForm info={info} handleClose={handleEdit} />}
+      {isEditing && (
+        <CandidateForm
+          info={info}
+          handleClose={(event) => onEdit(event, info.id)}
+        />
+      )}
     </article>
   );
 };
