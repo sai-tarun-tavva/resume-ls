@@ -2,10 +2,6 @@
   flex: 11%;
 }
 
-.location > div:first-child {
-  margin-top: 0.4rem;
-}
-
 .experience {
   width: 4.7rem;
   margin-top: 0.6rem;

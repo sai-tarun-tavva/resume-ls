@@ -2,12 +2,21 @@ import React from "react";
 import styles from "./index.module.css";
 import Skill from "../Skill";
 
-const Skills = ({ info }) => {
+const Skills = ({ skills, isEditable = false, onClick = () => {} }) => {
   return (
-    <div className={styles.skills}>
+    <div
+      className={styles.skills}
+      style={isEditable ? { marginRight: 0, height: "10rem" } : {}}
+    >
       <div>
-        {info.skills.split(",").map((skill, index) => (
-          <Skill key={index} name={skill.trim()} />
+        {skills.map((skill, index) => (
+          <Skill
+            key={index}
+            id={index}
+            name={skill.trim()}
+            isEditable={isEditable}
+            onClick={onClick}
+          />
         ))}
       </div>
     </div>

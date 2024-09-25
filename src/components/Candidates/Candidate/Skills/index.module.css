@@ -4,6 +4,7 @@
   flex-direction: column;
   overflow-y: auto;
   margin-right: 1.9rem;
+  height: 7rem;
 }
 
 .skills div {

@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer } from "react";
+import { transformSampleData } from "../utilities/index";
 import { data as sampleData } from "../sample";
 
 const initialData = {
@@ -29,13 +30,16 @@ const DataContextProvider = ({ children }) => {
    * @param {Array} data - The new filtered data.
    */
   const handleFilteredDataChange = (data) => {
-    dataDispatch({ type: "candidateData", payload: data });
+    dataDispatch({ type: "candidateData", payload: transformSampleData(data) });
     dataDispatch({ type: "startIndex", payload: 0 }); // Resets statIndex to 0
   };
 
   // Initialize candidateData with sampleData on page load
   useEffect(() => {
-    dataDispatch({ type: "candidateData", payload: sampleData });
+    dataDispatch({
+      type: "candidateData",
+      payload: transformSampleData(sampleData),
+    });
   }, []);
 
   const dataCtx = {
