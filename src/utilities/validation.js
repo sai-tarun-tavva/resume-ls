@@ -7,7 +7,7 @@ export const candidateValidations = {
     const phonePattern = /^\d{10}$/;
     if (value && enteredValue === "") return "Phone number cannot be empty.";
     if (enteredValue && !phonePattern.test(digitsOnly))
-      return "Phone number must contain only 10 digits.";
+      return "Phone number must contain exactly 10 digits.";
   },
   email: (value, enteredValue) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email pattern

@@ -6,7 +6,7 @@ const Skills = ({ skills, isEditable = false, onClick = () => {} }) => {
   return (
     <div
       className={styles.skills}
-      style={isEditable ? { marginRight: 0, height: "10rem" } : {}}
+      style={isEditable ? { marginRight: 0, height: "6rem" } : {}}
     >
       <div>
         {skills.map((skill, index) => (

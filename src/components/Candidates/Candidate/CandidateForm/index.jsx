@@ -4,6 +4,7 @@ import Button from "../../../Atoms/Button";
 import Input from "../../../Atoms/Input";
 import { useInput } from "../../../../hooks/useInput";
 import {
+  arraysEqual,
   transformExperience,
   transformPhoneNumber,
 } from "../../../../utilities";
@@ -11,6 +12,28 @@ import { candidateValidations } from "../../../../utilities/validation";
 import styles from "./index.module.css";
 
 const CandidateForm = ({ info, handleClose }) => {
+  const [localSkills, setLocalSkills] = useState(info.skills);
+
+  const handleAddSkill = (newSkill) => {
+    const lowerCaseSkill = newSkill.toLowerCase();
+
+    if (!lowerCaseSkill || localSkills.includes(lowerCaseSkill)) {
+      resetSkillValue();
+      return;
+    }
+
+    setLocalSkills((prevSkills) => [lowerCaseSkill, ...prevSkills]);
+    resetSkillValue();
+  };
+
+  const handleRemoveSkill = (skillIndex) => {
+    const updatedSkills = localSkills.filter(
+      (_, index) => index !== skillIndex
+    );
+
+    setLocalSkills(updatedSkills);
+  };
+
   const {
     value: nameValue,
     handleInputChange: handleNameChange,
@@ -85,26 +108,55 @@ const CandidateForm = ({ info, handleClose }) => {
     transformExperience
   );
 
-  const [localSkills, setLocalSkills] = useState(info.skills);
-
-  const handleAddSkill = (newSkill) => {
-    const lowerCaseSkill = newSkill.toLowerCase();
-
-    if (!lowerCaseSkill || localSkills.includes(lowerCaseSkill)) {
-      resetSkillValue();
-      return;
-    }
-
-    setLocalSkills((prevSkills) => [lowerCaseSkill, ...prevSkills]);
-    resetSkillValue();
+  // Utility function to check if form values are unchanged
+  const hasFormChanged = () => {
+    return (
+      nameValue !== info.name ||
+      phoneValue !== info.phone_numbers ||
+      emailValue !== info.email ||
+      linkedInValue !== info.linkedin ||
+      cityValue !== info.location ||
+      stateValue !== info.region ||
+      experienceValue !== info.total_experience ||
+      !arraysEqual(localSkills, info.skills)
+    );
   };
 
-  const handleRemoveSkill = (skillIndex) => {
-    const updatedSkills = localSkills.filter(
-      (_, index) => index !== skillIndex
-    );
+  // Utility function to check for validation errors
+  const hasValidationErrors = () => {
+    return [
+      nameError,
+      phoneError,
+      emailError,
+      linkedInError,
+      cityError,
+      stateError,
+      experienceError,
+    ].some(Boolean);
+  };
 
-    setLocalSkills(updatedSkills);
+  // Enable save button only if the form has changed and there are no validation errors
+  const enableSave = hasFormChanged() && !hasValidationErrors();
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    if (!enableSave) return;
+
+    const formData = {
+      id: info.id,
+      name: nameValue,
+      phone_numbers: phoneValue,
+      email: emailValue,
+      location: cityValue,
+      region: stateValue,
+      linkedin: linkedInValue,
+      skills: localSkills.join(","),
+      total_experience: experienceValue,
+      file_path: info.file_path || "",
+    };
+
+    console.log("Form data to send:", formData);
   };
 
   return (
@@ -225,7 +277,12 @@ const CandidateForm = ({ info, handleClose }) => {
         >
           Close
         </Button>
-        <Button title="Save" className={styles["save-button"]}>
+        <Button
+          title="Save"
+          className={styles["save-button"]}
+          onClick={handleFormSubmit}
+          disabled={!enableSave}
+        >
           Save
         </Button>
       </div>

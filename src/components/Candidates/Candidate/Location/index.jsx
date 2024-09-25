@@ -5,8 +5,8 @@ import styles from "./index.module.css";
 const Location = ({ info }) => {
   return (
     <div className={styles.location}>
-      <IconText iconName="geo-alt">{info.location || "Location"}</IconText>
-      <IconText iconName="map">{info.region || "Region"}</IconText>
+      <IconText iconName="geo-alt">{info.location || "City"}</IconText>
+      <IconText iconName="map">{info.region || "State"}</IconText>
       <div className={styles.experience}>{info.total_experience} Years</div>
     </div>
   );
