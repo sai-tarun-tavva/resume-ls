@@ -1,8 +1,10 @@
 .control {
   display: flex;
   flex-direction: column;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.6rem;
   color: #555555;
+  text-align: left;
+  position: relative;
 }
 
 .control.error input {
