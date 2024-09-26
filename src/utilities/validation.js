@@ -2,7 +2,8 @@
 const usernameRegex = /^[a-zA-Z-]+$/; // Only letters and hyphens
 const phoneRegex = /^\d{10}$/; // Exactly 10 digits
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // General email pattern
-const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/; // General password validation
+const passwordRegex =
+  /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/; // General password validation
 const linkedInRegex = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/; // https://www.linkedin.com/in/your-profile
 
 export const candidateValidations = {
