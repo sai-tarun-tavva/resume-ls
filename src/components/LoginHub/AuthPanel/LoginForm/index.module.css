@@ -1,0 +1,18 @@
+.login-form {
+  margin: 0 auto;
+  width: 20rem;
+}
+
+.view-icon {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.login-button {
+  width: 20rem;
+  border-radius: 0.25rem;
+  margin: 1.5rem 0 2rem;
+}
