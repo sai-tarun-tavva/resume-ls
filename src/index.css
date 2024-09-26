@@ -33,6 +33,22 @@ body {
   width: 100%;
 }
 
+.loading {
+  text-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8);
+  animation: glowing 0.2s infinite alternate;
+}
+
+@keyframes glowing {
+  0% {
+    text-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8),
+      0 0 0.6rem rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 0.5rem rgba(255, 255, 255, 1),
+      0 0 1rem rgba(255, 255, 255, 0.8);
+  }
+}
+
 /* Responsive Font Sizes */
 @media (min-width: 640px) {
   html {

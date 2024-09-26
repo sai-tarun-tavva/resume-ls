@@ -16,19 +16,3 @@
   border-radius: 0.25rem;
   margin: 1.5rem 0 2rem;
 }
-
-.signup-button.loading {
-  text-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8);
-  animation: glowing 0.2s infinite alternate;
-}
-
-@keyframes glowing {
-  0% {
-    text-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8),
-      0 0 0.6rem rgba(255, 255, 255, 0.5);
-  }
-  100% {
-    text-shadow: 0 0 0.5rem rgba(255, 255, 255, 1),
-      0 0 1rem rgba(255, 255, 255, 0.8);
-  }
-}

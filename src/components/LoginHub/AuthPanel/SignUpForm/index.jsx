@@ -104,7 +104,7 @@ const SignUpForm = () => {
 
       <Button
         title="Sign Up"
-        className={`${styles["signup-button"]} ${styles["loading"]}`}
+        className={`${styles["signup-button"]} loading`}
         onClick={handleSignUp}
         disabled={!enableSignUp}
       >

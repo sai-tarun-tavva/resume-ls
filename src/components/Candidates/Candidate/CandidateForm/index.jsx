@@ -282,7 +282,7 @@ const CandidateForm = ({ info, handleClose }) => {
         </Button>
         <Button
           title="Save"
-          className={styles["save-button"]}
+          className={`${styles["save-button"]} loading`}
           onClick={handleFormSubmit}
           disabled={!enableSave}
         >
