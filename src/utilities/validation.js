@@ -43,7 +43,9 @@ export const loginValidations = {
   userName: (value) => {
     if (value === "") return "Username is required.";
     if (!usernameRegex.test(value))
-      return "Username can only contain letters and hyphens (-).";
+      return "Username can only contain letters and hyphens.";
+    if (value.length < 3 || value.length > 20)
+      return "Username must be 3-20 characters long.";
   },
   password: (value) => {
     if (value === "") return "Password is required.";
@@ -57,6 +59,8 @@ export const signupValidations = {
     if (value === "") return "Username is required.";
     if (!usernameRegex.test(value))
       return "Username can only contain letters and hyphens.";
+    if (value.length < 3 || value.length > 20)
+      return "Username must be 3-20 characters long.";
   },
   password: (value) => {
     if (value === "") return "Password is required.";
