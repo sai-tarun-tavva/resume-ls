@@ -82,7 +82,7 @@ const LoginForm = () => {
 
       <Button
         title="Login"
-        className={styles["login-button"]}
+        className={`${styles["login-button"]} ${styles["loading"]}`}
         onClick={handleLogin}
         disabled={!enableLogin}
       >
