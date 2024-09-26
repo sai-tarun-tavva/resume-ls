@@ -34,7 +34,28 @@ const SignUpForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSignUp = () => {};
+  // Utility function to check for validation errors
+  const hasValidationErrors = () => {
+    return [userNameError, passwordError, emailError].some(Boolean);
+  };
+
+  const enableSignUp =
+    userNameValue !== "" &&
+    passwordValue !== "" &&
+    emailValue !== "" &&
+    !hasValidationErrors();
+
+  const handleSignUp = (event) => {
+    event.preventDefault();
+
+    const formData = {
+      userName: userNameValue,
+      passwordValue: passwordValue,
+      emailValue: emailValue,
+    };
+
+    console.log(formData);
+  };
 
   return (
     <form className={styles["signup-form"]}>
@@ -85,6 +106,7 @@ const SignUpForm = () => {
         title="Sign Up"
         className={styles["signup-button"]}
         onClick={handleSignUp}
+        disabled={!enableSignUp}
       >
         Sign Up
       </Button>

@@ -27,7 +27,24 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = () => {};
+  // Utility function to check for validation errors
+  const hasValidationErrors = () => {
+    return [userNameError, passwordError].some(Boolean);
+  };
+
+  const enableLogin =
+    userNameValue !== "" && passwordValue !== "" && !hasValidationErrors();
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    const formData = {
+      userName: userNameValue,
+      passwordValue: passwordValue,
+    };
+
+    console.log(formData);
+  };
 
   return (
     <form className={styles["login-form"]}>
@@ -67,6 +84,7 @@ const LoginForm = () => {
         title="Login"
         className={styles["login-button"]}
         onClick={handleLogin}
+        disabled={!enableLogin}
       >
         Login
       </Button>
