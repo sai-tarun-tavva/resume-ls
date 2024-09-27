@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useInput } from "../../hooks/useInput";
 import Skills from "../Candidates/Candidate/Skills";
 import Button from "../Atoms/Button";
 import Input from "../Atoms/Input";
-import { useInput } from "../../hooks/useInput";
+import StatusMessage from "../Atoms/StatusMessage";
 import { DataContext } from "../../store/DataContextProvider";
+import { StatusMsgContext } from "../../store/StatusMsgContextProvider";
 import {
   arraysEqual,
   transformExperience,
@@ -16,6 +18,7 @@ import styles from "./index.module.css";
 const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
+  const { handleViewStatus } = useContext(StatusMsgContext);
   const { candidateData, onUpdateSingleDataItem } = useContext(DataContext);
   const info = candidateData.find((candidate) => candidate.id === +candidateId);
 
@@ -152,6 +155,8 @@ const CandidateForm = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
+    handleViewStatus("Custom message", "success");
+
     if (enableSave) {
       const formData = {
         id: info.id,
@@ -175,7 +180,7 @@ const CandidateForm = () => {
 
   return (
     <form>
-      <hr />
+      <StatusMessage />
       <div className={styles["candidate-form"]}>
         <div className={styles["section-1"]}>
           <div>

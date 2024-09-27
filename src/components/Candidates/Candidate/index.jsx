@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Skills from "./Skills";
 import Actions from "./Actions";
+import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
+  const { handleViewStatus } = useContext(StatusMsgContext);
 
   const handleEdit = (event) => {
     event.preventDefault();
+    handleViewStatus("", ""); // reset status to unmount on edit
     navigate(`edit/${candidate.id}`);
   };
 

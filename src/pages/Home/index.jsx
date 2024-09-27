@@ -1,14 +1,8 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-import Operations from "../../components/Operations";
+import CandidatesHub from "../../components/CandidatesHub";
 
 const Home = () => {
-  return (
-    <>
-      <Operations />
-      <Outlet />
-    </>
-  );
+  return <CandidatesHub />;
 };
 
 Home.displayName = "Home";
