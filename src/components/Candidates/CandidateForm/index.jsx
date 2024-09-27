@@ -147,29 +147,30 @@ const CandidateForm = () => {
   };
 
   // Enable save button only if the form has changed and there are no validation errors
-  const enableSave = hasFormChanged() && !hasValidationErrors();
+  const enableSave = !hasFormChanged() || hasValidationErrors();
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    if (!enableSave) return;
+    if (enableSave) {
+      const formData = {
+        id: info.id,
+        name: nameValue,
+        phone_numbers: phoneValue,
+        email: emailValue,
+        location: cityValue,
+        region: stateValue,
+        linkedin: linkedInValue,
+        skills: localSkills.join(","),
+        total_experience: experienceValue,
+        file_path: info.file_path || "",
+      };
 
-    const formData = {
-      id: info.id,
-      name: nameValue,
-      phone_numbers: phoneValue,
-      email: emailValue,
-      location: cityValue,
-      region: stateValue,
-      linkedin: linkedInValue,
-      skills: localSkills.join(","),
-      total_experience: experienceValue,
-      file_path: info.file_path || "",
-    };
-
-    // if api call suceeds
-    formData.skills = localSkills;
-    onUpdateSingleDataItem(formData);
+      // if api call suceeds
+      formData.skills = localSkills;
+      onUpdateSingleDataItem(formData);
+      navigate("..");
+    }
   };
 
   return (
@@ -280,23 +281,23 @@ const CandidateForm = () => {
             onClick={handleRemoveSkill}
           />
         </div>
-      </div>
-      <div className={styles["section-3"]}>
-        <Button
-          title="Close"
-          className={styles["close-button"]}
-          onClick={handleClose}
-        >
-          Close
-        </Button>
-        <Button
-          title="Save"
-          className={`${styles["save-button"]} loading`}
-          onClick={handleFormSubmit}
-          disabled={!enableSave}
-        >
-          Save
-        </Button>
+
+        <div className={styles["section-3"]}>
+          <Button
+            title="Close"
+            className={styles["close-button"]}
+            onClick={handleClose}
+          >
+            Close
+          </Button>
+          <Button
+            title="Save"
+            className={`${styles["save-button"]} loading`}
+            onClick={handleFormSubmit}
+          >
+            Save
+          </Button>
+        </div>
       </div>
     </form>
   );

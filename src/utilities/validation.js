@@ -8,33 +8,33 @@ const linkedInRegex = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/; //
 
 export const candidateValidations = {
   name: (value, enteredValue) => {
-    if (value && enteredValue === "") return "Name cannot be empty.";
+    if (value && enteredValue === "") return "Name is required.";
   },
   phone: (value, enteredValue) => {
     const digitsOnly = enteredValue.replace(/\s+/g, "");
-    if (value && enteredValue === "") return "Phone number cannot be empty.";
+    if (value && enteredValue === "") return "Phone number is required.";
     if (enteredValue && !phoneRegex.test(digitsOnly))
       return "Phone number must contain exactly 10 digits.";
   },
   email: (value, enteredValue) => {
-    if (value && enteredValue === "") return "Email cannot be empty.";
+    if (value && enteredValue === "") return "Email is required.";
     if (enteredValue && !emailRegex.test(enteredValue))
       return "Please enter a valid email address.";
   },
   linkedIn: (value, enteredValue) => {
-    if (value && enteredValue === "") return "LinkedIn URL cannot be empty.";
+    if (value && enteredValue === "") return "LinkedIn URL is required.";
     if (enteredValue && !linkedInRegex.test(enteredValue))
       return "Please enter a valid LinkedIn profile URL.";
   },
   city: (value, enteredValue) => {
-    if (value && enteredValue === "") return "City cannot be empty.";
+    if (value && enteredValue === "") return "City is required.";
   },
   state: (value, enteredValue) => {
-    if (value && enteredValue === "") return "State cannot be empty.";
+    if (value && enteredValue === "") return "State is required.";
   },
   experience: (value, enteredValue) => {
     const experienceNumber = Number(enteredValue);
-    if (value && enteredValue === "") return "Experience cannot be empty.";
+    if (value && enteredValue === "") return "Experience is required.";
     if (enteredValue && (experienceNumber < 0 || experienceNumber > 100))
       return "Experience must be between 0 and 100.";
   },
