@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import LoginForm from "../LoginForm";
-import SignUpForm from "../SignUpForm";
+import AuthForm from "./AuthForm";
 import styles from "./index.module.css";
 
 const ActionPanel = () => {
@@ -8,8 +7,7 @@ const ActionPanel = () => {
 
   return (
     <div className={styles["action-panel"]}>
-      {haveAccount && <LoginForm />}
-      {!haveAccount && <SignUpForm />}
+      <AuthForm haveAccount={haveAccount} />
       <p onClick={() => setHaveAccount((prevValue) => !prevValue)}>
         {haveAccount
           ? "New here? Create an Account!"

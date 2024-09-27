@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export const useInput = (
   defaultValue,
   checkForErrors = () => {},
-  transform = (value) => value
+  transform = (value) => value,
+  forceValidationsOnSubmit = false
 ) => {
   const [enteredValue, setEnteredValue] = useState(defaultValue);
   const [didEdit, setDidEdit] = useState(false);
@@ -21,16 +22,25 @@ export const useInput = (
     setEnteredValue(transform(enteredValue));
   };
 
-  const resetValue = () => {
+  const resetValue = useCallback(() => {
     setEnteredValue(defaultValue);
     setDidEdit(false);
-  };
+  }, [defaultValue]);
+
+  const forceValidations = useCallback(() => {
+    if (forceValidationsOnSubmit) {
+      setDidEdit(true);
+    }
+  }, [forceValidationsOnSubmit]);
+
+  const showError = didEdit && errorMessage;
 
   return {
     value: enteredValue,
     handleInputChange,
     handleInputBlur,
     resetValue,
-    error: didEdit && errorMessage,
+    error: showError,
+    forceValidations,
   };
 };
