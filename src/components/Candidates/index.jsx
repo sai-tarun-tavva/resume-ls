@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Candidate from "./Candidate";
+import Loader from "../Atoms/Loader";
 import { DataContext } from "../../store/DataContextProvider";
 import { ITEMS_PER_PAGE } from "../../utilities/constants";
 import styles from "./index.module.css";
@@ -7,6 +8,8 @@ import styles from "./index.module.css";
 const Candidates = () => {
   const { startIndex, candidateData, onFilteredDataChange } =
     useContext(DataContext);
+
+  const [loading, setLoading] = useState(true);
 
   const candidates = candidateData.slice(
     startIndex,
@@ -34,8 +37,10 @@ const Candidates = () => {
     };
 
     const getData = async () => {
+      setLoading(true);
       const candidates = await fetchCandidates();
       onFilteredDataChange(candidates);
+      setLoading(false);
     };
 
     // Fetch candidates only for the first time
@@ -44,8 +49,10 @@ const Candidates = () => {
 
   return (
     <section className={styles.cards}>
-      {candidates.length === 0 ? (
-        <p>Failed to fetch records.</p>
+      {loading ? (
+        <Loader />
+      ) : candidates.length === 0 ? (
+        <p>Could not fetch records.</p>
       ) : (
         candidates.map((candidate) => (
           <Candidate key={candidate.id} candidate={candidate} />
