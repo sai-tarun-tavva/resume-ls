@@ -1,17 +1,17 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Skills from "../Skills";
-import Button from "../../../Atoms/Button";
-import Input from "../../../Atoms/Input";
-import { useInput } from "../../../../hooks/useInput";
+import Skills from "../Candidate/Skills";
+import Button from "../../Atoms/Button";
+import Input from "../../Atoms/Input";
+import { useInput } from "../../../hooks/useInput";
 import {
   arraysEqual,
   transformExperience,
   transformPhoneNumber,
-} from "../../../../utilities";
-import { candidateValidations } from "../../../../utilities/validation";
+} from "../../../utilities";
+import { candidateValidations } from "../../../utilities/validation";
 import styles from "./index.module.css";
-import { DataContext } from "../../../../store/DataContextProvider";
+import { DataContext } from "../../../store/DataContextProvider";
 
 const CandidateForm = () => {
   const { candidateId } = useParams();

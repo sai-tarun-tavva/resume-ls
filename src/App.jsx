@@ -2,10 +2,10 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Candidates from "./components/Candidates";
+import CandidateForm from "./components/Candidates/CandidateForm";
 import DataContextProvider from "./store/DataContextProvider";
 import "./App.css";
-import Candidates from "./components/Candidates";
-import CandidateForm from "./components/Candidates/Candidate/CandidateForm";
 
 const router = createBrowserRouter([
   { path: "", element: <Login /> },
