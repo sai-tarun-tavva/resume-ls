@@ -14,7 +14,7 @@ export const handleSearchClick = (searchText, data, update) => {
 export const capitalizeFirstLetter = (text) =>
   text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 
-export const transformSampleData = (data) => {
+export const transformData = (data) => {
   return data.map((candidate) => ({
     ...candidate,
     skills: candidate.skills

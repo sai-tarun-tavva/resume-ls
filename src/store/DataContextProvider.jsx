@@ -1,6 +1,5 @@
-import React, { createContext, useEffect, useReducer } from "react";
-import { transformSampleData } from "../utilities/index";
-import { data as sampleData } from "../sample";
+import React, { createContext, useReducer, useCallback } from "react";
+import { transformData } from "../utilities/index";
 
 const initialData = {
   startIndex: 0,
@@ -40,22 +39,20 @@ const DataContextProvider = ({ children }) => {
    * Updates the filtered data based on filtering criteria.
    * @param {Array} data - The new filtered data.
    */
-  const handleFilteredDataChange = (data) => {
-    dataDispatch({ type: "candidateData", payload: transformSampleData(data) });
-    dataDispatch({ type: "startIndex", payload: 0 }); // Resets statIndex to 0
-  };
+  const handleFilteredDataChange = useCallback(
+    (data) => {
+      dataDispatch({
+        type: "candidateData",
+        payload: transformData(data),
+      });
+      dataDispatch({ type: "startIndex", payload: 0 }); // Resets startIndex to 0
+    },
+    [dataDispatch] // Dependency array, only recreate if dataDispatch changes
+  );
 
   const handleUpdateSingleDataItem = (data) => {
     dataDispatch({ type: "candidate", payload: data });
   };
-
-  // Initialize candidateData with sampleData on page load
-  useEffect(() => {
-    dataDispatch({
-      type: "candidateData",
-      payload: transformSampleData(sampleData),
-    });
-  }, []);
 
   const dataCtx = {
     ...data,

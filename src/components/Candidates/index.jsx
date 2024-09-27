@@ -21,7 +21,7 @@ const Candidates = () => {
       try {
         const response = await fetch(
           // Pending Update
-          "https://run.mocky.io/v3/fdedfa33-d534-407a-9755-f13407a1161b"
+          "https://run.mocky.io/v3/4d0614c3-c0ed-4ddb-9c88-c871bcdabfa3"
         );
 
         if (!response.ok) {
@@ -45,6 +45,7 @@ const Candidates = () => {
 
     // Fetch candidates only for the first time
     if (candidateData.length === 0) getData();
+    else setLoading(false);
   }, [onFilteredDataChange, candidateData.length]);
 
   return (

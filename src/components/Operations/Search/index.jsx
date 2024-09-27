@@ -1,7 +1,6 @@
 import React, { useContext, useRef } from "react";
 import Button from "../../Atoms/Button";
 import { DataContext } from "../../../store/DataContextProvider";
-import { data } from "../../../sample";
 import { handleSearchClick } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
@@ -12,11 +11,15 @@ import styles from "./index.module.css";
  */
 const Search = () => {
   const searchTextRef = useRef("");
-  const { onFilteredDataChange } = useContext(DataContext);
+  const { candidateData, onFilteredDataChange } = useContext(DataContext);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    handleSearchClick(searchTextRef.current.value, data, onFilteredDataChange);
+    handleSearchClick(
+      searchTextRef.current.value,
+      candidateData,
+      onFilteredDataChange
+    );
   };
 
   return (
