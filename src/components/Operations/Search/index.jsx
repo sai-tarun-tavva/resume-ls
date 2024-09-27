@@ -1,53 +1,34 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useRef } from "react";
+import Button from "../../Atoms/Button";
+import { DataContext } from "../../../store/DataContextProvider";
 import { data } from "../../../sample";
+import { handleSearchClick } from "../../../utilities";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from "./index.module.css";
 
 /**
  * Search component for filtering data based on search text.
- * @param {Object} props - Component properties.
- * @param {Function} props.onFilteredDataChange - Callback to update the filtered data based on search results.
  * @returns {JSX.Element} The rendered search component.
  */
-const Search = ({ onFilteredDataChange }) => {
-  const [searchText, setSearchText] = useState("");
+const Search = () => {
+  const searchTextRef = useRef("");
+  const { onFilteredDataChange } = useContext(DataContext);
 
-  const handleSearchChange = (e) => {
-    setSearchText(e.target.value);
-  };
-
-  const handleSearchClick = () => {
-    const lowerCaseSearchText = searchText.toLowerCase();
-    const filteredResults = data.filter((item) => {
-      return (
-        item.name.toLowerCase().includes(lowerCaseSearchText) ||
-        item.phone_numbers.includes(lowerCaseSearchText) ||
-        item.email.toLowerCase().includes(lowerCaseSearchText) ||
-        item.location.toLowerCase().includes(lowerCaseSearchText) ||
-        item.region.toLowerCase().includes(lowerCaseSearchText) ||
-        item.linkedin.toLowerCase().includes(lowerCaseSearchText) ||
-        item.skills.toLowerCase().includes(lowerCaseSearchText) ||
-        item.total_experience.toString().includes(lowerCaseSearchText)
-      );
-    });
-    onFilteredDataChange(filteredResults);
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSearchClick(searchTextRef.current.value, data, onFilteredDataChange);
   };
 
   return (
-    <div className="search">
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchText}
-        onChange={handleSearchChange}
-      />
-      <button onClick={handleSearchClick}>Search</button>
-    </div>
+    <aside className={styles.search}>
+      <form onSubmit={handleFormSubmit}>
+        <input type="text" placeholder="Search..." ref={searchTextRef} />
+        <Button title="Search" className={styles.searchButton}>
+          <i className="bi bi-search"></i>
+        </Button>
+      </form>
+    </aside>
   );
-};
-
-// Define prop types for the component
-Search.propTypes = {
-  onFilteredDataChange: PropTypes.func.isRequired,
 };
 
 Search.displayName = "Search";

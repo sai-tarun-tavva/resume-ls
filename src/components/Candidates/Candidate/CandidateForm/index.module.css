@@ -1,0 +1,51 @@
+hr {
+  margin-top: 2rem;
+  border: none;
+  border-bottom: 0.0625rem solid #ddd;
+}
+
+.candidate-form {
+  margin: 0 auto;
+  max-width: 63rem;
+}
+
+.section-1 {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.section-3 {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0 1rem;
+}
+
+.section-3 p {
+  align-self: center;
+}
+
+.save-button {
+  width: 9rem;
+}
+
+.close-button,
+.save-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.3rem;
+  font-size: 1.25rem;
+}
+
+.close-button {
+  margin-left: auto;
+  border: 0.1rem solid var(--primary-color);
+  margin-right: 1.25rem;
+  background-color: transparent;
+  color: var(--primary-color);
+}
+
+.close-button:hover {
+  border-color: var(--primary-hover);
+  color: var(--primary-hover);
+  background-color: transparent;
+}

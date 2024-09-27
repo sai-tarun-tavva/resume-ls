@@ -1,0 +1,10 @@
+.icon-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.4rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.icon-text > span {
+  margin-right: 0.4rem;
+}

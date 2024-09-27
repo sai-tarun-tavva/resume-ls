@@ -1,39 +1,23 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Pagination from "./Pagination";
+import Upload from "./Upload";
 import Search from "./Search";
+import styles from "./index.module.css";
+import Logout from "./LogOut";
 
 /**
  * Operations component provides search and pagination functionalities.
- * @param {Object} props - Component properties.
- * @param {Function} props.onFilteredDataChange - Callback to handle filtered data changes.
- * @param {Function} props.onStartIndexChange - Callback to handle starting index changes.
- * @param {Array} props.filteredData - The currently filtered dataset.
  * @returns {JSX.Element} The rendered operations component.
  */
-const Operations = ({
-  onFilteredDataChange,
-  onStartIndexChange,
-  filteredData,
-}) => {
+const Operations = () => {
   return (
-    <div className="operations">
-      {/* Search component for filtering data */}
-      <Search onFilteredDataChange={onFilteredDataChange} />
-      {/* Pagination component for navigating through data */}
-      <Pagination
-        onStartIndexChange={onStartIndexChange}
-        filteredData={filteredData}
-      />
-    </div>
+    <section className={styles.operations}>
+      <Search />
+      <Upload />
+      <Pagination />
+      <Logout />
+    </section>
   );
-};
-
-// Define prop types for the component
-Operations.propTypes = {
-  onFilteredDataChange: PropTypes.func.isRequired,
-  onStartIndexChange: PropTypes.func.isRequired,
-  filteredData: PropTypes.array.isRequired,
 };
 
 Operations.displayName = "Operations";

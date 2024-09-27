@@ -1,0 +1,42 @@
+.control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.6rem;
+  color: #555555;
+  text-align: left;
+  position: relative;
+}
+
+.control.error input {
+  border-color: #ff0000;
+  box-shadow: 0 0 0.6rem #ff000080;
+}
+
+.control label {
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.control input {
+  width: 20rem;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 2px solid #dddddd;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  color: #555555;
+}
+
+.control input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0.6rem var(--primary-shadow);
+}
+
+.control-error {
+  color: #ff0000;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  height: 1rem;
+}

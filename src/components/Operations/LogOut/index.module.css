@@ -1,0 +1,14 @@
+.logout {
+  border: 0.1rem solid var(--primary-color);
+  border-radius: 50%;
+  padding: 0.75rem;
+  margin-right: 1.25rem;
+  background-color: transparent;
+  color: var(--primary-color);
+}
+
+.logout:hover {
+  border-color: var(--primary-hover);
+  color: var(--primary-hover);
+  background-color: transparent;
+}
