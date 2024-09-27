@@ -1,33 +1,33 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Skills from "./Skills";
 import Actions from "./Actions";
-import CandidateForm from "./CandidateForm";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
-const Candidate = ({ candidate: info, isEditing, onEdit }) => {
+const Candidate = ({ candidate }) => {
+  const navigate = useNavigate();
+
+  const handleEdit = (event) => {
+    event.preventDefault();
+    navigate(`edit/${candidate.id}`);
+  };
+
   return (
-    <article className={`${styles.card} ${isEditing ? styles.enlarged : ""}`}>
-      <div className={styles["card-static"]}>
-        <MainInfo info={info} />
-        <Location info={info} />
-        <Skills skills={info.skills} />
+    <article className={styles.card}>
+      <div className={styles["card-content"]}>
+        <MainInfo candidate={candidate} />
+        <Location candidate={candidate} />
+        <Skills skills={candidate.skills} />
 
         <div className={styles["hidden-actions"]}>
           <div className={styles.actions}>
-            <Actions handleEdit={(event) => onEdit(event, info.id)} />
+            <Actions onEdit={handleEdit} />
           </div>
         </div>
       </div>
-
-      {isEditing && (
-        <CandidateForm
-          info={info}
-          handleClose={(event) => onEdit(event, info.id)}
-        />
-      )}
     </article>
   );
 };

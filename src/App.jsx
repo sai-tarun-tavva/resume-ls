@@ -1,7 +1,26 @@
 import React from "react";
-import Home from "./components/Pages/Home";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 import DataContextProvider from "./store/DataContextProvider";
 import "./App.css";
+import Candidates from "./components/Candidates";
+import CandidateForm from "./components/Candidates/Candidate/CandidateForm";
+
+const router = createBrowserRouter([
+  { path: "", element: <Login /> },
+  {
+    path: "candidates",
+    element: <Home />,
+    children: [
+      {
+        index: true,
+        element: <Candidates />,
+      },
+      { path: "edit/:candidateId", element: <CandidateForm /> },
+    ],
+  },
+]);
 
 /**
  * Main application component
@@ -12,7 +31,7 @@ const App = () => {
   return (
     <DataContextProvider>
       <main className="app-container">
-        <Home />
+        <RouterProvider router={router} />
       </main>
     </DataContextProvider>
   );

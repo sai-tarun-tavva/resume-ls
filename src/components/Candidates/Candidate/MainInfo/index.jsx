@@ -13,18 +13,18 @@ const getLinkedIn = (url) => {
   );
 };
 
-const MainInfo = ({ info }) => {
+const MainInfo = ({ candidate }) => {
   return (
     <div className={styles["main-info"]}>
       <div className={styles.name}>
-        {capitalizeFirstLetter(info.name)}
-        {getLinkedIn(info.linkedin)}
+        {capitalizeFirstLetter(candidate.name)}
+        {getLinkedIn(candidate.linkedin)}
       </div>
 
       <IconText iconName="telephone">
-        {info.phone_numbers || "Mobile Number"}
+        {candidate.phone_numbers || "Mobile Number"}
       </IconText>
-      <IconText iconName="envelope">{info.email || "Email"}</IconText>
+      <IconText iconName="envelope">{candidate.email || "Email"}</IconText>
     </div>
   );
 };

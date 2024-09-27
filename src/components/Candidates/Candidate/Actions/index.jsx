@@ -7,10 +7,10 @@ const Button = ({ title, name, ...props }) => (
   </button>
 );
 
-const Actions = ({ handleEdit }) => {
+const Actions = ({ onEdit: handleClick }) => {
   return (
     <>
-      <Button title="Edit" name="pencil-square" onClick={handleEdit} />
+      <Button title="Edit" name="pencil-square" onClick={handleClick} />
       <Button title="Download" name="download" />
       <Button title="View" name="eye" />
     </>

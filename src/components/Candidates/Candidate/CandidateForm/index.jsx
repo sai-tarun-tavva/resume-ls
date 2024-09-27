@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Skills from "../Skills";
 import Button from "../../../Atoms/Button";
 import Input from "../../../Atoms/Input";
@@ -12,8 +13,12 @@ import { candidateValidations } from "../../../../utilities/validation";
 import styles from "./index.module.css";
 import { DataContext } from "../../../../store/DataContextProvider";
 
-const CandidateForm = ({ info, handleClose }) => {
-  const { onUpdateSingleDataItem } = useContext(DataContext);
+const CandidateForm = () => {
+  const { candidateId } = useParams();
+  const navigate = useNavigate();
+  const { candidateData, onUpdateSingleDataItem } = useContext(DataContext);
+  const info = candidateData.find((candidate) => candidate.id === +candidateId);
+
   const [localSkills, setLocalSkills] = useState(info.skills);
 
   const handleAddSkill = (newSkill) => {
@@ -34,6 +39,10 @@ const CandidateForm = ({ info, handleClose }) => {
     );
 
     setLocalSkills(updatedSkills);
+  };
+
+  const handleClose = () => {
+    navigate("..");
   };
 
   const {
