@@ -9,15 +9,19 @@ const Skills = ({ skills, isEditable = false, onClick = () => {} }) => {
       style={isEditable ? { marginRight: 0, height: "6rem" } : {}}
     >
       <div>
-        {skills.map((skill, index) => (
-          <Skill
-            key={index}
-            id={index}
-            name={skill.trim()}
-            isEditable={isEditable}
-            onClick={onClick}
-          />
-        ))}
+        {skills.length > 0 ? (
+          skills.map((skill, index) => (
+            <Skill
+              key={index}
+              id={index}
+              name={skill.trim()}
+              isEditable={isEditable}
+              onClick={onClick}
+            />
+          ))
+        ) : (
+          <p className={styles["no-skill"]}>No skills found</p>
+        )}
       </div>
     </div>
   );

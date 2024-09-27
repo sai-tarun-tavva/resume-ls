@@ -18,8 +18,8 @@ export const transformSampleData = (data) => {
   return data.map((candidate) => ({
     ...candidate,
     skills: candidate.skills
-      .split(",")
-      .map((skill) => skill.trim().toLowerCase()),
+      ? candidate.skills.split(",").map((skill) => skill.trim().toLowerCase())
+      : [],
   }));
 };
 
