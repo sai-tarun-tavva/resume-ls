@@ -1,6 +1,6 @@
 import React from "react";
-import Operations from "../../Operations";
-import Candidates from "../../Candidates";
+import Operations from "../../components/Operations";
+import Candidates from "../../components/Candidates";
 
 const Home = () => {
   return (

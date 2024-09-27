@@ -1,5 +1,5 @@
 import React from "react";
-import LoginHub from "../../LoginHub";
+import LoginHub from "../../components/LoginHub";
 
 const Login = () => {
   return <LoginHub />;
