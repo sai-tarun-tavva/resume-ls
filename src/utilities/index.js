@@ -17,7 +17,9 @@ export const capitalizeFirstLetter = (text) =>
 export const transformData = (data) => {
   return data.map((candidate) => ({
     ...candidate,
-    skills: candidate.skills
+    skills: Array.isArray(candidate.skills)
+      ? candidate.skills.map((skill) => skill.trim().toLowerCase())
+      : candidate.skills
       ? candidate.skills.split(",").map((skill) => skill.trim().toLowerCase())
       : [],
   }));
