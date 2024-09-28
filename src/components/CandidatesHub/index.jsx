@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Operations from "./Operations";
+import Upload from "./Upload";
 import StatusMessage from "../Atoms/StatusMessage";
 import StatusMsgContextProvider from "../../store/StatusMsgContextProvider";
 
@@ -10,6 +11,7 @@ const CandidatesHub = () => {
       <StatusMessage />
       <Operations />
       <Outlet />
+      <Upload />
     </StatusMsgContextProvider>
   );
 };
