@@ -20,7 +20,10 @@ const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
   const { handleViewStatus } = useContext(StatusMsgContext);
-  const { isLoading, handleLoading } = useContext(LoadingContext);
+  const {
+    isSendingPostPatchRequest: isLoading,
+    handleSendingPostPatchRequest: setLoading,
+  } = useContext(LoadingContext);
   const { filteredCandidateData, onUpdateSingleDataItem } =
     useContext(DataContext);
   const info = filteredCandidateData.find(
@@ -159,7 +162,7 @@ const CandidateForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    handleLoading();
+    setLoading();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -229,7 +232,7 @@ const CandidateForm = () => {
         );
       } finally {
         handleClose();
-        handleLoading();
+        setLoading();
       }
     }
   };

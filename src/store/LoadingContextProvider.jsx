@@ -1,19 +1,28 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 
-const initialValue = false;
-
-export const LoadingContext = createContext(initialValue);
+export const LoadingContext = createContext({});
 
 const LoadingContextProvider = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(initialValue);
+  const [isFetchingCandidates, setIsFetchingCandidates] = useState(false);
+  const [isSendingPostPatchRequest, setIsSendingPostPatchRequest] =
+    useState(false);
 
-  const handleLoading = () => {
-    setIsLoading((prevValue) => !prevValue);
-  };
+  const handleFetchingCandidates = useCallback(
+    (value) => {
+      setIsFetchingCandidates(value);
+    },
+    [setIsFetchingCandidates]
+  );
+
+  const handleSendingPostPatchRequest = useCallback(() => {
+    setIsSendingPostPatchRequest((prevValue) => !prevValue);
+  }, [setIsSendingPostPatchRequest]);
 
   const loadingCtx = {
-    isLoading,
-    handleLoading,
+    isFetchingCandidates,
+    isSendingPostPatchRequest,
+    handleFetchingCandidates,
+    handleSendingPostPatchRequest,
   };
 
   return (

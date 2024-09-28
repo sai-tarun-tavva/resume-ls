@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
 import { DataContext } from "../../../store/DataContextProvider";
+import { LoadingContext } from "../../../store/LoadingContextProvider";
 import { ITEMS_PER_PAGE } from "../../../utilities/constants";
 import styles from "./index.module.css";
 
@@ -14,7 +15,10 @@ const Candidates = () => {
     onFilteredDataChange,
   } = useContext(DataContext);
 
-  const [loading, setLoading] = useState(true);
+  const {
+    isFetchingCandidates: isLoading,
+    handleFetchingCandidates: setLoading,
+  } = useContext(LoadingContext);
 
   const candidates = filteredCandidateData.slice(
     startIndex,
@@ -52,11 +56,11 @@ const Candidates = () => {
     // Fetch candidates only for the first time
     if (candidateData.length === 0) getData();
     else setLoading(false);
-  }, [onDataChange, onFilteredDataChange, candidateData.length]);
+  }, [onDataChange, onFilteredDataChange, candidateData.length, setLoading]);
 
   return (
     <section className={styles.cards}>
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : candidates.length === 0 ? (
         <p>No records found.</p>

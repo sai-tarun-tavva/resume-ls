@@ -12,7 +12,10 @@ const Upload = () => {
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
   const { handleViewStatus } = useContext(StatusMsgContext);
-  const { isLoading, handleLoading } = useContext(LoadingContext);
+  const {
+    isSendingPostPatchRequest: isLoading,
+    handleSendingPostPatchRequest: setLoading,
+  } = useContext(LoadingContext);
 
   const toggleAllowUpload = () => {
     setAllowUpload((prevValue) => !prevValue);
@@ -93,7 +96,7 @@ const Upload = () => {
 
     if (isLoading) return;
 
-    handleLoading();
+    setLoading();
 
     // API call logic to upload files
     const formData = new FormData();
@@ -134,7 +137,7 @@ const Upload = () => {
       handleViewStatus("An error occurred during the upload.", "error");
       console.error("Error during upload:", error);
     } finally {
-      handleLoading();
+      setLoading();
     }
   };
 
