@@ -13,11 +13,14 @@ const dataReducer = (state, action) => {
 
   switch (type) {
     case "candidate":
+      const [updatedCandidate] = payload;
       // Find and update a specific candidate in the candidateData array
-      const updatedCandidateData = state.candidateData.map((candidate) =>
-        candidate.id === payload.id ? { ...candidate, ...payload } : candidate
+      const updatedCandidatesData = state.candidateData.map((candidate) =>
+        candidate.id === updatedCandidate.id
+          ? { ...candidate, ...updatedCandidate }
+          : candidate
       );
-      return { ...state, candidateData: updatedCandidateData };
+      return { ...state, candidateData: updatedCandidatesData };
 
     default:
       return { ...state, [type]: payload };
@@ -51,7 +54,7 @@ const DataContextProvider = ({ children }) => {
   );
 
   const handleUpdateSingleDataItem = (data) => {
-    dataDispatch({ type: "candidate", payload: data });
+    dataDispatch({ type: "candidate", payload: transformData([data]) });
   };
 
   const dataCtx = {
