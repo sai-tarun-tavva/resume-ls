@@ -234,10 +234,13 @@ const CandidateForm = () => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form
+      onSubmit={handleFormSubmit}
+      className={styles["candidate-form-container"]}
+    >
       <StatusMessage />
       <div className={styles["candidate-form"]}>
-        <div className={styles["section-1"]}>
+        <div className={styles["input-columns"]}>
           <div>
             <Input
               label="name"
@@ -333,17 +336,14 @@ const CandidateForm = () => {
             />
           </div>
         </div>
+        <Input
+          type="hidden"
+          name="skills"
+          value={localSkills.join(", ")}
+          className={styles["hidden-input"]}
+        />
 
-        <div className={styles["section-2"]}>
-          <Input type="hidden" name="skills" value={localSkills.join(", ")} />
-          <Skills
-            skills={localSkills}
-            isEditable={true}
-            onClick={handleRemoveSkill}
-          />
-        </div>
-
-        <div className={styles["section-3"]}>
+        <div className={styles["button-group"]}>
           <Button
             title="Close"
             className={styles["close-button"]}
@@ -358,6 +358,15 @@ const CandidateForm = () => {
           >
             {isSaving ? "Saving..." : "Save"}
           </Button>
+        </div>
+      </div>
+      <div className={styles["skills-section"]}>
+        <div className={styles["skills-container"]}>
+          <Skills
+            skills={localSkills}
+            isEditable={true}
+            onClick={handleRemoveSkill}
+          />
         </div>
       </div>
     </form>

@@ -1,39 +1,34 @@
-hr {
-  margin-top: 2rem;
-  border: none;
-  border-bottom: 0.0625rem solid #ddd;
+.candidate-form-container {
+  margin: 12.3rem auto 0;
+  display: flex;
 }
 
 .candidate-form {
-  margin: 7.3rem auto 0;
   max-width: 53rem;
+  flex: 60%;
 }
 
-.section-1 {
-  padding: 1rem;
+.input-columns {
+  padding: 1rem 4rem;
   display: flex;
   justify-content: space-around;
 }
 
-.section-3 {
+.button-group {
   display: flex;
   justify-content: space-between;
-  margin: 2rem 0 1rem;
+  margin: 0rem 4rem 1rem 0;
 }
 
-.section-3 p {
+.button-group p {
   align-self: center;
-}
-
-.save-button {
-  width: 9rem;
 }
 
 .close-button,
 .save-button {
-  padding: 0.75rem 1.5rem;
   border-radius: 0.3rem;
   font-size: 1.25rem;
+  box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
 }
 
 .close-button {
@@ -48,4 +43,24 @@ hr {
   border-color: var(--primary-hover);
   color: var(--primary-hover);
   background-color: transparent;
+}
+
+.save-button {
+  padding: 0.75rem 1.5rem;
+}
+
+.skills-section {
+  flex: 40%;
+  padding-right: 4rem;
+}
+
+.skills-container {
+  background: #ffffff;
+  padding: 2rem;
+  height: 33rem;
+  box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+}
+
+.hidden-input {
+  display: none;
 }

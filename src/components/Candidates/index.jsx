@@ -26,7 +26,7 @@ const Candidates = () => {
       try {
         const response = await fetch(
           // Pending Update
-          "https://run.mocky.io/v3/7449bde7-eaa8-4196-9525-94b0fec4d437"
+          "https://run.mocky.io/v3/afb6ff56-baf8-4804-968e-842f71b19b46"
         );
 
         if (!response.ok) {

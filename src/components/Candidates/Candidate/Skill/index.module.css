@@ -6,13 +6,15 @@
 }
 
 .skillBubble.editable {
-  background-color: #4da6e3;
+  background-color: #0f8cea;
   font-size: 1rem;
-  padding: 0 0.5rem 0 1rem;
+  border-radius: 0.3rem;
+  padding: 0.3rem 0.5rem 0.3rem 1rem;
   color: #ffffff;
   cursor: default;
   display: flex;
   align-items: center;
+  animation: jiggle 0.5s ease-in-out infinite;
 }
 
 .skillBubble.editable i {
@@ -26,5 +28,21 @@
 }
 
 .skillBubble.editable:hover {
-  background-color: #3a92c5;
+  background-color: #0570c1;
+}
+
+@keyframes jiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+  75% {
+    transform: rotate(1deg);
+  }
 }
