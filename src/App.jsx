@@ -2,8 +2,8 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Candidates from "./components/Candidates";
-import CandidateForm from "./components/CandidateForm";
+import Candidates from "./components/CandidatesHub/Candidates";
+import CandidateForm from "./components/CandidatesHub/CandidateForm";
 import DataContextProvider from "./store/DataContextProvider";
 import "./App.css";
 

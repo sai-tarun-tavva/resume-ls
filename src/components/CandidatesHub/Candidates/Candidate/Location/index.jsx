@@ -1,5 +1,5 @@
 import React from "react";
-import IconText from "../../../Atoms/IconText";
+import IconText from "../../../../Atoms/IconText";
 import styles from "./index.module.css";
 
 const Location = ({ candidate }) => {

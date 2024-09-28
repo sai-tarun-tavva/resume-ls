@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from "react";
-import Button from "../../Atoms/Button";
-import { DataContext } from "../../../store/DataContextProvider";
-import { handleSearchClick } from "../../../utilities";
+import Button from "../../../Atoms/Button";
+import { DataContext } from "../../../../store/DataContextProvider";
+import { handleSearchClick } from "../../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 

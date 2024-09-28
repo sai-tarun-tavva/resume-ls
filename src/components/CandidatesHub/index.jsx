@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Operations from "../Operations";
+import Operations from "./Operations";
 import StatusMessage from "../Atoms/StatusMessage";
 import StatusMsgContextProvider from "../../store/StatusMsgContextProvider";
 

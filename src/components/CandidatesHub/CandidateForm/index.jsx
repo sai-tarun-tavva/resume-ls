@@ -1,18 +1,18 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useInput } from "../../hooks/useInput";
-import Skills from "../Candidates/Candidate/Skills";
-import Button from "../Atoms/Button";
-import Input from "../Atoms/Input";
-import StatusMessage from "../Atoms/StatusMessage";
-import { DataContext } from "../../store/DataContextProvider";
-import { StatusMsgContext } from "../../store/StatusMsgContextProvider";
+import { useInput } from "../../../hooks/useInput";
+import Skills from "../../Atoms/Skills";
+import Button from "../../Atoms/Button";
+import Input from "../../Atoms/Input";
+import StatusMessage from "../../Atoms/StatusMessage";
+import { DataContext } from "../../../store/DataContextProvider";
+import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
 import {
   arraysEqual,
   transformExperience,
   transformPhoneNumber,
-} from "../../utilities";
-import { candidateValidations } from "../../utilities/validation";
+} from "../../../utilities";
+import { candidateValidations } from "../../../utilities/validation";
 import styles from "./index.module.css";
 
 const CandidateForm = () => {

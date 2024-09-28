@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
-import Skills from "./Skills";
+import Skills from "../../../Atoms/Skills";
 import Actions from "./Actions";
-import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
-import { isCandidateNew, calculateTimeAgo } from "../../../utilities";
+import { StatusMsgContext } from "../../../../store/StatusMsgContextProvider";
+import { isCandidateNew, calculateTimeAgo } from "../../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 

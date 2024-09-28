@@ -1,6 +1,6 @@
 import React from "react";
-import IconText from "../../../Atoms/IconText";
-import { capitalizeFirstLetter } from "../../../../utilities";
+import IconText from "../../../../Atoms/IconText";
+import { capitalizeFirstLetter } from "../../../../../utilities";
 import styles from "./index.module.css";
 
 const getLinkedIn = (url) => {

@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./index.module.css";
 import Skill from "../Skill";
+import styles from "./index.module.css";
 
 const Skills = ({ skills, isEditable = false, onClick = () => {} }) => {
   return (
