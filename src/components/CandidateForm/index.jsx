@@ -18,6 +18,7 @@ import styles from "./index.module.css";
 const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
   const { handleViewStatus } = useContext(StatusMsgContext);
   const { candidateData, onUpdateSingleDataItem } = useContext(DataContext);
   const info = candidateData.find((candidate) => candidate.id === +candidateId);
@@ -150,36 +151,87 @@ const CandidateForm = () => {
   };
 
   // Enable save button only if the form has changed and there are no validation errors
-  const enableSave = !hasFormChanged() || hasValidationErrors();
+  const enableSave = hasFormChanged() && !hasValidationErrors();
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
+    setIsSaving(true);
 
-    handleViewStatus("Custom message", "success");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const formValues = {
+      name: formData.get("name"),
+      phone_numbers: formData.get("phoneNumber"),
+      email: formData.get("email"),
+      location: formData.get("city"),
+      region: formData.get("state"),
+      linkedin: formData.get("linkedIn"),
+      skills: formData.get("skills"),
+      total_experience: +formData.get("experience"),
+    };
+
+    // Temporary
+    const localValues = {
+      id: info.id,
+      name: nameValue,
+      phone_numbers: phoneValue,
+      email: emailValue,
+      location: cityValue,
+      region: stateValue,
+      linkedin: linkedInValue,
+      skills: localSkills.join(", "),
+      total_experience: experienceValue,
+      file_path: info.file_path || "",
+    };
 
     if (enableSave) {
-      const formData = {
-        id: info.id,
-        name: nameValue,
-        phone_numbers: phoneValue,
-        email: emailValue,
-        location: cityValue,
-        region: stateValue,
-        linkedin: linkedInValue,
-        skills: localSkills.join(","),
-        total_experience: experienceValue,
-        file_path: info.file_path || "",
-      };
+      try {
+        // Make the API request
+        // Pending change
+        const response = await fetch(
+          "https://something.free.beeceptor.com/home/resume/edit/8",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formValues),
+          }
+        );
 
-      // if api call suceeds
-      formData.skills = localSkills;
-      onUpdateSingleDataItem(formData);
-      navigate("..");
+        // Handle response
+        if (response.ok) {
+          // Call context-provided functions on success
+          // const updatedCandidateData = await response.json();
+          // Pending change
+          onUpdateSingleDataItem(localValues);
+          handleViewStatus(
+            "Candidate information successfully updated!",
+            "success"
+          );
+        } else {
+          // Handle error
+          handleViewStatus(
+            "Failed to update candidate information. Please try again.",
+            "failure"
+          );
+        }
+      } catch (error) {
+        // Handle fetch error
+        handleViewStatus(
+          "Network error. Please check your connection.",
+          "failure"
+        );
+      } finally {
+        handleClose();
+        setIsSaving(false);
+      }
     }
   };
 
   return (
-    <form>
+    <form onSubmit={handleFormSubmit}>
       <StatusMessage />
       <div className={styles["candidate-form"]}>
         <div className={styles["section-1"]}>
@@ -280,6 +332,7 @@ const CandidateForm = () => {
         </div>
 
         <div className={styles["section-2"]}>
+          <Input type="hidden" name="skills" value={localSkills.join(", ")} />
           <Skills
             skills={localSkills}
             isEditable={true}
@@ -297,10 +350,10 @@ const CandidateForm = () => {
           </Button>
           <Button
             title="Save"
-            className={`${styles["save-button"]} loading`}
-            onClick={handleFormSubmit}
+            className={`${styles["save-button"]} ${isSaving ? "loading" : ""}`}
+            disabled={!enableSave}
           >
-            Save
+            {isSaving ? "Saving..." : "Save"}
           </Button>
         </div>
       </div>
