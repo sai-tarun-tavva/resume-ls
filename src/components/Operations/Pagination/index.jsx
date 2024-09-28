@@ -9,7 +9,7 @@ import styles from "./index.module.css";
  * Pagination component for navigating through paginated data.
  * @returns {JSX.Element} The rendered pagination component.
  */
-const Pagination = () => {
+const Pagination = ({ enablePagination }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { onStartIndexChange, candidateData } = useContext(DataContext);
 
@@ -34,7 +34,7 @@ const Pagination = () => {
     <nav className={styles.pagination}>
       <Button
         onClick={() => handlePageClick(currentPage - 1)}
-        disabled={currentPage <= 1}
+        disabled={currentPage <= 1 || !enablePagination}
         title="Previous"
         className={styles.prevButton}
       >
@@ -45,7 +45,7 @@ const Pagination = () => {
       </span>
       <Button
         onClick={() => handlePageClick(currentPage + 1)}
-        disabled={currentPage >= totalPages}
+        disabled={currentPage >= totalPages || !enablePagination}
         title="Next"
         className={styles.nextButton}
       >

@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Pagination from "./Pagination";
 import Upload from "./Upload";
 import Search from "./Search";
@@ -10,11 +11,14 @@ import Logout from "./LogOut";
  * @returns {JSX.Element} The rendered operations component.
  */
 const Operations = () => {
+  const location = useLocation();
+  const enableOperations = location.pathname === "/candidates";
+
   return (
     <section className={styles.operations}>
-      <Search />
+      <Search enableSearch={enableOperations} />
       <Upload />
-      <Pagination />
+      <Pagination enablePagination={enableOperations} />
       <Logout />
     </section>
   );
