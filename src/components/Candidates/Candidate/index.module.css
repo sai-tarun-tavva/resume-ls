@@ -1,5 +1,6 @@
 .card {
   width: 100%;
+  height: 10rem;
   padding: 1rem;
   margin: 1.5rem 0;
   border: 0.0625rem solid #ddd;
@@ -35,4 +36,14 @@
   transform: translateX(1.25rem);
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
+}
+
+.time-ago {
+  position: absolute;
+  bottom: -1.5rem;
+  right: -0.5rem;
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+  font-family: "Roboto";
 }

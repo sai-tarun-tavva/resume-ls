@@ -5,12 +5,14 @@ import Location from "./Location";
 import Skills from "./Skills";
 import Actions from "./Actions";
 import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
+import { calculateTimeAgo } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
   const { handleViewStatus } = useContext(StatusMsgContext);
+  const formattedTime = calculateTimeAgo(new Date(candidate.timestamp));
 
   const handleEdit = (event) => {
     event.preventDefault();
@@ -30,6 +32,8 @@ const Candidate = ({ candidate }) => {
             <Actions onEdit={handleEdit} />
           </div>
         </div>
+
+        <small className={styles["time-ago"]}>{formattedTime}</small>
       </div>
     </article>
   );

@@ -26,7 +26,7 @@ const Candidates = () => {
       try {
         const response = await fetch(
           // Pending Update
-          "https://run.mocky.io/v3/4d0614c3-c0ed-4ddb-9c88-c871bcdabfa3"
+          "https://run.mocky.io/v3/7449bde7-eaa8-4196-9525-94b0fec4d437"
         );
 
         if (!response.ok) {
@@ -59,7 +59,7 @@ const Candidates = () => {
       {loading ? (
         <Loader />
       ) : candidates.length === 0 ? (
-        <p>Could not fetch records.</p>
+        <p>No records found.</p>
       ) : (
         candidates.map((candidate) => (
           <Candidate key={candidate.id} candidate={candidate} />
