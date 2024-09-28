@@ -6,6 +6,7 @@ import Button from "../../Atoms/Button";
 import Input from "../../Atoms/Input";
 import StatusMessage from "../../Atoms/StatusMessage";
 import { DataContext } from "../../../store/DataContextProvider";
+import { LoadingContext } from "../../../store/LoadingContextProvider";
 import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
 import {
   arraysEqual,
@@ -18,8 +19,8 @@ import styles from "./index.module.css";
 const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
-  const [isSaving, setIsSaving] = useState(false);
   const { handleViewStatus } = useContext(StatusMsgContext);
+  const { isLoading, handleLoading } = useContext(LoadingContext);
   const { filteredCandidateData, onUpdateSingleDataItem } =
     useContext(DataContext);
   const info = filteredCandidateData.find(
@@ -158,7 +159,7 @@ const CandidateForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    setIsSaving(true);
+    handleLoading();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -228,7 +229,7 @@ const CandidateForm = () => {
         );
       } finally {
         handleClose();
-        setIsSaving(false);
+        handleLoading();
       }
     }
   };
@@ -353,10 +354,10 @@ const CandidateForm = () => {
           </Button>
           <Button
             title="Save"
-            className={`${styles["save-button"]} ${isSaving ? "loading" : ""}`}
+            className={`${styles["save-button"]} ${isLoading ? "loading" : ""}`}
             disabled={!enableSave}
           >
-            {isSaving ? "Saving..." : "Save"}
+            {isLoading ? "Saving..." : "Save"}
           </Button>
         </div>
       </div>

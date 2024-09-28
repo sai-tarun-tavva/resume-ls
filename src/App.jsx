@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Candidates from "./components/CandidatesHub/Candidates";
 import CandidateForm from "./components/CandidatesHub/CandidateForm";
+import LoadingContextProvider from "./store/LoadingContextProvider";
 import DataContextProvider from "./store/DataContextProvider";
 import "./App.css";
 
@@ -29,11 +30,13 @@ const router = createBrowserRouter([
  */
 const App = () => {
   return (
-    <DataContextProvider>
-      <main className="app-container">
-        <RouterProvider router={router} />
-      </main>
-    </DataContextProvider>
+    <LoadingContextProvider>
+      <DataContextProvider>
+        <main className="app-container">
+          <RouterProvider router={router} />
+        </main>
+      </DataContextProvider>
+    </LoadingContextProvider>
   );
 };
 

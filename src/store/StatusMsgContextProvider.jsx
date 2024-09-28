@@ -1,8 +1,9 @@
-import { createContext, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 
 const initialStatus = {
   message: "",
   type: "",
+  darkMode: false,
 };
 
 export const StatusMsgContext = createContext(initialStatus);
@@ -10,9 +11,12 @@ export const StatusMsgContext = createContext(initialStatus);
 const StatusMsgContextProvider = ({ children }) => {
   const [status, setStatus] = useState(initialStatus);
 
-  const handleViewStatus = (message, type) => {
-    setStatus({ message, type });
-  };
+  const handleViewStatus = useCallback(
+    (message = "", type = "", darkMode = false) => {
+      setStatus({ message, type, darkMode });
+    },
+    [setStatus]
+  );
 
   const statusMsgCtx = {
     ...status,

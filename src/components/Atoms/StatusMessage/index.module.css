@@ -19,10 +19,22 @@
   color: #155724;
 }
 
+.success.light {
+  background-color: #28a745;
+  border-color: rgba(40, 167, 69, 0.5);
+  color: #ffffff;
+}
+
 .error {
   background-color: rgba(220, 53, 69, 0.5);
   border: 0.06rem solid #dc3545;
   color: #721c24;
+}
+
+.error.light {
+  background-color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.5);
+  color: #ffffff;
 }
 
 @keyframes slideIn {
