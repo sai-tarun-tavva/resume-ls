@@ -17,6 +17,36 @@
   cursor: default;
 }
 
+.card-content::before {
+  content: attr(data-new);
+  display: none;
+  background-color: #28a745;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem 0;
+  font-size: 0.75rem;
+  position: absolute;
+  top: -1.5rem;
+  left: -1.5rem;
+  z-index: 1;
+}
+
+.card-content[data-new="true"]::before {
+  content: "New";
+  display: block;
+}
+
+.card-content::after {
+  content: var(--time-ago);
+  position: absolute;
+  bottom: -1.5rem;
+  right: -0.5rem;
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+  font-family: "Roboto";
+}
+
 .card:hover .actions {
   opacity: 1;
   transform: translateX(0);
@@ -36,14 +66,4 @@
   transform: translateX(1.25rem);
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
-}
-
-.time-ago {
-  position: absolute;
-  bottom: -1.5rem;
-  right: -0.5rem;
-  font-size: 0.75rem;
-  color: #888;
-  white-space: nowrap;
-  font-family: "Roboto";
 }

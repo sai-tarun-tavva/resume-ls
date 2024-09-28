@@ -5,14 +5,17 @@ import Location from "./Location";
 import Skills from "./Skills";
 import Actions from "./Actions";
 import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
-import { calculateTimeAgo } from "../../../utilities";
+import { isCandidateNew, calculateTimeAgo } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
   const { handleViewStatus } = useContext(StatusMsgContext);
-  const formattedTime = calculateTimeAgo(new Date(candidate.timestamp));
+
+  const dateCreated = new Date(candidate.timestamp);
+  const isNew = isCandidateNew(dateCreated);
+  const formattedTime = calculateTimeAgo(dateCreated);
 
   const handleEdit = (event) => {
     event.preventDefault();
@@ -22,7 +25,13 @@ const Candidate = ({ candidate }) => {
 
   return (
     <article className={styles.card}>
-      <div className={styles["card-content"]}>
+      <div
+        className={styles["card-content"]}
+        data-new={isNew ? "true" : "false"}
+        style={{
+          "--time-ago": `"${formattedTime}"`,
+        }}
+      >
         <MainInfo candidate={candidate} />
         <Location candidate={candidate} />
         <Skills skills={candidate.skills} />
@@ -32,8 +41,6 @@ const Candidate = ({ candidate }) => {
             <Actions onEdit={handleEdit} />
           </div>
         </div>
-
-        <small className={styles["time-ago"]}>{formattedTime}</small>
       </div>
     </article>
   );

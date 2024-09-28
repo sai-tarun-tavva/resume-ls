@@ -11,6 +11,10 @@ export const handleSearchClick = (searchText, data, update) => {
   update(filteredResults);
 };
 
+export const isCandidateNew = (dateCreated) => {
+  return Date.now() - dateCreated.getTime() < 7 * 24 * 60 * 60 * 1000; // less than 7 days
+};
+
 export const calculateTimeAgo = (date) => {
   const now = new Date();
   const seconds = Math.floor((now - date) / 1000);
