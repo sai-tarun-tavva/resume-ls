@@ -20,8 +20,11 @@ const CandidateForm = () => {
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
   const { handleViewStatus } = useContext(StatusMsgContext);
-  const { candidateData, onUpdateSingleDataItem } = useContext(DataContext);
-  const info = candidateData.find((candidate) => candidate.id === +candidateId);
+  const { filteredCandidateData, onUpdateSingleDataItem } =
+    useContext(DataContext);
+  const info = filteredCandidateData.find(
+    (candidate) => candidate.id === +candidateId
+  );
 
   const [localSkills, setLocalSkills] = useState(info.skills);
 

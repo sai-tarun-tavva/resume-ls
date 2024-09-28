@@ -6,12 +6,17 @@ import { ITEMS_PER_PAGE } from "../../utilities/constants";
 import styles from "./index.module.css";
 
 const Candidates = () => {
-  const { startIndex, candidateData, onFilteredDataChange } =
-    useContext(DataContext);
+  const {
+    startIndex,
+    candidateData,
+    filteredCandidateData,
+    onDataChange,
+    onFilteredDataChange,
+  } = useContext(DataContext);
 
   const [loading, setLoading] = useState(true);
 
-  const candidates = candidateData.slice(
+  const candidates = filteredCandidateData.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -39,7 +44,8 @@ const Candidates = () => {
     const getData = async () => {
       setLoading(true);
       const candidates = await fetchCandidates();
-      onFilteredDataChange(candidates);
+      onDataChange(candidates); // save once (ineditable unless page reload)
+      onFilteredDataChange(candidates); // to filter data based on search
       setLoading(false);
     };
 

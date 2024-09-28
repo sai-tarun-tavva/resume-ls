@@ -4,6 +4,7 @@ import { transformData } from "../utilities/index";
 const initialData = {
   startIndex: 0,
   candidateData: [],
+  filteredCandidateData: [],
 };
 
 export const DataContext = createContext(initialData);
@@ -38,6 +39,16 @@ const DataContextProvider = ({ children }) => {
     dataDispatch({ type: "startIndex", payload: index });
   };
 
+  const handleDataChange = useCallback(
+    (data) => {
+      dataDispatch({
+        type: "candidateData",
+        payload: transformData(data),
+      });
+    },
+    [dataDispatch] // Dependency array, only recreate if dataDispatch changes
+  );
+
   /**
    * Updates the filtered data based on filtering criteria.
    * @param {Array} data - The new filtered data.
@@ -45,7 +56,7 @@ const DataContextProvider = ({ children }) => {
   const handleFilteredDataChange = useCallback(
     (data) => {
       dataDispatch({
-        type: "candidateData",
+        type: "filteredCandidateData",
         payload: transformData(data),
       });
       dataDispatch({ type: "startIndex", payload: 0 }); // Resets startIndex to 0
@@ -60,6 +71,7 @@ const DataContextProvider = ({ children }) => {
   const dataCtx = {
     ...data,
     onStartIndexChange: handleStartIndexChange,
+    onDataChange: handleDataChange,
     onFilteredDataChange: handleFilteredDataChange,
     onUpdateSingleDataItem: handleUpdateSingleDataItem,
   };

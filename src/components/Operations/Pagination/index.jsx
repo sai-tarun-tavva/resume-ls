@@ -11,15 +11,15 @@ import styles from "./index.module.css";
  */
 const Pagination = ({ enablePagination }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { onStartIndexChange, candidateData } = useContext(DataContext);
+  const { onStartIndexChange, filteredCandidateData } = useContext(DataContext);
 
-  const totalItems = candidateData.length;
+  const totalItems = filteredCandidateData.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   useEffect(() => {
     // re-initiate current page to 1 whenever user clicks on search and filtered data updates
     setCurrentPage(1);
-  }, [candidateData]);
+  }, [filteredCandidateData]);
 
   const handlePageClick = (page) => {
     // Ensure page number is within valid range
