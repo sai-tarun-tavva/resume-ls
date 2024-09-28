@@ -162,6 +162,8 @@ const CandidateForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    if (isLoading) return;
+
     setLoading();
 
     const form = event.currentTarget;

@@ -4,6 +4,7 @@ import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { LoadingContext } from "../../../store/LoadingContextProvider";
 import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
+import { getFileIcon, formatFileSize } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";
 
@@ -19,29 +20,6 @@ const Upload = () => {
 
   const toggleAllowUpload = () => {
     setAllowUpload((prevValue) => !prevValue);
-  };
-
-  const getFileIcon = (fileName) => {
-    const fileExtension = fileName.split(".").pop().toLowerCase();
-    switch (fileExtension) {
-      case "doc":
-      case "docx":
-        return <i className="bi bi-file-earmark-word"></i>; // Word Icon
-      case "pdf":
-        return <i className="bi bi-file-earmark-pdf"></i>; // PDF Icon
-      default:
-        return <i className="bi bi-file-earmark"></i>; // Generic file icon
-    }
-  };
-
-  const formatFileSize = (sizeInBytes) => {
-    const sizeInKB = sizeInBytes / 1024;
-    if (sizeInKB < 1024) {
-      return `${sizeInKB.toFixed(2)} KB`;
-    } else {
-      const sizeInMB = sizeInKB / 1024;
-      return `${sizeInMB.toFixed(2)} MB`;
-    }
   };
 
   // Handle file selection through input

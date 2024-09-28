@@ -37,6 +37,29 @@ export const calculateTimeAgo = (date) => {
   return `${Math.floor(seconds)} second${seconds > 1 ? "s" : ""} ago`;
 };
 
+export const getFileIcon = (fileName) => {
+  const fileExtension = fileName.split(".").pop().toLowerCase();
+  switch (fileExtension) {
+    case "doc":
+    case "docx":
+      return <i className="bi bi-file-earmark-word"></i>; // Word Icon
+    case "pdf":
+      return <i className="bi bi-file-earmark-pdf"></i>; // PDF Icon
+    default:
+      return <i className="bi bi-file-earmark"></i>; // Generic file icon
+  }
+};
+
+export const formatFileSize = (sizeInBytes) => {
+  const sizeInKB = sizeInBytes / 1024;
+  if (sizeInKB < 1024) {
+    return `${sizeInKB.toFixed(2)} KB`;
+  } else {
+    const sizeInMB = sizeInKB / 1024;
+    return `${sizeInMB.toFixed(2)} MB`;
+  }
+};
+
 export const capitalizeFirstLetter = (text) =>
   text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 
