@@ -52,7 +52,7 @@ const Candidates = () => {
     // Fetch candidates only for the first time
     if (candidateData.length === 0) getData();
     else setLoading(false);
-  }, [onFilteredDataChange, candidateData.length]);
+  }, [onDataChange, onFilteredDataChange, candidateData.length]);
 
   return (
     <section className={styles.cards}>
