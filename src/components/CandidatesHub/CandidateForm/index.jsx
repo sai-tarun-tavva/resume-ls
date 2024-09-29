@@ -140,6 +140,21 @@ const CandidateForm = () => {
     transformExperience
   );
 
+  // Utility function to prevent form submission
+  const preventSubmitOnEnter = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
+  // Utility function to add skill on hitting ENTER in skill input
+  const addSkillOnEnter = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleAddSkill(event.target.value);
+    }
+  };
+
   // Utility function to check if form values are unchanged
   const hasFormChanged = () => {
     return (
@@ -265,6 +280,7 @@ const CandidateForm = () => {
               value={nameValue}
               onChange={handleNameChange}
               onBlur={handleNameBlur}
+              onKeyDown={preventSubmitOnEnter}
               error={nameError}
             />
 
@@ -277,6 +293,7 @@ const CandidateForm = () => {
               value={phoneValue}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
+              onKeyDown={preventSubmitOnEnter}
               error={phoneError}
             />
 
@@ -288,6 +305,7 @@ const CandidateForm = () => {
               value={emailValue}
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
+              onKeyDown={preventSubmitOnEnter}
               error={emailError}
             />
 
@@ -298,13 +316,7 @@ const CandidateForm = () => {
               value={skillValue}
               onChange={handleSkillChange}
               onBlur={handleSkillBlur}
-              onKeyDown={(event) => {
-                // custom feature
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  handleAddSkill(event.target.value);
-                }
-              }}
+              onKeyDown={addSkillOnEnter}
             />
           </div>
 
@@ -317,6 +329,7 @@ const CandidateForm = () => {
               value={linkedInValue}
               onChange={handleLinkedInChange}
               onBlur={handleLinkedInBlur}
+              onKeyDown={preventSubmitOnEnter}
               error={linkedInError}
             />
 
@@ -327,6 +340,7 @@ const CandidateForm = () => {
               value={cityValue}
               onChange={handleCityChange}
               onBlur={handleCityBlur}
+              onKeyDown={preventSubmitOnEnter}
               error={cityError}
             />
 
@@ -337,6 +351,7 @@ const CandidateForm = () => {
               value={stateValue}
               onChange={handleStateChange}
               onBlur={handleStateBlur}
+              onKeyDown={preventSubmitOnEnter}
               error={stateError}
             />
 
@@ -348,6 +363,7 @@ const CandidateForm = () => {
               value={experienceValue}
               onChange={handleExperienceChange}
               onBlur={handleExperienceBlur}
+              onKeyDown={preventSubmitOnEnter}
               error={experienceError}
             />
           </div>
