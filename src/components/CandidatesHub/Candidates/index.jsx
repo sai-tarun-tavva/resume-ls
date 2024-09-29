@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
 import { DataContext, LoadingContext } from "../../../store";
-import { ITEMS_PER_PAGE } from "../../../utilities";
+import { ITEMS_PER_PAGE } from "../../../constants";
 import classes from "./index.module.css";
 
 const Candidates = () => {
