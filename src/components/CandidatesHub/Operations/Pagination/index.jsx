@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Button from "../../../Atoms/Button";
 import { DataContext } from "../../../../store/DataContextProvider";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { ITEMS_PER_PAGE } from "../../../../utilities/constants";
+import { ITEMS_PER_PAGE } from "../../../../utilities";
 import styles from "./index.module.css";
 
 /**

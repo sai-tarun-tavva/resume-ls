@@ -3,7 +3,7 @@ import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
 import { DataContext } from "../../../store/DataContextProvider";
 import { LoadingContext } from "../../../store/LoadingContextProvider";
-import { ITEMS_PER_PAGE } from "../../../utilities/constants";
+import { ITEMS_PER_PAGE } from "../../../utilities";
 import styles from "./index.module.css";
 
 const Candidates = () => {

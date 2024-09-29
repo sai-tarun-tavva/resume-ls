@@ -12,8 +12,8 @@ import {
   arraysEqual,
   transformExperience,
   transformPhoneNumber,
+  candidateValidations,
 } from "../../../utilities";
-import { candidateValidations } from "../../../utilities/validation";
 import styles from "./index.module.css";
 
 const CandidateForm = () => {
