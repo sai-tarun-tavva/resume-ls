@@ -79,7 +79,7 @@ const AuthForm = ({ haveAccount }) => {
   }, [haveAccount, resetUserName, resetPassword, resetEmail]);
 
   return (
-    <form className={classes["auth-form"]}>
+    <form className={classes.authForm}>
       <Input
         label="user name"
         id="userName"
@@ -102,10 +102,7 @@ const AuthForm = ({ haveAccount }) => {
         onBlur={handlePasswordBlur}
         error={passwordError}
       >
-        <span
-          onClick={togglePasswordVisibility}
-          className={classes["view-icon"]}
-        >
+        <span onClick={togglePasswordVisibility} className={classes.viewIcon}>
           {showPassword ? (
             <i className="bi bi-eye-slash"></i>
           ) : (
@@ -130,7 +127,7 @@ const AuthForm = ({ haveAccount }) => {
 
       <Button
         title={haveAccount ? "Login" : "Sign Up"}
-        className={`${classes["auth-button"]} loading`}
+        className={`${classes.authButton} loading`}
         onClick={handleAuth}
       >
         {haveAccount ? "Login" : "Sign Up"}

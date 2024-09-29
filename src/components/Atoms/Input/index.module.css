@@ -35,7 +35,7 @@
   box-shadow: 0 0 0.6rem var(--primary-shadow);
 }
 
-.control-error {
+.controlError {
   color: #ff0000;
   margin-top: 0.3rem;
   font-size: 0.9rem;

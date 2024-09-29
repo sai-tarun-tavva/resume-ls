@@ -252,11 +252,11 @@ const CandidateForm = () => {
   return (
     <form
       onSubmit={handleFormSubmit}
-      className={classes["candidate-form-container"]}
+      className={classes.candidateFormContainer}
     >
       <StatusMessage />
-      <div className={classes["candidate-form"]}>
-        <div className={classes["input-columns"]}>
+      <div className={classes.candidateForm}>
+        <div className={classes.inputColumns}>
           <div>
             <Input
               label="name"
@@ -356,30 +356,28 @@ const CandidateForm = () => {
           type="hidden"
           name="skills"
           value={localSkills?.join(", ")}
-          className={classes["hidden-input"]}
+          className={classes.hiddenInput}
         />
 
-        <div className={classes["button-group"]}>
+        <div className={classes.buttonGroup}>
           <Button
             title="Close"
-            className={classes["close-button"]}
+            className={classes.closeButton}
             onClick={handleClose}
           >
             Close
           </Button>
           <Button
             title="Save"
-            className={`${classes["save-button"]} ${
-              isLoading ? "loading" : ""
-            }`}
+            className={`${classes.saveButton} ${isLoading ? "loading" : ""}`}
             disabled={!enableSave}
           >
             {isLoading ? "Saving..." : "Save"}
           </Button>
         </div>
       </div>
-      <div className={classes["skills-section"]}>
-        <div className={classes["skills-container"]}>
+      <div className={classes.skillsSection}>
+        <div className={classes.skillsContainer}>
           <Skills
             skills={localSkills}
             isEditable={true}

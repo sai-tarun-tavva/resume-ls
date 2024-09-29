@@ -1,4 +1,4 @@
-.action-button {
+.actionButton {
   background: #1975d2;
   color: #fff;
   border: none;
@@ -13,10 +13,10 @@
   transition: background-color 0.3s ease;
 }
 
-.action-button:last-child {
+.actionButton:last-child {
   margin-bottom: 0;
 }
 
-.action-button:hover {
+.actionButton:hover {
   background-color: var(--primary-hover);
 }

@@ -6,7 +6,7 @@ const ActionPanel = () => {
   const [haveAccount, setHaveAccount] = useState(true);
 
   return (
-    <div className={classes["action-panel"]}>
+    <div className={classes.actionPanel}>
       <AuthForm haveAccount={haveAccount} />
       <p onClick={() => setHaveAccount((prevValue) => !prevValue)}>
         {haveAccount

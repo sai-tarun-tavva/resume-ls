@@ -1,37 +1,37 @@
-.candidate-form-container {
+.candidateFormContainer {
   margin: 12.3rem auto 0;
   display: flex;
 }
 
-.candidate-form {
+.candidateForm {
   max-width: 53rem;
   flex: 60%;
 }
 
-.input-columns {
+.inputColumns {
   padding: 1rem 4rem;
   display: flex;
   justify-content: space-around;
 }
 
-.button-group {
+.buttonGroup {
   display: flex;
   justify-content: space-between;
   margin: 0rem 4rem 1rem 0;
 }
 
-.button-group p {
+.buttonGroup p {
   align-self: center;
 }
 
-.close-button,
-.save-button {
+.closeButton,
+.saveButton {
   border-radius: 0.3rem;
   font-size: 1.25rem;
   box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
 }
 
-.close-button {
+.closeButton {
   margin-left: auto;
   border: 0.1rem solid var(--primary-color);
   margin-right: 1.25rem;
@@ -39,28 +39,28 @@
   color: var(--primary-color);
 }
 
-.close-button:hover {
+.closeButton:hover {
   border-color: var(--primary-hover);
   color: var(--primary-hover);
   background-color: transparent;
 }
 
-.save-button {
+.saveButton {
   padding: 0.75rem 1.5rem;
 }
 
-.skills-section {
+.skillsSection {
   flex: 40%;
   padding-right: 4rem;
 }
 
-.skills-container {
+.skillsContainer {
   background: #ffffff;
   padding: 2rem;
   height: 33rem;
   box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
 }
 
-.hidden-input {
+.hiddenInput {
   display: none;
 }

@@ -10,7 +10,7 @@ const LoginHub = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <div className={classes["login-hub"]}>
+    <div className={classes.loginHub}>
       <WelcomePanel targetCount={targetCount} />
       <AuthPanel />
     </div>

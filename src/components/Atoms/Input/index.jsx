@@ -10,7 +10,7 @@ const Input = ({ label, id, error, extraClass = "", children, ...props }) => {
       <label htmlFor={id}>{label}</label>
       <input id={id} {...props} />
       {children}
-      <div className={classes["control-error"]}>
+      <div className={classes.controlError}>
         <p>{error}</p>
       </div>
     </div>

@@ -8,7 +8,7 @@
   background-color: #f9f9f9;
 }
 
-.card-content {
+.cardContent {
   display: flex;
   background-color: #f9f9f9;
   align-items: center;
@@ -17,7 +17,7 @@
   cursor: default;
 }
 
-.card-content::before {
+.cardContent::before {
   content: attr(data-new);
   display: none;
   background-color: #28a745;
@@ -31,12 +31,12 @@
   z-index: 1;
 }
 
-.card-content[data-new="true"]::before {
+.cardContent[data-new="true"]::before {
   content: "New";
   display: block;
 }
 
-.card-content::after {
+.cardContent::after {
   content: var(--time-ago);
   position: absolute;
   bottom: -0.5rem;
@@ -52,7 +52,7 @@
   pointer-events: auto;
 }
 
-.hidden-actions {
+.hiddenActions {
   flex: 4%;
 }
 

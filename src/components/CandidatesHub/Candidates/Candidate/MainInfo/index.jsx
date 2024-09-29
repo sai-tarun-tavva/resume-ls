@@ -14,7 +14,7 @@ const getLinkedIn = (url) => {
 
 const MainInfo = ({ candidate }) => {
   return (
-    <div className={classes["main-info"]}>
+    <div className={classes.mainInfo}>
       <div className={classes.name}>
         {capitalizeFirstLetter(candidate.name)}
         {getLinkedIn(candidate.linkedin)}

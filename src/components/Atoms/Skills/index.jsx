@@ -19,7 +19,7 @@ const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
             />
           ))
         ) : (
-          <p className={classes["no-skill"]}>No skills found</p>
+          <p className={classes.noSkill}>No skills found</p>
         )}
       </div>
     </div>

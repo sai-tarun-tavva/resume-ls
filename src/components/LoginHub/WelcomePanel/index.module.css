@@ -1,4 +1,4 @@
-.welcome-panel {
+.welcomePanel {
   flex: 0 0 50%;
   display: flex;
   flex-direction: column;
@@ -12,13 +12,13 @@
   width: 32rem;
 }
 
-.welcome-panel h1 {
+.welcomePanel h1 {
   text-transform: uppercase;
   color: #073f74;
   font-size: 1.5rem;
 }
 
-.counter-wrapper {
+.counterWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,11 +28,11 @@
   margin-top: 10rem;
 }
 
-.count-up {
+.countUp {
   font-size: 3rem;
 }
 
-.counter-wrapper p {
+.counterWrapper p {
   font-size: 1.25rem;
   margin-top: 0.5rem;
   color: #555;

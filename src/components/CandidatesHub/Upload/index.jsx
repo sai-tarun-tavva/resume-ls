@@ -127,7 +127,7 @@ const Upload = () => {
       {allowUpload ? (
         <Modal handleClose={toggleAllowUpload}>
           {/* Drag and Drop Area */}
-          <form className={classes["upload-form-container"]}>
+          <form className={classes.uploadFormContainer}>
             <div
               className={classes.dropArea}
               onDrop={handleDrop}

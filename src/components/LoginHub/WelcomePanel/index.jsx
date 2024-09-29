@@ -6,13 +6,13 @@ const WelcomePanel = ({ targetCount }) => {
   const count = useCountAnimation(targetCount);
 
   return (
-    <div className={classes["welcome-panel"]}>
-      <img src={Logo} alt={"Logisoft logo"} className={classes["logo"]} />
+    <div className={classes.welcomePanel}>
+      <img src={Logo} alt={"Logisoft logo"} className={classes.logo} />
       <h1>Parse your resume</h1>
 
       {targetCount > 0 && (
-        <div className={classes["counter-wrapper"]}>
-          <span className={classes["count-up"]}>{count}</span>
+        <div className={classes.counterWrapper}>
+          <span className={classes.countUp}>{count}</span>
           <p>resumes parsed</p>
         </div>
       )}

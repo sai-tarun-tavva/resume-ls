@@ -26,7 +26,7 @@ const Candidate = ({ candidate }) => {
   return (
     <article className={classes.card}>
       <div
-        className={classes["card-content"]}
+        className={classes.cardContent}
         data-new={isNew ? "true" : "false"}
         style={{
           "--time-ago": `"${formattedTime}"`,
@@ -36,7 +36,7 @@ const Candidate = ({ candidate }) => {
         <Location candidate={candidate} />
         <Skills skills={candidate.skills} />
 
-        <div className={classes["hidden-actions"]}>
+        <div className={classes.hiddenActions}>
           <div className={classes.actions}>
             <Actions onEdit={handleEdit} />
           </div>

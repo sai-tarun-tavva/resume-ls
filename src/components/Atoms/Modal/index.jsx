@@ -3,7 +3,7 @@ import classes from "./index.module.css";
 
 const Modal = ({ handleClose, children }) => {
   return createPortal(
-    <div className={classes["modal-container"]}>
+    <div className={classes.modalContainer}>
       <div className={classes.backdrop} onClick={handleClose} />
       <dialog open className={classes.modal}>
         {children}

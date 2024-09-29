@@ -1,9 +1,9 @@
-.auth-form {
+.authForm {
   margin: 0 auto;
   width: 20rem;
 }
 
-.view-icon {
+.viewIcon {
   position: absolute;
   right: 0.6rem;
   top: 50%;
@@ -11,7 +11,7 @@
   cursor: pointer;
 }
 
-.auth-button {
+.authButton {
   width: 20rem;
   border-radius: 0.25rem;
   margin: 1.5rem 0 2rem;

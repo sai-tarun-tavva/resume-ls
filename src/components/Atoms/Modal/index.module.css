@@ -1,4 +1,4 @@
-.modal-container,
+.modalContainer,
 .modal {
   z-index: 9999;
   top: 50%;
@@ -6,7 +6,7 @@
   transform: translate(-50%, -50%);
 }
 
-.modal-container {
+.modalContainer {
   height: 100%;
   width: 100%;
   position: fixed;

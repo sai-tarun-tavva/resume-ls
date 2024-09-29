@@ -1,4 +1,4 @@
-.auth-panel {
+.authPanel {
   background: #073f74;
   flex: 0 0 50%;
   display: flex;
@@ -8,8 +8,8 @@
   position: relative;
 }
 
-.auth-panel::before,
-.auth-panel::after {
+.authPanel::before,
+.authPanel::after {
   content: "";
   background-image: url("../../../assets/corner.png");
   background-size: cover;
@@ -18,13 +18,13 @@
   position: absolute;
 }
 
-.auth-panel::before {
+.authPanel::before {
   top: 0;
   left: 0;
   transform: rotate(180deg);
 }
 
-.auth-panel::after {
+.authPanel::after {
   bottom: 0;
   right: 0;
 }
