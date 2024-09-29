@@ -30,6 +30,8 @@ const Pagination = ({ enablePagination }) => {
     onStartIndexChange(startIndex);
   };
 
+  const progressPercentage = totalPages ? (currentPage / totalPages) * 100 : 0;
+
   return (
     <nav className={styles.pagination}>
       <Button
@@ -42,6 +44,12 @@ const Pagination = ({ enablePagination }) => {
       </Button>
       <span>
         {currentPage} of {totalPages}
+        <div className={styles.progressContainer}>
+          <div
+            className={styles.progressBar}
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+        </div>
       </span>
       <Button
         onClick={() => handlePageClick(currentPage + 1)}
