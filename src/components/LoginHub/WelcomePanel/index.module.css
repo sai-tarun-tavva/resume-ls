@@ -8,7 +8,7 @@
   padding: 20px;
 }
 
-.welcome-panel img {
+.logo {
   width: 32rem;
 }
 
@@ -16,4 +16,24 @@
   text-transform: uppercase;
   color: #073f74;
   font-size: 1.5rem;
+}
+
+.counter-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2.5rem;
+  color: #073f74;
+  font-weight: 700;
+  margin-top: 10rem;
+}
+
+.count-up {
+  font-size: 3rem;
+}
+
+.counter-wrapper p {
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+  color: #555;
 }

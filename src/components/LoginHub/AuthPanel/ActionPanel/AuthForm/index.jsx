@@ -88,6 +88,7 @@ const AuthForm = ({ haveAccount }) => {
         id="userName"
         name="userName"
         value={userNameValue}
+        autoComplete="username"
         onChange={handleUserNameChange}
         onBlur={handleUserNameBlur}
         error={userNameError}
@@ -99,6 +100,7 @@ const AuthForm = ({ haveAccount }) => {
         name="password"
         type={showPassword ? "text" : "password"}
         value={passwordValue}
+        autoComplete={haveAccount ? "current-password" : "new-password"}
         onChange={handlePasswordChange}
         onBlur={handlePasswordBlur}
         error={passwordError}
@@ -122,6 +124,7 @@ const AuthForm = ({ haveAccount }) => {
           name="email"
           type="email"
           value={emailValue}
+          autoComplete="email"
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
           error={emailError}

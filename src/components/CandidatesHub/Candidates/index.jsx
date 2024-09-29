@@ -15,10 +15,8 @@ const Candidates = () => {
     onFilteredDataChange,
   } = useContext(DataContext);
 
-  const {
-    isFetchingCandidates: isLoading,
-    handleFetchingCandidates: setLoading,
-  } = useContext(LoadingContext);
+  const { isFetching: isLoading, handleFetching: setLoading } =
+    useContext(LoadingContext);
 
   const candidates = filteredCandidateData.slice(
     startIndex,

@@ -3,15 +3,15 @@ import React, { createContext, useCallback, useState } from "react";
 export const LoadingContext = createContext({});
 
 const LoadingContextProvider = ({ children }) => {
-  const [isFetchingCandidates, setIsFetchingCandidates] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [isSendingPostPatchRequest, setIsSendingPostPatchRequest] =
     useState(false);
 
-  const handleFetchingCandidates = useCallback(
+  const handleFetching = useCallback(
     (value) => {
-      setIsFetchingCandidates(value);
+      setIsFetching(value);
     },
-    [setIsFetchingCandidates]
+    [setIsFetching]
   );
 
   const handleSendingPostPatchRequest = useCallback(() => {
@@ -19,9 +19,9 @@ const LoadingContextProvider = ({ children }) => {
   }, [setIsSendingPostPatchRequest]);
 
   const loadingCtx = {
-    isFetchingCandidates,
+    isFetching,
     isSendingPostPatchRequest,
-    handleFetchingCandidates,
+    handleFetching,
     handleSendingPostPatchRequest,
   };
 
