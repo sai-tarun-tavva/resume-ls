@@ -5,9 +5,7 @@ import Skills from "../../Atoms/Skills";
 import Button from "../../Atoms/Button";
 import Input from "../../Atoms/Input";
 import StatusMessage from "../../Atoms/StatusMessage";
-import { DataContext } from "../../../store/DataContextProvider";
-import { LoadingContext } from "../../../store/LoadingContextProvider";
-import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
+import { DataContext, LoadingContext, StatusMsgContext } from "../../../store";
 import {
   arraysEqual,
   transformExperience,

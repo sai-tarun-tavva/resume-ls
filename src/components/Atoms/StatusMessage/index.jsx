@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StatusMsgContext } from "../../../store/StatusMsgContextProvider";
+import { StatusMsgContext } from "../../../store";
 import styles from "./index.module.css";
 
 const StatusMessage = () => {

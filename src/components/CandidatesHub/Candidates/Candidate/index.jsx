@@ -4,7 +4,7 @@ import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Skills from "../../../Atoms/Skills";
 import Actions from "./Actions";
-import { StatusMsgContext } from "../../../../store/StatusMsgContextProvider";
+import { StatusMsgContext } from "../../../../store";
 import { isCandidateNew, calculateTimeAgo } from "../../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";

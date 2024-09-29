@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { LoadingContext } from "../store/LoadingContextProvider";
+import { LoadingContext } from "../store";
 
 export const useTargetCount = () => {
   const [targetCount, setTargetCount] = useState(0);

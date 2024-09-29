@@ -4,8 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Candidates from "./components/CandidatesHub/Candidates";
 import CandidateForm from "./components/CandidatesHub/CandidateForm";
-import LoadingContextProvider from "./store/LoadingContextProvider";
-import DataContextProvider from "./store/DataContextProvider";
+import { DataContextProvider, LoadingContextProvider } from "./store";
 import "./App.css";
 
 const router = createBrowserRouter([

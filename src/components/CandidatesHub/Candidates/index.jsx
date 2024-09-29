@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
-import { DataContext } from "../../../store/DataContextProvider";
-import { LoadingContext } from "../../../store/LoadingContextProvider";
+import { DataContext, LoadingContext } from "../../../store";
 import { ITEMS_PER_PAGE } from "../../../utilities";
 import styles from "./index.module.css";
 

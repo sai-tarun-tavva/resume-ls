@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useState } from "react";
 
 export const LoadingContext = createContext({});
 
-const LoadingContextProvider = ({ children }) => {
+export const LoadingContextProvider = ({ children }) => {
   const [isFetching, setIsFetching] = useState(false);
   const [isSendingPostPatchRequest, setIsSendingPostPatchRequest] =
     useState(false);
@@ -31,5 +31,3 @@ const LoadingContextProvider = ({ children }) => {
     </LoadingContext.Provider>
   );
 };
-
-export default LoadingContextProvider;

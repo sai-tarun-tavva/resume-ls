@@ -8,7 +8,7 @@ const initialStatus = {
 
 export const StatusMsgContext = createContext(initialStatus);
 
-const StatusMsgContextProvider = ({ children }) => {
+export const StatusMsgContextProvider = ({ children }) => {
   const [status, setStatus] = useState(initialStatus);
 
   const handleViewStatus = useCallback(
@@ -28,5 +28,3 @@ const StatusMsgContextProvider = ({ children }) => {
     </StatusMsgContext.Provider>
   );
 };
-
-export default StatusMsgContextProvider;

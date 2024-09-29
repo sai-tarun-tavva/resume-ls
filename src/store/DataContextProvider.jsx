@@ -28,7 +28,7 @@ const dataReducer = (state, action) => {
   }
 };
 
-const DataContextProvider = ({ children }) => {
+export const DataContextProvider = ({ children }) => {
   const [data, dataDispatch] = useReducer(dataReducer, initialData);
 
   /**
@@ -80,5 +80,3 @@ const DataContextProvider = ({ children }) => {
     <DataContext.Provider value={dataCtx}>{children}</DataContext.Provider>
   );
 };
-
-export default DataContextProvider;
