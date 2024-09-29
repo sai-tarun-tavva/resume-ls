@@ -116,7 +116,7 @@ const Upload = () => {
         console.error("Upload failed:", response.statusText);
       }
     } catch (error) {
-      handleViewStatus("An error occurred during the upload.", "error");
+      handleViewStatus("An error occurred during the upload.", "error"), true;
       console.error("Error during upload:", error);
     } finally {
       setLoading();
