@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Operations from "./Operations";
 import Upload from "./Upload";

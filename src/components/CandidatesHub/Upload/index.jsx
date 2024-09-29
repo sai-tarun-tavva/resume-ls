@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useContext } from "react";
+import { useState, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { LoadingContext, StatusMsgContext } from "../../../store";
-import { getFileIcon, formatFileSize } from "../../../utilities";
+import { formatFileSize, getFileIcon } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Upload = () => {
   const navigate = useNavigate();
@@ -127,9 +127,9 @@ const Upload = () => {
       {allowUpload ? (
         <Modal handleClose={toggleAllowUpload}>
           {/* Drag and Drop Area */}
-          <form className={styles["upload-form-container"]}>
+          <form className={classes["upload-form-container"]}>
             <div
-              className={styles.dropArea}
+              className={classes.dropArea}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
@@ -139,31 +139,31 @@ const Upload = () => {
                 multiple
                 accept=".doc,.docx,.pdf"
                 onChange={handleFileChange}
-                className={styles.fileInput}
+                className={classes.fileInput}
               />
               <i className="bi bi-cloud-arrow-up-fill"></i>
               <p>Drag and drop or click here</p>
               <small>to choose your files</small>
             </div>
 
-            <small className={styles.infoText}>
+            <small className={classes.infoText}>
               Only DOC, DOCX, and PDF files are accepted. All DOC and DOCX files
               will be automatically converted to PDF before uploading.
             </small>
 
-            <div className={styles.fileList}>
+            <div className={classes.fileList}>
               {files.map((file) => (
-                <div key={file.name} className={styles.fileItem}>
+                <div key={file.name} className={classes.fileItem}>
                   {getFileIcon(file.name)}
                   <span>
                     {file.name}{" "}
-                    <small className={styles.fileSize}>
+                    <small className={classes.fileSize}>
                       ({formatFileSize(file.size)})
                     </small>
                   </span>
                   <button
                     onClick={() => removeFile(file.name)}
-                    className={styles.closeButton}
+                    className={classes.closeButton}
                   >
                     <i className="bi bi-x" />
                   </button>
@@ -174,7 +174,9 @@ const Upload = () => {
             <Button
               disabled={files.length === 0}
               onClick={handleUpload}
-              className={`${styles.uploadButton} ${isLoading ? "loading" : ""}`}
+              className={`${classes.uploadButton} ${
+                isLoading ? "loading" : ""
+              }`}
             >
               {buttonText}
             </Button>
@@ -182,7 +184,7 @@ const Upload = () => {
         </Modal>
       ) : (
         <Button
-          className={`${styles.upload} upload-global`}
+          className={`${classes.upload} upload-global`}
           title="Upload New Resume"
           onClick={toggleAllowUpload}
         >

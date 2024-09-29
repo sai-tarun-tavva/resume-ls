@@ -1,4 +1,3 @@
-import React from "react";
 import LoginHub from "../../components/LoginHub";
 
 const Login = () => {

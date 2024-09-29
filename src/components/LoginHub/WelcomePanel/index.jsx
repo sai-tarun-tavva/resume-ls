@@ -1,19 +1,18 @@
-import React from "react";
-import Logo from "../../../assets/logo.png";
 import { useCountAnimation } from "../../../hooks";
-import styles from "./index.module.css";
+import Logo from "../../../assets/logo.png";
+import classes from "./index.module.css";
 
 const WelcomePanel = ({ targetCount }) => {
   const count = useCountAnimation(targetCount);
 
   return (
-    <div className={styles["welcome-panel"]}>
-      <img src={Logo} alt={"Logisoft logo"} className={styles["logo"]} />
+    <div className={classes["welcome-panel"]}>
+      <img src={Logo} alt={"Logisoft logo"} className={classes["logo"]} />
       <h1>Parse your resume</h1>
 
       {targetCount > 0 && (
-        <div className={styles["counter-wrapper"]}>
-          <span className={styles["count-up"]}>{count}</span>
+        <div className={classes["counter-wrapper"]}>
+          <span className={classes["count-up"]}>{count}</span>
           <p>resumes parsed</p>
         </div>
       )}

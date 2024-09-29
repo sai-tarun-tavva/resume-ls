@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useInput } from "../../../hooks";
 import Skills from "../../Atoms/Skills";
@@ -8,11 +8,11 @@ import StatusMessage from "../../Atoms/StatusMessage";
 import { DataContext, LoadingContext, StatusMsgContext } from "../../../store";
 import {
   arraysEqual,
+  candidateValidations,
   transformExperience,
   transformPhoneNumber,
-  candidateValidations,
 } from "../../../utilities";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const CandidateForm = () => {
   const { candidateId } = useParams();
@@ -252,11 +252,11 @@ const CandidateForm = () => {
   return (
     <form
       onSubmit={handleFormSubmit}
-      className={styles["candidate-form-container"]}
+      className={classes["candidate-form-container"]}
     >
       <StatusMessage />
-      <div className={styles["candidate-form"]}>
-        <div className={styles["input-columns"]}>
+      <div className={classes["candidate-form"]}>
+        <div className={classes["input-columns"]}>
           <div>
             <Input
               label="name"
@@ -356,28 +356,30 @@ const CandidateForm = () => {
           type="hidden"
           name="skills"
           value={localSkills?.join(", ")}
-          className={styles["hidden-input"]}
+          className={classes["hidden-input"]}
         />
 
-        <div className={styles["button-group"]}>
+        <div className={classes["button-group"]}>
           <Button
             title="Close"
-            className={styles["close-button"]}
+            className={classes["close-button"]}
             onClick={handleClose}
           >
             Close
           </Button>
           <Button
             title="Save"
-            className={`${styles["save-button"]} ${isLoading ? "loading" : ""}`}
+            className={`${classes["save-button"]} ${
+              isLoading ? "loading" : ""
+            }`}
             disabled={!enableSave}
           >
             {isLoading ? "Saving..." : "Save"}
           </Button>
         </div>
       </div>
-      <div className={styles["skills-section"]}>
-        <div className={styles["skills-container"]}>
+      <div className={classes["skills-section"]}>
+        <div className={classes["skills-container"]}>
           <Skills
             skills={localSkills}
             isEditable={true}

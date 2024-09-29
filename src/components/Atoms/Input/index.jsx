@@ -1,15 +1,16 @@
-import React from "react";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Input = ({ label, id, error, extraClass = "", children, ...props }) => {
   return (
     <div
-      className={`${styles.control} ${error ? styles.error : ""} ${extraClass}`}
+      className={`${classes.control} ${
+        error ? classes.error : ""
+      } ${extraClass}`}
     >
       <label htmlFor={id}>{label}</label>
       <input id={id} {...props} />
       {children}
-      <div className={styles["control-error"]}>
+      <div className={classes["control-error"]}>
         <p>{error}</p>
       </div>
     </div>

@@ -1,9 +1,9 @@
-import React, { useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 import Button from "../../../Atoms/Button";
 import { DataContext } from "../../../../store";
 import { handleSearchClick } from "../../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 /**
  * Search component for filtering data based on search text.
@@ -23,7 +23,7 @@ const Search = ({ enableSearch }) => {
   };
 
   return (
-    <aside className={styles.search}>
+    <aside className={classes.search}>
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
@@ -33,7 +33,7 @@ const Search = ({ enableSearch }) => {
         />
         <Button
           title="Search"
-          className={styles.searchButton}
+          className={classes.searchButton}
           disabled={!enableSearch}
         >
           <i className="bi bi-search"></i>

@@ -1,9 +1,8 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
-import Pagination from "./Pagination";
 import Search from "./Search";
-import styles from "./index.module.css";
+import Pagination from "./Pagination";
 import Logout from "./LogOut";
+import classes from "./index.module.css";
 
 /**
  * Operations component provides search and pagination functionalities.
@@ -14,7 +13,7 @@ const Operations = () => {
   const enableOperations = location.pathname === "/candidates";
 
   return (
-    <section className={styles.operations}>
+    <section className={classes.operations}>
       <Search enableSearch={enableOperations} />
       <Pagination enablePagination={enableOperations} />
       <Logout />

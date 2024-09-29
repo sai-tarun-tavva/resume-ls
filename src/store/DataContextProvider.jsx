@@ -1,5 +1,5 @@
-import React, { createContext, useReducer, useCallback } from "react";
-import { transformData } from "../utilities/index";
+import { createContext, useCallback, useReducer } from "react";
+import { transformData } from "../utilities";
 
 const initialData = {
   startIndex: 0,

@@ -1,10 +1,11 @@
-import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Skill = ({ name, id, isEditable, onClick }) => {
   return (
-    <span className={`${styles.skillBubble} ${isEditable && styles.editable}`}>
+    <span
+      className={`${classes.skillBubble} ${isEditable && classes.editable}`}
+    >
       {name}
       {isEditable && <i className="bi bi-x" onClick={() => onClick(id)}></i>}
     </span>

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useInput } from "../../../../../hooks";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
-import { useInput } from "../../../../../hooks";
 import { loginValidations, signupValidations } from "../../../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const AuthForm = ({ haveAccount }) => {
   const {
@@ -79,7 +79,7 @@ const AuthForm = ({ haveAccount }) => {
   }, [haveAccount, resetUserName, resetPassword, resetEmail]);
 
   return (
-    <form className={styles["auth-form"]}>
+    <form className={classes["auth-form"]}>
       <Input
         label="user name"
         id="userName"
@@ -104,7 +104,7 @@ const AuthForm = ({ haveAccount }) => {
       >
         <span
           onClick={togglePasswordVisibility}
-          className={styles["view-icon"]}
+          className={classes["view-icon"]}
         >
           {showPassword ? (
             <i className="bi bi-eye-slash"></i>
@@ -130,7 +130,7 @@ const AuthForm = ({ haveAccount }) => {
 
       <Button
         title={haveAccount ? "Login" : "Sign Up"}
-        className={`${styles["auth-button"]} loading`}
+        className={`${classes["auth-button"]} loading`}
         onClick={handleAuth}
       >
         {haveAccount ? "Login" : "Sign Up"}

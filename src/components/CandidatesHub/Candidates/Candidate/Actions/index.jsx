@@ -1,8 +1,7 @@
-import React from "react";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Button = ({ title, name, ...props }) => (
-  <button className={styles["action-button"]} title={title} {...props}>
+  <button className={classes["action-button"]} title={title} {...props}>
     <i className={`bi bi-${name}`}></i>
   </button>
 );

@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
 import { DataContext, LoadingContext } from "../../../store";
 import { ITEMS_PER_PAGE } from "../../../utilities";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Candidates = () => {
   const {
@@ -56,7 +56,7 @@ const Candidates = () => {
   }, [onDataChange, onFilteredDataChange, candidateData.length, setLoading]);
 
   return (
-    <section className={styles.cards}>
+    <section className={classes.cards}>
       {isLoading ? (
         <Loader />
       ) : candidates.length === 0 ? (

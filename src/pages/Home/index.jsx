@@ -1,4 +1,3 @@
-import React from "react";
 import CandidatesHub from "../../components/CandidatesHub";
 
 const Home = () => {

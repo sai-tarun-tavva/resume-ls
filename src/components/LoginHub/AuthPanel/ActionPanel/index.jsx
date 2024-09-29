@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AuthForm from "./AuthForm";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const ActionPanel = () => {
   const [haveAccount, setHaveAccount] = useState(true);
 
   return (
-    <div className={styles["action-panel"]}>
+    <div className={classes["action-panel"]}>
       <AuthForm haveAccount={haveAccount} />
       <p onClick={() => setHaveAccount((prevValue) => !prevValue)}>
         {haveAccount

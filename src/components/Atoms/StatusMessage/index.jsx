@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StatusMsgContext } from "../../../store";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const StatusMessage = () => {
   const { message, type, darkMode, handleViewStatus } =
@@ -24,9 +24,9 @@ const StatusMessage = () => {
   return (
     isVisible && (
       <div
-        className={`${styles["status-msg-container"]} ${
-          type === "success" ? styles.success : styles.error
-        } ${darkMode && styles.light}`}
+        className={`${classes["status-msg-container"]} ${
+          type === "success" ? classes.success : classes.error
+        } ${darkMode && classes.light}`}
       >
         <p>{message}</p>
       </div>

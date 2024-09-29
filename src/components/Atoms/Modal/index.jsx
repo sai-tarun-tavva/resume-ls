@@ -1,12 +1,11 @@
-import React from "react";
-import styles from "./index.module.css";
 import { createPortal } from "react-dom";
+import classes from "./index.module.css";
 
 const Modal = ({ handleClose, children }) => {
   return createPortal(
-    <div className={styles["modal-container"]}>
-      <div className={styles.backdrop} onClick={handleClose} />
-      <dialog open className={styles.modal}>
+    <div className={classes["modal-container"]}>
+      <div className={classes.backdrop} onClick={handleClose} />
+      <dialog open className={classes.modal}>
         {children}
       </dialog>
     </div>,

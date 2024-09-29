@@ -1,6 +1,5 @@
-import React from "react";
 import PropTypes from "prop-types";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Button = ({
   children,
@@ -11,7 +10,7 @@ const Button = ({
 }) => {
   return (
     <button
-      className={`${styles.button} ${className || ""}`}
+      className={`${classes.button} ${className || ""}`}
       onClick={onClick}
       disabled={disabled}
       {...props}

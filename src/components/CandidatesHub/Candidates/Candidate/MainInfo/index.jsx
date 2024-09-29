@@ -1,7 +1,6 @@
-import React from "react";
 import IconText from "../../../../Atoms/IconText";
 import { capitalizeFirstLetter } from "../../../../../utilities";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const getLinkedIn = (url) => {
   return url ? (
@@ -9,14 +8,14 @@ const getLinkedIn = (url) => {
       <i className="bi bi-linkedin"></i>
     </a>
   ) : (
-    <i className={`bi bi-linkedin ${styles.disabled}`}></i>
+    <i className={`bi bi-linkedin ${classes.disabled}`}></i>
   );
 };
 
 const MainInfo = ({ candidate }) => {
   return (
-    <div className={styles["main-info"]}>
-      <div className={styles.name}>
+    <div className={classes["main-info"]}>
+      <div className={classes.name}>
         {capitalizeFirstLetter(candidate.name)}
         {getLinkedIn(candidate.linkedin)}
       </div>

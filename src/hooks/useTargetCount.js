@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../store";
 
 export const useTargetCount = () => {

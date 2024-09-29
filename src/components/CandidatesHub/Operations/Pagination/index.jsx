@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../../../Atoms/Button";
 import { DataContext } from "../../../../store";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { ITEMS_PER_PAGE } from "../../../../utilities";
-import styles from "./index.module.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import classes from "./index.module.css";
 
 /**
  * Pagination component for navigating through paginated data.
@@ -33,20 +33,20 @@ const Pagination = ({ enablePagination }) => {
   const progressPercentage = totalPages ? (currentPage / totalPages) * 100 : 0;
 
   return (
-    <nav className={styles.pagination}>
+    <nav className={classes.pagination}>
       <Button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage <= 1 || !enablePagination}
         title="Previous"
-        className={styles.prevButton}
+        className={classes.prevButton}
       >
         <i className="bi bi-arrow-left-short"></i>
       </Button>
       <span>
         {currentPage} of {totalPages}
-        <div className={styles.progressContainer}>
+        <div className={classes.progressContainer}>
           <div
-            className={styles.progressBar}
+            className={classes.progressBar}
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
@@ -55,7 +55,7 @@ const Pagination = ({ enablePagination }) => {
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage >= totalPages || !enablePagination}
         title="Next"
-        className={styles.nextButton}
+        className={classes.nextButton}
       >
         <i className="bi bi-arrow-right-short"></i>
       </Button>

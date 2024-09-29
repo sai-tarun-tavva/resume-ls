@@ -1,10 +1,9 @@
-import React from "react";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Loader = () => {
   return (
-    <div className={styles["loader-container"]}>
-      <div className={styles.loader} />
+    <div className={classes["loader-container"]}>
+      <div className={classes.loader} />
     </div>
   );
 };

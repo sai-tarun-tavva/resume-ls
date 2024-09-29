@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
-import Skills from "../../../Atoms/Skills";
 import Actions from "./Actions";
+import Skills from "../../../Atoms/Skills";
 import { StatusMsgContext } from "../../../../store";
-import { isCandidateNew, calculateTimeAgo } from "../../../../utilities";
+import { calculateTimeAgo, isCandidateNew } from "../../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
@@ -24,9 +24,9 @@ const Candidate = ({ candidate }) => {
   };
 
   return (
-    <article className={styles.card}>
+    <article className={classes.card}>
       <div
-        className={styles["card-content"]}
+        className={classes["card-content"]}
         data-new={isNew ? "true" : "false"}
         style={{
           "--time-ago": `"${formattedTime}"`,
@@ -36,8 +36,8 @@ const Candidate = ({ candidate }) => {
         <Location candidate={candidate} />
         <Skills skills={candidate.skills} />
 
-        <div className={styles["hidden-actions"]}>
-          <div className={styles.actions}>
+        <div className={classes["hidden-actions"]}>
+          <div className={classes.actions}>
             <Actions onEdit={handleEdit} />
           </div>
         </div>

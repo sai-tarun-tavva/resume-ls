@@ -1,9 +1,8 @@
-import React from "react";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const IconText = ({ children, iconName }) => {
   return (
-    <div className={styles["icon-text"]}>
+    <div className={classes["icon-text"]}>
       <span>
         <i className={`bi bi-${iconName}-fill`}></i>
       </span>

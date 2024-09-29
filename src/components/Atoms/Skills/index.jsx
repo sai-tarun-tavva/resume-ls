@@ -1,11 +1,10 @@
-import React from "react";
 import Skill from "../Skill";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
 const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
   return (
     <div
-      className={styles.skills}
+      className={classes.skills}
       style={isEditable ? { marginRight: 0, height: "29rem" } : {}}
     >
       <div>
@@ -20,7 +19,7 @@ const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
             />
           ))
         ) : (
-          <p className={styles["no-skill"]}>No skills found</p>
+          <p className={classes["no-skill"]}>No skills found</p>
         )}
       </div>
     </div>

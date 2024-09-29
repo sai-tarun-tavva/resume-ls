@@ -1,9 +1,8 @@
-import React from "react";
+import { useTargetCount } from "../../hooks";
 import WelcomePanel from "./WelcomePanel";
 import AuthPanel from "./AuthPanel";
-import styles from "./index.module.css";
-import { useTargetCount } from "../../hooks";
 import Loader from "../Atoms/Loader";
+import classes from "./index.module.css";
 
 const LoginHub = () => {
   const { targetCount, isLoading } = useTargetCount(); // Use the custom hook
@@ -11,7 +10,7 @@ const LoginHub = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <div className={styles["login-hub"]}>
+    <div className={classes["login-hub"]}>
       <WelcomePanel targetCount={targetCount} />
       <AuthPanel />
     </div>
