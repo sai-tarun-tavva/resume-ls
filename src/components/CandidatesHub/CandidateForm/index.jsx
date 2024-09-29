@@ -33,10 +33,17 @@ const CandidateForm = () => {
   const [localSkills, setLocalSkills] = useState(info.skills);
 
   const handleAddSkill = (newSkill) => {
-    const lowerCaseSkill = newSkill.toLowerCase();
+    const lowerCaseSkill = newSkill.trim().toLowerCase();
 
-    if (!lowerCaseSkill || localSkills.includes(lowerCaseSkill)) {
+    let skillError = "";
+
+    if (!lowerCaseSkill) skillError = "Cannot add empty skill.";
+    if (localSkills.includes(lowerCaseSkill))
+      skillError = "Skill already exists.";
+
+    if (skillError) {
       resetSkillValue();
+      handleViewStatus(skillError, "error");
       return;
     }
 
