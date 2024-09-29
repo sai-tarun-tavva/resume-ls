@@ -75,7 +75,12 @@ export const transformData = (data) => {
 };
 
 export const arraysEqual = (arr1, arr2) => {
-  if (arr1.length !== arr2.length) return false;
+  if (
+    !Array.isArray(arr1) ||
+    !Array.isArray(arr2) ||
+    arr1?.length !== arr2?.length
+  )
+    return false;
   const sortedArr1 = [...arr1].sort();
   const sortedArr2 = [...arr2].sort();
   return sortedArr1.every((value, index) => value === sortedArr2[index]);

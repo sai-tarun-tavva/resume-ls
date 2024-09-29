@@ -2,7 +2,7 @@ import React from "react";
 import Skill from "../Skill";
 import styles from "./index.module.css";
 
-const Skills = ({ skills, isEditable = false, onClick = () => {} }) => {
+const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
   return (
     <div
       className={styles.skills}

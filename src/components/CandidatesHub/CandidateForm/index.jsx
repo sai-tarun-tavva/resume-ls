@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useInput } from "../../../hooks/useInput";
 import Skills from "../../Atoms/Skills";
@@ -30,7 +30,12 @@ const CandidateForm = () => {
     (candidate) => candidate.id === +candidateId
   );
 
-  const [localSkills, setLocalSkills] = useState(info.skills);
+  const [localSkills, setLocalSkills] = useState(info?.skills);
+
+  // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
+  useEffect(() => {
+    if (!info) navigate("candidates");
+  }, [info, navigate]);
 
   const handleAddSkill = (newSkill) => {
     const lowerCaseSkill = newSkill.trim().toLowerCase();
@@ -68,8 +73,8 @@ const CandidateForm = () => {
     handleInputChange: handleNameChange,
     handleInputBlur: handleNameBlur,
     error: nameError,
-  } = useInput(info.name, (value) =>
-    candidateValidations.name(info.name, value)
+  } = useInput(info?.name, (value) =>
+    candidateValidations.name(info?.name, value)
   );
 
   const {
@@ -78,8 +83,8 @@ const CandidateForm = () => {
     handleInputBlur: handlePhoneBlur,
     error: phoneError,
   } = useInput(
-    info.phone_numbers,
-    (value) => candidateValidations.phone(info.phone_numbers, value),
+    info?.phone_numbers,
+    (value) => candidateValidations.phone(info?.phone_numbers, value),
     transformPhoneNumber
   );
 
@@ -88,8 +93,8 @@ const CandidateForm = () => {
     handleInputChange: handleEmailChange,
     handleInputBlur: handleEmailBlur,
     error: emailError,
-  } = useInput(info.email, (value) =>
-    candidateValidations.email(info.email, value)
+  } = useInput(info?.email, (value) =>
+    candidateValidations.email(info?.email, value)
   );
 
   const {
@@ -104,8 +109,8 @@ const CandidateForm = () => {
     handleInputChange: handleLinkedInChange,
     handleInputBlur: handleLinkedInBlur,
     error: linkedInError,
-  } = useInput(info.linkedin, (value) =>
-    candidateValidations.linkedIn(info.linkedin, value)
+  } = useInput(info?.linkedin, (value) =>
+    candidateValidations.linkedIn(info?.linkedin, value)
   );
 
   const {
@@ -113,8 +118,8 @@ const CandidateForm = () => {
     handleInputChange: handleCityChange,
     handleInputBlur: handleCityBlur,
     error: cityError,
-  } = useInput(info.location, (value) =>
-    candidateValidations.city(info.location, value)
+  } = useInput(info?.location, (value) =>
+    candidateValidations.city(info?.location, value)
   );
 
   const {
@@ -122,8 +127,8 @@ const CandidateForm = () => {
     handleInputChange: handleStateChange,
     handleInputBlur: handleStateBlur,
     error: stateError,
-  } = useInput(info.region, (value) =>
-    candidateValidations.state(info.region, value)
+  } = useInput(info?.region, (value) =>
+    candidateValidations.state(info?.region, value)
   );
 
   const {
@@ -132,22 +137,22 @@ const CandidateForm = () => {
     handleInputBlur: handleExperienceBlur,
     error: experienceError,
   } = useInput(
-    info.total_experience,
-    (value) => candidateValidations.experience(info.phone_numbers, value),
+    info?.total_experience,
+    (value) => candidateValidations.experience(info?.total_experience, value),
     transformExperience
   );
 
   // Utility function to check if form values are unchanged
   const hasFormChanged = () => {
     return (
-      nameValue !== info.name ||
-      phoneValue !== info.phone_numbers ||
-      emailValue !== info.email ||
-      linkedInValue !== info.linkedin ||
-      cityValue !== info.location ||
-      stateValue !== info.region ||
-      experienceValue !== info.total_experience ||
-      !arraysEqual(localSkills, info.skills)
+      nameValue !== info?.name ||
+      phoneValue !== info?.phone_numbers ||
+      emailValue !== info?.email ||
+      linkedInValue !== info?.linkedin ||
+      cityValue !== info?.location ||
+      stateValue !== info?.region ||
+      experienceValue !== info?.total_experience ||
+      !arraysEqual(localSkills, info?.skills)
     );
   };
 
@@ -189,16 +194,16 @@ const CandidateForm = () => {
 
     // Temporary
     const localValues = {
-      id: info.id,
+      id: info?.id,
       name: nameValue,
       phone_numbers: phoneValue,
       email: emailValue,
       location: cityValue,
       region: stateValue,
       linkedin: linkedInValue,
-      skills: localSkills.join(", "),
+      skills: localSkills?.join(", "),
       total_experience: experienceValue,
-      file_path: info.file_path || "",
+      file_path: info?.file_path || "",
     };
 
     if (enableSave) {
@@ -352,7 +357,7 @@ const CandidateForm = () => {
         <Input
           type="hidden"
           name="skills"
-          value={localSkills.join(", ")}
+          value={localSkills?.join(", ")}
           className={styles["hidden-input"]}
         />
 
