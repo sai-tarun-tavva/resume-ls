@@ -109,13 +109,13 @@ const Upload = () => {
       } else {
         handleViewStatus(
           `Failed to upload file${files.length > 1 ? "s" : ""}.`,
-          "error",
+          "failure",
           true
         );
         console.error("Upload failed:", response.statusText);
       }
     } catch (error) {
-      handleViewStatus("An error occurred during the upload.", "error", true);
+      handleViewStatus("An error occurred during the upload.", "failure", true);
       console.error("Error during upload:", error);
     } finally {
       setLoading();

@@ -19,7 +19,7 @@ const Candidate = ({ candidate }) => {
 
   const handleEdit = (event) => {
     event.preventDefault();
-    handleViewStatus("", ""); // reset status to unmount on edit
+    handleViewStatus(); // reset status to unmount on edit
     navigate(`edit/${candidate.id}`);
   };
 

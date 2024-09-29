@@ -46,7 +46,7 @@ const CandidateForm = () => {
 
     if (skillError) {
       resetSkillValue();
-      handleViewStatus(skillError, "error");
+      handleViewStatus(skillError, "failure");
       return;
     }
 
