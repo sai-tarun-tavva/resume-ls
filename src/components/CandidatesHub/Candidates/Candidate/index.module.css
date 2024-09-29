@@ -44,7 +44,6 @@
   font-size: 0.75rem;
   color: #888;
   white-space: nowrap;
-  font-family: "Roboto";
 }
 
 .card:hover .actions {
