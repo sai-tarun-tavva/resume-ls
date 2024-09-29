@@ -1,20 +1,25 @@
-.modal-container {
-  height: 100vh;
-  position: relative;
-}
-
+.modal-container,
 .modal {
-  z-index: 10000;
-  position: absolute;
+  z-index: 9999;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.modal-container {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+
+.modal {
   padding: 1.25rem;
   width: 90%;
   max-width: 37.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 0.5rem 2rem rgba(255, 255, 255, 0.2),
     0 0.5rem 2rem rgba(0, 0, 0, 0.8);
+  position: absolute;
 }
 
 .backdrop {

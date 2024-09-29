@@ -19,7 +19,11 @@ const Upload = () => {
   } = useContext(LoadingContext);
 
   const toggleAllowUpload = () => {
-    setAllowUpload((prevValue) => !prevValue);
+    setAllowUpload((prevValue) => {
+      if (!prevValue) document.body.style.overflow = "hidden";
+      else document.body.style.overflow = "";
+      return !prevValue;
+    });
   };
 
   // Handle file selection through input
