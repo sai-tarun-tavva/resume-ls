@@ -1,26 +1,7 @@
 import React from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Candidates from "./components/CandidatesHub/Candidates";
-import CandidateForm from "./components/CandidatesHub/CandidateForm";
+import { RouterProvider } from "react-router-dom";
+import appRouter from "./app-router";
 import { DataContextProvider, LoadingContextProvider } from "./store";
-import "./App.css";
-
-const router = createBrowserRouter([
-  { path: "", element: <Login /> },
-  {
-    path: "candidates",
-    element: <Home />,
-    children: [
-      {
-        index: true,
-        element: <Candidates />,
-      },
-      { path: "edit/:candidateId", element: <CandidateForm /> },
-    ],
-  },
-]);
 
 /**
  * Main application component
@@ -31,8 +12,8 @@ const App = () => {
   return (
     <LoadingContextProvider>
       <DataContextProvider>
-        <main className="app-container">
-          <RouterProvider router={router} />
+        <main>
+          <RouterProvider router={appRouter} />
         </main>
       </DataContextProvider>
     </LoadingContextProvider>
