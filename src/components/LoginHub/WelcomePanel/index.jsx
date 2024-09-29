@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../../../assets/logo.png";
-import { useCountAnimation } from "../../../hooks/useCountAnimation";
+import { useCountAnimation } from "../../../hooks";
 import styles from "./index.module.css";
 
 const WelcomePanel = ({ targetCount }) => {

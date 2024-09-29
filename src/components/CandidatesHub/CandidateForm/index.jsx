@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useInput } from "../../../hooks/useInput";
+import { useInput } from "../../../hooks";
 import Skills from "../../Atoms/Skills";
 import Button from "../../Atoms/Button";
 import Input from "../../Atoms/Input";

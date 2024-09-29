@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
-import { useInput } from "../../../../../hooks/useInput";
+import { useInput } from "../../../../../hooks";
 import { loginValidations, signupValidations } from "../../../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./index.module.css";

@@ -2,7 +2,7 @@ import React from "react";
 import WelcomePanel from "./WelcomePanel";
 import AuthPanel from "./AuthPanel";
 import styles from "./index.module.css";
-import { useTargetCount } from "../../hooks/useTargetCount";
+import { useTargetCount } from "../../hooks";
 import Loader from "../Atoms/Loader";
 
 const LoginHub = () => {
