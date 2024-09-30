@@ -70,14 +70,19 @@ export const capitalizeFirstLetter = (text) =>
   text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 
 export const transformData = (data) => {
-  return data.map((candidate) => ({
-    ...candidate,
-    skills: Array.isArray(candidate.skills)
-      ? candidate.skills.map((skill) => skill.trim().toLowerCase())
-      : candidate.skills
-      ? candidate.skills.split(",").map((skill) => skill.trim().toLowerCase())
-      : [],
-  }));
+  return data
+    .map((candidate) => ({
+      ...candidate,
+      skills: Array.isArray(candidate.skills)
+        ? candidate.skills.map((skill) => skill.trim().toLowerCase())
+        : candidate.skills
+        ? candidate.skills.split(",").map((skill) => skill.trim().toLowerCase())
+        : [],
+    }))
+    .sort(
+      (candidate1, candidate2) =>
+        new Date(candidate2.timestamp) - new Date(candidate1.timestamp)
+    );
 };
 
 export const arraysEqual = (arr1, arr2) => {
