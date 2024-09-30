@@ -1,0 +1,24 @@
+.fileList {
+  margin: 1.25rem 0 4.4rem;
+  max-height: 12.5rem;
+  overflow-y: auto;
+  font-weight: bold;
+  color: #777777;
+}
+
+.fileItem {
+  display: flex;
+  padding: 0.3rem 0;
+}
+
+.fileItem > i {
+  margin-right: 0.5rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  margin-left: auto;
+}

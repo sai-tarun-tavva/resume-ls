@@ -1,9 +1,10 @@
 import { useState, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import DropArea from "./DropArea";
+import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { LoadingContext, StatusMsgContext } from "../../../store";
-import { formatFileSize, getFileIcon } from "../../../utilities";
 import { END_POINTS, ROUTES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
@@ -125,49 +126,15 @@ const Upload = () => {
         <Modal handleClose={toggleAllowUpload}>
           {/* Drag and Drop Area */}
           <form className={classes.uploadFormContainer}>
-            <div
-              className={classes.dropArea}
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-            >
-              <input
-                type="file"
-                id="fileInput"
-                multiple
-                accept=".doc,.docx,.pdf"
-                onChange={handleFileChange}
-                className={classes.fileInput}
-              />
-              <i className="bi bi-cloud-arrow-up-fill"></i>
-              <p>Drag and drop or click here</p>
-              <small>to choose your files</small>
-            </div>
-
-            <small className={classes.infoText}>
-              Only DOC, DOCX, and PDF files are accepted. All DOC and DOCX files
-              will be automatically converted to PDF before uploading.
-            </small>
-
-            <div className={classes.fileList}>
-              {files.map((file) => (
-                <div key={file.name} className={classes.fileItem}>
-                  {getFileIcon(file.name)}
-                  <span>
-                    {file.name}{" "}
-                    <small className={classes.fileSize}>
-                      ({formatFileSize(file.size)})
-                    </small>
-                  </span>
-                  <button
-                    onClick={() => removeFile(file.name)}
-                    className={classes.closeButton}
-                  >
-                    <i className="bi bi-x" />
-                  </button>
-                </div>
-              ))}
-            </div>
-
+            <DropArea
+              handleDrop={handleDrop}
+              handleDragOver={handleDragOver}
+              handleFileChange={handleFileChange}
+            />
+            <FileList
+              files={files}
+              handleDeleteFile={(fileName) => removeFile(fileName)}
+            />
             <Button
               disabled={files.length === 0}
               onClick={handleUpload}
