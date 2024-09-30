@@ -1,5 +1,5 @@
 .actionButton {
-  background: #1975d2;
+  background: var(--primary-color);
   color: #fff;
   border: none;
   border-radius: 50%;
