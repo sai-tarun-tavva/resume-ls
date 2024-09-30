@@ -12,6 +12,7 @@ import {
   transformExperience,
   transformPhoneNumber,
 } from "../../../utilities";
+import { END_POINTS } from "../../../constants";
 import classes from "./index.module.css";
 
 const CandidateForm = () => {
@@ -223,16 +224,13 @@ const CandidateForm = () => {
       try {
         // Make the API request
         // Pending change
-        const response = await fetch(
-          "https://something.free.beeceptor.com/home/resume/edit/8",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formValues),
-          }
-        );
+        const response = await fetch(END_POINTS.EDIT_CANDIDATE, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formValues),
+        });
 
         // Handle response
         if (response.ok) {

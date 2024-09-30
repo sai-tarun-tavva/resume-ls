@@ -4,6 +4,7 @@ import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { LoadingContext, StatusMsgContext } from "../../../store";
 import { formatFileSize, getFileIcon } from "../../../utilities";
+import { END_POINTS } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
@@ -87,13 +88,10 @@ const Upload = () => {
     });
 
     try {
-      const response = await fetch(
-        "https://something.free.beeceptor.com/home/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(END_POINTS.UPLOAD_RESUME, {
+        method: "POST",
+        body: formData,
+      });
 
       if (response.ok) {
         handleViewStatus(

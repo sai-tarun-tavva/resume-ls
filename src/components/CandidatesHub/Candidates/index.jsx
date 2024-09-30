@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
 import { DataContext, LoadingContext } from "../../../store";
-import { ITEMS_PER_PAGE } from "../../../constants";
+import { END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
 import classes from "./index.module.css";
 
 const Candidates = () => {
@@ -25,10 +25,7 @@ const Candidates = () => {
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const response = await fetch(
-          // Pending Update
-          "https://run.mocky.io/v3/afb6ff56-baf8-4804-968e-842f71b19b46"
-        );
+        const response = await fetch(END_POINTS.FETCH_CANDIDATES);
 
         if (!response.ok) {
           throw new Error(`Error fetching candidates: ${response.statusText}`);

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { END_POINTS } from "../constants";
 import { LoadingContext } from "../store";
 
 export const useTargetCount = () => {
@@ -13,7 +14,7 @@ export const useTargetCount = () => {
       try {
         const response = await fetch(
           // pending change
-          "https://run.mocky.io/v3/0782b71c-7a32-4e74-95cd-540fd72fde64"
+          END_POINTS.FETCH_RESUME_COUNT
         );
 
         if (!response.ok) {
