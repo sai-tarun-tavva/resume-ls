@@ -33,10 +33,10 @@
 
 .closeButton {
   margin-left: auto;
-  border: 0.1rem solid var(--primary-color);
+  border: 0.1rem solid #073f74;
   margin-right: 1.25rem;
   background-color: transparent;
-  color: var(--primary-color);
+  color: #073f74;
 }
 
 .closeButton:hover {
@@ -47,6 +47,7 @@
 
 .saveButton {
   padding: 0.75rem 1.5rem;
+  background: #073f74;
 }
 
 .skillsSection {

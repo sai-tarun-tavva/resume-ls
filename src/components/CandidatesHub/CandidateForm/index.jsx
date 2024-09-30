@@ -348,7 +348,7 @@ const CandidateForm = () => {
               onBlur={handleCityBlur}
               onKeyDown={preventSubmitOnEnter}
               error={cityError}
-              leftIcon={<i class="bi bi-geo-fill"></i>}
+              leftIcon={<i class="bi bi-geo-alt-fill"></i>}
             />
 
             <Input
