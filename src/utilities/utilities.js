@@ -11,6 +11,12 @@ export const handleSearchClick = (searchText, data, update) => {
   update(filteredResults);
 };
 
+export const replaceRouteParam = (route, params) => {
+  return Object.keys(params).reduce((acc, key) => {
+    return acc.replace(`:${key}`, params[key]);
+  }, route);
+};
+
 export const isCandidateNew = (dateCreated) => {
   return Date.now() - dateCreated.getTime() < 7 * 24 * 60 * 60 * 1000; // less than 7 days
 };

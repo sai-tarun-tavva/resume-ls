@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import Search from "./Search";
 import Pagination from "./Pagination";
 import Logout from "./LogOut";
+import { ROUTES } from "../../../constants";
 import classes from "./index.module.css";
 
 /**
@@ -10,7 +11,7 @@ import classes from "./index.module.css";
  */
 const Operations = () => {
   const location = useLocation();
-  const enableOperations = location.pathname === "/candidates";
+  const enableOperations = location.pathname === `/${ROUTES.HOME}`;
 
   return (
     <section className={classes.operations}>

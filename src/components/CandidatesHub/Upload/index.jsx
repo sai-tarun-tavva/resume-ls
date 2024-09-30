@@ -4,7 +4,7 @@ import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { LoadingContext, StatusMsgContext } from "../../../store";
 import { formatFileSize, getFileIcon } from "../../../utilities";
-import { END_POINTS } from "../../../constants";
+import { END_POINTS, ROUTES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
@@ -98,12 +98,11 @@ const Upload = () => {
           `${files.length} file${
             files.length > 1 ? "s" : ""
           } uploaded successfully!`,
-          "success",
-          true
+          "success"
         );
         setFiles([]); // Clear files after successful upload
         toggleAllowUpload();
-        navigate("/candidates");
+        navigate(`/${ROUTES.HOME}`);
       } else {
         handleViewStatus(
           `Failed to upload file${files.length > 1 ? "s" : ""}.`,

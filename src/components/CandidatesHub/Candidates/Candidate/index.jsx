@@ -5,7 +5,12 @@ import Location from "./Location";
 import Actions from "./Actions";
 import Skills from "../../../Atoms/Skills";
 import { StatusMsgContext } from "../../../../store";
-import { calculateTimeAgo, isCandidateNew } from "../../../../utilities";
+import {
+  calculateTimeAgo,
+  isCandidateNew,
+  replaceRouteParam,
+} from "../../../../utilities";
+import { ROUTES } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
@@ -20,7 +25,9 @@ const Candidate = ({ candidate }) => {
   const handleEdit = (event) => {
     event.preventDefault();
     handleViewStatus(); // reset status to unmount on edit
-    navigate(`edit/${candidate.id}`);
+
+    const candidateId = candidate.id;
+    navigate(replaceRouteParam(ROUTES.CANDIDATE_FORM, { candidateId }));
   };
 
   return (

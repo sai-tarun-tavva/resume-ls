@@ -1,5 +1,6 @@
 export const END_POINTS = {
-  FETCH_COUNT: "https://run.mocky.io/v3/0782b71c-7a32-4e74-95cd-540fd72fde64",
+  FETCH_RESUME_COUNT:
+    "https://run.mocky.io/v3/0782b71c-7a32-4e74-95cd-540fd72fde64",
   LOGIN: "",
   SIGN_UP: "",
   FETCH_CANDIDATES:
