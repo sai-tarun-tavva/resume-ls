@@ -90,6 +90,7 @@ const AuthForm = ({ haveAccount }) => {
         onChange={handleUserNameChange}
         onBlur={handleUserNameBlur}
         error={userNameError}
+        leftIcon={<i class="bi bi-person-fill"></i>}
       />
 
       <Input
@@ -102,15 +103,16 @@ const AuthForm = ({ haveAccount }) => {
         onChange={handlePasswordChange}
         onBlur={handlePasswordBlur}
         error={passwordError}
-      >
-        <span onClick={togglePasswordVisibility} className={classes.viewIcon}>
-          {showPassword ? (
+        leftIcon={<i class="bi bi-key-fill"></i>}
+        rightIcon={
+          showPassword ? (
             <i className="bi bi-eye-slash"></i>
           ) : (
             <i className="bi bi-eye"></i>
-          )}
-        </span>
-      </Input>
+          )
+        }
+        rightIconOnClick={togglePasswordVisibility}
+      ></Input>
 
       {!haveAccount && (
         <Input
@@ -123,6 +125,7 @@ const AuthForm = ({ haveAccount }) => {
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
           error={emailError}
+          leftIcon={<i class="bi bi-envelope-fill"></i>}
         />
       )}
 

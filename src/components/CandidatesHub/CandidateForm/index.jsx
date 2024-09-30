@@ -272,27 +272,29 @@ const CandidateForm = () => {
         <div className={classes.inputColumns}>
           <div>
             <Input
-              label="name"
               id="name"
               name="name"
               value={nameValue}
+              placeholder="name"
               onChange={handleNameChange}
               onBlur={handleNameBlur}
               onKeyDown={preventSubmitOnEnter}
               error={nameError}
+              leftIcon={<i class="bi bi-person-circle"></i>}
             />
 
             <Input
               label="phone number"
               id="phoneNumber"
               name="phoneNumber"
-              placeholder="xxx xxx xxxx"
+              placeholder="phone number"
               type="tel"
               value={phoneValue}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
               onKeyDown={preventSubmitOnEnter}
               error={phoneError}
+              leftIcon={<i class="bi bi-telephone-fill"></i>}
             />
 
             <Input
@@ -300,21 +302,25 @@ const CandidateForm = () => {
               id="email"
               name="email"
               type="email"
+              placeholder="email"
               value={emailValue}
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
               onKeyDown={preventSubmitOnEnter}
               error={emailError}
+              leftIcon={<i class="bi bi-envelope-fill"></i>}
             />
 
             <Input
               label="add skill"
               id="addSkill"
               name="addSkill"
+              placeholder="skill"
               value={skillValue}
               onChange={handleSkillChange}
               onBlur={handleSkillBlur}
               onKeyDown={addSkillOnEnter}
+              leftIcon={<i class="bi bi-lightbulb-fill"></i>}
             />
           </div>
 
@@ -329,6 +335,7 @@ const CandidateForm = () => {
               onBlur={handleLinkedInBlur}
               onKeyDown={preventSubmitOnEnter}
               error={linkedInError}
+              leftIcon={<i class="bi bi-linkedin"></i>}
             />
 
             <Input
@@ -336,10 +343,12 @@ const CandidateForm = () => {
               id="city"
               name="city"
               value={cityValue}
+              placeholder="city"
               onChange={handleCityChange}
               onBlur={handleCityBlur}
               onKeyDown={preventSubmitOnEnter}
               error={cityError}
+              leftIcon={<i class="bi bi-geo-fill"></i>}
             />
 
             <Input
@@ -347,10 +356,12 @@ const CandidateForm = () => {
               id="state"
               name="state"
               value={stateValue}
+              placeholder="state"
               onChange={handleStateChange}
               onBlur={handleStateBlur}
               onKeyDown={preventSubmitOnEnter}
               error={stateError}
+              leftIcon={<i class="bi bi-map-fill"></i>}
             />
 
             <Input
@@ -358,11 +369,13 @@ const CandidateForm = () => {
               id="experience"
               name="experience"
               type="number"
+              placeholder="experience"
               value={experienceValue}
               onChange={handleExperienceChange}
               onBlur={handleExperienceBlur}
               onKeyDown={preventSubmitOnEnter}
               error={experienceError}
+              leftIcon={<i class="bi bi-briefcase-fill"></i>}
             />
           </div>
         </div>

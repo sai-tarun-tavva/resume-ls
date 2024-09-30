@@ -3,14 +3,6 @@
   width: 20rem;
 }
 
-.viewIcon {
-  position: absolute;
-  right: 0.6rem;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
 .authButton {
   width: 20rem;
   border-radius: 0.25rem;

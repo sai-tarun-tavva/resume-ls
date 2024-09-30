@@ -1,18 +1,27 @@
 import classes from "./index.module.css";
 
-const Input = ({ label, id, error, extraClass = "", children, ...props }) => {
+const Input = ({
+  id,
+  error,
+  leftIcon,
+  rightIcon,
+  rightIconOnClick,
+  children,
+  ...props
+}) => {
   return (
-    <div
-      className={`${classes.control} ${
-        error ? classes.error : ""
-      } ${extraClass}`}
-    >
-      <label htmlFor={id}>{label}</label>
+    <div className={`${classes.control} ${error ? classes.error : ""}`}>
+      {leftIcon && <span className={classes.leftIcon}>{leftIcon}</span>}
       <input id={id} {...props} />
       {children}
       <div className={classes.controlError}>
         <p>{error}</p>
       </div>
+      {rightIcon && (
+        <span onClick={rightIconOnClick} className={classes.rightIcon}>
+          {rightIcon}
+        </span>
+      )}
     </div>
   );
 };
