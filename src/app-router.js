@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Candidates from "./components/CandidatesHub/Candidates";
 import CandidateForm from "./components/CandidatesHub/CandidateForm";
+import PageNotFound from "./components/Atoms/PageNotFound";
 import { ROUTES } from "./constants";
 
 const appRouter = createBrowserRouter([
@@ -16,6 +17,7 @@ const appRouter = createBrowserRouter([
       { path: ROUTES.CANDIDATE_FORM, element: <CandidateForm /> },
     ],
   },
+  { path: "*", element: <PageNotFound /> },
 ]);
 
 export default appRouter;
