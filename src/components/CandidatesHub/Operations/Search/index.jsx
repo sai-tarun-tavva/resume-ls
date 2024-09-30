@@ -2,6 +2,7 @@ import { useContext, useRef } from "react";
 import Button from "../../../Atoms/Button";
 import { DataContext } from "../../../../store";
 import { handleSearchClick } from "../../../../utilities";
+import { content } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
@@ -27,12 +28,12 @@ const Search = ({ enableSearch }) => {
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder={content.candidateHub.operations.search.placeholder}
           ref={searchTextRef}
           disabled={!enableSearch}
         />
         <Button
-          title="Search"
+          title={content.candidateHub.operations.search.title}
           className={classes.searchButton}
           disabled={!enableSearch}
         >

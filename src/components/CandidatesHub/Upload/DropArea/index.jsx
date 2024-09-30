@@ -1,3 +1,4 @@
+import { content } from "../../../../constants/content";
 import classes from "./index.module.css";
 
 const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
@@ -17,13 +18,12 @@ const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
           className={classes.fileInput}
         />
         <i className="bi bi-cloud-arrow-up-fill"></i>
-        <p>Drag and drop or click here</p>
-        <small>to choose your files</small>
+        <h2>{content.candidateHub.upload.dragDrop.heading}</h2>
+        <p>{content.candidateHub.upload.dragDrop.paragraphFile}</p>
       </div>
 
       <small className={classes.infoText}>
-        Only DOC, DOCX, and PDF files are accepted. All DOC and DOCX files will
-        be automatically converted to PDF before uploading.
+        {content.candidateHub.upload.dragDrop.info}
       </small>
     </>
   );

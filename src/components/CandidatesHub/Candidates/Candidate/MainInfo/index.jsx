@@ -1,5 +1,6 @@
 import IconText from "../../../../Atoms/IconText";
 import { capitalizeFirstLetter } from "../../../../../utilities";
+import { content } from "../../../../../constants";
 import classes from "./index.module.css";
 
 const getLinkedIn = (url) => {
@@ -13,6 +14,8 @@ const getLinkedIn = (url) => {
 };
 
 const MainInfo = ({ candidate }) => {
+  const { phoneNumber, email } = content.candidateHub.candidate.defaultValues;
+
   return (
     <div className={classes.mainInfo}>
       <div className={classes.name}>
@@ -21,9 +24,9 @@ const MainInfo = ({ candidate }) => {
       </div>
 
       <IconText iconName="telephone">
-        {candidate.phone_numbers || "Mobile Number"}
+        {candidate.phone_numbers || phoneNumber}
       </IconText>
-      <IconText iconName="envelope">{candidate.email || "Email"}</IconText>
+      <IconText iconName="envelope">{candidate.email || email}</IconText>
     </div>
   );
 };

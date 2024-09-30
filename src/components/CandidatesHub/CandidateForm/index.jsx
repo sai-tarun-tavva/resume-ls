@@ -12,7 +12,7 @@ import {
   transformExperience,
   transformPhoneNumber,
 } from "../../../utilities";
-import { END_POINTS, ROUTES } from "../../../constants";
+import { END_POINTS, ROUTES, content } from "../../../constants";
 import classes from "./index.module.css";
 
 const CandidateForm = () => {
@@ -41,9 +41,10 @@ const CandidateForm = () => {
 
     let skillError = "";
 
-    if (!lowerCaseSkill) skillError = "Cannot add empty skill.";
+    if (!lowerCaseSkill)
+      skillError = content.candidateHub.candidateForm.errors.skill.empty;
     if (localSkills.includes(lowerCaseSkill))
-      skillError = "Skill already exists.";
+      skillError = content.candidateHub.candidateForm.errors.skill.existing;
 
     if (skillError) {
       resetSkillValue();
@@ -239,20 +240,20 @@ const CandidateForm = () => {
           // Pending change
           onUpdateSingleDataItem(localValues);
           handleViewStatus(
-            "Candidate information successfully updated!",
+            content.candidateHub.candidateForm.errors.formEditRequest.success,
             "success"
           );
         } else {
           // Handle error
           handleViewStatus(
-            "Failed to update candidate information. Please try again.",
+            content.candidateHub.candidateForm.errors.formEditRequest.failure,
             "failure"
           );
         }
       } catch (error) {
         // Handle fetch error
         handleViewStatus(
-          "Network error. Please check your connection.",
+          content.candidateHub.candidateForm.errors.formEditRequest.network,
           "failure"
         );
       } finally {
@@ -274,108 +275,113 @@ const CandidateForm = () => {
             <Input
               id="name"
               name="name"
+              placeholder={content.candidateHub.candidateForm.placeholders.name}
               value={nameValue}
-              placeholder="name"
               onChange={handleNameChange}
               onBlur={handleNameBlur}
               onKeyDown={preventSubmitOnEnter}
               error={nameError}
-              leftIcon={<i class="bi bi-person-circle"></i>}
+              leftIcon={<i className="bi bi-person-circle"></i>}
             />
 
             <Input
-              label="phone number"
               id="phoneNumber"
               name="phoneNumber"
-              placeholder="phone number"
               type="tel"
+              placeholder={
+                content.candidateHub.candidateForm.placeholders.phoneNumber
+              }
               value={phoneValue}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
               onKeyDown={preventSubmitOnEnter}
               error={phoneError}
-              leftIcon={<i class="bi bi-telephone-fill"></i>}
+              leftIcon={<i className="bi bi-telephone-fill"></i>}
             />
 
             <Input
-              label="email"
               id="email"
               name="email"
               type="email"
-              placeholder="email"
+              placeholder={
+                content.candidateHub.candidateForm.placeholders.email
+              }
               value={emailValue}
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
               onKeyDown={preventSubmitOnEnter}
               error={emailError}
-              leftIcon={<i class="bi bi-envelope-fill"></i>}
+              leftIcon={<i className="bi bi-envelope-fill"></i>}
             />
 
             <Input
-              label="add skill"
               id="addSkill"
               name="addSkill"
-              placeholder="skill"
+              placeholder={
+                content.candidateHub.candidateForm.placeholders.skill
+              }
               value={skillValue}
               onChange={handleSkillChange}
               onBlur={handleSkillBlur}
               onKeyDown={addSkillOnEnter}
-              leftIcon={<i class="bi bi-lightbulb-fill"></i>}
+              leftIcon={<i className="bi bi-lightbulb-fill"></i>}
             />
           </div>
 
           <div>
             <Input
-              label="linkedin url"
               id="linkedIn"
               name="linkedIn"
-              placeholder="https://www.linkedin.com/in/your-profile"
+              placeholder={
+                content.candidateHub.candidateForm.placeholders.linkedInUrl
+              }
               value={linkedInValue}
               onChange={handleLinkedInChange}
               onBlur={handleLinkedInBlur}
               onKeyDown={preventSubmitOnEnter}
               error={linkedInError}
-              leftIcon={<i class="bi bi-linkedin"></i>}
+              leftIcon={<i className="bi bi-linkedin"></i>}
             />
 
             <Input
-              label="city"
               id="city"
               name="city"
+              placeholder={content.candidateHub.candidateForm.placeholders.city}
               value={cityValue}
-              placeholder="city"
               onChange={handleCityChange}
               onBlur={handleCityBlur}
               onKeyDown={preventSubmitOnEnter}
               error={cityError}
-              leftIcon={<i class="bi bi-geo-alt-fill"></i>}
+              leftIcon={<i className="bi bi-geo-alt-fill"></i>}
             />
 
             <Input
-              label="state"
               id="state"
               name="state"
+              placeholder={
+                content.candidateHub.candidateForm.placeholders.state
+              }
               value={stateValue}
-              placeholder="state"
               onChange={handleStateChange}
               onBlur={handleStateBlur}
               onKeyDown={preventSubmitOnEnter}
               error={stateError}
-              leftIcon={<i class="bi bi-map-fill"></i>}
+              leftIcon={<i className="bi bi-map-fill"></i>}
             />
 
             <Input
-              label="experience in years"
               id="experience"
               name="experience"
               type="number"
-              placeholder="experience"
+              placeholder={
+                content.candidateHub.candidateForm.placeholders.experience
+              }
               value={experienceValue}
               onChange={handleExperienceChange}
               onBlur={handleExperienceBlur}
               onKeyDown={preventSubmitOnEnter}
               error={experienceError}
-              leftIcon={<i class="bi bi-briefcase-fill"></i>}
+              leftIcon={<i className="bi bi-briefcase-fill"></i>}
             />
           </div>
         </div>
@@ -392,14 +398,16 @@ const CandidateForm = () => {
             className={classes.closeButton}
             onClick={handleClose}
           >
-            Close
+            {content.candidateHub.candidateForm.button.close}
           </Button>
           <Button
             title="Save"
             className={`${classes.saveButton} ${isLoading ? "loading" : ""}`}
             disabled={!enableSave}
           >
-            {isLoading ? "Saving..." : "Save"}
+            {isLoading
+              ? content.candidateHub.candidateForm.button.save.loading
+              : content.candidateHub.candidateForm.button.save.default}
           </Button>
         </div>
       </div>

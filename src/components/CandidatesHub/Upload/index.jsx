@@ -5,7 +5,7 @@ import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { LoadingContext, StatusMsgContext } from "../../../store";
-import { END_POINTS, ROUTES } from "../../../constants";
+import { content, END_POINTS, ROUTES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
@@ -113,8 +113,15 @@ const Upload = () => {
         console.error("Upload failed:", response.statusText);
       }
     } catch (error) {
-      handleViewStatus("An error occurred during the upload.", "failure", true);
-      console.error("Error during upload:", error);
+      handleViewStatus(
+        content.candidateHub.upload.errors.formUploadRequest.network,
+        "failure",
+        true
+      );
+      console.error(
+        content.candidateHub.upload.errors.formUploadRequest.network,
+        error
+      );
     } finally {
       setLoading();
     }

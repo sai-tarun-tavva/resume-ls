@@ -3,7 +3,7 @@ import Search from "./Search";
 import Pagination from "./Pagination";
 import Logout from "./LogOut";
 import Logo from "../../../assets/logo.png";
-import { ROUTES } from "../../../constants";
+import { content, ROUTES } from "../../../constants";
 import classes from "./index.module.css";
 
 /**
@@ -18,7 +18,7 @@ const Operations = () => {
     <header className={classes.operations}>
       <div className={classes.logo}>
         <img src={Logo} alt={"Logisoft logo"} />
-        <p>Resume Parser</p>
+        <p>{content.candidateHub.operations.headerParagraph}</p>
       </div>
 
       <Search enableSearch={enableOperations} />

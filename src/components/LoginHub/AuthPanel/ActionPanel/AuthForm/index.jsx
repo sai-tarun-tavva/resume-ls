@@ -84,26 +84,26 @@ const AuthForm = ({ haveAccount }) => {
       <Input
         id="userName"
         name="userName"
-        value={userNameValue}
         placeholder={content.authPage.authPanel.placeholders.username}
         autoComplete="username"
+        value={userNameValue}
         onChange={handleUserNameChange}
         onBlur={handleUserNameBlur}
         error={userNameError}
-        leftIcon={<i class="bi bi-person-fill"></i>}
+        leftIcon={<i className="bi bi-person-fill"></i>}
       />
 
       <Input
         id="password"
         name="password"
         type={showPassword ? "text" : "password"}
-        value={passwordValue}
         placeholder={content.authPage.authPanel.placeholders.password}
         autoComplete={haveAccount ? "current-password" : "new-password"}
+        value={passwordValue}
         onChange={handlePasswordChange}
         onBlur={handlePasswordBlur}
         error={passwordError}
-        leftIcon={<i class="bi bi-key-fill"></i>}
+        leftIcon={<i className="bi bi-key-fill"></i>}
         rightIcon={
           showPassword ? (
             <i className="bi bi-eye-slash"></i>
@@ -119,13 +119,13 @@ const AuthForm = ({ haveAccount }) => {
           id="email"
           name="email"
           type="email"
-          value={emailValue}
           placeholder={content.authPage.authPanel.placeholders.email}
           autoComplete="email"
+          value={emailValue}
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
           error={emailError}
-          leftIcon={<i class="bi bi-envelope-fill"></i>}
+          leftIcon={<i className="bi bi-envelope-fill"></i>}
         />
       )}
 
