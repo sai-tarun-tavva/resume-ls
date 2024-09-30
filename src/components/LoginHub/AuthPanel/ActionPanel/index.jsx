@@ -1,17 +1,17 @@
 import { useState } from "react";
 import AuthForm from "./AuthForm";
+import { content } from "../../../../constants";
 import classes from "./index.module.css";
 
 const ActionPanel = () => {
-  const [haveAccount, setHaveAccount] = useState(true);
+  const [isLogin, setIsLogin] = useState(true);
+  const { login, signUp } = content.authPanel.advisor;
 
   return (
     <div className={classes.actionPanel}>
-      <AuthForm haveAccount={haveAccount} />
-      <p onClick={() => setHaveAccount((prevValue) => !prevValue)}>
-        {haveAccount
-          ? "New here? Create an Account!"
-          : "Have an account? Login!"}
+      <AuthForm haveAccount={isLogin} />
+      <p onClick={() => setIsLogin((prevValue) => !prevValue)}>
+        {isLogin ? login : signUp}
       </p>
     </div>
   );

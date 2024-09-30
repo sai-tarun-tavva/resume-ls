@@ -3,6 +3,7 @@ import { useInput } from "../../../../../hooks";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
 import { loginValidations, signupValidations } from "../../../../../utilities";
+import { content } from "../../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
@@ -81,10 +82,10 @@ const AuthForm = ({ haveAccount }) => {
   return (
     <form className={classes.authForm}>
       <Input
-        label="user name"
         id="userName"
         name="userName"
         value={userNameValue}
+        placeholder={content.authPanel.placeholders.username}
         autoComplete="username"
         onChange={handleUserNameChange}
         onBlur={handleUserNameBlur}
@@ -92,11 +93,11 @@ const AuthForm = ({ haveAccount }) => {
       />
 
       <Input
-        label="password"
         id="password"
         name="password"
         type={showPassword ? "text" : "password"}
         value={passwordValue}
+        placeholder={content.authPanel.placeholders.password}
         autoComplete={haveAccount ? "current-password" : "new-password"}
         onChange={handlePasswordChange}
         onBlur={handlePasswordBlur}
@@ -113,11 +114,11 @@ const AuthForm = ({ haveAccount }) => {
 
       {!haveAccount && (
         <Input
-          label="email"
           id="email"
           name="email"
           type="email"
           value={emailValue}
+          placeholder={content.authPanel.placeholders.email}
           autoComplete="email"
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
@@ -126,11 +127,17 @@ const AuthForm = ({ haveAccount }) => {
       )}
 
       <Button
-        title={haveAccount ? "Login" : "Sign Up"}
+        title={
+          haveAccount
+            ? content.authPanel.buttons.login.default
+            : content.authPanel.buttons.signUp.default
+        }
         className={`${classes.authButton} loading`}
         onClick={handleAuth}
       >
-        {haveAccount ? "Login" : "Sign Up"}
+        {haveAccount
+          ? content.authPanel.buttons.login.default
+          : content.authPanel.buttons.signUp.default}
       </Button>
     </form>
   );

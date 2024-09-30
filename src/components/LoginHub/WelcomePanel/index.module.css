@@ -36,4 +36,5 @@
   font-size: 1.25rem;
   margin-top: 0.5rem;
   color: #555;
+  text-transform: lowercase;
 }

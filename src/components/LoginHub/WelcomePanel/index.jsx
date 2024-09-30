@@ -1,19 +1,21 @@
 import { useCountAnimation } from "../../../hooks";
 import Logo from "../../../assets/logo.png";
+import { content } from "../../../constants";
 import classes from "./index.module.css";
 
 const WelcomePanel = ({ targetCount }) => {
   const count = useCountAnimation(targetCount);
+  const { heading, paragraph } = content.welcomePanel;
 
   return (
     <div className={classes.welcomePanel}>
-      <img src={Logo} alt={"Logisoft logo"} className={classes.logo} />
-      <h1>Parse your resume</h1>
+      <img src={Logo} alt={content.logoAlt} className={classes.logo} />
+      <h1>{heading}</h1>
 
       {targetCount > 0 && (
         <div className={classes.counterWrapper}>
           <span className={classes.countUp}>{count}</span>
-          <p>resumes parsed</p>
+          <p>{paragraph}</p>
         </div>
       )}
     </div>
