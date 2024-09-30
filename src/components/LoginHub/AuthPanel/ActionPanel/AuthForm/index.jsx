@@ -85,7 +85,7 @@ const AuthForm = ({ haveAccount }) => {
         id="userName"
         name="userName"
         value={userNameValue}
-        placeholder={content.authPanel.placeholders.username}
+        placeholder={content.authPage.authPanel.placeholders.username}
         autoComplete="username"
         onChange={handleUserNameChange}
         onBlur={handleUserNameBlur}
@@ -97,7 +97,7 @@ const AuthForm = ({ haveAccount }) => {
         name="password"
         type={showPassword ? "text" : "password"}
         value={passwordValue}
-        placeholder={content.authPanel.placeholders.password}
+        placeholder={content.authPage.authPanel.placeholders.password}
         autoComplete={haveAccount ? "current-password" : "new-password"}
         onChange={handlePasswordChange}
         onBlur={handlePasswordBlur}
@@ -118,7 +118,7 @@ const AuthForm = ({ haveAccount }) => {
           name="email"
           type="email"
           value={emailValue}
-          placeholder={content.authPanel.placeholders.email}
+          placeholder={content.authPage.authPanel.placeholders.email}
           autoComplete="email"
           onChange={handleEmailChange}
           onBlur={handleEmailBlur}
@@ -129,15 +129,15 @@ const AuthForm = ({ haveAccount }) => {
       <Button
         title={
           haveAccount
-            ? content.authPanel.buttons.login.default
-            : content.authPanel.buttons.signUp.default
+            ? content.authPage.authPanel.buttons.login.default
+            : content.authPage.authPanel.buttons.signUp.default
         }
         className={`${classes.authButton} loading`}
         onClick={handleAuth}
       >
         {haveAccount
-          ? content.authPanel.buttons.login.default
-          : content.authPanel.buttons.signUp.default}
+          ? content.authPage.authPanel.buttons.login.default
+          : content.authPage.authPanel.buttons.signUp.default}
       </Button>
     </form>
   );

@@ -5,7 +5,7 @@ import classes from "./index.module.css";
 
 const ActionPanel = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const { login, signUp } = content.authPanel.advisor;
+  const { login, signUp } = content.authPage.authPanel.advisor;
 
   return (
     <div className={classes.actionPanel}>

@@ -5,7 +5,7 @@ import classes from "./index.module.css";
 
 const WelcomePanel = ({ targetCount }) => {
   const count = useCountAnimation(targetCount);
-  const { heading, paragraph } = content.welcomePanel;
+  const { heading, paragraph } = content.authPage.welcomePanel;
 
   return (
     <div className={classes.welcomePanel}>
