@@ -1,6 +1,5 @@
 export const ROUTES = {
   AUTH: "auth",
-  HOME: "home/candidates",
-  CANDIDATES: "candidates",
+  HOME: "candidates",
   CANDIDATE_FORM: "edit/:candidateId",
 };

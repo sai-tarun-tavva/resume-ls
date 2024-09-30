@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import Search from "./Search";
 import Pagination from "./Pagination";
 import Logout from "./LogOut";
+import Logo from "../../../assets/logo.png";
 import { ROUTES } from "../../../constants";
 import classes from "./index.module.css";
 
@@ -14,11 +15,16 @@ const Operations = () => {
   const enableOperations = location.pathname === `/${ROUTES.HOME}`;
 
   return (
-    <section className={classes.operations}>
+    <header className={classes.operations}>
+      <div className={classes.logo}>
+        <img src={Logo} alt={"Logisoft logo"} />
+        <p>Resume Parser</p>
+      </div>
+
       <Search enableSearch={enableOperations} />
       <Pagination enablePagination={enableOperations} />
       <Logout />
-    </section>
+    </header>
   );
 };
 
