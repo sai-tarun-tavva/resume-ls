@@ -24,9 +24,9 @@ const StatusMessage = () => {
   return (
     isVisible && (
       <div
-        className={`${classes.statusMsgContainer} ${
-          type === "success" ? classes.success : classes.error
-        } ${darkMode && classes.light}`}
+        className={`${classes.statusMsgContainer} ${classes[`${type}`]} ${
+          darkMode && classes.light
+        }`}
       >
         <p>{message}</p>
       </div>

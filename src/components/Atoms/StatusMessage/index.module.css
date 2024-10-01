@@ -25,6 +25,18 @@
   color: #ffffff;
 }
 
+.warning {
+  background-color: rgba(255, 193, 7, 0.5);
+  border: 0.06rem solid #ffc107;
+  color: #856404;
+}
+
+.warning.light {
+  background-color: #ffc107;
+  border-color: rgba(255, 193, 7, 0.5);
+  color: #ffffff;
+}
+
 .error {
   background-color: rgba(220, 53, 69, 0.5);
   border: 0.06rem solid #dc3545;
