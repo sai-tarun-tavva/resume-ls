@@ -37,13 +37,13 @@
   color: #ffffff;
 }
 
-.error {
+.failure {
   background-color: rgba(220, 53, 69, 0.5);
   border: 0.06rem solid #dc3545;
   color: #721c24;
 }
 
-.error.light {
+.failure.light {
   background-color: #dc3545;
   border-color: rgba(220, 53, 69, 0.5);
   color: #ffffff;
