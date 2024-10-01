@@ -1,15 +1,40 @@
-import React from "react";
+import PropTypes from "prop-types";
+import { useCountAnimation } from "../../../hooks";
 import Logo from "../../../assets/logo.png";
-import styles from "./index.module.css";
+import { content } from "../../../constants";
+import classes from "./index.module.css";
 
-const WelcomePanel = () => {
+/**
+ * WelcomePanel Component
+ *
+ * Displays a welcome message along with a logo and an animated count.
+ *
+ * @param {number} targetCount - The target count to animate towards.
+ * @returns {JSX.Element} Rendered WelcomePanel component
+ */
+const WelcomePanel = ({ targetCount }) => {
+  const count = useCountAnimation(targetCount);
+  const { heading, paragraph } = content.authPage.welcomePanel;
+
   return (
-    <div className={styles["welcome-panel"]}>
-      <img src={Logo} alt={"Logisoft logo"} />
-      <h1>Parse your resume</h1>
+    <div className={classes.welcomePanel}>
+      <img src={Logo} alt={content.logoAlt} className={classes.logo} />
+      <h1>{heading}</h1>
+
+      {targetCount > 0 && (
+        <div className={classes.counterWrapper}>
+          <span className={classes.countUp}>{count}</span>
+          <p>{paragraph}</p>
+        </div>
+      )}
     </div>
   );
 };
 
+WelcomePanel.propTypes = {
+  targetCount: PropTypes.number.isRequired,
+};
+
 WelcomePanel.displayName = "WelcomePanel";
+
 export default WelcomePanel;

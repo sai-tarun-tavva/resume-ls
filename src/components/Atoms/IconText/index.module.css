@@ -1,10 +1,9 @@
-.icon-text {
+.iconText {
   font-size: 0.9rem;
   color: #555;
   margin-bottom: 0.4rem;
-  font-family: "Roboto", sans-serif;
 }
 
-.icon-text > span {
+.iconText > span {
   margin-right: 0.4rem;
 }

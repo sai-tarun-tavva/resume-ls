@@ -1,5 +1,14 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 
+/**
+ * Custom hook to manage input values and validations.
+ *
+ * @param {string} defaultValue - The initial value of the input.
+ * @param {function} checkForErrors - A function to validate the input value.
+ * @param {function} transform - A function to transform the input value on blur.
+ * @param {boolean} forceValidationsOnSubmit - Flag to force validation on submit.
+ * @returns {object} An object containing input value, handlers, and error state.
+ */
 export const useInput = (
   defaultValue,
   checkForErrors = () => {},
@@ -18,7 +27,6 @@ export const useInput = (
 
   const handleInputBlur = () => {
     setDidEdit(true);
-
     setEnteredValue(transform(enteredValue));
   };
 

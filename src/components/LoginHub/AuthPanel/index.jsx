@@ -1,14 +1,22 @@
-import React from "react";
 import ActionPanel from "./ActionPanel";
-import styles from "./index.module.css";
+import classes from "./index.module.css";
 
+/**
+ * AuthPanel Component
+ *
+ * Responsible for rendering the authentication panel.
+ * It contains the ActionPanel component where users can log in or sign up.
+ *
+ * @returns {JSX.Element} The rendered AuthPanel component.
+ */
 const AuthPanel = () => {
   return (
-    <div className={styles["auth-panel"]}>
+    <div className={classes.authPanel}>
       <ActionPanel />
     </div>
   );
 };
 
 AuthPanel.displayName = "AuthPanel";
+
 export default AuthPanel;

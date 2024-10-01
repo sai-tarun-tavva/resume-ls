@@ -1,7 +1,6 @@
-import React from "react";
-import Home from "./components/Pages/Home";
-import DataContextProvider from "./store/DataContextProvider";
-import "./App.css";
+import { RouterProvider } from "react-router-dom";
+import appRouter from "./app-router";
+import { DataContextProvider, LoadingContextProvider } from "./store";
 
 /**
  * Main application component
@@ -10,11 +9,13 @@ import "./App.css";
  */
 const App = () => {
   return (
-    <DataContextProvider>
-      <main className="app-container">
-        <Home />
-      </main>
-    </DataContextProvider>
+    <LoadingContextProvider>
+      <DataContextProvider>
+        <main>
+          <RouterProvider router={appRouter} />
+        </main>
+      </DataContextProvider>
+    </LoadingContextProvider>
   );
 };
 
