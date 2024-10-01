@@ -61,6 +61,7 @@ export const content = {
         region: "State",
         experience: "{{exp}} Years",
       },
+      noRecord: "No candidates found.",
     },
     candidateForm: {
       placeholders: {

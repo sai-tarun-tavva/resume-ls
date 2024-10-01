@@ -2,7 +2,8 @@ import { useContext, useEffect } from "react";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
 import { DataContext, LoadingContext } from "../../../store";
-import { END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
+import { content, END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
 const Candidates = () => {
@@ -57,7 +58,12 @@ const Candidates = () => {
       {isLoading ? (
         <Loader />
       ) : candidates.length === 0 ? (
-        <p>No records found.</p>
+        <p>
+          <i
+            className={`bi bi-exclamation-circle ${classes.noRecordsIcon}`}
+          ></i>
+          {content.candidateHub.candidate.noRecord}
+        </p>
       ) : (
         candidates.map((candidate) => (
           <Candidate key={candidate.id} candidate={candidate} />

@@ -1,5 +1,4 @@
 import { useContext, useRef } from "react";
-import Button from "../../../Atoms/Button";
 import { DataContext } from "../../../../store";
 import { handleSearchClick } from "../../../../utilities";
 import { content } from "../../../../constants";
@@ -32,13 +31,9 @@ const Search = ({ enableSearch }) => {
           ref={searchTextRef}
           disabled={!enableSearch}
         />
-        <Button
-          title={content.candidateHub.operations.search.title}
-          className={classes.searchButton}
-          disabled={!enableSearch}
-        >
+        <span className={classes.rightIcon}>
           <i className="bi bi-search"></i>
-        </Button>
+        </span>
       </form>
     </aside>
   );
