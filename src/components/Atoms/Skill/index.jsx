@@ -28,7 +28,7 @@ const Skill = ({ name, id, isEditable, onClick }) => {
 
 Skill.propTypes = {
   name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   isEditable: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };

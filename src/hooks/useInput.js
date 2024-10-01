@@ -41,7 +41,7 @@ export const useInput = (
     }
   }, [forceValidationsOnSubmit]);
 
-  const showError = didEdit && errorMessage;
+  const showError = didEdit ? errorMessage : "";
 
   return {
     value: enteredValue,

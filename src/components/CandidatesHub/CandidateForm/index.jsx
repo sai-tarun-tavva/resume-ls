@@ -429,6 +429,7 @@ const CandidateForm = () => {
           </div>
         </div>
         <Input
+          id="skills"
           type="hidden"
           name="skills"
           value={localSkills?.join(", ")}
