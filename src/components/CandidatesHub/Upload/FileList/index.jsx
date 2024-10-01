@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { formatFileSize, getFileIcon } from "../../../../utilities";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * FileList Component

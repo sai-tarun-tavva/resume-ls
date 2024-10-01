@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { StatusMsgContext } from "../../../store";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * StatusMessage Component

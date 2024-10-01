@@ -4,7 +4,7 @@ import { DataContext } from "../../../../store";
 import { handleSearchClick } from "../../../../utilities";
 import { content } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Search Component

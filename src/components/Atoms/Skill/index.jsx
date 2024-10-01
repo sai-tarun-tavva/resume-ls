@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Skill Component

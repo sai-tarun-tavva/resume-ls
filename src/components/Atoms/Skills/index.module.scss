@@ -5,14 +5,14 @@
   overflow-y: auto;
   margin-right: 1.9rem;
   height: 7rem;
-}
 
-.skills div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
 
-.noSkill {
-  color: #555555;
+  .noSkill {
+    color: #555555;
+  }
 }

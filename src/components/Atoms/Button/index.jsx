@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Button Component

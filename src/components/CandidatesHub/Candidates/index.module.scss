@@ -1,0 +1,30 @@
+.cards {
+  margin: 9.3rem 10% 0;
+
+  > p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #007bff;
+    padding: 1.5rem;
+    border: 2px solid #6c757d;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    margin-top: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    .noRecordsIcon {
+      font-size: 2rem;
+      margin-right: 0.5rem;
+      color: #007bff;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+  }
+}

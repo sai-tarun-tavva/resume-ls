@@ -1,6 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Button from "../../../Atoms/Button";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 const Logout = () => {
   return (

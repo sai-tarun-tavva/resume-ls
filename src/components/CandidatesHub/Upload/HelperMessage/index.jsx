@@ -1,5 +1,5 @@
 import { content, END_POINTS } from "../../../../constants";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * HelperMessage Component

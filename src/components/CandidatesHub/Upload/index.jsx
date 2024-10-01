@@ -8,7 +8,7 @@ import Modal from "../../Atoms/Modal";
 import { LoadingContext, StatusMsgContext } from "../../../store";
 import { content, END_POINTS, MAX_FILES, ROUTES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Upload Component

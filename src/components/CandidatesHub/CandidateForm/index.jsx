@@ -13,7 +13,7 @@ import {
   transformPhoneNumber,
 } from "../../../utilities";
 import { END_POINTS, ROUTES, content } from "../../../constants";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * CandidateForm Component

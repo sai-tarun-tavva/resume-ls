@@ -4,7 +4,7 @@ import Loader from "../../Atoms/Loader";
 import { DataContext, LoadingContext } from "../../../store";
 import { content, END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Candidates Component

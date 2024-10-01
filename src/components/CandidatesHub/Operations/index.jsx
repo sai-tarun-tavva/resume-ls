@@ -4,7 +4,7 @@ import Pagination from "./Pagination";
 import Logout from "./LogOut";
 import Logo from "../../../assets/logo.png";
 import { content, ROUTES } from "../../../constants";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Operations Component

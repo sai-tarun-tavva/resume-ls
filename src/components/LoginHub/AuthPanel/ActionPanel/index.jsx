@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AuthForm from "./AuthForm";
 import { content } from "../../../../constants";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * ActionPanel Component

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import IconText from "../../../../Atoms/IconText";
 import { capitalizeFirstLetter } from "../../../../../utilities";
 import { content } from "../../../../../constants";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Renders a LinkedIn icon based on the provided URL.
