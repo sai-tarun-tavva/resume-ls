@@ -1,7 +1,7 @@
 import { content, END_POINTS } from "../../../../constants";
 import classes from "./index.module.css";
 
-const HelperMessage = ({}) => {
+const HelperMessage = () => {
   const { message, urlText } = content.candidateHub.upload.helper;
   return (
     <div className={classes.helper}>
