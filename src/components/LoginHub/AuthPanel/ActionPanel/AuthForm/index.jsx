@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useInput } from "../../../../../hooks";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
-import { loginValidations, signupValidations } from "../../../../../utilities";
+import { authValidations } from "../../../../../utilities";
 import { content } from "../../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
@@ -15,7 +15,7 @@ const AuthForm = ({ haveAccount }) => {
     resetValue: resetUserName,
     error: userNameError,
     forceValidations: forceUserNameValidations,
-  } = useInput("", loginValidations.userName, undefined, true);
+  } = useInput("", authValidations.userName, undefined, true);
 
   const {
     value: passwordValue,
@@ -24,7 +24,7 @@ const AuthForm = ({ haveAccount }) => {
     resetValue: resetPassword,
     error: passwordError,
     forceValidations: forcePasswordValidations,
-  } = useInput("", loginValidations.password, undefined, true);
+  } = useInput("", authValidations.password, undefined, true);
 
   const {
     value: emailValue,
@@ -33,7 +33,7 @@ const AuthForm = ({ haveAccount }) => {
     resetValue: resetEmail,
     error: emailError,
     forceValidations: forceEmailValidations,
-  } = useInput("", signupValidations.email, undefined, true);
+  } = useInput("", authValidations.email, undefined, true);
 
   const [showPassword, setShowPassword] = useState(false);
 

@@ -1,75 +1,91 @@
-// Global validation regex patterns
-const usernameRegex = /^[a-zA-Z-]+$/; // Only letters and hyphens
-const phoneRegex = /^\d{10}$/; // Exactly 10 digits
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // General email pattern
-const passwordRegex =
-  /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/; // General password validation
-const linkedInRegex = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/; // https://www.linkedin.com/in/your-profile
+import { content, REGEX } from "../constants";
+
+const candidateValidationMsgs = content.candidateHub.candidateForm.errors;
+const authValidationMsgs = content.authPage.authPanel.errors;
+
+// Helper function for empty value checks
+const isEmpty = (value) => value === "";
+
+// Helper function for regex checks
+const validateWithRegex = (value, regex, errorMsg) => {
+  if (!regex.test(value)) return errorMsg;
+};
 
 export const candidateValidations = {
-  name: (value, enteredValue) => {
-    if (value && enteredValue === "") return "Name is required.";
-  },
+  name: (value, enteredValue) =>
+    isEmpty(enteredValue) && value
+      ? candidateValidationMsgs.name.empty
+      : undefined,
   phone: (value, enteredValue) => {
     const digitsOnly = enteredValue.replace(/\s+/g, "");
-    if (value && enteredValue === "") return "Phone number is required.";
-    if (enteredValue && !phoneRegex.test(digitsOnly))
-      return "Phone number must contain exactly 10 digits.";
+    return isEmpty(enteredValue) && value
+      ? candidateValidationMsgs.phone.empty
+      : validateWithRegex(
+          digitsOnly,
+          REGEX.phoneRegex,
+          candidateValidationMsgs.phone.invalid
+        );
   },
-  email: (value, enteredValue) => {
-    if (value && enteredValue === "") return "Email is required.";
-    if (enteredValue && !emailRegex.test(enteredValue))
-      return "Please enter a valid email address.";
-  },
-  linkedIn: (value, enteredValue) => {
-    if (value && enteredValue === "") return "LinkedIn URL is required.";
-    if (enteredValue && !linkedInRegex.test(enteredValue))
-      return "Please enter a valid LinkedIn profile URL.";
-  },
-  city: (value, enteredValue) => {
-    if (value && enteredValue === "") return "City is required.";
-  },
-  state: (value, enteredValue) => {
-    if (value && enteredValue === "") return "State is required.";
-  },
+  email: (value, enteredValue) =>
+    isEmpty(enteredValue) && value
+      ? candidateValidationMsgs.email.empty
+      : validateWithRegex(
+          enteredValue,
+          REGEX.emailRegex,
+          candidateValidationMsgs.email.invalid
+        ),
+  linkedIn: (value, enteredValue) =>
+    isEmpty(enteredValue) && value
+      ? candidateValidationMsgs.linkedInUrl.empty
+      : validateWithRegex(
+          enteredValue,
+          REGEX.linkedInRegex,
+          candidateValidationMsgs.linkedInUrl.invalid
+        ),
+  city: (value, enteredValue) =>
+    isEmpty(enteredValue) && value
+      ? candidateValidationMsgs.city.empty
+      : undefined,
+  state: (value, enteredValue) =>
+    isEmpty(enteredValue) && value
+      ? candidateValidationMsgs.state.empty
+      : undefined,
   experience: (value, enteredValue) => {
     const experienceNumber = Number(enteredValue);
-    if (value && enteredValue === "") return "Experience is required.";
-    if (enteredValue && (experienceNumber < 0 || experienceNumber > 100))
-      return "Experience must be between 0 and 100.";
+    return isEmpty(enteredValue) && value
+      ? candidateValidationMsgs.experience.empty
+      : experienceNumber < 0 || experienceNumber > 100
+      ? candidateValidationMsgs.experience.invalid
+      : undefined;
   },
 };
 
-export const loginValidations = {
+export const authValidations = {
   userName: (value) => {
-    if (value === "") return "Username is required.";
-    if (!usernameRegex.test(value))
-      return "Username can only contain letters and hyphens.";
-    if (value.length < 3 || value.length > 20)
-      return "Username must be 3-20 characters long.";
+    return isEmpty(value)
+      ? authValidationMsgs.username.empty
+      : value.length < 3 ||
+        value.length > 20 ||
+        !REGEX.usernameRegex.test(value)
+      ? authValidationMsgs.username.invalid
+      : undefined;
   },
   password: (value) => {
-    if (value === "") return "Password is required.";
-    if (!passwordRegex.test(value))
-      return "Include 8+ chars, upper, lower, number, symbol.";
-  },
-};
-
-export const signupValidations = {
-  userName: (value) => {
-    if (value === "") return "Username is required.";
-    if (!usernameRegex.test(value))
-      return "Username can only contain letters and hyphens.";
-    if (value.length < 3 || value.length > 20)
-      return "Username must be 3-20 characters long.";
-  },
-  password: (value) => {
-    if (value === "") return "Password is required.";
-    if (!passwordRegex.test(value))
-      return "Include 8+ chars, upper, lower, number, symbol.";
+    return isEmpty(value)
+      ? authValidationMsgs.password.empty
+      : validateWithRegex(
+          value,
+          REGEX.passwordRegex,
+          authValidationMsgs.password.invalid
+        );
   },
   email: (value) => {
-    if (value === "") return "Email is required.";
-    if (!emailRegex.test(value)) return "Please enter a valid email address.";
+    return isEmpty(value)
+      ? authValidationMsgs.email.empty
+      : validateWithRegex(
+          value,
+          REGEX.emailRegex,
+          authValidationMsgs.email.invalid
+        );
   },
 };

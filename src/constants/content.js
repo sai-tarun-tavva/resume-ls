@@ -10,6 +10,21 @@ export const content = {
         password: "password",
         email: "email",
       },
+      errors: {
+        username: {
+          empty: "Username is required.",
+          invalid:
+            "Username must be 3-20 characters and can only include letters or hyphens.",
+        },
+        password: {
+          empty: "Password is required.",
+          invalid: "Include 8+ chars, upper, lower, number, symbol.",
+        },
+        email: {
+          empty: "Email is required.",
+          invalid: "Please enter a valid email address.",
+        },
+      },
       buttons: {
         login: {
           default: "Login",
@@ -82,6 +97,31 @@ export const content = {
         },
       },
       errors: {
+        name: {
+          empty: "Name is required.",
+        },
+        phone: {
+          empty: "Phone number is required.",
+          invalid: "Phone number must contain exactly 10 digits.",
+        },
+        email: {
+          empty: "Email is required.",
+          invalid: "Please enter a valid email address.",
+        },
+        linkedInUrl: {
+          empty: "LinkedIn URL is required.",
+          invalid: "Please enter a valid LinkedIn profile URL.",
+        },
+        city: {
+          empty: "City is required.",
+        },
+        state: {
+          empty: "State is required.",
+        },
+        experience: {
+          empty: "Experience is required.",
+          invalid: "Experience must be between 0 and 100.",
+        },
         skill: {
           empty: "Cannot add empty skill.",
           existing: "Skill already exists.",
