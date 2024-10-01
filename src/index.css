@@ -6,9 +6,9 @@ html {
 }
 
 :root {
-  --primary-color: rgb(0, 123, 255);
-  --primary-shadow: rgba(0, 123, 255, 0.5);
-  --primary-hover: rgb(5, 86, 179);
+  --primary-color: rgb(0, 86, 179);
+  --primary-shadow: rgba(0, 86, 179, 0.3);
+  --primary-hover: rgb(0, 66, 141);
 }
 
 body {

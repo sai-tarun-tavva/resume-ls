@@ -28,12 +28,18 @@ export const content = {
   },
   candidateHub: {
     upload: {
+      helper: {
+        message:
+          "Uploading more than 30 files? For a smoother experience, consider using our batch process. Click the link below!",
+        urlText: "Head to batch process",
+      },
       dragDrop: {
         heading: "Drag and drop or click here",
         paragraphFile: "to choose your files",
         paragraphFolder: "to choose your folder",
-        info: "*Only DOC, DOCX, and PDF files are accepted.",
+        info: "Only the first 30 files in TXT, DOC, DOCX, and PDF formats will be accepted.",
       },
+      button: "Upload file",
       errors: {
         formUploadRequest: {
           network: "An error occurred during the upload.",

@@ -13,11 +13,11 @@ const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
           type="file"
           id="fileInput"
           multiple
-          accept=".doc,.docx,.pdf"
+          accept=".doc,.docx,.pdf,.txt"
           onChange={handleFileChange}
           className={classes.fileInput}
         />
-        <i className="bi bi-cloud-arrow-up-fill"></i>
+        <i className={`bi bi-cloud-arrow-up-fill ${classes.icon}`}></i>
         <h2>{content.candidateHub.upload.dragDrop.heading}</h2>
         <p>{content.candidateHub.upload.dragDrop.paragraphFile}</p>
       </div>

@@ -7,12 +7,13 @@ const FileList = ({ files, handleDeleteFile }) => {
       {files.map((file) => (
         <div key={file.name} className={classes.fileItem}>
           {getFileIcon(file.name)}
-          <span>
+          <span className={classes.fileName}>
             {file.name} <small>({formatFileSize(file.size)})</small>
           </span>
           <button
             onClick={() => handleDeleteFile(file.name)}
             className={classes.closeButton}
+            aria-label={`Delete ${file.name}`}
           >
             <i className="bi bi-x" />
           </button>

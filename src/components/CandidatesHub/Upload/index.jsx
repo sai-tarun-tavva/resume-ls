@@ -1,11 +1,12 @@
 import { useState, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import HelperMessage from "./HelperMessage";
 import DropArea from "./DropArea";
 import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { LoadingContext, StatusMsgContext } from "../../../store";
-import { content, END_POINTS, ROUTES } from "../../../constants";
+import { content, END_POINTS, MAX_FILES, ROUTES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
@@ -33,7 +34,7 @@ const Upload = () => {
     addFiles(selectedFiles);
   };
 
-  // Add files to the list, ensuring they are valid
+  // Add files to the list, ensuring they are valid and not exceeding the limit
   const addFiles = useCallback(
     (selectedFiles) => {
       const validFiles = selectedFiles.filter(
@@ -41,13 +42,23 @@ const Upload = () => {
           (file.type === "application/pdf" ||
             file.type === "application/msword" ||
             file.type ===
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document") &&
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            file.type === "text/plain") &&
           !files.some((existingFile) => existingFile.name === file.name)
       );
 
+      if (files.length + validFiles.length > MAX_FILES) {
+        handleViewStatus(
+          `Only first ${MAX_FILES} files are being uploaded. Extra files were excluded.`,
+          "error",
+          true
+        );
+        validFiles.splice(MAX_FILES - files.length); // Ensure we don't exceed the limit
+      }
+
       setFiles((prevFiles) => [...validFiles, ...prevFiles]);
     },
-    [files]
+    [files, handleViewStatus]
   );
 
   // Handle file drag and drop
@@ -70,9 +81,7 @@ const Upload = () => {
 
   const buttonText = isLoading
     ? `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`
-    : files.length > 1
-    ? "Upload Files"
-    : "Upload File";
+    : content.candidateHub.upload.button + (files.length > 1 ? "s" : "");
 
   const handleUpload = async (event) => {
     event.preventDefault();
@@ -81,7 +90,7 @@ const Upload = () => {
 
     setLoading();
 
-    // API call logic to upload files
+    // Prepare form data for upload
     const formData = new FormData();
 
     files.forEach((file) => {
@@ -132,6 +141,7 @@ const Upload = () => {
       {allowUpload ? (
         <Modal handleClose={toggleAllowUpload}>
           {/* Drag and Drop Area */}
+          <HelperMessage />
           <form className={classes.uploadFormContainer}>
             <DropArea
               handleDrop={handleDrop}
