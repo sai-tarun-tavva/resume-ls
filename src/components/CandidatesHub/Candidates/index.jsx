@@ -6,6 +6,13 @@ import { content, END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
+/**
+ * Candidates Component
+ *
+ * Fetches and displays candidate information.
+ *
+ * @returns {JSX.Element} The rendered candidates component.
+ */
 const Candidates = () => {
   const {
     startIndex,
@@ -18,12 +25,17 @@ const Candidates = () => {
   const { isFetching: isLoading, handleFetching: setLoading } =
     useContext(LoadingContext);
 
+  // Slice the filtered candidates to display only the current page
   const candidates = filteredCandidateData.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
 
   useEffect(() => {
+    /**
+     * Fetch candidates from the API.
+     * @returns {Promise<Array>} The list of candidates.
+     */
     const fetchCandidates = async () => {
       try {
         const response = await fetch(END_POINTS.FETCH_CANDIDATES);
@@ -33,18 +45,21 @@ const Candidates = () => {
         }
 
         const resData = await response.json();
-        return resData.results;
+        return resData.results; // Return the candidates' data
       } catch (error) {
         console.error(error);
         return []; // Handle errors by returning an empty array or any error state
       }
     };
 
+    /**
+     * Fetch candidates and update context state.
+     */
     const getData = async () => {
       setLoading(true);
       const candidates = await fetchCandidates();
-      onDataChange(candidates); // save once (ineditable unless page reload)
-      onFilteredDataChange(candidates); // to filter data based on search
+      onDataChange(candidates);
+      onFilteredDataChange(candidates);
       setLoading(false);
     };
 

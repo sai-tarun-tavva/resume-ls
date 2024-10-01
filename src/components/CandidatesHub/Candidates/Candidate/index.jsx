@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
@@ -14,6 +15,14 @@ import { ROUTES } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
+/**
+ * Candidate Component
+ *
+ * Displays individual candidate information.
+ *
+ * @param {Object} candidate - The candidate data to display.
+ * @returns {JSX.Element} The rendered candidate component.
+ */
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
   const { handleViewStatus } = useContext(StatusMsgContext);
@@ -22,9 +31,14 @@ const Candidate = ({ candidate }) => {
   const isNew = isCandidateNew(dateCreated);
   const formattedTime = calculateTimeAgo(dateCreated);
 
+  /**
+   * Handles the edit action for the candidate.
+   *
+   * @param {Event} event - The event triggered by the edit action.
+   */
   const handleEdit = (event) => {
     event.preventDefault();
-    handleViewStatus(); // reset status to unmount on edit
+    handleViewStatus();
 
     const candidateId = candidate.id;
     navigate(replaceRouteParam(ROUTES.CANDIDATE_FORM, { candidateId }));
@@ -53,5 +67,22 @@ const Candidate = ({ candidate }) => {
   );
 };
 
+Candidate.propTypes = {
+  candidate: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    phone_numbers: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    region: PropTypes.string.isRequired,
+    linkedin: PropTypes.string.isRequired,
+    skills: PropTypes.arrayOf(PropTypes.string).isRequired,
+    total_experience: PropTypes.number.isRequired,
+    file_path: PropTypes.string.isRequired,
+    timestamp: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
 Candidate.displayName = "Candidate";
+
 export default Candidate;

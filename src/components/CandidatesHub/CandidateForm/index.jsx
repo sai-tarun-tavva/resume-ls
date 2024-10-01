@@ -15,16 +15,29 @@ import {
 import { END_POINTS, ROUTES, content } from "../../../constants";
 import classes from "./index.module.css";
 
+/**
+ * CandidateForm Component
+ *
+ * Allows users to view and edit candidate information,
+ * including personal details and skills. It handles form validation,
+ * manages the state of form fields, and submits updated candidate data
+ * to the server. The component also provides feedback messages to the user
+ * based on the success or failure of actions taken within the form.
+ *
+ * @returns {JSX.Element} - Rendered CandidateForm component.
+ */
 const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
   const { handleViewStatus } = useContext(StatusMsgContext);
   const {
     isSendingPostPatchRequest: isLoading,
-    handleSendingPostPatchRequest: setLoading,
+    handleToggleSendingPostPatchRequest: setLoading,
   } = useContext(LoadingContext);
   const { filteredCandidateData, onUpdateSingleDataItem } =
     useContext(DataContext);
+
+  // Fetch candidate information based on the candidateId
   const info = filteredCandidateData.find(
     (candidate) => candidate.id === +candidateId
   );
@@ -36,38 +49,55 @@ const CandidateForm = () => {
     if (!info) navigate(ROUTES.HOME);
   }, [info, navigate]);
 
+  /**
+   * Handle adding a new skill to the localSkills state.
+   * Validates the skill and checks for duplicates before adding.
+   * @param {string} newSkill - The skill to be added.
+   */
   const handleAddSkill = (newSkill) => {
     const lowerCaseSkill = newSkill.trim().toLowerCase();
-
     let skillError = "";
 
-    if (!lowerCaseSkill)
+    // Validate skill input
+    if (!lowerCaseSkill) {
       skillError = content.candidateHub.candidateForm.errors.skill.empty;
-    if (localSkills.includes(lowerCaseSkill))
+    } else if (localSkills.includes(lowerCaseSkill)) {
       skillError = content.candidateHub.candidateForm.errors.skill.existing;
+    }
 
+    // If there's an error, reset input and show status message
     if (skillError) {
       resetSkillValue();
       handleViewStatus(skillError, "failure");
       return;
     }
 
+    // Update local skills state
     setLocalSkills((prevSkills) => [lowerCaseSkill, ...prevSkills]);
     resetSkillValue();
   };
 
+  /**
+   * Handle removing a skill from localSkills state.
+   * @param {number} skillIndex - The index of the skill to be removed.
+   */
   const handleRemoveSkill = (skillIndex) => {
     const updatedSkills = localSkills.filter(
       (_, index) => index !== skillIndex
     );
 
+    // Update the state with the new skills list
     setLocalSkills(updatedSkills);
   };
 
+  /**
+   * Close the candidate form and navigate back to the previous route.
+   */
   const handleClose = () => {
     navigate("..");
   };
 
+  // Input state management for various candidate fields
   const {
     value: nameValue,
     handleInputChange: handleNameChange,
@@ -142,14 +172,20 @@ const CandidateForm = () => {
     transformExperience
   );
 
-  // Utility function to prevent form submission
+  /**
+   * Prevent form submission when Enter key is pressed.
+   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   */
   const preventSubmitOnEnter = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
     }
   };
 
-  // Utility function to add skill on hitting ENTER in skill input
+  /**
+   * Add a skill when Enter key is pressed in the skill input field.
+   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   */
   const addSkillOnEnter = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -157,7 +193,10 @@ const CandidateForm = () => {
     }
   };
 
-  // Utility function to check if form values are unchanged
+  /**
+   * Check if form values have changed compared to the original candidate info.
+   * @returns {boolean} - Returns true if any form value has changed.
+   */
   const hasFormChanged = () => {
     return (
       nameValue !== info?.name ||
@@ -171,7 +210,10 @@ const CandidateForm = () => {
     );
   };
 
-  // Utility function to check for validation errors
+  /**
+   * Check for validation errors across form fields.
+   * @returns {boolean} - Returns true if any validation error exists.
+   */
   const hasValidationErrors = () => {
     return [
       nameError,
@@ -187,6 +229,10 @@ const CandidateForm = () => {
   // Enable save button only if the form has changed and there are no validation errors
   const enableSave = hasFormChanged() && !hasValidationErrors();
 
+  /**
+   * Handle form submission, performing necessary validations and sending data to the server.
+   * @param {Event} event - The form submission event.
+   */
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (isLoading) return;
@@ -207,7 +253,7 @@ const CandidateForm = () => {
       total_experience: +formData.get("experience"),
     };
 
-    // Temporary
+    // Temporary: Prepare local values for context update
     const localValues = {
       id: info?.id,
       name: nameValue,
@@ -223,8 +269,7 @@ const CandidateForm = () => {
 
     if (enableSave) {
       try {
-        // Make the API request
-        // Pending change
+        // Make the API request to update candidate data
         const response = await fetch(END_POINTS.EDIT_CANDIDATE, {
           method: "POST",
           headers: {
@@ -233,18 +278,16 @@ const CandidateForm = () => {
           body: JSON.stringify(formValues),
         });
 
-        // Handle response
+        // Handle response from the server
         if (response.ok) {
-          // Call context-provided functions on success
-          // const updatedCandidateData = await response.json();
-          // Pending change
+          // Update candidate data in context
           onUpdateSingleDataItem(localValues);
           handleViewStatus(
             content.candidateHub.candidateForm.errors.formEditRequest.success,
             "success"
           );
         } else {
-          // Handle error
+          // Handle server error response
           handleViewStatus(
             content.candidateHub.candidateForm.errors.formEditRequest.failure,
             "failure"

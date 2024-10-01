@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { useInput } from "../../../../../hooks";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
@@ -7,6 +8,15 @@ import { content } from "../../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
+/**
+ * AuthForm Component
+ *
+ * Handles the authentication form (Login/SignUp).
+ * It manages input validation, form state, and submission logic.
+ *
+ * @param {boolean} haveAccount - Determines if the form is for login (true) or sign-up (false).
+ * @returns {JSX.Element} The rendered AuthForm component.
+ */
 const AuthForm = ({ haveAccount }) => {
   const {
     value: userNameValue,
@@ -37,23 +47,40 @@ const AuthForm = ({ haveAccount }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * Toggles the visibility of the password input field.
+   */
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Utility function to check for validation errors
+  /**
+   * Checks if there are any validation errors present in the form.
+   * @returns {boolean} True if there are validation errors, false otherwise.
+   */
   const hasValidationErrors = () => {
     return [userNameError, passwordError, !haveAccount && emailError].some(
       Boolean
     );
   };
 
+  /**
+   * Determines if the authentication action (login/sign-up) is enabled.
+   * @returns {boolean} True if the action is enabled, false otherwise.
+   */
   const enableAuth =
     userNameValue !== "" &&
     passwordValue !== "" &&
     !hasValidationErrors() &&
     (!haveAccount ? emailValue !== "" : true);
 
+  /**
+   * Handles the form submission for login/sign-up.
+   * Validates input fields and logs form data if valid.
+   * Forces validation errors to appear if the form is incomplete or invalid.
+   *
+   * @param {Event} event - The form submit event.
+   */
   const handleAuth = (event) => {
     event.preventDefault();
 
@@ -73,6 +100,7 @@ const AuthForm = ({ haveAccount }) => {
     console.log(formData);
   };
 
+  // Reset input fields when switching between login and sign-up
   useEffect(() => {
     resetUserName();
     resetPassword();
@@ -112,7 +140,7 @@ const AuthForm = ({ haveAccount }) => {
           )
         }
         rightIconOnClick={togglePasswordVisibility}
-      ></Input>
+      />
 
       {!haveAccount && (
         <Input
@@ -147,4 +175,9 @@ const AuthForm = ({ haveAccount }) => {
 };
 
 AuthForm.displayName = "AuthForm";
+
+AuthForm.propTypes = {
+  haveAccount: PropTypes.bool.isRequired,
+};
+
 export default AuthForm;

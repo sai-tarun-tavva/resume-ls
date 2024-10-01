@@ -1,6 +1,17 @@
+import PropTypes from "prop-types";
 import { formatFileSize, getFileIcon } from "../../../../utilities";
 import classes from "./index.module.css";
 
+/**
+ * FileList Component
+ *
+ * Displays a list of uploaded files with their names, sizes, and icons.
+ * Provides an option to delete each file from the list.
+ *
+ * @param {Array} files - Array of file objects containing name and size.
+ * @param {Function} handleDeleteFile - Function to handle file deletion.
+ * @returns {JSX.Element} Rendered FileList component
+ */
 const FileList = ({ files, handleDeleteFile }) => {
   return (
     <div className={classes.fileList}>
@@ -23,5 +34,16 @@ const FileList = ({ files, handleDeleteFile }) => {
   );
 };
 
+FileList.propTypes = {
+  files: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      size: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  handleDeleteFile: PropTypes.func.isRequired,
+};
+
 FileList.displayName = "FileList";
+
 export default FileList;

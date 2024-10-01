@@ -2,6 +2,14 @@ import { Link } from "react-router-dom";
 import { content, ROUTES } from "../../../constants";
 import classes from "./index.module.css";
 
+/**
+ * PageNotFound Component
+ *
+ * Displays a 404 error message
+ * when a requested page is not found.
+ *
+ * @returns {JSX.Element} The rendered PageNotFound component.
+ */
 const PageNotFound = () => {
   return (
     <div className={classes.notFoundContainer}>

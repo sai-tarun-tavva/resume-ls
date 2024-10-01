@@ -7,8 +7,11 @@ import { content, ROUTES } from "../../../constants";
 import classes from "./index.module.css";
 
 /**
- * Operations component provides search and pagination functionalities.
- * @returns {JSX.Element} The rendered operations component.
+ * Operations Component
+ *
+ * Provides search and pagination functionalities on the operations page.
+ *
+ * @returns {JSX.Element} The rendered Operations component.
  */
 const Operations = () => {
   const location = useLocation();

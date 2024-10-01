@@ -2,6 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { END_POINTS } from "../constants";
 import { LoadingContext } from "../store";
 
+/**
+ * Custom hook to fetch and manage the target count.
+ * It handles loading states and errors during the fetch operation.
+ *
+ * @returns {object} An object containing the target count and the loading state.
+ */
 export const useTargetCount = () => {
   const [targetCount, setTargetCount] = useState(0);
   const { isFetching: isLoading, handleFetching: setLoading } =
@@ -9,13 +15,11 @@ export const useTargetCount = () => {
 
   useEffect(() => {
     setLoading(true);
-    // Fetch the target count when the hook is used
+
+    // Fetch the target count asynchronously
     const fetchTargetCount = async () => {
       try {
-        const response = await fetch(
-          // pending change
-          END_POINTS.FETCH_RESUME_COUNT
-        );
+        const response = await fetch(END_POINTS.FETCH_RESUME_COUNT);
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -31,7 +35,7 @@ export const useTargetCount = () => {
     };
 
     fetchTargetCount();
-  }, [setLoading]); // Ensure this runs only once on mount
+  }, [setLoading]);
 
   return { targetCount, isLoading };
 };

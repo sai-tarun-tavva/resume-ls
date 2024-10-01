@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 
 export const LoadingContext = createContext({});
 
@@ -7,23 +7,31 @@ export const LoadingContextProvider = ({ children }) => {
   const [isSendingPostPatchRequest, setIsSendingPostPatchRequest] =
     useState(false);
 
-  const handleFetching = useCallback(
-    (value) => {
-      setIsFetching(value);
-    },
-    [setIsFetching]
-  );
+  // Update fetching state
+  const handleFetching = useCallback((value) => {
+    setIsFetching(value);
+  }, []);
 
-  const handleSendingPostPatchRequest = useCallback(() => {
+  // Toggle sending post/patch request state
+  const handleToggleSendingPostPatchRequest = useCallback(() => {
     setIsSendingPostPatchRequest((prevValue) => !prevValue);
-  }, [setIsSendingPostPatchRequest]);
+  }, []);
 
-  const loadingCtx = {
-    isFetching,
-    isSendingPostPatchRequest,
-    handleFetching,
-    handleSendingPostPatchRequest,
-  };
+  // Memoize the context value to prevent unnecessary re-renders
+  const loadingCtx = useMemo(
+    () => ({
+      isFetching,
+      isSendingPostPatchRequest,
+      handleFetching,
+      handleToggleSendingPostPatchRequest,
+    }),
+    [
+      isFetching,
+      isSendingPostPatchRequest,
+      handleFetching,
+      handleToggleSendingPostPatchRequest,
+    ]
+  );
 
   return (
     <LoadingContext.Provider value={loadingCtx}>

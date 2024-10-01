@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Button from "../../../Atoms/Button";
 import { DataContext } from "../../../../store";
 import { ITEMS_PER_PAGE } from "../../../../constants";
@@ -6,23 +7,32 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.css";
 
 /**
- * Pagination component for navigating through paginated data.
+ * Pagination Component
+ *
+ * For navigating through paginated data.
+ *
+ * @param {Object} props - The component props.
+ * @param {boolean} props.enablePagination - Determines if pagination is enabled.
  * @returns {JSX.Element} The rendered pagination component.
  */
 const Pagination = ({ enablePagination }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { onStartIndexChange, filteredCandidateData } = useContext(DataContext);
-
   const totalItems = filteredCandidateData.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   useEffect(() => {
-    // re-initiate current page to 1 whenever user clicks on search and filtered data updates
+    // Re-initiate current page to 1 whenever filtered data updates
     setCurrentPage(1);
   }, [filteredCandidateData]);
 
+  /**
+   * Handles page click event to change the current page.
+   * Ensures the page number is within a valid range and updates the start index.
+   *
+   * @param {number} page - The page number to navigate to.
+   */
   const handlePageClick = (page) => {
-    // Ensure page number is within valid range
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
 
@@ -64,4 +74,9 @@ const Pagination = ({ enablePagination }) => {
 };
 
 Pagination.displayName = "Pagination";
+
+Pagination.propTypes = {
+  enablePagination: PropTypes.bool.isRequired,
+};
+
 export default Pagination;

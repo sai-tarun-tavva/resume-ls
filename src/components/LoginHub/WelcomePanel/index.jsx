@@ -1,8 +1,17 @@
+import PropTypes from "prop-types";
 import { useCountAnimation } from "../../../hooks";
 import Logo from "../../../assets/logo.png";
 import { content } from "../../../constants";
 import classes from "./index.module.css";
 
+/**
+ * WelcomePanel Component
+ *
+ * Displays a welcome message along with a logo and an animated count.
+ *
+ * @param {number} targetCount - The target count to animate towards.
+ * @returns {JSX.Element} Rendered WelcomePanel component
+ */
 const WelcomePanel = ({ targetCount }) => {
   const count = useCountAnimation(targetCount);
   const { heading, paragraph } = content.authPage.welcomePanel;
@@ -22,5 +31,10 @@ const WelcomePanel = ({ targetCount }) => {
   );
 };
 
+WelcomePanel.propTypes = {
+  targetCount: PropTypes.number.isRequired,
+};
+
 WelcomePanel.displayName = "WelcomePanel";
+
 export default WelcomePanel;

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useReducer } from "react";
+import { createContext, useCallback, useReducer, useMemo } from "react";
 import { transformData } from "../utilities";
 
 const initialData = {
@@ -16,12 +16,15 @@ const dataReducer = (state, action) => {
     case "candidate":
       const [updatedCandidate] = payload;
       // Find and update a specific candidate in the candidateData array
-      const updatedCandidatesData = state.candidateData.map((candidate) =>
-        candidate.id === updatedCandidate.id
-          ? { ...candidate, ...updatedCandidate }
-          : candidate
-      );
-      return { ...state, candidateData: updatedCandidatesData };
+      const existingCandidatesData = state.candidateData;
+      return {
+        ...state,
+        candidateData: existingCandidatesData.map((candidate) =>
+          candidate.id === updatedCandidate.id
+            ? { ...candidate, ...updatedCandidate }
+            : candidate
+        ),
+      };
 
     default:
       return { ...state, [type]: payload };
@@ -35,9 +38,12 @@ export const DataContextProvider = ({ children }) => {
    * Updates the starting index for data display.
    * @param {number} index - The new starting index.
    */
-  const handleStartIndexChange = (index) => {
-    dataDispatch({ type: "startIndex", payload: index });
-  };
+  const handleStartIndexChange = useCallback(
+    (index) => {
+      dataDispatch({ type: "startIndex", payload: index });
+    },
+    [dataDispatch]
+  );
 
   const handleDataChange = useCallback(
     (data) => {
@@ -46,7 +52,7 @@ export const DataContextProvider = ({ children }) => {
         payload: transformData(data),
       });
     },
-    [dataDispatch] // Dependency array, only recreate if dataDispatch changes
+    [dataDispatch] // Only recreate if dataDispatch changes
   );
 
   /**
@@ -61,20 +67,33 @@ export const DataContextProvider = ({ children }) => {
       });
       dataDispatch({ type: "startIndex", payload: 0 }); // Resets startIndex to 0
     },
-    [dataDispatch] // Dependency array, only recreate if dataDispatch changes
+    [dataDispatch] // Only recreate if dataDispatch changes
   );
 
-  const handleUpdateSingleDataItem = (data) => {
-    dataDispatch({ type: "candidate", payload: transformData([data]) });
-  };
+  const handleUpdateSingleDataItem = useCallback(
+    (data) => {
+      dataDispatch({ type: "candidate", payload: transformData([data]) });
+    },
+    [dataDispatch]
+  );
 
-  const dataCtx = {
-    ...data,
-    onStartIndexChange: handleStartIndexChange,
-    onDataChange: handleDataChange,
-    onFilteredDataChange: handleFilteredDataChange,
-    onUpdateSingleDataItem: handleUpdateSingleDataItem,
-  };
+  // Memoize the context value to prevent unnecessary re-renders
+  const dataCtx = useMemo(
+    () => ({
+      ...data,
+      onStartIndexChange: handleStartIndexChange,
+      onDataChange: handleDataChange,
+      onFilteredDataChange: handleFilteredDataChange,
+      onUpdateSingleDataItem: handleUpdateSingleDataItem,
+    }),
+    [
+      data,
+      handleStartIndexChange,
+      handleDataChange,
+      handleFilteredDataChange,
+      handleUpdateSingleDataItem,
+    ]
+  );
 
   return (
     <DataContext.Provider value={dataCtx}>{children}</DataContext.Provider>

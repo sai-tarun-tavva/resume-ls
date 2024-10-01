@@ -1,6 +1,17 @@
+import PropTypes from "prop-types";
 import { content } from "../../../../constants/content";
 import classes from "./index.module.css";
 
+/**
+ * DropArea Component
+ *
+ * A designated area for users to drag and drop files or select files through an input.
+ *
+ * @param {Function} handleDrop - Function to handle file drop event.
+ * @param {Function} handleDragOver - Function to handle drag over event.
+ * @param {Function} handleFileChange - Function to handle file input change event.
+ * @returns {JSX.Element} Rendered DropArea component
+ */
 const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
   return (
     <>
@@ -29,5 +40,12 @@ const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
   );
 };
 
+DropArea.propTypes = {
+  handleDrop: PropTypes.func.isRequired,
+  handleDragOver: PropTypes.func.isRequired,
+  handleFileChange: PropTypes.func.isRequired,
+};
+
 DropArea.displayName = "DropArea";
+
 export default DropArea;
