@@ -7,7 +7,11 @@ const HelperMessage = ({}) => {
     <div className={classes.helper}>
       <p>{message}</p>
       {/* Pending change */}
-      <a target="_blank" href={END_POINTS.BATCH_PROCESS}>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={END_POINTS.BATCH_PROCESS}
+      >
         {urlText}
       </a>
     </div>
