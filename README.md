@@ -15,11 +15,18 @@ Welcome to the Resume Parser project, a smart solution developed for Logisoft to
 
 ## 🛠️ Technology Stack
 
-- **React.js**: Powering our dynamic and responsive user interface.
+- **JavaScript**: The primary programming language used for development.
+- **React**: A JavaScript library for building user interfaces.
+- **HTML5**: The latest version of the Hypertext Markup Language for structuring content.
+- **CSS3**: The latest standard of Cascading Style Sheets for styling.
+
+## 📚 Libraries and Frameworks
+
 - **React Router**: Enabling smooth navigation throughout the application.
 - **Context API**: Managing global state for a cohesive user experience.
 - **SCSS**: Providing stylish and maintainable component styling.
 - **Bootstrap Icons**: Enhancing the UI with a comprehensive icon set.
+- **Fetch API**: Built-in web API for making HTTP requests to interact with the backend.
 
 ## 📋 Getting Started
 
