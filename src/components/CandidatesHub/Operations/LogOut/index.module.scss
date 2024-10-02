@@ -1,0 +1,14 @@
+.logout {
+  margin-right: 1rem;
+  background-color: transparent;
+  color: var(--primary-color);
+
+  i {
+    font-size: 2rem;
+  }
+
+  &:hover {
+    color: var(--primary-hover);
+    background-color: transparent;
+  }
+}

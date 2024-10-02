@@ -76,33 +76,35 @@ export const candidateValidations = {
 
 export const authValidations = {
   userName: (value) => {
-    return (
-      validateEmpty(value, value, authValidationMsgs.username.empty) ||
-      (value.length < 3 || value.length > 20 || !REGEX.usernameRegex.test(value)
-        ? authValidationMsgs.username.invalid
-        : undefined)
-    );
+    return isEmpty(value)
+      ? authValidationMsgs.username.empty
+      : undefined ||
+          (value.length < 3 ||
+          value.length > 20 ||
+          !REGEX.usernameRegex.test(value)
+            ? authValidationMsgs.username.invalid
+            : undefined);
   },
 
   password: (value) => {
-    return (
-      validateEmpty(value, value, authValidationMsgs.password.empty) ||
-      validateWithRegex(
-        value,
-        REGEX.passwordRegex,
-        authValidationMsgs.password.invalid
-      )
-    );
+    return isEmpty(value)
+      ? authValidationMsgs.password.empty
+      : undefined ||
+          validateWithRegex(
+            value,
+            REGEX.passwordRegex,
+            authValidationMsgs.password.invalid
+          );
   },
 
   email: (value) => {
-    return (
-      validateEmpty(value, value, authValidationMsgs.email.empty) ||
-      validateWithRegex(
-        value,
-        REGEX.emailRegex,
-        authValidationMsgs.email.invalid
-      )
-    );
+    return isEmpty(value)
+      ? authValidationMsgs.email.empty
+      : undefined ||
+          validateWithRegex(
+            value,
+            REGEX.emailRegex,
+            authValidationMsgs.email.invalid
+          );
   },
 };

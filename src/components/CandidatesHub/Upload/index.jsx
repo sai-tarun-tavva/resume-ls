@@ -5,10 +5,10 @@ import DropArea from "./DropArea";
 import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
-import { LoadingContext, StatusMsgContext } from "../../../store";
+import { DataContext, LoadingContext, StatusMsgContext } from "../../../store";
 import { content, END_POINTS, MAX_FILES, ROUTES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Upload Component
@@ -23,6 +23,7 @@ const Upload = () => {
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
+  const { setShouldRefetch } = useContext(DataContext);
   const { handleViewStatus } = useContext(StatusMsgContext);
   const {
     isSendingPostPatchRequest: isLoading,
@@ -145,6 +146,7 @@ const Upload = () => {
         );
         setFiles([]); // Clear files after successful upload
         toggleAllowUpload();
+        setShouldRefetch(true);
         navigate(`/${ROUTES.HOME}`);
       } else {
         handleViewStatus(

@@ -4,7 +4,7 @@ import Button from "../../../Atoms/Button";
 import { DataContext } from "../../../../store";
 import { ITEMS_PER_PAGE } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Pagination Component

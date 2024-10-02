@@ -3,6 +3,7 @@ import { transformData } from "../utilities";
 
 const initialData = {
   startIndex: 0,
+  shouldRefetch: false,
   candidateData: [],
   filteredCandidateData: [],
 };
@@ -77,6 +78,13 @@ export const DataContextProvider = ({ children }) => {
     [dataDispatch]
   );
 
+  const handleShouldRefetch = useCallback(
+    (data) => {
+      dataDispatch({ type: "shouldRefetch", payload: data });
+    },
+    [dataDispatch]
+  );
+
   // Memoize the context value to prevent unnecessary re-renders
   const dataCtx = useMemo(
     () => ({
@@ -85,6 +93,7 @@ export const DataContextProvider = ({ children }) => {
       onDataChange: handleDataChange,
       onFilteredDataChange: handleFilteredDataChange,
       onUpdateSingleDataItem: handleUpdateSingleDataItem,
+      setShouldRefetch: handleShouldRefetch,
     }),
     [
       data,
@@ -92,6 +101,7 @@ export const DataContextProvider = ({ children }) => {
       handleDataChange,
       handleFilteredDataChange,
       handleUpdateSingleDataItem,
+      handleShouldRefetch,
     ]
   );
 

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Skill Component
@@ -28,7 +28,7 @@ const Skill = ({ name, id, isEditable, onClick }) => {
 
 Skill.propTypes = {
   name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   isEditable: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 };

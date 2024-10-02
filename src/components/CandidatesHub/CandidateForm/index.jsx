@@ -13,7 +13,7 @@ import {
   transformPhoneNumber,
 } from "../../../utilities";
 import { END_POINTS, ROUTES, content } from "../../../constants";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * CandidateForm Component
@@ -265,6 +265,7 @@ const CandidateForm = () => {
       skills: localSkills?.join(", "),
       total_experience: experienceValue,
       file_path: info?.file_path || "",
+      timestamp: info?.timestamp,
     };
 
     if (enableSave) {
@@ -429,6 +430,7 @@ const CandidateForm = () => {
           </div>
         </div>
         <Input
+          id="skills"
           type="hidden"
           name="skills"
           value={localSkills?.join(", ")}

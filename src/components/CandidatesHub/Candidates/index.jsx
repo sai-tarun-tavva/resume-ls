@@ -4,7 +4,7 @@ import Loader from "../../Atoms/Loader";
 import { DataContext, LoadingContext } from "../../../store";
 import { content, END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Candidates Component
@@ -20,6 +20,8 @@ const Candidates = () => {
     filteredCandidateData,
     onDataChange,
     onFilteredDataChange,
+    shouldRefetch,
+    setShouldRefetch,
   } = useContext(DataContext);
 
   const { isFetching: isLoading, handleFetching: setLoading } =
@@ -64,9 +66,18 @@ const Candidates = () => {
     };
 
     // Fetch candidates only for the first time
-    if (candidateData.length === 0) getData();
-    else setLoading(false);
-  }, [onDataChange, onFilteredDataChange, candidateData.length, setLoading]);
+    if (candidateData.length === 0 || shouldRefetch) {
+      getData();
+      setShouldRefetch(false);
+    } else setLoading(false);
+  }, [
+    onDataChange,
+    onFilteredDataChange,
+    candidateData.length,
+    setLoading,
+    shouldRefetch,
+    setShouldRefetch,
+  ]);
 
   return (
     <section className={classes.cards}>

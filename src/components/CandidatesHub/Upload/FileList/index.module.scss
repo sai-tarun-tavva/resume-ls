@@ -1,0 +1,50 @@
+$file-list-max-height: 14.5rem;
+$file-item-border: 0.06rem solid #ddd;
+$file-item-border-radius: 0.5rem;
+
+.fileList {
+  margin-bottom: 1rem;
+  max-height: $file-list-max-height;
+  overflow-y: auto;
+  font-weight: 500;
+  color: #555;
+  border: $file-item-border;
+  border-radius: $file-item-border-radius;
+  background: #f9f9f9;
+  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.1);
+
+  .fileItem {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 0.06rem solid #eee;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: #f1f1f1;
+    }
+
+    .fileName {
+      flex-grow: 1;
+      font-weight: 600;
+      color: #333;
+    }
+
+    > i {
+      margin-right: 0.75rem;
+      color: var(--primary-color);
+    }
+
+    .closeButton {
+      background: none;
+      border: none;
+      color: #dc3545;
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #c82333;
+      }
+    }
+  }
+}

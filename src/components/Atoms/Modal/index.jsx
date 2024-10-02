@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Modal Component

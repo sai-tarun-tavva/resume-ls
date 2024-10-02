@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { content } from "../../../../constants/content";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * DropArea Component

@@ -2,7 +2,35 @@
 
 /* Base Styles */
 html {
-  font-size: 8px; /* Default for small screens (less than 640px) */
+  font-size: 8px; // Default for small screens (less than 640px)
+
+  @media (min-width: 640px) {
+    font-size: 10px; // For screens 640px and up
+  }
+
+  @media (min-width: 768px) {
+    font-size: 12px; // For screens 768px and up (tablets)
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 14px; // For screens 1024px and up (small laptops)
+  }
+
+  @media (min-width: 1366px) {
+    font-size: 16px; // For screens 1366px and up (large laptops)
+  }
+
+  @media (min-width: 1920px) {
+    font-size: 20px; // For screens 1920px and up (full HD TVs)
+  }
+
+  @media (min-width: 2560px) {
+    font-size: 24px; // For screens 2560px and up (2K displays)
+  }
+
+  @media (min-width: 3840px) {
+    font-size: 45px; // For screens 3840px and up (4K displays)
+  }
 }
 
 :root {
@@ -49,48 +77,5 @@ body {
   100% {
     text-shadow: 0 0 0.5rem rgba(255, 255, 255, 1),
       0 0 1rem rgba(255, 255, 255, 0.8);
-  }
-}
-
-/* Responsive Font Sizes */
-@media (min-width: 640px) {
-  html {
-    font-size: 10px; /* For screens 640px and up */
-  }
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 12px; /* For screens 768px and up (tablets) */
-  }
-}
-
-@media (min-width: 1024px) {
-  html {
-    font-size: 14px; /* For screens 1024px and up (small laptops) */
-  }
-}
-
-@media (min-width: 1366px) {
-  html {
-    font-size: 16px; /* For screens 1366px and up (large laptops) */
-  }
-}
-
-@media (min-width: 1920px) {
-  html {
-    font-size: 20px; /* For screens 1920px and up (full HD TVs) */
-  }
-}
-
-@media (min-width: 2560px) {
-  html {
-    font-size: 24px; /* For screens 2560px and up (2K displays) */
-  }
-}
-
-@media (min-width: 3840px) {
-  html {
-    font-size: 45px; /* For screens 3840px and up (4K displays) */
   }
 }

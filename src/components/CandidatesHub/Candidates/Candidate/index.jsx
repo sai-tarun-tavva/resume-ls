@@ -13,7 +13,7 @@ import {
 } from "../../../../utilities";
 import { ROUTES } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Candidate Component

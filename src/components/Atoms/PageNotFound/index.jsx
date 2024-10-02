@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { content, ROUTES } from "../../../constants";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * PageNotFound Component

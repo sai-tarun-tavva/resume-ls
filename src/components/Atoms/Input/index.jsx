@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import classes from "./index.module.css";
+import classes from "./index.module.scss";
 
 /**
  * Input Component
@@ -28,11 +28,9 @@ const Input = ({
       {leftIcon && <span className={classes.leftIcon}>{leftIcon}</span>}
       <input id={id} {...props} />
       {children}
-      {error && (
-        <div className={classes.controlError}>
-          <p>{error}</p>
-        </div>
-      )}
+
+      <div className={classes.controlError}>{error && <p>{error}</p>}</div>
+
       {rightIcon && (
         <span onClick={rightIconOnClick} className={classes.rightIcon}>
           {rightIcon}

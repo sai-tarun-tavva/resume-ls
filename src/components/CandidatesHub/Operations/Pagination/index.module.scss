@@ -1,0 +1,43 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.6rem;
+  margin: 1.25rem;
+
+  .prevButton,
+  .nextButton {
+    font-size: 2rem;
+    margin: 0 0.3rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .prevButton {
+    border-radius: 3rem 0 0 3rem;
+  }
+
+  .nextButton {
+    border-radius: 0 3rem 3rem 0;
+  }
+
+  span {
+    margin: 0 0.6rem;
+    font-size: 1rem;
+    color: #333333;
+  }
+
+  .progressContainer {
+    width: 100%;
+    height: 0.5rem;
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+    margin-top: 0.6rem;
+  }
+
+  .progressBar {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 0.25rem;
+    transition: width 0.3s ease-in-out;
+  }
+}
