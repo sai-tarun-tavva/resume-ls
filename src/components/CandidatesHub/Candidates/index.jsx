@@ -20,6 +20,8 @@ const Candidates = () => {
     filteredCandidateData,
     onDataChange,
     onFilteredDataChange,
+    shouldRefetch,
+    setShouldRefetch,
   } = useContext(DataContext);
 
   const { isFetching: isLoading, handleFetching: setLoading } =
@@ -64,9 +66,18 @@ const Candidates = () => {
     };
 
     // Fetch candidates only for the first time
-    if (candidateData.length === 0) getData();
-    else setLoading(false);
-  }, [onDataChange, onFilteredDataChange, candidateData.length, setLoading]);
+    if (candidateData.length === 0 || shouldRefetch) {
+      getData();
+      setShouldRefetch(false);
+    } else setLoading(false);
+  }, [
+    onDataChange,
+    onFilteredDataChange,
+    candidateData.length,
+    setLoading,
+    shouldRefetch,
+    setShouldRefetch,
+  ]);
 
   return (
     <section className={classes.cards}>

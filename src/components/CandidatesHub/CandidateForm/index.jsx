@@ -265,6 +265,7 @@ const CandidateForm = () => {
       skills: localSkills?.join(", "),
       total_experience: experienceValue,
       file_path: info?.file_path || "",
+      timestamp: info?.timestamp,
     };
 
     if (enableSave) {
