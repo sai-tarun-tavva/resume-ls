@@ -2,6 +2,8 @@
 
 Welcome to the Resume Parser project, a smart solution developed for Logisoft to enhance your hiring workflow. This application is designed to help hiring managers efficiently share and manage candidate information across departments.
 
+> **Note:** This project focuses solely on the user interface (UI) of the Resume Parser application. It does not include backend functionality or data processing.
+
 ## 🚀 Key Features
 
 - **Secure Authentication**: Protect your data with robust user authentication.
