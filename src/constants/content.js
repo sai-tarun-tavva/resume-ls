@@ -70,7 +70,7 @@ export const content = {
     },
     candidate: {
       defaultValues: {
-        phoneNumber: "Mobile Number",
+        phoneNumber: "Phone Number",
         email: "Email",
         location: "City",
         region: "State",
@@ -81,7 +81,7 @@ export const content = {
     candidateForm: {
       placeholders: {
         name: "Name",
-        phoneNumber: "Mobile number",
+        phoneNumber: "Phone number",
         email: "Email",
         skill: "Skill",
         linkedInUrl: "https://www.linkedin.com/in/your-profile",
