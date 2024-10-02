@@ -11,7 +11,6 @@ Welcome to the Resume Parser project, a smart solution developed for Logisoft to
 - **Effortless Resume Upload**: Simplify the process of adding new candidates to your system.
 - **Intuitive Editing**: Update candidate profiles with ease through our user-friendly interface.
 - **Smart Search**: Quickly find the right candidates using our powerful search functionality.
-- **Responsive Design**: Enjoy a seamless experience across all your devices.
 
 ## 🛠️ Technology Stack
 
