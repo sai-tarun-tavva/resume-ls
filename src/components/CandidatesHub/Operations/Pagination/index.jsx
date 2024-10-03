@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Button from "../../../Atoms/Button";
-import { DataContext } from "../../../../store";
+import { uiActions } from "../../../../store";
 import { ITEMS_PER_PAGE } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
@@ -16,15 +17,16 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered pagination component.
  */
 const Pagination = ({ enablePagination }) => {
+  const dispatch = useDispatch();
+  const { filteredCandidates } = useSelector((state) => state.data);
   const [currentPage, setCurrentPage] = useState(1);
-  const { onStartIndexChange, filteredCandidateData } = useContext(DataContext);
-  const totalItems = filteredCandidateData.length;
+  const totalItems = filteredCandidates.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   useEffect(() => {
     // Re-initiate current page to 1 whenever filtered data updates
     setCurrentPage(1);
-  }, [filteredCandidateData]);
+  }, [filteredCandidates]);
 
   /**
    * Handles page click event to change the current page.
@@ -37,7 +39,7 @@ const Pagination = ({ enablePagination }) => {
     setCurrentPage(page);
 
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
-    onStartIndexChange(startIndex);
+    dispatch(uiActions.updateStartIndex(startIndex));
   };
 
   const progressPercentage = totalPages ? (currentPage / totalPages) * 100 : 0;

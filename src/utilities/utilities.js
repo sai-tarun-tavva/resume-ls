@@ -4,7 +4,7 @@
  * @param {Array<Object>} data - The array of data to filter.
  * @param {function} update - The function to call with the filtered results.
  */
-export const handleSearchClick = (searchText, data, update) => {
+export const handleSearchClick = (searchText, data) => {
   const lowerCaseSearchText = searchText.toLowerCase();
 
   const filteredResults = data.filter((item) => {
@@ -14,7 +14,7 @@ export const handleSearchClick = (searchText, data, update) => {
     });
   });
 
-  update(filteredResults);
+  return filteredResults;
 };
 
 /**

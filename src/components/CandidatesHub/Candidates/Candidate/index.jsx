@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Actions from "./Actions";
 import Skills from "../../../Atoms/Skills";
-import { StatusMsgContext } from "../../../../store";
+import { statusActions } from "../../../../store";
 import {
   calculateTimeAgo,
   isCandidateNew,
@@ -25,7 +25,7 @@ import classes from "./index.module.scss";
  */
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
-  const { handleViewStatus } = useContext(StatusMsgContext);
+  const dispatch = useDispatch();
 
   const dateCreated = new Date(candidate.timestamp);
   const isNew = isCandidateNew(dateCreated);
@@ -38,7 +38,7 @@ const Candidate = ({ candidate }) => {
    */
   const handleEdit = (event) => {
     event.preventDefault();
-    handleViewStatus();
+    dispatch(statusActions.resetStatus());
 
     const candidateId = candidate.id;
     navigate(replaceRouteParam(ROUTES.CANDIDATE_FORM, { candidateId }));

@@ -1,11 +1,12 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import HelperMessage from "./HelperMessage";
 import DropArea from "./DropArea";
 import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
-import { DataContext, LoadingContext, StatusMsgContext } from "../../../store";
+import { loadingActions, statusActions, uiActions } from "../../../store";
 import { content, END_POINTS, MAX_FILES, ROUTES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
@@ -21,14 +22,10 @@ import classes from "./index.module.scss";
  */
 const Upload = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.loading);
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
-  const { setShouldRefetch } = useContext(DataContext);
-  const { handleViewStatus } = useContext(StatusMsgContext);
-  const {
-    isSendingPostPatchRequest: isLoading,
-    handleToggleSendingPostPatchRequest: setLoading,
-  } = useContext(LoadingContext);
 
   /**
    * Toggles the upload modal visibility and manages body overflow style.
@@ -67,17 +64,19 @@ const Upload = () => {
       );
 
       if (files.length + validFiles.length > MAX_FILES) {
-        handleViewStatus(
-          `Only first ${MAX_FILES} files are being uploaded. Extra files were excluded.`,
-          "error",
-          true
+        dispatch(
+          statusActions.updateStatus(
+            `Only first ${MAX_FILES} files are being uploaded. Extra files were excluded.`,
+            "error",
+            true
+          )
         );
         validFiles.splice(MAX_FILES - files.length); // Ensure we don't exceed the limit
       }
 
       setFiles((prevFiles) => [...validFiles, ...prevFiles]);
     },
-    [files, handleViewStatus]
+    [files, dispatch]
   );
 
   /**
@@ -122,7 +121,7 @@ const Upload = () => {
 
     if (isLoading) return;
 
-    setLoading();
+    dispatch(loadingActions.enableLoading());
 
     // Prepare form data for upload
     const formData = new FormData();
@@ -138,36 +137,42 @@ const Upload = () => {
       });
 
       if (response.ok) {
-        handleViewStatus(
-          `${files.length} file${
-            files.length > 1 ? "s" : ""
-          } uploaded successfully!`,
-          "success"
+        dispatch(
+          statusActions.updateStatus(
+            `${files.length} file${
+              files.length > 1 ? "s" : ""
+            } uploaded successfully!`,
+            "success"
+          )
         );
         setFiles([]); // Clear files after successful upload
         toggleAllowUpload();
-        setShouldRefetch(true);
+        dispatch(uiActions.updateShouldRefetch(true));
         navigate(`/${ROUTES.HOME}`);
       } else {
-        handleViewStatus(
-          `Failed to upload file${files.length > 1 ? "s" : ""}.`,
-          "failure",
-          true
+        dispatch(
+          statusActions.updateStatus(
+            `Failed to upload file${files.length > 1 ? "s" : ""}.`,
+            "failure",
+            true
+          )
         );
         console.error("Upload failed:", response.statusText);
       }
     } catch (error) {
-      handleViewStatus(
-        content.candidateHub.upload.errors.formUploadRequest.network,
-        "failure",
-        true
+      dispatch(
+        statusActions.updateStatus(
+          content.candidateHub.upload.errors.formUploadRequest.network,
+          "failure",
+          true
+        )
       );
       console.error(
         content.candidateHub.upload.errors.formUploadRequest.network,
         error
       );
     } finally {
-      setLoading();
+      dispatch(loadingActions.disableLoading());
     }
   };
 
