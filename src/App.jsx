@@ -1,6 +1,5 @@
 import { RouterProvider } from "react-router-dom";
 import appRouter from "./app-router";
-import { DataContextProvider, LoadingContextProvider } from "./store";
 
 /**
  * Main application component
@@ -9,13 +8,9 @@ import { DataContextProvider, LoadingContextProvider } from "./store";
  */
 const App = () => {
   return (
-    <LoadingContextProvider>
-      <DataContextProvider>
-        <main>
-          <RouterProvider router={appRouter} />
-        </main>
-      </DataContextProvider>
-    </LoadingContextProvider>
+    <main>
+      <RouterProvider router={appRouter} />
+    </main>
   );
 };
 

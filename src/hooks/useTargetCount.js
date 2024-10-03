@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadingActions } from "../store";
 import { END_POINTS } from "../constants";
-import { LoadingContext } from "../store";
 
 /**
  * Custom hook to fetch and manage the target count.
@@ -9,12 +10,12 @@ import { LoadingContext } from "../store";
  * @returns {object} An object containing the target count and the loading state.
  */
 export const useTargetCount = () => {
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.loading);
   const [targetCount, setTargetCount] = useState(0);
-  const { isFetching: isLoading, handleFetching: setLoading } =
-    useContext(LoadingContext);
 
   useEffect(() => {
-    setLoading(true);
+    dispatch(loadingActions.enableLoading());
 
     // Fetch the target count asynchronously
     const fetchTargetCount = async () => {
@@ -30,12 +31,12 @@ export const useTargetCount = () => {
       } catch (error) {
         console.error("Error fetching target count:", error);
       } finally {
-        setLoading(false);
+        dispatch(loadingActions.disableLoading());
       }
     };
 
     fetchTargetCount();
-  }, [setLoading]);
+  }, [dispatch]);
 
   return { targetCount, isLoading };
 };

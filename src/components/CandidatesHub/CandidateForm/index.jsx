@@ -1,11 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../../hooks";
 import Skills from "../../Atoms/Skills";
 import Button from "../../Atoms/Button";
 import Input from "../../Atoms/Input";
 import StatusMessage from "../../Atoms/StatusMessage";
-import { DataContext, LoadingContext, StatusMsgContext } from "../../../store";
+import { dataActions, loadingActions, statusActions } from "../../../store";
 import {
   arraysEqual,
   candidateValidations,
@@ -29,16 +30,12 @@ import classes from "./index.module.scss";
 const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
-  const { handleViewStatus } = useContext(StatusMsgContext);
-  const {
-    isSendingPostPatchRequest: isLoading,
-    handleToggleSendingPostPatchRequest: setLoading,
-  } = useContext(LoadingContext);
-  const { filteredCandidateData, onUpdateSingleDataItem } =
-    useContext(DataContext);
+  const dispatch = useDispatch();
+  const { filteredCandidates } = useSelector((state) => state.data);
+  const { isLoading } = useSelector((state) => state.loading);
 
   // Fetch candidate information based on the candidateId
-  const info = filteredCandidateData.find(
+  const info = filteredCandidates.find(
     (candidate) => candidate.id === +candidateId
   );
 
@@ -68,7 +65,7 @@ const CandidateForm = () => {
     // If there's an error, reset input and show status message
     if (skillError) {
       resetSkillValue();
-      handleViewStatus(skillError, "failure");
+      dispatch(statusActions.updateStatus(skillError, "failure"));
       return;
     }
 
@@ -237,7 +234,7 @@ const CandidateForm = () => {
     event.preventDefault();
     if (isLoading) return;
 
-    setLoading();
+    dispatch(loadingActions.enableLoading());
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -282,27 +279,33 @@ const CandidateForm = () => {
         // Handle response from the server
         if (response.ok) {
           // Update candidate data in context
-          onUpdateSingleDataItem(localValues);
-          handleViewStatus(
-            content.candidateHub.candidateForm.errors.formEditRequest.success,
-            "success"
+          dispatch(dataActions.updateCandidate(localValues));
+          dispatch(
+            statusActions.updateStatus(
+              content.candidateHub.candidateForm.errors.formEditRequest.success,
+              "success"
+            )
           );
         } else {
           // Handle server error response
-          handleViewStatus(
-            content.candidateHub.candidateForm.errors.formEditRequest.failure,
-            "failure"
+          dispatch(
+            statusActions.updateStatus(
+              content.candidateHub.candidateForm.errors.formEditRequest.failure,
+              "failure"
+            )
           );
         }
       } catch (error) {
         // Handle fetch error
-        handleViewStatus(
-          content.candidateHub.candidateForm.errors.formEditRequest.network,
-          "failure"
+        dispatch(
+          statusActions.updateStatus(
+            content.candidateHub.candidateForm.errors.formEditRequest.network,
+            "failure"
+          )
         );
       } finally {
         handleClose();
-        setLoading();
+        dispatch(loadingActions.disableLoading());
       }
     }
   };

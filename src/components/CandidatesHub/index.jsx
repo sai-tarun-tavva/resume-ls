@@ -1,8 +1,8 @@
+import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 import Operations from "./Operations";
 import Upload from "./Upload";
 import StatusMessage from "../Atoms/StatusMessage";
-import { StatusMsgContextProvider } from "../../store";
 
 /**
  * CandidatesHub Component
@@ -14,12 +14,12 @@ import { StatusMsgContextProvider } from "../../store";
  */
 const CandidatesHub = () => {
   return (
-    <StatusMsgContextProvider>
+    <Fragment>
       <StatusMessage />
       <Operations />
       <Outlet />
       <Upload />
-    </StatusMsgContextProvider>
+    </Fragment>
   );
 };
 

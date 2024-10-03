@@ -1,7 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
-import { DataContext, LoadingContext } from "../../../store";
+import { dataActions, loadingActions, uiActions } from "../../../store";
 import { content, END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
@@ -14,21 +15,15 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered candidates component.
  */
 const Candidates = () => {
-  const {
-    startIndex,
-    candidateData,
-    filteredCandidateData,
-    onDataChange,
-    onFilteredDataChange,
-    shouldRefetch,
-    setShouldRefetch,
-  } = useContext(DataContext);
-
-  const { isFetching: isLoading, handleFetching: setLoading } =
-    useContext(LoadingContext);
+  const dispatch = useDispatch();
+  const { startIndex, shouldRefetch } = useSelector((state) => state.ui);
+  const { candidates: globalCandidates, filteredCandidates } = useSelector(
+    (state) => state.data
+  );
+  const { isLoading } = useSelector((state) => state.loading);
 
   // Slice the filtered candidates to display only the current page
-  const candidates = filteredCandidateData.slice(
+  const candidates = filteredCandidates.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -58,26 +53,19 @@ const Candidates = () => {
      * Fetch candidates and update context state.
      */
     const getData = async () => {
-      setLoading(true);
+      dispatch(loadingActions.enableLoading());
       const candidates = await fetchCandidates();
-      onDataChange(candidates);
-      onFilteredDataChange(candidates);
-      setLoading(false);
+      dispatch(dataActions.replaceCandidates(candidates));
+      dispatch(dataActions.replaceFilteredCandidates(candidates));
+      dispatch(loadingActions.disableLoading());
     };
 
     // Fetch candidates only for the first time
-    if (candidateData.length === 0 || shouldRefetch) {
+    if (globalCandidates.length === 0 || shouldRefetch) {
       getData();
-      setShouldRefetch(false);
-    } else setLoading(false);
-  }, [
-    onDataChange,
-    onFilteredDataChange,
-    candidateData.length,
-    setLoading,
-    shouldRefetch,
-    setShouldRefetch,
-  ]);
+      dispatch(uiActions.updateShouldRefetch(false));
+    } else dispatch(loadingActions.disableLoading());
+  }, [globalCandidates.length, dispatch, shouldRefetch]);
 
   return (
     <section className={classes.cards}>

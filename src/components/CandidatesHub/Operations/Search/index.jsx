@@ -1,6 +1,7 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { DataContext } from "../../../../store";
+import { dataActions, uiActions } from "../../../../store";
 import { handleSearchClick } from "../../../../utilities";
 import { content } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -17,7 +18,8 @@ import classes from "./index.module.scss";
  */
 const Search = ({ enableSearch }) => {
   const searchTextRef = useRef("");
-  const { candidateData, onFilteredDataChange } = useContext(DataContext);
+  const dispatch = useDispatch();
+  const { candidates } = useSelector((state) => state.data);
 
   /**
    * Handles the form submission event.
@@ -27,11 +29,13 @@ const Search = ({ enableSearch }) => {
    */
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    handleSearchClick(
+    const filteredResults = handleSearchClick(
       searchTextRef.current.value,
-      candidateData,
-      onFilteredDataChange
+      candidates
     );
+
+    dispatch(dataActions.replaceFilteredCandidates(filteredResults));
+    dispatch(uiActions.updateStartIndex(0)); // Reset startIndex to 0 after filter
   };
 
   return (

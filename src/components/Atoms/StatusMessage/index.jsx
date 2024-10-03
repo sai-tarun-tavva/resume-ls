@@ -1,5 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { StatusMsgContext } from "../../../store";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { statusActions } from "../../../store";
 import classes from "./index.module.scss";
 
 /**
@@ -11,8 +12,8 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element|null} The rendered StatusMessage component or null if not visible.
  */
 const StatusMessage = () => {
-  const { message, type, darkMode, handleViewStatus } =
-    useContext(StatusMsgContext);
+  const dispatch = useDispatch();
+  const { message, type, darkMode } = useSelector((state) => state.status);
   const [isVisible, setIsVisible] = useState(false);
 
   // Use effect to hide the message after 5 seconds
@@ -21,13 +22,13 @@ const StatusMessage = () => {
       setIsVisible(true);
       const timer = setTimeout(() => {
         setIsVisible(false);
-        handleViewStatus();
+        dispatch(statusActions.resetStatus());
       }, 5000);
       return () => clearTimeout(timer); // Cleanup timeout
     }
 
     setIsVisible(false); // Unmount or hide if no message
-  }, [message, handleViewStatus]);
+  }, [message, dispatch]);
 
   return (
     isVisible && (
