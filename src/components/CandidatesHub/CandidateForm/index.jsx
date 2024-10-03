@@ -65,7 +65,9 @@ const CandidateForm = () => {
     // If there's an error, reset input and show status message
     if (skillError) {
       resetSkillValue();
-      dispatch(statusActions.updateStatus(skillError, "failure"));
+      dispatch(
+        statusActions.updateStatus({ message: skillError, type: "failure" })
+      );
       return;
     }
 
@@ -281,27 +283,32 @@ const CandidateForm = () => {
           // Update candidate data in context
           dispatch(dataActions.updateCandidate(localValues));
           dispatch(
-            statusActions.updateStatus(
-              content.candidateHub.candidateForm.errors.formEditRequest.success,
-              "success"
-            )
+            statusActions.updateStatus({
+              message:
+                content.candidateHub.candidateForm.errors.formEditRequest
+                  .success,
+              type: "success",
+            })
           );
         } else {
           // Handle server error response
           dispatch(
-            statusActions.updateStatus(
-              content.candidateHub.candidateForm.errors.formEditRequest.failure,
-              "failure"
-            )
+            statusActions.updateStatus({
+              message:
+                content.candidateHub.candidateForm.errors.formEditRequest
+                  .failure,
+              type: "failure",
+            })
           );
         }
       } catch (error) {
         // Handle fetch error
         dispatch(
-          statusActions.updateStatus(
-            content.candidateHub.candidateForm.errors.formEditRequest.network,
-            "failure"
-          )
+          statusActions.updateStatus({
+            message:
+              content.candidateHub.candidateForm.errors.formEditRequest.network,
+            type: "failure",
+          })
         );
       } finally {
         handleClose();

@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 import Operations from "./Operations";
 import Upload from "./Upload";
-import StatusMessage from "../Atoms/StatusMessage";
 
 /**
  * CandidatesHub Component
@@ -15,7 +14,6 @@ import StatusMessage from "../Atoms/StatusMessage";
 const CandidatesHub = () => {
   return (
     <Fragment>
-      <StatusMessage />
       <Operations />
       <Outlet />
       <Upload />

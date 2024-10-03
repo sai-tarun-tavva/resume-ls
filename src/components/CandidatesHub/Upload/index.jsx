@@ -65,11 +65,11 @@ const Upload = () => {
 
       if (files.length + validFiles.length > MAX_FILES) {
         dispatch(
-          statusActions.updateStatus(
-            `Only first ${MAX_FILES} files are being uploaded. Extra files were excluded.`,
-            "error",
-            true
-          )
+          statusActions.updateStatus({
+            message: `Only first ${MAX_FILES} files are being uploaded. Extra files were excluded.`,
+            type: "error",
+            darkMode: true,
+          })
         );
         validFiles.splice(MAX_FILES - files.length); // Ensure we don't exceed the limit
       }
@@ -138,12 +138,12 @@ const Upload = () => {
 
       if (response.ok) {
         dispatch(
-          statusActions.updateStatus(
-            `${files.length} file${
+          statusActions.updateStatus({
+            message: `${files.length} file${
               files.length > 1 ? "s" : ""
             } uploaded successfully!`,
-            "success"
-          )
+            type: "success",
+          })
         );
         setFiles([]); // Clear files after successful upload
         toggleAllowUpload();
@@ -151,21 +151,21 @@ const Upload = () => {
         navigate(`/${ROUTES.HOME}`);
       } else {
         dispatch(
-          statusActions.updateStatus(
-            `Failed to upload file${files.length > 1 ? "s" : ""}.`,
-            "failure",
-            true
-          )
+          statusActions.updateStatus({
+            message: `Failed to upload file${files.length > 1 ? "s" : ""}.`,
+            type: "failure",
+            darkMode: true,
+          })
         );
         console.error("Upload failed:", response.statusText);
       }
     } catch (error) {
       dispatch(
-        statusActions.updateStatus(
-          content.candidateHub.upload.errors.formUploadRequest.network,
-          "failure",
-          true
-        )
+        statusActions.updateStatus({
+          message: content.candidateHub.upload.errors.formUploadRequest.network,
+          type: "failure",
+          darkMode: true,
+        })
       );
       console.error(
         content.candidateHub.upload.errors.formUploadRequest.network,
