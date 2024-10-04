@@ -17,6 +17,27 @@ export const handleSearchClick = (searchText, data) => {
   return filteredResults;
 };
 
+/**
+ * Checks if the file type is valid.
+ * @param {File} file - The file to check.
+ * @returns {boolean} True if the file type is valid, false otherwise.
+ */
+export const isValidFileType = (file) => {
+  const validTypes = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+  ];
+  return validTypes.includes(file.type);
+};
+
+/**
+ * Highlights the matching text within a given string.
+ * @param {string} text - The text to search and highlight within.
+ * @param {string} highlight - The text to highlight.
+ * @returns {JSX.Element} The text with highlighted matches.
+ */
 export const highlightText = (text, highlight) => {
   if (!highlight) return text;
 
@@ -55,6 +76,11 @@ export const isCandidateNew = (dateCreated) => {
   return Date.now() - dateCreated.getTime() < 7 * 24 * 60 * 60 * 1000; // less than 7 days
 };
 
+/**
+ * Resets the status asynchronously.
+ * @param {function} action - The action to dispatch.
+ * @returns {Promise<void>} A promise that resolves after the status is reset.
+ */
 export const resetStatusAsync = (action) => (dispatch) => {
   return new Promise((resolve) => {
     dispatch(action());

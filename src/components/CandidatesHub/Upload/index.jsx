@@ -7,7 +7,7 @@ import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { loadingActions, statusActions, uiActions } from "../../../store";
-import { uploadFiles } from "../../../utilities";
+import { isValidFileType, uploadFiles } from "../../../utilities";
 import { CONTENT, MAX_FILES, ROUTES, STATUS_CODES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
@@ -56,11 +56,7 @@ const Upload = () => {
     (selectedFiles) => {
       const validFiles = selectedFiles.filter(
         (file) =>
-          (file.type === "application/pdf" ||
-            file.type === "application/msword" ||
-            file.type ===
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-            file.type === "text/plain") &&
+          isValidFileType(file) &&
           !files.some((existingFile) => existingFile.name === file.name)
       );
 
