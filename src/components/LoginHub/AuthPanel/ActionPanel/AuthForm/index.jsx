@@ -7,7 +7,7 @@ import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
 import { statusActions } from "../../../../../store";
 import { authValidations } from "../../../../../utilities";
-import { authenticateUser } from "../../../../../api/authApi";
+import { authenticateUser } from "../../../../../api";
 import {
   END_POINTS,
   ROUTES,
