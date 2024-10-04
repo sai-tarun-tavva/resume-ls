@@ -10,9 +10,9 @@ import classes from "./index.module.scss";
  * @param {string} iconName - The name of the icon to display (without the "bi-" prefix).
  * @returns {JSX.Element} The rendered IconText component.
  */
-const IconText = ({ children, iconName }) => {
+const IconText = ({ maxWidth, children, iconName }) => {
   return (
-    <div className={classes.iconText}>
+    <div className={classes.iconText} style={{ maxWidth }}>
       <span>
         <i className={`bi bi-${iconName}-fill`}></i>
       </span>

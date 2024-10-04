@@ -56,10 +56,10 @@ const MainInfo = ({ candidate }) => {
         {getLinkedIn(linkedin)}
       </div>
 
-      <IconText iconName="telephone">
+      <IconText iconName="telephone" maxWidth={"12.5rem"}>
         {phone_numbers ? highlightText(phone_numbers, searchTerm) : phoneNumber}
       </IconText>
-      <IconText iconName="envelope">
+      <IconText iconName="envelope" maxWidth={"12.5rem"}>
         {email ? highlightText(email, searchTerm) : defaultEmail}
       </IconText>
     </div>
