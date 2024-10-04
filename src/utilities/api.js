@@ -85,9 +85,6 @@ export const editCandidate = async (id, body) => {
       END_POINTS.EDIT_CANDIDATE.replace("{{id}}", id),
       {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body,
       }
     );

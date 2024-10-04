@@ -12,5 +12,5 @@ export const REGEX = {
   phoneRegex: /^\d{1,3}[-\s]?\d{1,3}[-\s]?\d{1,4}$/, // Only 10 digits with random spaces and hyphens
   emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // General email pattern
   passwordRegex: /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/, // General password validation
-  linkedInRegex: /^linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/, // linkedin.com/in/your-profile
+  linkedInRegex: /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/, // https://www.linkedin.com/in/your-profile
 };
