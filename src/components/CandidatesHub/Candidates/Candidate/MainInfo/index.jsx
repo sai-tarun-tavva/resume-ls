@@ -48,9 +48,11 @@ const MainInfo = ({ candidate }) => {
   return (
     <div className={classes.mainInfo}>
       <div className={classes.name}>
-        {name
-          ? highlightText(capitalizeFirstLetter(name), searchTerm)
-          : defaultName}
+        <span>
+          {name
+            ? highlightText(capitalizeFirstLetter(name), searchTerm)
+            : defaultName}
+        </span>
         {getLinkedIn(linkedin)}
       </div>
 
