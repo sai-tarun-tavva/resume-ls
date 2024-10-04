@@ -74,6 +74,7 @@ export const content = {
     },
     candidate: {
       defaultValues: {
+        name: "Name",
         phoneNumber: "Phone Number",
         email: "Email",
         location: "City",

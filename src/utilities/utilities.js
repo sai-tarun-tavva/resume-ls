@@ -17,6 +17,23 @@ export const handleSearchClick = (searchText, data) => {
   return filteredResults;
 };
 
+export const highlightText = (text, highlight) => {
+  if (!highlight) return text;
+
+  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  return (
+    <span>
+      {parts.map((part, index) =>
+        part.toLowerCase() === highlight.toLowerCase() ? (
+          <mark key={index}>{part}</mark>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
+};
+
 /**
  * Replaces route parameters in a given route string with actual parameter values.
  * @param {string} route - The route string with parameters.
