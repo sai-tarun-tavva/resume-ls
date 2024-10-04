@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Search from "./Search";
 import Pagination from "./Pagination";
 import Logout from "./LogOut";
@@ -15,7 +15,12 @@ import classes from "./index.module.scss";
  */
 const Operations = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const enableOperations = location.pathname === `/${ROUTES.HOME}`;
+
+  const handleLogout = () => {
+    navigate(`/${ROUTES.AUTH}`);
+  };
 
   return (
     <header className={classes.operations}>
@@ -26,7 +31,7 @@ const Operations = () => {
 
       <Search enableSearch={enableOperations} />
       <Pagination enablePagination={enableOperations} />
-      <Logout />
+      <Logout onLogout={handleLogout} />
     </header>
   );
 };
