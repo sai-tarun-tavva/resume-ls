@@ -1,6 +1,12 @@
 export const ITEMS_PER_PAGE = 20;
 export const MAX_FILES = 30;
 
+export const STATUS_CODES = {
+  SUCCESS: 200,
+  CREATED: 201,
+  INVALID: 400,
+};
+
 export const REGEX = {
   usernameRegex: /^[a-zA-Z-]+$/, // Only letters and hyphens
   phoneRegex: /^\d{10}$/, // Exactly 10 digits

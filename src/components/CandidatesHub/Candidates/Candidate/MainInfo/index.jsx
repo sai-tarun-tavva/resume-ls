@@ -1,6 +1,7 @@
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import IconText from "../../../../Atoms/IconText";
-import { capitalizeFirstLetter } from "../../../../../utilities";
+import { capitalizeFirstLetter, highlightText } from "../../../../../utilities";
 import { content } from "../../../../../constants";
 import classes from "./index.module.scss";
 
@@ -36,19 +37,29 @@ const getLinkedIn = (url) => {
  * @returns {JSX.Element} The rendered main information of the candidate.
  */
 const MainInfo = ({ candidate }) => {
+  const { searchTerm } = useSelector((state) => state.ui);
   const { name, phone_numbers, email, linkedin } = candidate;
-  const { phoneNumber, email: defaultEmail } =
-    content.candidateHub.candidate.defaultValues;
+  const {
+    name: defaultName,
+    phoneNumber,
+    email: defaultEmail,
+  } = content.candidateHub.candidate.defaultValues;
 
   return (
     <div className={classes.mainInfo}>
       <div className={classes.name}>
-        {capitalizeFirstLetter(name)}
+        {name
+          ? highlightText(capitalizeFirstLetter(name), searchTerm)
+          : defaultName}
         {getLinkedIn(linkedin)}
       </div>
 
-      <IconText iconName="telephone">{phone_numbers || phoneNumber}</IconText>
-      <IconText iconName="envelope">{email || defaultEmail}</IconText>
+      <IconText iconName="telephone">
+        {phone_numbers ? highlightText(phone_numbers, searchTerm) : phoneNumber}
+      </IconText>
+      <IconText iconName="envelope">
+        {email ? highlightText(email, searchTerm) : defaultEmail}
+      </IconText>
     </div>
   );
 };

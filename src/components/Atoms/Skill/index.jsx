@@ -1,4 +1,6 @@
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { highlightText } from "../../../utilities";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -16,11 +18,13 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered Skill component.
  */
 const Skill = ({ name, id, isEditable, onClick }) => {
+  const { searchTerm } = useSelector((state) => state.ui);
+
   return (
     <span
       className={`${classes.skillBubble} ${isEditable && classes.editable}`}
     >
-      {name}
+      {highlightText(name, searchTerm)}
       {isEditable && <i className="bi bi-x" onClick={() => onClick(id)}></i>}
     </span>
   );

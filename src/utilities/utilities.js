@@ -17,6 +17,23 @@ export const handleSearchClick = (searchText, data) => {
   return filteredResults;
 };
 
+export const highlightText = (text, highlight) => {
+  if (!highlight) return text;
+
+  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  return (
+    <span>
+      {parts.map((part, index) =>
+        part.toLowerCase() === highlight.toLowerCase() ? (
+          <mark key={index}>{part}</mark>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
+};
+
 /**
  * Replaces route parameters in a given route string with actual parameter values.
  * @param {string} route - The route string with parameters.
@@ -36,6 +53,13 @@ export const replaceRouteParam = (route, params) => {
  */
 export const isCandidateNew = (dateCreated) => {
   return Date.now() - dateCreated.getTime() < 7 * 24 * 60 * 60 * 1000; // less than 7 days
+};
+
+export const resetStatusAsync = (action) => (dispatch) => {
+  return new Promise((resolve) => {
+    dispatch(action());
+    resolve(); // Resolve after resetting status
+  });
 };
 
 /**

@@ -28,13 +28,13 @@ const Search = ({ enableSearch }) => {
    * @param {Object} e - The event object.
    */
   const handleFormSubmit = (e) => {
+    const searchTerm = searchTextRef.current.value;
+
     e.preventDefault();
-    const filteredResults = handleSearchClick(
-      searchTextRef.current.value,
-      candidates
-    );
+    const filteredResults = handleSearchClick(searchTerm, candidates);
 
     dispatch(dataActions.replaceFilteredCandidates(filteredResults));
+    dispatch(uiActions.updateSearchTerm(searchTerm));
     dispatch(uiActions.updateStartIndex(0)); // Reset startIndex to 0 after filter
   };
 

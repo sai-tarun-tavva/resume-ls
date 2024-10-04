@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { useInput } from "../../../../../hooks";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
-import { authValidations } from "../../../../../utilities";
-import { content } from "../../../../../constants";
+import { statusActions } from "../../../../../store";
+import {
+  authenticateUser,
+  authValidations,
+  resetStatusAsync,
+} from "../../../../../utilities";
+import {
+  END_POINTS,
+  ROUTES,
+  STATUS_CODES,
+  content,
+} from "../../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -18,6 +30,10 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered AuthForm component.
  */
 const AuthForm = ({ haveAccount }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading } = useSelector((state) => state.loading);
+
   const {
     value: userNameValue,
     handleInputChange: handleUserNameChange,
@@ -46,6 +62,14 @@ const AuthForm = ({ haveAccount }) => {
   } = useInput("", authValidations.email, undefined, true);
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const buttonText = isLoading
+    ? haveAccount
+      ? content.authPage.authPanel.buttons.login.loading
+      : content.authPage.authPanel.buttons.signUp.loading
+    : haveAccount
+    ? content.authPage.authPanel.buttons.login.default
+    : content.authPage.authPanel.buttons.signUp.default;
 
   /**
    * Toggles the visibility of the password input field.
@@ -81,8 +105,10 @@ const AuthForm = ({ haveAccount }) => {
    *
    * @param {Event} event - The form submit event.
    */
-  const handleAuth = (event) => {
+  const handleAuth = async (event) => {
     event.preventDefault();
+    if (isLoading) return;
+    await dispatch(resetStatusAsync(statusActions.resetStatus));
 
     if (!enableAuth) {
       forceUserNameValidations();
@@ -91,13 +117,58 @@ const AuthForm = ({ haveAccount }) => {
       return;
     }
 
-    const formData = {
-      userName: userNameValue,
-      passwordValue: passwordValue,
-      ...(!haveAccount && { email: emailValue }),
-    };
+    const formData = new FormData();
+    formData.append("username", userNameValue);
+    formData.append("password", passwordValue);
+    if (!haveAccount) {
+      formData.append("email", emailValue);
+    }
 
-    console.log(formData);
+    if (haveAccount) {
+      const { status } = await authenticateUser(END_POINTS.LOGIN, formData);
+
+      if (status === STATUS_CODES.SUCCESS) {
+        navigate(`/${ROUTES.HOME}`);
+      } else if (status === STATUS_CODES.INVALID) {
+        dispatch(
+          statusActions.updateStatus({
+            message: content.authPage.authPanel.errors.server.login,
+            type: "failure",
+            darkMode: true,
+          })
+        );
+      } else {
+        dispatch(
+          statusActions.updateStatus({
+            message: content.serverError,
+            type: "failure",
+            darkMode: true,
+          })
+        );
+      }
+    } else {
+      const { status } = authenticateUser(END_POINTS.SIGN_UP, formData);
+
+      if (status === STATUS_CODES.CREATED) {
+        navigate(`/${ROUTES.HOME}`);
+      } else if (status === STATUS_CODES.INVALID) {
+        dispatch(
+          statusActions.updateStatus({
+            message: content.authPage.authPanel.errors.server.signUp,
+            type: "failure",
+            darkMode: true,
+          })
+        );
+      } else {
+        dispatch(
+          statusActions.updateStatus({
+            message: content.serverError,
+            type: "failure",
+            darkMode: true,
+          })
+        );
+      }
+    }
   };
 
   // Reset input fields when switching between login and sign-up
@@ -158,17 +229,11 @@ const AuthForm = ({ haveAccount }) => {
       )}
 
       <Button
-        title={
-          haveAccount
-            ? content.authPage.authPanel.buttons.login.default
-            : content.authPage.authPanel.buttons.signUp.default
-        }
-        className={`${classes.authButton} loading`}
+        title={buttonText}
+        className={`${classes.authButton} ${isLoading ? "loading" : ""}`}
         onClick={handleAuth}
       >
-        {haveAccount
-          ? content.authPage.authPanel.buttons.login.default
-          : content.authPage.authPanel.buttons.signUp.default}
+        {buttonText}
       </Button>
     </form>
   );

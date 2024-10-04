@@ -7,7 +7,8 @@ import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { loadingActions, statusActions, uiActions } from "../../../store";
-import { content, END_POINTS, MAX_FILES, ROUTES } from "../../../constants";
+import { uploadFiles } from "../../../utilities";
+import { content, MAX_FILES, ROUTES, STATUS_CODES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -65,11 +66,14 @@ const Upload = () => {
 
       if (files.length + validFiles.length > MAX_FILES) {
         dispatch(
-          statusActions.updateStatus(
-            `Only first ${MAX_FILES} files are being uploaded. Extra files were excluded.`,
-            "error",
-            true
-          )
+          statusActions.updateStatus({
+            message: content.candidateHub.upload.errors.maxFiles.replace(
+              "{{MAX_FILES}}",
+              MAX_FILES
+            ),
+            type: "error",
+            darkMode: true,
+          })
         );
         validFiles.splice(MAX_FILES - files.length); // Ensure we don't exceed the limit
       }
@@ -130,50 +134,31 @@ const Upload = () => {
       formData.append("files", file);
     });
 
-    try {
-      const response = await fetch(END_POINTS.UPLOAD_RESUME, {
-        method: "POST",
-        body: formData,
-      });
+    const { status } = await uploadFiles(formData);
 
-      if (response.ok) {
-        dispatch(
-          statusActions.updateStatus(
-            `${files.length} file${
-              files.length > 1 ? "s" : ""
-            } uploaded successfully!`,
-            "success"
-          )
-        );
-        setFiles([]); // Clear files after successful upload
-        toggleAllowUpload();
-        dispatch(uiActions.updateShouldRefetch(true));
-        navigate(`/${ROUTES.HOME}`);
-      } else {
-        dispatch(
-          statusActions.updateStatus(
-            `Failed to upload file${files.length > 1 ? "s" : ""}.`,
-            "failure",
-            true
-          )
-        );
-        console.error("Upload failed:", response.statusText);
-      }
-    } catch (error) {
+    if (status === STATUS_CODES.SUCCESS) {
       dispatch(
-        statusActions.updateStatus(
-          content.candidateHub.upload.errors.formUploadRequest.network,
-          "failure",
-          true
-        )
+        statusActions.updateStatus({
+          message: `${files.length} file${
+            files.length > 1 ? "s" : ""
+          } uploaded successfully!`,
+          type: "success",
+        })
       );
-      console.error(
-        content.candidateHub.upload.errors.formUploadRequest.network,
-        error
+      setFiles([]); // Clear files after successful upload
+      toggleAllowUpload();
+      dispatch(uiActions.updateShouldRefetch(true));
+      navigate(`/${ROUTES.HOME}`);
+    } else {
+      dispatch(
+        statusActions.updateStatus({
+          message: content.serverError,
+          type: "failure",
+          darkMode: true,
+        })
       );
-    } finally {
-      dispatch(loadingActions.disableLoading());
     }
+    dispatch(loadingActions.disableLoading());
   };
 
   return (

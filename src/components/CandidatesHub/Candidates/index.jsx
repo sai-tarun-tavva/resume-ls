@@ -2,8 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
-import { dataActions, loadingActions, uiActions } from "../../../store";
-import { content, END_POINTS, ITEMS_PER_PAGE } from "../../../constants";
+import {
+  dataActions,
+  loadingActions,
+  statusActions,
+  uiActions,
+} from "../../../store";
+import { fetchCandidates } from "../../../utilities";
+import { content, ITEMS_PER_PAGE, STATUS_CODES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -30,33 +36,23 @@ const Candidates = () => {
 
   useEffect(() => {
     /**
-     * Fetch candidates from the API.
-     * @returns {Promise<Array>} The list of candidates.
-     */
-    const fetchCandidates = async () => {
-      try {
-        const response = await fetch(END_POINTS.FETCH_CANDIDATES);
-
-        if (!response.ok) {
-          throw new Error(`Error fetching candidates: ${response.statusText}`);
-        }
-
-        const resData = await response.json();
-        return resData.results; // Return the candidates' data
-      } catch (error) {
-        console.error(error);
-        return []; // Handle errors by returning an empty array or any error state
-      }
-    };
-
-    /**
      * Fetch candidates and update context state.
      */
     const getData = async () => {
       dispatch(loadingActions.enableLoading());
-      const candidates = await fetchCandidates();
-      dispatch(dataActions.replaceCandidates(candidates));
-      dispatch(dataActions.replaceFilteredCandidates(candidates));
+      const { status, data: candidates } = await fetchCandidates();
+
+      if (status === STATUS_CODES.SUCCESS) {
+        dispatch(dataActions.replaceCandidates(candidates));
+        dispatch(dataActions.replaceFilteredCandidates(candidates));
+      } else {
+        dispatch(
+          statusActions.updateStatus({
+            message: content.serverError,
+            type: "failure",
+          })
+        );
+      }
       dispatch(loadingActions.disableLoading());
     };
 
