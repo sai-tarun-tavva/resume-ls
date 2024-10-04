@@ -38,6 +38,13 @@ export const isCandidateNew = (dateCreated) => {
   return Date.now() - dateCreated.getTime() < 7 * 24 * 60 * 60 * 1000; // less than 7 days
 };
 
+export const resetStatusAsync = (action) => (dispatch) => {
+  return new Promise((resolve) => {
+    dispatch(action());
+    resolve(); // Resolve after resetting status
+  });
+};
+
 /**
  * Calculates a human-readable time ago string from a date.
  * @param {Date} date - The date to compare against the current time.

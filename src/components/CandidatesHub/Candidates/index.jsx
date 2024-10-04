@@ -8,7 +8,7 @@ import {
   statusActions,
   uiActions,
 } from "../../../store";
-import { fetchCandidates } from "../../../api";
+import { fetchCandidates } from "../../../utilities";
 import { content, ITEMS_PER_PAGE, STATUS_CODES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";

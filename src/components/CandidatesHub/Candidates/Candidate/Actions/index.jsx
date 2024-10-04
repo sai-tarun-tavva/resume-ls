@@ -23,13 +23,14 @@ const Button = ({ title, name, ...props }) => (
  * Renders a set of action buttons for editing, downloading, and viewing.
  *
  * @param {Function} onEdit - Function to be called when the edit button is clicked.
+ * @param {Function} onDownLoad - Function to be called when the download button is clicked.
  * @returns {JSX.Element} The rendered action buttons.
  */
-const Actions = ({ onEdit: handleClick }) => {
+const Actions = ({ onEdit, onDownload }) => {
   return (
     <>
-      <Button title="Edit" name="pencil-square" onClick={handleClick} />
-      <Button title="Download" name="download" />
+      <Button title="Edit" name="pencil-square" onClick={onEdit} />
+      <Button title="Download" name="download" onClick={onDownload} />
       <Button title="View" name="eye" />
     </>
   );
@@ -42,6 +43,7 @@ Button.propTypes = {
 
 Actions.propTypes = {
   onEdit: PropTypes.func.isRequired,
+  onDownLoad: PropTypes.func.isRequired,
 };
 
 Button.displayName = "Button";

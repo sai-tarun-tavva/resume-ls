@@ -6,8 +6,11 @@ import { useInput } from "../../../../../hooks";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
 import { statusActions } from "../../../../../store";
-import { authValidations } from "../../../../../utilities";
-import { authenticateUser } from "../../../../../api";
+import {
+  authenticateUser,
+  authValidations,
+  resetStatusAsync,
+} from "../../../../../utilities";
 import {
   END_POINTS,
   ROUTES,
@@ -75,13 +78,6 @@ const AuthForm = ({ haveAccount }) => {
     setShowPassword(!showPassword);
   };
 
-  const resetStatusAsync = () => (dispatch) => {
-    return new Promise((resolve) => {
-      dispatch(statusActions.resetStatus());
-      resolve(); // Resolve after resetting status
-    });
-  };
-
   /**
    * Checks if there are any validation errors present in the form.
    * @returns {boolean} True if there are validation errors, false otherwise.
@@ -111,7 +107,7 @@ const AuthForm = ({ haveAccount }) => {
    */
   const handleAuth = async (event) => {
     event.preventDefault();
-    await dispatch(resetStatusAsync());
+    await dispatch(resetStatusAsync(statusActions.resetStatus));
 
     if (!enableAuth) {
       forceUserNameValidations();

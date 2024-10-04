@@ -35,3 +35,16 @@ export const fetchCandidates = async () => {
     return { status: 500, data: null };
   }
 };
+
+export const downloadResume = async (id) => {
+  try {
+    const { status } = await fetch(`${END_POINTS.DOWNLOAD_RESUME}${id}`);
+
+    // Return the status
+    return { status };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};

@@ -8,10 +8,12 @@ import Skills from "../../../Atoms/Skills";
 import { statusActions } from "../../../../store";
 import {
   calculateTimeAgo,
+  downloadResume,
   isCandidateNew,
   replaceRouteParam,
+  resetStatusAsync,
 } from "../../../../utilities";
-import { ROUTES } from "../../../../constants";
+import { ROUTES, STATUS_CODES } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -44,6 +46,21 @@ const Candidate = ({ candidate }) => {
     navigate(replaceRouteParam(ROUTES.CANDIDATE_FORM, { candidateId }));
   };
 
+  const handleDownload = async (event) => {
+    event.preventDefault();
+    await dispatch(resetStatusAsync(statusActions.resetStatus));
+
+    const { status } = await downloadResume(candidate.id);
+    if (status !== STATUS_CODES.SUCCESS) {
+      dispatch(
+        statusActions.updateStatus({
+          message: "Server error. Please try again later.",
+          type: "failure",
+        })
+      );
+    }
+  };
+
   return (
     <article className={classes.card}>
       <div
@@ -59,7 +76,7 @@ const Candidate = ({ candidate }) => {
 
         <div className={classes.hiddenActions}>
           <div className={classes.actions}>
-            <Actions onEdit={handleEdit} />
+            <Actions onEdit={handleEdit} onDownload={handleDownload} />
           </div>
         </div>
       </div>
