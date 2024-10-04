@@ -89,7 +89,7 @@ export const CONTENT = {
         phoneNumber: "Phone number",
         email: "Email",
         skill: "Skill",
-        linkedInUrl: "https://www.linkedin.com/in/your-profile",
+        linkedInUrl: "linkedin.com/in/your-profile",
         city: "City",
         state: "State",
         experience: "Experience in years",

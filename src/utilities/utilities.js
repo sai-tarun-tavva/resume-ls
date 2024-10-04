@@ -201,19 +201,19 @@ export const arraysEqual = (arr1, arr2) => {
  * @returns {string} The formatted phone number, or the original if not valid.
  */
 export const transformPhoneNumber = (value) => {
-  // Remove all spaces from the input
-  const digitsOnly = value.replace(/\s+/g, "");
+  // Remove all spaces and hyphens from the input
+  const digitsOnly = value.replace(/[\s-]+/g, "");
 
   // Ensure we only reformat if we have exactly 10 digits
   if (digitsOnly.length !== 10) {
     return value; // Return the original input if it's not exactly 10 digits
   }
 
-  // Format the string as xxx xxx xxxx
-  return `${digitsOnly.slice(0, 3)} ${digitsOnly.slice(
+  // Format the string as xxx-xxx-xxxx
+  return `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(
     3,
     6
-  )} ${digitsOnly.slice(6)}`;
+  )}-${digitsOnly.slice(6)}`;
 };
 
 /**
