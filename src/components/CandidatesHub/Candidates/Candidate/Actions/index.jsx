@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { END_POINTS } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -11,10 +13,10 @@ import classes from "./index.module.scss";
  * @param {Object} props - Additional props to be passed to the button.
  * @returns {JSX.Element} The rendered button with an icon.
  */
-const Button = ({ title, name, ...props }) => (
-  <button className={classes.actionButton} title={title} {...props}>
+const Action = ({ title, name, ...props }) => (
+  <Link title={title} className={classes.actionButton} {...props}>
     <i className={`bi bi-${name}`}></i>
-  </button>
+  </Link>
 );
 
 /**
@@ -22,31 +24,35 @@ const Button = ({ title, name, ...props }) => (
  *
  * Renders a set of action buttons for editing, downloading, and viewing.
  *
+ * @param {number} id - Id of the candidate
  * @param {Function} onEdit - Function to be called when the edit button is clicked.
- * @param {Function} onDownload - Function to be called when the download button is clicked.
  * @returns {JSX.Element} The rendered action buttons.
  */
-const Actions = ({ onEdit, onDownload }) => {
+const Actions = ({ id, onEdit }) => {
   return (
     <>
-      <Button title="Edit" name="pencil-square" onClick={onEdit} />
-      <Button title="Download" name="download" onClick={onDownload} />
-      <Button title="View" name="eye" />
+      <Action title="Edit" name="pencil-square" onClick={onEdit} />
+      <Action
+        title="Download"
+        name="download"
+        to={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
+      />
+      <Action title="View" name="eye" />
     </>
   );
 };
 
-Button.propTypes = {
+Action.propTypes = {
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
 
 Actions.propTypes = {
+  id: PropTypes.number.isRequired,
   onEdit: PropTypes.func.isRequired,
-  onDownload: PropTypes.func.isRequired,
 };
 
-Button.displayName = "Button";
+Action.displayName = "Action";
 Actions.displayName = "Actions";
 
 export default Actions;

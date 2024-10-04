@@ -33,6 +33,23 @@ export const authenticateUser = async (url, body) => {
   }
 };
 
+export const getApiToken = async (body) => {
+  try {
+    const response = await fetch(END_POINTS.GET_TOKEN, {
+      method: "POST",
+      body,
+    });
+
+    const resData = await response.json();
+
+    return { status: response.status, data: resData };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500, data: null };
+  }
+};
+
 /**
  * Fetches the list of candidates from the API.
  *
@@ -51,27 +68,6 @@ export const fetchCandidates = async () => {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);
     return { status: 500, data: null };
-  }
-};
-
-/**
- * Downloads the resume of a candidate by making a request with the provided candidate ID.
- *
- * @async
- * @function
- * @param {string} id - The ID of the candidate whose resume is being downloaded.
- * @returns {Promise<Object>} An object containing the response status.
- */
-export const downloadResume = async (id) => {
-  try {
-    const { status } = await fetch(`${END_POINTS.DOWNLOAD_RESUME}${id}`);
-
-    // Return the status
-    return { status };
-  } catch (error) {
-    // Assume any error that causes this block to execute is a server or network issue
-    console.error("Server or network issue:", error.message);
-    return { status: 500 };
   }
 };
 
