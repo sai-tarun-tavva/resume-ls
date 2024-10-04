@@ -43,7 +43,7 @@ Button.propTypes = {
 
 Actions.propTypes = {
   onEdit: PropTypes.func.isRequired,
-  onDownLoad: PropTypes.func.isRequired,
+  onDownload: PropTypes.func.isRequired,
 };
 
 Button.displayName = "Button";

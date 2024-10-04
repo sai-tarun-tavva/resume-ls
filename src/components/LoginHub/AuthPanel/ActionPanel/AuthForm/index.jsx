@@ -107,6 +107,7 @@ const AuthForm = ({ haveAccount }) => {
    */
   const handleAuth = async (event) => {
     event.preventDefault();
+    if (isLoading) return;
     await dispatch(resetStatusAsync(statusActions.resetStatus));
 
     if (!enableAuth) {
@@ -116,11 +117,12 @@ const AuthForm = ({ haveAccount }) => {
       return;
     }
 
-    const formData = {
-      userName: userNameValue,
-      passwordValue: passwordValue,
-      ...(!haveAccount && { email: emailValue }),
-    };
+    const formData = new FormData();
+    formData.append("username", userNameValue);
+    formData.append("password", passwordValue);
+    if (!haveAccount) {
+      formData.append("email", emailValue);
+    }
 
     if (haveAccount) {
       const { status } = await authenticateUser(END_POINTS.LOGIN, formData);

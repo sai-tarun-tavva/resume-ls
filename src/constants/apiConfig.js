@@ -5,7 +5,8 @@ export const END_POINTS = {
   SIGN_UP: "",
   FETCH_CANDIDATES:
     "https://run.mocky.io/v3/27f98f3b-a43d-4e98-a2c5-47bed7d6752f",
-  EDIT_CANDIDATE: "https://something.free.beeceptor.com/home/resume/edit/8",
+  EDIT_CANDIDATE:
+    "https://run.mocky.io/v3/3465b7e8-875a-423e-b2a2-da2ffe5e0265",
   DOWNLOAD_RESUME:
     "https://something.free.beeceptor.com/home/resume/download/6",
   UPLOAD_RESUME: "https://something.free.beeceptor.com/home/upload",

@@ -51,6 +51,7 @@ const Candidate = ({ candidate }) => {
     await dispatch(resetStatusAsync(statusActions.resetStatus));
 
     const { status } = await downloadResume(candidate.id);
+
     if (status !== STATUS_CODES.SUCCESS) {
       dispatch(
         statusActions.updateStatus({

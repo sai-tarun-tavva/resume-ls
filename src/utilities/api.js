@@ -48,3 +48,28 @@ export const downloadResume = async (id) => {
     return { status: 500 };
   }
 };
+
+export const editCandidate = async (id, body) => {
+  try {
+    // Make the API request to update candidate data
+    const response = await fetch(
+      END_POINTS.EDIT_CANDIDATE.replace("{{id}}", id),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      }
+    );
+
+    const { data } = await response.json();
+
+    // Return the response data and status
+    return { status: response.status, data };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};

@@ -127,7 +127,7 @@ export const content = {
           existing: "Skill already exists.",
         },
         formEditRequest: {
-          success: "Candidate information successfully updated!",
+          success: "Successfully updated candidate details!",
           failure: "Failed to update candidate information. Please try again.",
           network: "Network error. Please check your connection.",
         },

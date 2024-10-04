@@ -10,10 +10,11 @@ import { dataActions, loadingActions, statusActions } from "../../../store";
 import {
   arraysEqual,
   candidateValidations,
+  editCandidate,
   transformExperience,
   transformPhoneNumber,
 } from "../../../utilities";
-import { END_POINTS, ROUTES, content } from "../../../constants";
+import { ROUTES, STATUS_CODES, content } from "../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -241,80 +242,61 @@ const CandidateForm = () => {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const formValues = {
-      name: formData.get("name"),
-      phone_numbers: formData.get("phoneNumber"),
-      email: formData.get("email"),
-      location: formData.get("city"),
-      region: formData.get("state"),
-      linkedin: formData.get("linkedIn"),
-      skills: formData.get("skills"),
-      total_experience: +formData.get("experience"),
-    };
-
-    // Temporary: Prepare local values for context update
-    const localValues = {
-      id: info?.id,
+    const formValues = new FormData();
+    const fields = {
       name: nameValue,
       phone_numbers: phoneValue,
       email: emailValue,
+      linkedin: linkedInValue,
       location: cityValue,
       region: stateValue,
-      linkedin: linkedInValue,
-      skills: localSkills?.join(", "),
-      total_experience: experienceValue,
-      file_path: info?.file_path || "",
-      timestamp: info?.timestamp,
+      total_experience: +experienceValue,
     };
 
-    if (enableSave) {
-      try {
-        // Make the API request to update candidate data
-        const response = await fetch(END_POINTS.EDIT_CANDIDATE, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formValues),
-        });
+    // Check changed values
+    for (const [key, value] of Object.entries(fields)) {
+      if (value !== info?.[key]) {
+        formValues.append(key, value);
+      }
+    }
 
-        // Handle response from the server
-        if (response.ok) {
-          // Update candidate data in context
-          dispatch(dataActions.updateCandidate(localValues));
-          dispatch(
-            statusActions.updateStatus({
-              message:
-                content.candidateHub.candidateForm.errors.formEditRequest
-                  .success,
-              type: "success",
-            })
-          );
-        } else {
-          // Handle server error response
-          dispatch(
-            statusActions.updateStatus({
-              message:
-                content.candidateHub.candidateForm.errors.formEditRequest
-                  .failure,
-              type: "failure",
-            })
-          );
-        }
-      } catch (error) {
-        // Handle fetch error
+    // Special handling for skills array comparison
+    if (!arraysEqual(localSkills, info?.skills)) {
+      formValues.append("skills", formData.get("skills"));
+    }
+
+    if (
+      formValues.has("name") ||
+      formValues.has("phone_numbers") ||
+      formValues.has("email") ||
+      formValues.has("skills") ||
+      formValues.has("linkedin") ||
+      formValues.has("location") ||
+      formValues.has("region") ||
+      formValues.has("total_experience")
+    ) {
+      const { status, data } = await editCandidate(info.id, formValues);
+
+      if (status === STATUS_CODES.SUCCESS) {
+        dispatch(dataActions.updateCandidate(data));
         dispatch(
           statusActions.updateStatus({
             message:
-              content.candidateHub.candidateForm.errors.formEditRequest.network,
+              content.candidateHub.candidateForm.errors.formEditRequest.success,
+            type: "success",
+          })
+        );
+      } else {
+        dispatch(
+          statusActions.updateStatus({
+            message: "Server error. Please try again later.",
             type: "failure",
           })
         );
-      } finally {
-        handleClose();
-        dispatch(loadingActions.disableLoading());
       }
     }
+    handleClose();
+    dispatch(loadingActions.disableLoading());
   };
 
   return (
