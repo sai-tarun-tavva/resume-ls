@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { content } from "../../../../constants/content";
+import { CONTENT } from "../../../../constants/content";
 import classes from "./index.module.scss";
 
 /**
@@ -29,12 +29,12 @@ const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
           className={classes.fileInput}
         />
         <i className={`bi bi-cloud-arrow-up-fill ${classes.icon}`}></i>
-        <h2>{content.candidateHub.upload.dragDrop.heading}</h2>
-        <p>{content.candidateHub.upload.dragDrop.paragraphFile}</p>
+        <h2>{CONTENT.candidateHub.upload.dragDrop.heading}</h2>
+        <p>{CONTENT.candidateHub.upload.dragDrop.paragraphFile}</p>
       </div>
 
       <small className={classes.infoText}>
-        {content.candidateHub.upload.dragDrop.info}
+        {CONTENT.candidateHub.upload.dragDrop.info}
       </small>
     </>
   );

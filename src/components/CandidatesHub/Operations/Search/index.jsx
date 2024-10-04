@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { dataActions, uiActions } from "../../../../store";
 import { handleSearchClick } from "../../../../utilities";
-import { content } from "../../../../constants";
+import { CONTENT } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -43,7 +43,7 @@ const Search = ({ enableSearch }) => {
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
-          placeholder={content.candidateHub.operations.search.placeholder}
+          placeholder={CONTENT.candidateHub.operations.search.placeholder}
           ref={searchTextRef}
           disabled={!enableSearch}
         />

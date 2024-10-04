@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import IconText from "../../../../Atoms/IconText";
 import { highlightText } from "../../../../../utilities";
-import { content } from "../../../../../constants";
+import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -21,7 +21,7 @@ import classes from "./index.module.scss";
 const Location = ({ candidate }) => {
   const { searchTerm } = useSelector((state) => state.ui);
   const { location, region, experience } =
-    content.candidateHub.candidate.defaultValues;
+    CONTENT.candidateHub.candidate.defaultValues;
 
   return (
     <div className={classes.location}>

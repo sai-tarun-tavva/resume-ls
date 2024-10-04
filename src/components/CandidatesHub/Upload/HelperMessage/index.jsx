@@ -1,4 +1,4 @@
-import { content, END_POINTS } from "../../../../constants";
+import { CONTENT, END_POINTS } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -11,7 +11,7 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} Rendered HelperMessage component
  */
 const HelperMessage = () => {
-  const { message, urlText } = content.candidateHub.upload.helper;
+  const { message, urlText } = CONTENT.candidateHub.upload.helper;
 
   return (
     <div className={classes.helper}>

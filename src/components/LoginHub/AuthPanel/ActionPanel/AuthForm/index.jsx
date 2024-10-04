@@ -12,10 +12,10 @@ import {
   resetStatusAsync,
 } from "../../../../../utilities";
 import {
+  CONTENT,
   END_POINTS,
   ROUTES,
   STATUS_CODES,
-  content,
 } from "../../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
@@ -65,11 +65,11 @@ const AuthForm = ({ haveAccount }) => {
 
   const buttonText = isLoading
     ? haveAccount
-      ? content.authPage.authPanel.buttons.login.loading
-      : content.authPage.authPanel.buttons.signUp.loading
+      ? CONTENT.authPage.authPanel.buttons.login.loading
+      : CONTENT.authPage.authPanel.buttons.signUp.loading
     : haveAccount
-    ? content.authPage.authPanel.buttons.login.default
-    : content.authPage.authPanel.buttons.signUp.default;
+    ? CONTENT.authPage.authPanel.buttons.login.default
+    : CONTENT.authPage.authPanel.buttons.signUp.default;
 
   /**
    * Toggles the visibility of the password input field.
@@ -132,7 +132,7 @@ const AuthForm = ({ haveAccount }) => {
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
-            message: content.authPage.authPanel.errors.server.login,
+            message: CONTENT.authPage.authPanel.errors.server.login,
             type: "failure",
             darkMode: true,
           })
@@ -140,7 +140,7 @@ const AuthForm = ({ haveAccount }) => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: content.serverError,
+            message: CONTENT.serverError,
             type: "failure",
             darkMode: true,
           })
@@ -154,7 +154,7 @@ const AuthForm = ({ haveAccount }) => {
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
-            message: content.authPage.authPanel.errors.server.signUp,
+            message: CONTENT.authPage.authPanel.errors.server.signUp,
             type: "failure",
             darkMode: true,
           })
@@ -162,7 +162,7 @@ const AuthForm = ({ haveAccount }) => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: content.serverError,
+            message: CONTENT.serverError,
             type: "failure",
             darkMode: true,
           })
@@ -183,7 +183,7 @@ const AuthForm = ({ haveAccount }) => {
       <Input
         id="userName"
         name="userName"
-        placeholder={content.authPage.authPanel.placeholders.username}
+        placeholder={CONTENT.authPage.authPanel.placeholders.username}
         autoComplete="username"
         value={userNameValue}
         onChange={handleUserNameChange}
@@ -196,7 +196,7 @@ const AuthForm = ({ haveAccount }) => {
         id="password"
         name="password"
         type={showPassword ? "text" : "password"}
-        placeholder={content.authPage.authPanel.placeholders.password}
+        placeholder={CONTENT.authPage.authPanel.placeholders.password}
         autoComplete={haveAccount ? "current-password" : "new-password"}
         value={passwordValue}
         onChange={handlePasswordChange}
@@ -218,7 +218,7 @@ const AuthForm = ({ haveAccount }) => {
           id="email"
           name="email"
           type="email"
-          placeholder={content.authPage.authPanel.placeholders.email}
+          placeholder={CONTENT.authPage.authPanel.placeholders.email}
           autoComplete="email"
           value={emailValue}
           onChange={handleEmailChange}

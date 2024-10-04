@@ -9,7 +9,7 @@ import {
   uiActions,
 } from "../../../store";
 import { fetchCandidates } from "../../../utilities";
-import { content, ITEMS_PER_PAGE, STATUS_CODES } from "../../../constants";
+import { CONTENT, ITEMS_PER_PAGE, STATUS_CODES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -48,7 +48,7 @@ const Candidates = () => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: content.serverError,
+            message: CONTENT.serverError,
             type: "failure",
           })
         );
@@ -72,7 +72,7 @@ const Candidates = () => {
           <i
             className={`bi bi-exclamation-circle ${classes.noRecordsIcon}`}
           ></i>
-          {content.candidateHub.candidate.noRecord}
+          {CONTENT.candidateHub.candidate.noRecord}
         </p>
       ) : (
         candidates.map((candidate) => (

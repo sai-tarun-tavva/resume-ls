@@ -1,4 +1,4 @@
-export const content = {
+export const CONTENT = {
   serverError: "Server error. Please try again later.",
   authPage: {
     welcomePanel: {
