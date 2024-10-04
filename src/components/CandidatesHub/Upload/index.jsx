@@ -8,7 +8,7 @@ import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { loadingActions, statusActions, uiActions } from "../../../store";
 import { uploadFiles } from "../../../utilities";
-import { content, MAX_FILES, ROUTES, STATUS_CODES } from "../../../constants";
+import { CONTENT, MAX_FILES, ROUTES, STATUS_CODES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -67,7 +67,7 @@ const Upload = () => {
       if (files.length + validFiles.length > MAX_FILES) {
         dispatch(
           statusActions.updateStatus({
-            message: content.candidateHub.upload.errors.maxFiles.replace(
+            message: CONTENT.candidateHub.upload.errors.maxFiles.replace(
               "{{MAX_FILES}}",
               MAX_FILES
             ),
@@ -114,7 +114,7 @@ const Upload = () => {
 
   const buttonText = isLoading
     ? `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`
-    : content.candidateHub.upload.button + (files.length > 1 ? "s" : "");
+    : CONTENT.candidateHub.upload.button + (files.length > 1 ? "s" : "");
 
   /**
    * Handles file upload on button click.
@@ -152,7 +152,7 @@ const Upload = () => {
     } else {
       dispatch(
         statusActions.updateStatus({
-          message: content.serverError,
+          message: CONTENT.serverError,
           type: "failure",
           darkMode: true,
         })

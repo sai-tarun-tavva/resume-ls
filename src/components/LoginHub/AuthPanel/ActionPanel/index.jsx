@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AuthForm from "./AuthForm";
-import { content } from "../../../../constants";
+import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -13,7 +13,7 @@ import classes from "./index.module.scss";
  */
 const ActionPanel = () => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and sign-up
-  const { login, signUp } = content.authPage.authPanel.advisor;
+  const { login, signUp } = CONTENT.authPage.authPanel.advisor;
 
   return (
     <div className={classes.actionPanel}>

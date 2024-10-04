@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useCountAnimation } from "../../../hooks";
 import Logo from "../../../assets/logo.png";
-import { content } from "../../../constants";
+import { CONTENT } from "../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -14,11 +14,11 @@ import classes from "./index.module.scss";
  */
 const WelcomePanel = ({ targetCount }) => {
   const count = useCountAnimation(targetCount);
-  const { heading, paragraph } = content.authPage.welcomePanel;
+  const { heading, paragraph } = CONTENT.authPage.welcomePanel;
 
   return (
     <div className={classes.welcomePanel}>
-      <img src={Logo} alt={content.logoAlt} className={classes.logo} />
+      <img src={Logo} alt={CONTENT.logoAlt} className={classes.logo} />
       <h1>{heading}</h1>
 
       {targetCount > 0 && (

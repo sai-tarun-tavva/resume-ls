@@ -1,7 +1,7 @@
-import { content, REGEX } from "../constants";
+import { CONTENT, REGEX } from "../constants";
 
-const candidateValidationMsgs = content.candidateHub.candidateForm.errors;
-const authValidationMsgs = content.authPage.authPanel.errors;
+const candidateValidationMsgs = CONTENT.candidateHub.candidateForm.errors;
+const authValidationMsgs = CONTENT.authPage.authPanel.errors;
 
 // Helper function for empty value checks
 const isEmpty = (value) => value === "";

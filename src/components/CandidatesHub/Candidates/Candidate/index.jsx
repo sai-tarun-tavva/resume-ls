@@ -13,7 +13,7 @@ import {
   replaceRouteParam,
   resetStatusAsync,
 } from "../../../../utilities";
-import { ROUTES, STATUS_CODES } from "../../../../constants";
+import { ROUTES, STATUS_CODES, CONTENT } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -55,7 +55,7 @@ const Candidate = ({ candidate }) => {
     if (status !== STATUS_CODES.SUCCESS) {
       dispatch(
         statusActions.updateStatus({
-          message: content.serverError,
+          message: CONTENT.serverError,
           type: "failure",
         })
       );

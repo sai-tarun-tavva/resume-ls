@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import IconText from "../../../../Atoms/IconText";
 import { capitalizeFirstLetter, highlightText } from "../../../../../utilities";
-import { content } from "../../../../../constants";
+import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -43,7 +43,7 @@ const MainInfo = ({ candidate }) => {
     name: defaultName,
     phoneNumber,
     email: defaultEmail,
-  } = content.candidateHub.candidate.defaultValues;
+  } = CONTENT.candidateHub.candidate.defaultValues;
 
   return (
     <div className={classes.mainInfo}>
