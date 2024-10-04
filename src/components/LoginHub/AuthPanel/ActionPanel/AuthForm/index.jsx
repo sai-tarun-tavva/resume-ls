@@ -147,7 +147,7 @@ const AuthForm = ({ haveAccount }) => {
         );
       }
     } else {
-      const { status } = authenticateUser(END_POINTS.SIGN_UP, formData);
+      const { status } = await authenticateUser(END_POINTS.SIGN_UP, formData);
 
       if (status === STATUS_CODES.CREATED) {
         navigate(`/${ROUTES.HOME}`);

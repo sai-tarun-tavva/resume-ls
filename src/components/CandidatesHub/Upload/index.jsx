@@ -127,7 +127,7 @@ const Upload = () => {
     const formData = new FormData();
 
     files.forEach((file) => {
-      formData.append("files", file);
+      formData.append("file", file);
     });
 
     const { status } = await uploadFiles(formData);

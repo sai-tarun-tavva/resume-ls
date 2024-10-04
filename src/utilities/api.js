@@ -10,20 +10,26 @@ import { END_POINTS } from "../constants";
  * @returns {Promise<Object>} The response status and data from the server.
  */
 export const authenticateUser = async (url, body) => {
+  const response = { status: null, data: null };
   try {
-    const response = await fetch(url, {
+    const fetchResponse = await fetch(url, {
       method: "POST",
       body,
     });
 
-    const resData = await response.json();
+    const resData = await fetchResponse.json();
+
+    response.status = fetchResponse.status;
+    response.data = resData;
+
+    console.log(response);
 
     // Return the response data and status
-    return { status: response.status, data: resData };
+    return response;
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);
-    return { status: 500, data: null };
+    return response;
   }
 };
 

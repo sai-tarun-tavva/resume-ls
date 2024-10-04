@@ -23,7 +23,7 @@ const Button = ({ title, name, ...props }) => (
  * Renders a set of action buttons for editing, downloading, and viewing.
  *
  * @param {Function} onEdit - Function to be called when the edit button is clicked.
- * @param {Function} onDownLoad - Function to be called when the download button is clicked.
+ * @param {Function} onDownload - Function to be called when the download button is clicked.
  * @returns {JSX.Element} The rendered action buttons.
  */
 const Actions = ({ onEdit, onDownload }) => {
