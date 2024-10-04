@@ -55,7 +55,7 @@ export const editCandidate = async (id, body) => {
     const response = await fetch(
       END_POINTS.EDIT_CANDIDATE.replace("{{id}}", id),
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -67,6 +67,23 @@ export const editCandidate = async (id, body) => {
 
     // Return the response data and status
     return { status: response.status, data };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};
+
+export const uploadFiles = async (body) => {
+  try {
+    // Make the API request to update candidate data
+    const response = await fetch(END_POINTS.UPLOAD_RESUME, {
+      method: "POST",
+      body,
+    });
+
+    // Return the response data and status
+    return { status: response.status };
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);

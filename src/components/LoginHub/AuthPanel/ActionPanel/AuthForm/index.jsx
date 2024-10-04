@@ -132,7 +132,7 @@ const AuthForm = ({ haveAccount }) => {
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
-            message: "Incorrect username or password.",
+            message: content.authPage.authPanel.errors.server.login,
             type: "failure",
             darkMode: true,
           })
@@ -140,7 +140,7 @@ const AuthForm = ({ haveAccount }) => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: "Server error. Please try again later.",
+            message: content.serverError,
             type: "failure",
             darkMode: true,
           })
@@ -154,7 +154,7 @@ const AuthForm = ({ haveAccount }) => {
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
-            message: "Username is already taken.",
+            message: content.authPage.authPanel.errors.server.signUp,
             type: "failure",
             darkMode: true,
           })
@@ -162,7 +162,7 @@ const AuthForm = ({ haveAccount }) => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: "Server error. Please try again later.",
+            message: content.serverError,
             type: "failure",
             darkMode: true,
           })

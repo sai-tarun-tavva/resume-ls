@@ -1,4 +1,5 @@
 export const content = {
+  serverError: "Server error. Please try again later.",
   authPage: {
     welcomePanel: {
       heading: "Parse your resume",
@@ -23,6 +24,10 @@ export const content = {
         email: {
           empty: "Email is required.",
           invalid: "Please enter a valid email address.",
+        },
+        server: {
+          login: "Incorrect username or password.",
+          signUp: "Username is already taken.",
         },
       },
       buttons: {
@@ -56,9 +61,8 @@ export const content = {
       },
       button: "Upload file",
       errors: {
-        formUploadRequest: {
-          network: "An error occurred during the upload.",
-        },
+        maxFiles:
+          "Only first {{MAX_FILES}} files are being uploaded. Extra files were excluded.",
       },
     },
     operations: {
@@ -74,7 +78,7 @@ export const content = {
         email: "Email",
         location: "City",
         region: "State",
-        experience: "{{exp}} Years",
+        experience: "{{EXP}} Years",
       },
       noRecord: "No candidates found.",
     },

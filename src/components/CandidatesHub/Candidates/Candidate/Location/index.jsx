@@ -25,7 +25,7 @@ const Location = ({ candidate }) => {
       <IconText iconName="geo-alt">{candidate.location || location}</IconText>
       <IconText iconName="map">{candidate.region || region}</IconText>
       <div className={classes.experience}>
-        {experience.replace("{{exp}}", candidate.total_experience)}
+        {experience.replace("{{EXP}}", candidate.total_experience)}
       </div>
     </div>
   );

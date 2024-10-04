@@ -48,7 +48,7 @@ const Candidates = () => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: "Server error. Please try again later.",
+            message: content.serverError,
             type: "failure",
           })
         );
