@@ -200,7 +200,7 @@ const CandidateForm = () => {
   const hasFormChanged = () => {
     return (
       nameValue !== info?.name ||
-      phoneValue !== info?.phone_numbers ||
+      phoneValue.replace(/\D/g, "") !== info?.phone_numbers ||
       emailValue !== info?.email ||
       linkedInValue !== info?.linkedin ||
       cityValue !== info?.location ||
@@ -245,7 +245,7 @@ const CandidateForm = () => {
     const formValues = new FormData();
     const fields = {
       name: nameValue,
-      phone_numbers: phoneValue,
+      phone_numbers: phoneValue.replace(/\D/g, ""),
       email: emailValue,
       linkedin: linkedInValue,
       location: cityValue,
