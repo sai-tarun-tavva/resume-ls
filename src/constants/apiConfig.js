@@ -7,8 +7,7 @@ export const END_POINTS = {
   SIGN_UP: `${apiUrl}signup/`,
   GET_TOKEN: `${apiUrl}api/token/`,
   REFRESH_TOKEN: `${apiUrl}api/token/refresh/`,
-  FETCH_CANDIDATES:
-    "https://run.mocky.io/v3/9baf267f-7d20-4038-ab24-86305be19ad9",
+  FETCH_CANDIDATES: `${apiUrl}resume_list/`,
   EDIT_CANDIDATE: `${apiUrl}resume/{{id}}/edit/`,
   DOWNLOAD_RESUME: `${apiUrl}home/resume/download/`,
   UPLOAD_RESUME: `${apiUrl}upload-file/`,
