@@ -2,7 +2,7 @@ export const CONTENT = {
   serverError: "Server error. Please try again later.",
   authPage: {
     welcomePanel: {
-      heading: "Parse your resume",
+      heading: "Empowering Resumes, Elevating Careers",
       paragraph: "Resumes parsed",
     },
     authPanel: {
