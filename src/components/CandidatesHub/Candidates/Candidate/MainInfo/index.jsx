@@ -1,7 +1,11 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import IconText from "../../../../Atoms/IconText";
-import { capitalizeFirstLetter, highlightText } from "../../../../../utilities";
+import {
+  capitalizeFirstLetter,
+  highlightText,
+  transformPhoneNumber,
+} from "../../../../../utilities";
 import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
@@ -57,7 +61,9 @@ const MainInfo = ({ candidate }) => {
       </div>
 
       <IconText iconName="telephone" maxWidth={"12.5rem"}>
-        {phone_numbers ? highlightText(phone_numbers, searchTerm) : phoneNumber}
+        {phone_numbers
+          ? highlightText(transformPhoneNumber(phone_numbers, true), searchTerm)
+          : phoneNumber}
       </IconText>
       <IconText iconName="envelope" maxWidth={"12.5rem"}>
         {email ? highlightText(email, searchTerm) : defaultEmail}

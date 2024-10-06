@@ -196,24 +196,34 @@ export const arraysEqual = (arr1, arr2) => {
 };
 
 /**
- * Transforms a phone number into a formatted string.
+ * Transforms a phone number into a formatted string with either
+ * +1 (xxx) xxx-xxxx or (xxx) xxx-xxxx format.
  * @param {string} value - The phone number as a string.
+ * @param {boolean} isCountryCode - If true, includes the country code (+1).
  * @returns {string} The formatted phone number, or the original if not valid.
  */
-export const transformPhoneNumber = (value) => {
+export const transformPhoneNumber = (value, isCountryCode = false) => {
   // Remove all spaces and hyphens from the input
-  const digitsOnly = value.replace(/[\s-]+/g, "");
+  const digitsOnly = value.replace(/[\s()-]+/g, "");
+  console.log(digitsOnly);
 
   // Ensure we only reformat if we have exactly 10 digits
   if (digitsOnly.length !== 10) {
     return value; // Return the original input if it's not exactly 10 digits
   }
 
-  // Format the string as xxx-xxx-xxxx
-  return `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(
-    3,
-    6
-  )}-${digitsOnly.slice(6)}`;
+  // Format the string based on the isCountryCode flag
+  if (isCountryCode) {
+    return `+1 (${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(
+      3,
+      6
+    )}-${digitsOnly.slice(6)}`;
+  } else {
+    return `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(
+      3,
+      6
+    )}-${digitsOnly.slice(6)}`;
+  }
 };
 
 /**

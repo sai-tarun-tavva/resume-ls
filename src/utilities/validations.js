@@ -21,7 +21,7 @@ export const candidateValidations = {
     validateEmpty(enteredValue, value, candidateValidationMsgs.name.empty),
 
   phone: (value, enteredValue) => {
-    const digitsOnly = enteredValue.replace(/\s+/g, "");
+    const digitsOnly = enteredValue.replace(/[\s()-]+/g, "");
     return (
       validateEmpty(enteredValue, value, candidateValidationMsgs.phone.empty) ||
       validateWithRegex(
