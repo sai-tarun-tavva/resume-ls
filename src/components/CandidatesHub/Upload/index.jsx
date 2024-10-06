@@ -24,7 +24,7 @@ import classes from "./index.module.scss";
 const Upload = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.loading);
+  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
 
@@ -121,7 +121,7 @@ const Upload = () => {
 
     if (isLoading) return;
 
-    dispatch(loadingActions.enableLoading());
+    dispatch(loadingActions.enableButtonLoading());
 
     // Prepare form data for upload
     const formData = new FormData();
@@ -154,7 +154,7 @@ const Upload = () => {
         })
       );
     }
-    dispatch(loadingActions.disableLoading());
+    dispatch(loadingActions.disableButtonLoading());
   };
 
   return (

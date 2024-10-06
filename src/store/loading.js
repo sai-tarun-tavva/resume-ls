@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Initial state of the loading slice
 const initialState = {
-  isLoading: false, // Indicates if loading is currently active
+  isAppLoading: false, // Flag indicating whether the entire application is currently loading
+  isButtonLoading: false, // Flag indicating whether a specific button is currently in a loading state (e.g., for submitting data)
 };
 
 // Creating the loading slice
@@ -10,13 +11,21 @@ const loadingSlice = createSlice({
   name: "loading",
   initialState,
   reducers: {
-    // Enables loading state
-    enableLoading(state) {
-      state.isLoading = true;
+    // Activates the application loading state, indicating that the app is currently processing a task
+    enableAppLoading(state) {
+      state.isAppLoading = true;
     },
-    // Disables loading state
-    disableLoading(state) {
-      state.isLoading = false;
+    // Deactivates the application loading state, indicating that the app has finished processing
+    disableAppLoading(state) {
+      state.isAppLoading = false;
+    },
+    // Activates the button loading state, indicating that the button is in a loading state (e.g., waiting for an API response)
+    enableButtonLoading(state) {
+      state.isButtonLoading = true;
+    },
+    // Deactivates the button loading state, indicating that the button is no longer in a loading state and can be interacted with
+    disableButtonLoading(state) {
+      state.isButtonLoading = false;
     },
   },
 });

@@ -26,7 +26,7 @@ const Candidates = () => {
   const { candidates: globalCandidates, filteredCandidates } = useSelector(
     (state) => state.data
   );
-  const { isLoading } = useSelector((state) => state.loading);
+  const { isAppLoading: isLoading } = useSelector((state) => state.loading);
 
   // Slice the filtered candidates to display only the current page
   const candidates = filteredCandidates.slice(
@@ -39,7 +39,7 @@ const Candidates = () => {
      * Fetch candidates and update context state.
      */
     const getData = async () => {
-      dispatch(loadingActions.enableLoading());
+      dispatch(loadingActions.enableAppLoading());
       const { status, data: candidates } = await fetchCandidates();
 
       if (status === STATUS_CODES.SUCCESS) {
@@ -53,14 +53,14 @@ const Candidates = () => {
           })
         );
       }
-      dispatch(loadingActions.disableLoading());
+      dispatch(loadingActions.disableAppLoading());
     };
 
     // Fetch candidates only for the first time
     if (globalCandidates.length === 0 || shouldRefetch) {
       getData();
       dispatch(uiActions.updateShouldRefetch(false));
-    } else dispatch(loadingActions.disableLoading());
+    } else dispatch(loadingActions.disableAppLoading());
   }, [globalCandidates.length, dispatch, shouldRefetch]);
 
   return (

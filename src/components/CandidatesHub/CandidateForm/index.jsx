@@ -33,7 +33,7 @@ const CandidateForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filteredCandidates } = useSelector((state) => state.data);
-  const { isLoading } = useSelector((state) => state.loading);
+  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
 
   // Fetch candidate information based on the candidateId
   const info = filteredCandidates.find(
@@ -237,7 +237,7 @@ const CandidateForm = () => {
     event.preventDefault();
     if (isLoading) return;
 
-    dispatch(loadingActions.enableLoading());
+    dispatch(loadingActions.enableButtonLoading());
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -296,7 +296,7 @@ const CandidateForm = () => {
       }
     }
     handleClose();
-    dispatch(loadingActions.disableLoading());
+    dispatch(loadingActions.disableButtonLoading());
   };
 
   return (
