@@ -20,7 +20,9 @@ export const END_POINTS = {
   SIGN_UP: "http://10.0.12.114:8000/signup/",
   GET_TOKEN: "http://10.0.12.114:8000/api/token/",
   REFRESH_TOKEN: "http://10.0.12.114:8000/api/token/refresh/",
-  FETCH_CANDIDATES: "http://10.0.12.114:8000/resume_list/",
+  // FETCH_CANDIDATES: "http://10.0.12.114:8000/resume_list/",
+  FETCH_CANDIDATES:
+    "https://run.mocky.io/v3/9baf267f-7d20-4038-ab24-86305be19ad9",
   EDIT_CANDIDATE: "http://10.0.12.114:8000/resume/{{id}}/edit/",
   DOWNLOAD_RESUME: "http://10.0.12.114:8000/home/resume/download/",
   UPLOAD_RESUME: "http://10.0.12.114:8000/upload-file/",

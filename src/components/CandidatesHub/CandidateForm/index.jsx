@@ -11,6 +11,7 @@ import {
   arraysEqual,
   candidateValidations,
   editCandidate,
+  resetStatusAsync,
   transformExperience,
   transformPhoneNumber,
 } from "../../../utilities";
@@ -52,7 +53,9 @@ const CandidateForm = () => {
    * Validates the skill and checks for duplicates before adding.
    * @param {string} newSkill - The skill to be added.
    */
-  const handleAddSkill = (newSkill) => {
+  const handleAddSkill = async (newSkill) => {
+    await dispatch(resetStatusAsync(statusActions.resetStatus));
+
     const lowerCaseSkill = newSkill.trim().toLowerCase();
     let skillError = "";
 
@@ -200,7 +203,7 @@ const CandidateForm = () => {
   const hasFormChanged = () => {
     return (
       nameValue !== info?.name ||
-      phoneValue.replace(/\D/g, "") !== info?.phone_numbers ||
+      phoneValue?.replace(/\D/g, "") !== info?.phone_numbers ||
       emailValue !== info?.email ||
       linkedInValue !== info?.linkedin ||
       cityValue !== info?.location ||
