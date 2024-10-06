@@ -205,7 +205,6 @@ export const arraysEqual = (arr1, arr2) => {
 export const transformPhoneNumber = (value, isCountryCode = false) => {
   // Remove all spaces and hyphens from the input
   const digitsOnly = value.replace(/[\s()-]+/g, "");
-  console.log(digitsOnly);
 
   // Ensure we only reformat if we have exactly 10 digits
   if (digitsOnly.length !== 10) {

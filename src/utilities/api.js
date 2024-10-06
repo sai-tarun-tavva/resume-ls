@@ -22,8 +22,6 @@ export const authenticateUser = async (url, body) => {
     response.status = fetchResponse.status;
     response.data = resData;
 
-    console.log(response);
-
     // Return the response data and status
     return response;
   } catch (error) {
