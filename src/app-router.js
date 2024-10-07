@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import ProtectedRoute from "./pages/ProtectedRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Candidates from "./components/CandidatesHub/Candidates";
@@ -16,7 +17,7 @@ const appRouter = createBrowserRouter([
   { path: ROUTES.AUTH, element: <Login /> },
   {
     path: ROUTES.HOME,
-    element: <Home />,
+    element: <ProtectedRoute element={<Home />} />,
     children: [
       { index: true, element: <Candidates /> },
       { path: ROUTES.CANDIDATE_FORM, element: <CandidateForm /> },
