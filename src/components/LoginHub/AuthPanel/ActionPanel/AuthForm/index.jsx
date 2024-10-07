@@ -127,10 +127,15 @@ const AuthForm = ({ haveAccount }) => {
     }
 
     if (haveAccount) {
-      const { status } = await authenticateUser(END_POINTS.LOGIN, formData);
+      const { status, data } = await authenticateUser(
+        END_POINTS.LOGIN,
+        formData
+      );
 
       if (status === STATUS_CODES.SUCCESS) {
-        navigate(`/${ROUTES.HOME}`);
+        localStorage.setItem("refreshToken", data.data.refresh); // For persistent storage
+        sessionStorage.setItem("accessToken", data.data.access); // Or store in memory/state
+        navigate(`/${ROUTES.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
@@ -149,10 +154,15 @@ const AuthForm = ({ haveAccount }) => {
         );
       }
     } else {
-      const { status } = await authenticateUser(END_POINTS.SIGN_UP, formData);
+      const { status, data } = await authenticateUser(
+        END_POINTS.SIGN_UP,
+        formData
+      );
 
       if (status === STATUS_CODES.CREATED) {
-        navigate(`/${ROUTES.HOME}`);
+        localStorage.setItem("refreshToken", data.data.refresh); // For persistent storage
+        sessionStorage.setItem("accessToken", data.data.access); // Or store in memory/state
+        navigate(`/${ROUTES.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
