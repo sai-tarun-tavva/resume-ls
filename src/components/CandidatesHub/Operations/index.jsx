@@ -3,6 +3,7 @@ import Search from "./Search";
 import Pagination from "./Pagination";
 import Logout from "./LogOut";
 import Logo from "../../../assets/logo.png";
+import { handleLogout as logout } from "../../../utilities";
 import { CONTENT, ROUTES } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -19,6 +20,7 @@ const Operations = () => {
   const enableOperations = location.pathname === `/${ROUTES.HOME}`;
 
   const handleLogout = () => {
+    logout();
     navigate(`/${ROUTES.AUTH}`);
   };
 
