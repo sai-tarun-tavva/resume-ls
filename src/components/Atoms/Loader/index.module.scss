@@ -8,7 +8,13 @@
   top: 0;
   left: 0;
 
-  .loader {
+  &.barContainer {
+    position: unset;
+    min-height: unset;
+    margin-top: 10rem;
+  }
+
+  .spinLoader {
     width: 3rem;
     aspect-ratio: 1;
     border-radius: 50%;
@@ -23,10 +29,38 @@
     );
     animation: l13 1s infinite linear;
   }
+  .barLoader {
+    width: 1.5rem;
+    aspect-ratio: 0.75;
+    --c: no-repeat linear-gradient(var(--primary-color) 0 0);
+    background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+    animation: l7 1s infinite linear alternate;
+  }
 }
 
 @keyframes l13 {
   100% {
     transform: rotate(1turn);
+  }
+}
+
+@keyframes l7 {
+  0% {
+    background-size: 20% 50%, 20% 50%, 20% 50%;
+  }
+  20% {
+    background-size: 20% 20%, 20% 50%, 20% 50%;
+  }
+  40% {
+    background-size: 20% 100%, 20% 20%, 20% 50%;
+  }
+  60% {
+    background-size: 20% 50%, 20% 100%, 20% 20%;
+  }
+  80% {
+    background-size: 20% 50%, 20% 50%, 20% 100%;
+  }
+  100% {
+    background-size: 20% 50%, 20% 50%, 20% 50%;
   }
 }

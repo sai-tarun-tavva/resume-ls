@@ -1,11 +1,11 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Actions from "./Actions";
 import Skills from "../../../Atoms/Skills";
-import { statusActions } from "../../../../store";
+import { statusActions, viewResumeActions } from "../../../../store";
 import {
   calculateTimeAgo,
   isCandidateNew,
@@ -26,6 +26,7 @@ import classes from "./index.module.scss";
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { show: makeSmaller } = useSelector((state) => state.viewResume);
 
   const dateCreated = new Date(candidate.timestamp);
   const isNew = isCandidateNew(dateCreated);
@@ -44,8 +45,19 @@ const Candidate = ({ candidate }) => {
     navigate(replaceRouteParam(ROUTES.CANDIDATE_FORM, { candidateId }));
   };
 
+  /**
+   * Handles the view action for the candidate.
+   *
+   * @param {Event} event - The event triggered by the edit action.
+   */
+  const handleView = (event) => {
+    event.preventDefault();
+    dispatch(viewResumeActions.showResume());
+    dispatch(viewResumeActions.updateId(candidate.id));
+  };
+
   return (
-    <article className={classes.card}>
+    <article className={`${classes.card} ${makeSmaller && classes.smaller}`}>
       <div
         className={classes.cardContent}
         data-new={isNew ? "true" : "false"}
@@ -59,7 +71,11 @@ const Candidate = ({ candidate }) => {
 
         <div className={classes.hiddenActions}>
           <div className={classes.actions}>
-            <Actions id={candidate.id} onEdit={handleEdit} />
+            <Actions
+              id={candidate.id}
+              onEdit={handleEdit}
+              onView={handleView}
+            />
           </div>
         </div>
       </div>

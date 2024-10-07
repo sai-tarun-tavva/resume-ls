@@ -72,4 +72,22 @@
       pointer-events: none;
     }
   }
+
+  &.smaller {
+    height: 17rem;
+
+    .cardContent {
+      flex-wrap: wrap;
+
+      &::after {
+        bottom: -1rem;
+      }
+
+      .hiddenActions {
+        position: absolute;
+        top: 0rem;
+        right: 0rem;
+      }
+    }
+  }
 }

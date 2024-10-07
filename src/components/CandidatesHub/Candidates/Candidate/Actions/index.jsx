@@ -26,9 +26,10 @@ const Action = ({ title, name, ...props }) => (
  *
  * @param {number} id - Id of the candidate
  * @param {Function} onEdit - Function to be called when the edit button is clicked.
+ * @param {Function} onView = Function to be called when the view button is clicked.
  * @returns {JSX.Element} The rendered action buttons.
  */
-const Actions = ({ id, onEdit }) => {
+const Actions = ({ id, onEdit, onView }) => {
   return (
     <>
       <Action title="Edit" name="pencil-square" onClick={onEdit} />
@@ -37,7 +38,7 @@ const Actions = ({ id, onEdit }) => {
         name="download"
         to={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
       />
-      <Action title="View" name="eye" />
+      <Action title="View" name="eye" onClick={onView} />
     </>
   );
 };
@@ -50,6 +51,7 @@ Action.propTypes = {
 Actions.propTypes = {
   id: PropTypes.number.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onView: PropTypes.func.isRequired,
 };
 
 Action.displayName = "Action";

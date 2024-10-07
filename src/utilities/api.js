@@ -1,3 +1,4 @@
+import { formatFileSize } from "./utilities";
 import { END_POINTS } from "../constants";
 
 /**
@@ -31,18 +32,39 @@ export const authenticateUser = async (url, body) => {
   }
 };
 
-export const getApiToken = async (body) => {
+/**
+ * Fetches the PDF resume from the server.
+ *
+ * @returns {Promise<Object>}
+ *          An object containing the HTTP status and PDF details, or null if an error occurs.
+ */
+export const fetchPdf = async () => {
   try {
-    const response = await fetch(END_POINTS.GET_TOKEN, {
-      method: "POST",
-      body,
-    });
+    const response = await fetch(END_POINTS.VIEW_RESUME);
 
-    const resData = await response.json();
+    // Extract the 'Content-Disposition' header
+    const contentDisposition = response.headers.get("Content-Disposition");
 
-    return { status: response.status, data: resData };
+    // Parse the filename from the header
+    let fileName = "unknown.pdf"; // Default in case filename is not found
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+      if (filenameMatch) {
+        fileName = filenameMatch[1];
+      }
+    }
+
+    const blob = await response.blob();
+    const fileSize = formatFileSize(blob.size); // File size in bytes
+    const url = URL.createObjectURL(blob);
+
+    // Return the PDF details and status
+    return {
+      status: response.status,
+      data: { name: fileName, size: fileSize, url },
+    };
   } catch (error) {
-    // Assume any error that causes this block to execute is a server or network issue
+    // Handle any server or network issue
     console.error("Server or network issue:", error.message);
     return { status: 500, data: null };
   }
