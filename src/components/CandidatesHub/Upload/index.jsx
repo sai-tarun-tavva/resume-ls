@@ -7,8 +7,14 @@ import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { loadingActions, statusActions, uiActions } from "../../../store";
-import { isValidFileType, uploadFiles } from "../../../utilities";
-import { CONTENT, MAX_FILES, ROUTES, STATUS_CODES } from "../../../constants";
+import { isValidFile, uploadFiles } from "../../../utilities";
+import {
+  CONTENT,
+  MAX_FILES,
+  MAX_FILE_SIZE,
+  ROUTES,
+  STATUS_CODES,
+} from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -56,18 +62,20 @@ const Upload = () => {
     (selectedFiles) => {
       const validFiles = selectedFiles.filter(
         (file) =>
-          isValidFileType(file) &&
+          isValidFile(file) &&
           !files.some((existingFile) => existingFile.name === file.name)
       );
 
-      if (files.length + validFiles.length > MAX_FILES) {
+      if (
+        files.length + validFiles.length > MAX_FILES ||
+        selectedFiles.length - validFiles.length > 0
+      ) {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.candidateHub.upload.errors.maxFiles.replace(
-              "{{MAX_FILES}}",
-              MAX_FILES
-            ),
-            type: "error",
+            message: CONTENT.candidateHub.upload.errors.maxFiles
+              .replace("{{MAX_FILES}}", MAX_FILES)
+              .replace("{{MAX_FILE_SIZE}}", MAX_FILE_SIZE),
+            type: "failure",
             darkMode: true,
           })
         );

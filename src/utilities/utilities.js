@@ -1,3 +1,5 @@
+import { MAX_FILE_SIZE } from "../constants";
+
 /**
  * Handles the search functionality by filtering data based on the search text.
  * @param {string} searchText - The text to search for.
@@ -18,18 +20,26 @@ export const handleSearchClick = (searchText, data) => {
 };
 
 /**
- * Checks if the file type is valid.
+ * Checks if the file type and size are valid.
  * @param {File} file - The file to check.
- * @returns {boolean} True if the file type is valid, false otherwise.
+ * @returns {boolean} True if the file type and size are valid, false otherwise.
  */
-export const isValidFileType = (file) => {
+export const isValidFile = (file) => {
   const validTypes = [
     "application/pdf",
     "application/msword",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "text/plain",
   ];
-  return validTypes.includes(file.type);
+
+  // Convert the file size from MB to bytes
+  const maxSizeInBytes = MAX_FILE_SIZE * 1024 * 1024;
+
+  // Check file type and file size
+  const isValidType = validTypes.includes(file.type);
+  const isValidSize = file.size <= maxSizeInBytes;
+
+  return isValidType && isValidSize;
 };
 
 /**
