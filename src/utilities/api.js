@@ -1,6 +1,15 @@
 import { formatFileSize } from "./utilities";
 import { END_POINTS, ROUTES } from "../constants";
 
+/**
+ * Makes an API call using the provided URL and options, including handling of the access token.
+ *
+ * @async
+ * @function
+ * @param {string} url - The URL to which the request is sent.
+ * @param {Object} [options={}] - Optional fetch options, including headers and method.
+ * @returns {Promise<Response>} The fetch response, potentially retried with a new access token if the first attempt fails due to token expiration.
+ */
 export const fetchWithToken = async (url, options = {}) => {
   let accessToken = sessionStorage.getItem("accessToken");
 
@@ -48,6 +57,13 @@ export const fetchWithToken = async (url, options = {}) => {
   return response;
 };
 
+/**
+ * Refreshes the access token by making a POST request to the refresh token endpoint.
+ *
+ * @async
+ * @function
+ * @returns {Promise<string>} Returns "success" if the refresh token is valid and a new access token is received, otherwise "failure".
+ */
 export const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
 
@@ -75,7 +91,6 @@ export const refreshAccessToken = async () => {
     return "failure";
   }
 };
-
 
 /**
  * Authenticates a user by making a POST request to the given URL with the provided body data.
@@ -108,6 +123,13 @@ export const authenticateUser = async (url, body) => {
   }
 };
 
+/**
+ * Logs out the user by invalidating the refresh token and clearing session storage.
+ *
+ * @async
+ * @function
+ * @returns {Promise<void>} Logs out the user and clears session/local storage.
+ */
 export const handleLogout = async () => {
   try {
     // Get the refresh token from localStorage
@@ -131,10 +153,11 @@ export const handleLogout = async () => {
     }
   } catch (error) {
     console.error("Error logging out:", error);
-      }
+  }
   sessionStorage.clear();
   localStorage.clear();
 };
+
 /**
  * Fetches the PDF resume from the server.
  *
@@ -172,7 +195,6 @@ export const fetchPdf = async () => {
     return { status: 500, data: null };
   }
 };
-
 
 /**
  * Fetches the list of candidates from the API.
