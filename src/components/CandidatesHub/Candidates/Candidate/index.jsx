@@ -26,7 +26,9 @@ import classes from "./index.module.scss";
 const Candidate = ({ candidate }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { show: makeSmaller } = useSelector((state) => state.viewResume);
+  const { show: makeSmaller, id: focusedId } = useSelector(
+    (state) => state.viewResume
+  );
 
   const dateCreated = new Date(candidate.timestamp);
   const isNew = isCandidateNew(dateCreated);
@@ -57,7 +59,11 @@ const Candidate = ({ candidate }) => {
   };
 
   return (
-    <article className={`${classes.card} ${makeSmaller && classes.smaller}`}>
+    <article
+      className={`${classes.card} ${makeSmaller && classes.smaller} ${
+        focusedId === candidate.id && classes.focus
+      }`}
+    >
       <div
         className={classes.cardContent}
         data-new={isNew ? "true" : "false"}
