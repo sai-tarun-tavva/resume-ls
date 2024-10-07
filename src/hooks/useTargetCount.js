@@ -11,11 +11,11 @@ import { END_POINTS } from "../constants";
  */
 export const useTargetCount = () => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.loading);
+  const { isAppLoading: isLoading } = useSelector((state) => state.loading);
   const [targetCount, setTargetCount] = useState(0);
 
   useEffect(() => {
-    dispatch(loadingActions.enableLoading());
+    dispatch(loadingActions.enableAppLoading());
 
     // Fetch the target count asynchronously
     const fetchTargetCount = async () => {
@@ -31,7 +31,7 @@ export const useTargetCount = () => {
       } catch (error) {
         console.error("Error fetching target count:", error);
       } finally {
-        dispatch(loadingActions.disableLoading());
+        dispatch(loadingActions.disableAppLoading());
       }
     };
 

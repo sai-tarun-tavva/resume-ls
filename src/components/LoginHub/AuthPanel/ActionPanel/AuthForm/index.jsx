@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { useInput } from "../../../../../hooks";
 import Input from "../../../../Atoms/Input";
 import Button from "../../../../Atoms/Button";
-import { statusActions } from "../../../../../store";
+import { loadingActions, statusActions } from "../../../../../store";
 import {
   authenticateUser,
   authValidations,
@@ -32,7 +32,7 @@ import classes from "./index.module.scss";
 const AuthForm = ({ haveAccount }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading } = useSelector((state) => state.loading);
+  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
 
   const {
     value: userNameValue,
@@ -117,6 +117,8 @@ const AuthForm = ({ haveAccount }) => {
       return;
     }
 
+    dispatch(loadingActions.enableButtonLoading());
+
     const formData = new FormData();
     formData.append("username", userNameValue);
     formData.append("password", passwordValue);
@@ -147,7 +149,7 @@ const AuthForm = ({ haveAccount }) => {
         );
       }
     } else {
-      const { status } = authenticateUser(END_POINTS.SIGN_UP, formData);
+      const { status } = await authenticateUser(END_POINTS.SIGN_UP, formData);
 
       if (status === STATUS_CODES.CREATED) {
         navigate(`/${ROUTES.HOME}`);
@@ -169,6 +171,8 @@ const AuthForm = ({ haveAccount }) => {
         );
       }
     }
+
+    dispatch(loadingActions.disableButtonLoading());
   };
 
   // Reset input fields when switching between login and sign-up

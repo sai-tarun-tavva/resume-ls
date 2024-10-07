@@ -25,12 +25,12 @@ const Location = ({ candidate }) => {
 
   return (
     <div className={classes.location}>
-      <IconText iconName="geo-alt">
+      <IconText iconName="geo-alt" maxWidth={"6.25rem"}>
         {candidate.location
           ? highlightText(candidate.location, searchTerm)
           : location}
       </IconText>
-      <IconText iconName="map">
+      <IconText iconName="map" maxWidth={"6.25rem"}>
         {candidate.region
           ? highlightText(candidate.region, searchTerm)
           : region}

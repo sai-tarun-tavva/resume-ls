@@ -11,6 +11,7 @@ import {
   arraysEqual,
   candidateValidations,
   editCandidate,
+  resetStatusAsync,
   transformExperience,
   transformPhoneNumber,
 } from "../../../utilities";
@@ -33,7 +34,7 @@ const CandidateForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filteredCandidates } = useSelector((state) => state.data);
-  const { isLoading } = useSelector((state) => state.loading);
+  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
 
   // Fetch candidate information based on the candidateId
   const info = filteredCandidates.find(
@@ -52,7 +53,9 @@ const CandidateForm = () => {
    * Validates the skill and checks for duplicates before adding.
    * @param {string} newSkill - The skill to be added.
    */
-  const handleAddSkill = (newSkill) => {
+  const handleAddSkill = async (newSkill) => {
+    await dispatch(resetStatusAsync(statusActions.resetStatus));
+
     const lowerCaseSkill = newSkill.trim().toLowerCase();
     let skillError = "";
 
@@ -200,7 +203,7 @@ const CandidateForm = () => {
   const hasFormChanged = () => {
     return (
       nameValue !== info?.name ||
-      phoneValue !== info?.phone_numbers ||
+      phoneValue?.replace(/\D/g, "") !== info?.phone_numbers ||
       emailValue !== info?.email ||
       linkedInValue !== info?.linkedin ||
       cityValue !== info?.location ||
@@ -237,7 +240,7 @@ const CandidateForm = () => {
     event.preventDefault();
     if (isLoading) return;
 
-    dispatch(loadingActions.enableLoading());
+    dispatch(loadingActions.enableButtonLoading());
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -245,7 +248,7 @@ const CandidateForm = () => {
     const formValues = new FormData();
     const fields = {
       name: nameValue,
-      phone_numbers: phoneValue,
+      phone_numbers: phoneValue.replace(/\D/g, ""),
       email: emailValue,
       linkedin: linkedInValue,
       location: cityValue,
@@ -296,7 +299,7 @@ const CandidateForm = () => {
       }
     }
     handleClose();
-    dispatch(loadingActions.disableLoading());
+    dispatch(loadingActions.disableButtonLoading());
   };
 
   return (

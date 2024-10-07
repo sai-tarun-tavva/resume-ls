@@ -1,7 +1,18 @@
+import PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Button from "../../../Atoms/Button";
 import classes from "./index.module.scss";
 
+/**
+ * Logout Component
+ *
+ * Handles the logout action.
+ * It will be executed when the button is clicked.
+ *
+ * @param {Object} props - Component props
+ * @param {function} props.onLogout - Callback function to handle logout action
+ * @returns {JSX.Element} - Rendered logout button component
+ */
 const Logout = ({ onLogout }) => {
   return (
     <Button className={classes.logout} title="Log Out" onClick={onLogout}>
@@ -10,5 +21,10 @@ const Logout = ({ onLogout }) => {
   );
 };
 
-Logout.displayName = "LogOut";
+Logout.displayName = "Logout";
+
+Logout.propTypes = {
+  onLogout: PropTypes.func.isRequired,
+};
+
 export default Logout;

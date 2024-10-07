@@ -7,8 +7,14 @@ import FileList from "./FileList";
 import Button from "../../Atoms/Button";
 import Modal from "../../Atoms/Modal";
 import { loadingActions, statusActions, uiActions } from "../../../store";
-import { uploadFiles } from "../../../utilities";
-import { CONTENT, MAX_FILES, ROUTES, STATUS_CODES } from "../../../constants";
+import { isValidFile, uploadFiles } from "../../../utilities";
+import {
+  CONTENT,
+  MAX_FILES,
+  MAX_FILE_SIZE,
+  ROUTES,
+  STATUS_CODES,
+} from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -24,7 +30,7 @@ import classes from "./index.module.scss";
 const Upload = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.loading);
+  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
 
@@ -56,22 +62,20 @@ const Upload = () => {
     (selectedFiles) => {
       const validFiles = selectedFiles.filter(
         (file) =>
-          (file.type === "application/pdf" ||
-            file.type === "application/msword" ||
-            file.type ===
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-            file.type === "text/plain") &&
+          isValidFile(file) &&
           !files.some((existingFile) => existingFile.name === file.name)
       );
 
-      if (files.length + validFiles.length > MAX_FILES) {
+      if (
+        files.length + validFiles.length > MAX_FILES ||
+        selectedFiles.length - validFiles.length > 0
+      ) {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.candidateHub.upload.errors.maxFiles.replace(
-              "{{MAX_FILES}}",
-              MAX_FILES
-            ),
-            type: "error",
+            message: CONTENT.candidateHub.upload.errors.maxFiles
+              .replace("{{MAX_FILES}}", MAX_FILES)
+              .replace("{{MAX_FILE_SIZE}}", MAX_FILE_SIZE),
+            type: "failure",
             darkMode: true,
           })
         );
@@ -125,13 +129,13 @@ const Upload = () => {
 
     if (isLoading) return;
 
-    dispatch(loadingActions.enableLoading());
+    dispatch(loadingActions.enableButtonLoading());
 
     // Prepare form data for upload
     const formData = new FormData();
 
     files.forEach((file) => {
-      formData.append("files", file);
+      formData.append("file", file);
     });
 
     const { status } = await uploadFiles(formData);
@@ -158,7 +162,7 @@ const Upload = () => {
         })
       );
     }
-    dispatch(loadingActions.disableLoading());
+    dispatch(loadingActions.disableButtonLoading());
   };
 
   return (

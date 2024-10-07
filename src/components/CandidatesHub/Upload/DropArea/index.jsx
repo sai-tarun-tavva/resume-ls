@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { CONTENT } from "../../../../constants/content";
+import { CONTENT, MAX_FILES, MAX_FILE_SIZE } from "../../../../constants/";
 import classes from "./index.module.scss";
 
 /**
@@ -34,7 +34,9 @@ const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
       </div>
 
       <small className={classes.infoText}>
-        {CONTENT.candidateHub.upload.dragDrop.info}
+        {CONTENT.candidateHub.upload.dragDrop.info
+          .replace("{{MAX_FILES}}", MAX_FILES)
+          .replace("{{MAX_FILE_SIZE}}", MAX_FILE_SIZE)}
       </small>
     </>
   );

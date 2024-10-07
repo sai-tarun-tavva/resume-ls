@@ -1,15 +1,45 @@
 import { END_POINTS } from "../constants";
 
+/**
+ * Authenticates a user by making a POST request to the given URL with the provided body data.
+ *
+ * @async
+ * @function
+ * @param {string} url - The URL to which the request is sent.
+ * @param {Object} body - The request body containing authentication details.
+ * @returns {Promise<Object>} The response status and data from the server.
+ */
 export const authenticateUser = async (url, body) => {
+  const response = { status: null, data: null };
   try {
-    const response = await fetch(url, {
+    const fetchResponse = await fetch(url, {
+      method: "POST",
+      body,
+    });
+
+    const resData = await fetchResponse.json();
+
+    response.status = fetchResponse.status;
+    response.data = resData;
+
+    // Return the response data and status
+    return response;
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return response;
+  }
+};
+
+export const getApiToken = async (body) => {
+  try {
+    const response = await fetch(END_POINTS.GET_TOKEN, {
       method: "POST",
       body,
     });
 
     const resData = await response.json();
 
-    // Return the response data and status
     return { status: response.status, data: resData };
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
@@ -19,8 +49,11 @@ export const authenticateUser = async (url, body) => {
 };
 
 /**
- * Fetch candidates from the API.
- * @returns {Promise<Array>} The list of candidates.
+ * Fetches the list of candidates from the API.
+ *
+ * @async
+ * @function
+ * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
  */
 export const fetchCandidates = async () => {
   try {
@@ -36,19 +69,15 @@ export const fetchCandidates = async () => {
   }
 };
 
-export const downloadResume = async (id) => {
-  try {
-    const { status } = await fetch(`${END_POINTS.DOWNLOAD_RESUME}${id}`);
-
-    // Return the status
-    return { status };
-  } catch (error) {
-    // Assume any error that causes this block to execute is a server or network issue
-    console.error("Server or network issue:", error.message);
-    return { status: 500 };
-  }
-};
-
+/**
+ * Edits the information of a candidate by making a PUT request to the given endpoint.
+ *
+ * @async
+ * @function
+ * @param {number} id - The ID of the candidate to be edited.
+ * @param {Object} body - The request body containing updated candidate information.
+ * @returns {Promise<Object>} An object containing the response status and updated candidate data.
+ */
 export const editCandidate = async (id, body) => {
   try {
     // Make the API request to update candidate data
@@ -56,9 +85,6 @@ export const editCandidate = async (id, body) => {
       END_POINTS.EDIT_CANDIDATE.replace("{{id}}", id),
       {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body,
       }
     );
@@ -74,9 +100,17 @@ export const editCandidate = async (id, body) => {
   }
 };
 
+/**
+ * Uploads files to the server by making a POST request with the provided body data.
+ *
+ * @async
+ * @function
+ * @param {Object} body - The form data containing files to be uploaded.
+ * @returns {Promise<Object>} An object containing the response status.
+ */
 export const uploadFiles = async (body) => {
   try {
-    // Make the API request to update candidate data
+    // Make the API request to upload files
     const response = await fetch(END_POINTS.UPLOAD_RESUME, {
       method: "POST",
       body,

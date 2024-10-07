@@ -2,7 +2,7 @@ export const CONTENT = {
   serverError: "Server error. Please try again later.",
   authPage: {
     welcomePanel: {
-      heading: "Parse your resume",
+      heading: "Empowering Resumes, Elevating Careers",
       paragraph: "Resumes parsed",
     },
     authPanel: {
@@ -57,12 +57,12 @@ export const CONTENT = {
         heading: "Drag and drop or click here",
         paragraphFile: "to choose your files",
         paragraphFolder: "to choose your folder",
-        info: "Only the first 30 files in TXT, DOC, DOCX, and PDF formats will be accepted.",
+        info: "`Only the first {{MAX_FILES}} files in TXT, DOC, DOCX, and PDF formats, each under {{MAX_FILE_SIZE}}MB will be accepted.",
       },
       button: "Upload file",
       errors: {
         maxFiles:
-          "Only first {{MAX_FILES}} files are being uploaded. Extra files were excluded.",
+          "Only the first {{MAX_FILES}} files, each under {{MAX_FILE_SIZE}}MB will be included.",
       },
     },
     operations: {

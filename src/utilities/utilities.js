@@ -1,3 +1,5 @@
+import { MAX_FILE_SIZE } from "../constants";
+
 /**
  * Handles the search functionality by filtering data based on the search text.
  * @param {string} searchText - The text to search for.
@@ -17,6 +19,35 @@ export const handleSearchClick = (searchText, data) => {
   return filteredResults;
 };
 
+/**
+ * Checks if the file type and size are valid.
+ * @param {File} file - The file to check.
+ * @returns {boolean} True if the file type and size are valid, false otherwise.
+ */
+export const isValidFile = (file) => {
+  const validTypes = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+  ];
+
+  // Convert the file size from MB to bytes
+  const maxSizeInBytes = MAX_FILE_SIZE * 1024 * 1024;
+
+  // Check file type and file size
+  const isValidType = validTypes.includes(file.type);
+  const isValidSize = file.size <= maxSizeInBytes;
+
+  return isValidType && isValidSize;
+};
+
+/**
+ * Highlights the matching text within a given string.
+ * @param {string} text - The text to search and highlight within.
+ * @param {string} highlight - The text to highlight.
+ * @returns {JSX.Element} The text with highlighted matches.
+ */
 export const highlightText = (text, highlight) => {
   if (!highlight) return text;
 
@@ -55,6 +86,11 @@ export const isCandidateNew = (dateCreated) => {
   return Date.now() - dateCreated.getTime() < 7 * 24 * 60 * 60 * 1000; // less than 7 days
 };
 
+/**
+ * Resets the status asynchronously.
+ * @param {function} action - The action to dispatch.
+ * @returns {Promise<void>} A promise that resolves after the status is reset.
+ */
 export const resetStatusAsync = (action) => (dispatch) => {
   return new Promise((resolve) => {
     dispatch(action());
@@ -170,24 +206,33 @@ export const arraysEqual = (arr1, arr2) => {
 };
 
 /**
- * Transforms a phone number into a formatted string.
+ * Transforms a phone number into a formatted string with either
+ * +1 (xxx) xxx-xxxx or (xxx) xxx-xxxx format.
  * @param {string} value - The phone number as a string.
+ * @param {boolean} isCountryCode - If true, includes the country code (+1).
  * @returns {string} The formatted phone number, or the original if not valid.
  */
-export const transformPhoneNumber = (value) => {
-  // Remove all spaces from the input
-  const digitsOnly = value.replace(/\s+/g, "");
+export const transformPhoneNumber = (value, isCountryCode = false) => {
+  // Remove all spaces and hyphens from the input
+  const digitsOnly = value.replace(/[\s()-]+/g, "");
 
   // Ensure we only reformat if we have exactly 10 digits
   if (digitsOnly.length !== 10) {
     return value; // Return the original input if it's not exactly 10 digits
   }
 
-  // Format the string as xxx xxx xxxx
-  return `${digitsOnly.slice(0, 3)} ${digitsOnly.slice(
-    3,
-    6
-  )} ${digitsOnly.slice(6)}`;
+  // Format the string based on the isCountryCode flag
+  if (isCountryCode) {
+    return `+1 (${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(
+      3,
+      6
+    )}-${digitsOnly.slice(6)}`;
+  } else {
+    return `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(
+      3,
+      6
+    )}-${digitsOnly.slice(6)}`;
+  }
 };
 
 /**
