@@ -62,7 +62,7 @@ export const CONTENT = {
       button: "Upload file",
       errors: {
         maxFiles:
-          "Only the first {{MAX_FILES}} files under {{MAX_FILE_SIZE}}MB were included.",
+          "Only the first {{MAX_FILES}} files, each under {{MAX_FILE_SIZE}}MB will be included.",
       },
     },
     operations: {
