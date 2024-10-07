@@ -1,6 +1,10 @@
 .mainInfo {
   flex: 25%;
 
+  &.smaller {
+    flex: 45% 1;
+  }
+
   .name {
     display: flex;
     align-items: center;

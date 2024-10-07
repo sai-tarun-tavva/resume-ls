@@ -14,6 +14,10 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   }
 
+  &.focus {
+    box-shadow: 0 0.1rem 0.5rem var(--primary-color);
+  }
+
   .cardContent {
     display: flex;
     background-color: #f9f9f9;
@@ -70,6 +74,24 @@
       transform: translate(1.25rem, -0.75rem);
       transition: opacity 0.3s ease, transform 0.3s ease;
       pointer-events: none;
+    }
+  }
+
+  &.smaller {
+    height: 17rem;
+
+    .cardContent {
+      flex-wrap: wrap;
+
+      &::after {
+        bottom: -1rem;
+      }
+
+      .hiddenActions {
+        position: absolute;
+        top: 0rem;
+        right: 0rem;
+      }
     }
   }
 }

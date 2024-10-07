@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Skill from "../Skill";
 import classes from "./index.module.scss";
@@ -15,9 +16,11 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered Skills component.
  */
 const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
+  const { show: makeSmaller } = useSelector((state) => state.viewResume);
+
   return (
     <div
-      className={classes.skills}
+      className={`${classes.skills} ${makeSmaller && classes.smaller}`}
       style={isEditable ? { marginRight: 0, height: "29rem" } : {}}
     >
       <div>

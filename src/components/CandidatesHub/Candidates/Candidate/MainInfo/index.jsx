@@ -42,6 +42,7 @@ const getLinkedIn = (url) => {
  */
 const MainInfo = ({ candidate }) => {
   const { searchTerm } = useSelector((state) => state.ui);
+  const { show: makeSmaller } = useSelector((state) => state.viewResume);
   const { name, phone_numbers, email, linkedin } = candidate;
   const {
     name: defaultName,
@@ -50,7 +51,7 @@ const MainInfo = ({ candidate }) => {
   } = CONTENT.candidateHub.candidate.defaultValues;
 
   return (
-    <div className={classes.mainInfo}>
+    <div className={`${classes.mainInfo} ${makeSmaller && classes.smaller}`}>
       <div className={classes.name}>
         <span>
           {name

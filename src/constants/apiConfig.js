@@ -10,6 +10,8 @@ export const END_POINTS = {
   REFRESH_TOKEN: `${apiUrl}api/token/refresh/`,
   FETCH_CANDIDATES: `${apiUrl}resume_list/`,
   EDIT_CANDIDATE: `${apiUrl}resume/{{id}}/edit/`,
+  VIEW_RESUME:
+    "https://httpbin.org/response-headers?Content-Disposition=inline;filename=test.pdf",
   DOWNLOAD_RESUME: `${apiUrl}home/resume/download/`,
   UPLOAD_RESUME: `${apiUrl}upload-file/`,
   BATCH_PROCESS: `${apiUrl}/dummy`,

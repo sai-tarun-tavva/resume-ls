@@ -1,3 +1,4 @@
+import { formatFileSize } from "./utilities";
 import { END_POINTS, ROUTES } from "../constants";
 
 export const fetchWithToken = async (url, options = {}) => {
@@ -75,6 +76,7 @@ export const refreshAccessToken = async () => {
   }
 };
 
+
 /**
  * Authenticates a user by making a POST request to the given URL with the provided body data.
  *
@@ -129,10 +131,48 @@ export const handleLogout = async () => {
     }
   } catch (error) {
     console.error("Error logging out:", error);
-  }
+      }
   sessionStorage.clear();
   localStorage.clear();
 };
+/**
+ * Fetches the PDF resume from the server.
+ *
+ * @returns {Promise<Object>}
+ *          An object containing the HTTP status and PDF details, or null if an error occurs.
+ */
+export const fetchPdf = async () => {
+  try {
+    const response = await fetch(END_POINTS.VIEW_RESUME);
+
+    // Extract the 'Content-Disposition' header
+    const contentDisposition = response.headers.get("Content-Disposition");
+
+    // Parse the filename from the header
+    let fileName = "unknown.pdf"; // Default in case filename is not found
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+      if (filenameMatch) {
+        fileName = filenameMatch[1];
+      }
+    }
+
+    const blob = await response.blob();
+    const fileSize = formatFileSize(blob.size); // File size in bytes
+    const url = URL.createObjectURL(blob);
+
+    // Return the PDF details and status
+    return {
+      status: response.status,
+      data: { name: fileName, size: fileSize, url },
+    };
+  } catch (error) {
+    // Handle any server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500, data: null };
+  }
+};
+
 
 /**
  * Fetches the list of candidates from the API.

@@ -1,3 +1,4 @@
+import { LOADER_TYPES } from "../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -7,10 +8,18 @@ import classes from "./index.module.scss";
  *
  * @returns {JSX.Element} The rendered Loader component.
  */
-const Loader = () => {
+const Loader = ({ type = LOADER_TYPES.SPIN }) => {
   return (
-    <div className={classes.loaderContainer}>
-      <div className={classes.loader} />
+    <div
+      className={`${classes.loaderContainer} ${
+        type === LOADER_TYPES.BAR && classes.barContainer
+      }`}
+    >
+      <div
+        className={
+          type === LOADER_TYPES.SPIN ? classes.spinLoader : classes.barLoader
+        }
+      />
     </div>
   );
 };

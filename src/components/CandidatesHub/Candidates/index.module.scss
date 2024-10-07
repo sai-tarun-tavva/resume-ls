@@ -1,6 +1,11 @@
 .cards {
   margin: 9.3rem 10% 0;
 
+  &.smaller {
+    width: 30%;
+    margin: 9.3rem 4% 0;
+  }
+
   > p {
     display: flex;
     justify-content: center;
