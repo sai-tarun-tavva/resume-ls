@@ -16,7 +16,6 @@ import {
   fetchPdf,
 } from "../../../utilities";
 import { CONTENT, CANDIDATES_PER_PAGE, STATUS_CODES } from "../../../constants";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
 let isInitial = true;

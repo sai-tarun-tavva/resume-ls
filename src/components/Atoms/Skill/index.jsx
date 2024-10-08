@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { highlightText } from "../../../utilities";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
 /**

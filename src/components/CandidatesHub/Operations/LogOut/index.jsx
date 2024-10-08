@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import Button from "../../../Atoms/Button";
 import classes from "./index.module.scss";
 

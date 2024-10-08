@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Button from "../../../Atoms/Button";
 import { uiActions } from "../../../../store";
 import { CANDIDATES_PER_PAGE } from "../../../../constants";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
 /**

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Loader from "../../Atoms/Loader";
 import { viewResumeActions } from "../../../store/viewresume";
 import { END_POINTS, LOADER_TYPES } from "../../../constants";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
 /**
