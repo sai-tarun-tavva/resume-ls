@@ -11,6 +11,16 @@
     flex-basis: 100%;
   }
 
+  &.editable {
+    margin-right: 0;
+    height: 29rem;
+  }
+
+  &.selectable {
+    margin-top: 1rem;
+    height: 5.2rem;
+  }
+
   div {
     display: flex;
     flex-wrap: wrap;

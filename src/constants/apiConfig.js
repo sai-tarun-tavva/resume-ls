@@ -15,4 +15,6 @@ export const END_POINTS = {
   DOWNLOAD_RESUME: `${apiUrl}home/resume/download/`,
   UPLOAD_RESUME: `${apiUrl}upload-file/`,
   BATCH_PROCESS: `${apiUrl}/dummy`,
+  FETCH_SUGGESTED_SKILLS:
+    "https://run.mocky.io/v3/1987e343-06ef-4993-b9f5-92cd4e106887",
 };

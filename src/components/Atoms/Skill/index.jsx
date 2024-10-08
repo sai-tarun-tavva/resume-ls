@@ -14,18 +14,23 @@ import classes from "./index.module.scss";
  * @param {string} props.name - The name of the skill.
  * @param {string} props.id - The unique identifier for the skill.
  * @param {boolean} props.isEditable - Indicates if the skill bubble is editable.
- * @param {function} props.onClick - Function to call when the close icon is clicked.
+ * @param {boolean} props.isSelectable - Indicates if the skill bubble is selectable or clickable.
+ * @param {function} props.onRemove - Function to call when the close icon is clicked.
+ * @param {function} props.onSelect - Function to call when the skill bubble is clicked.
  * @returns {JSX.Element} The rendered Skill component.
  */
-const Skill = ({ name, id, isEditable, onClick }) => {
+const Skill = ({ name, id, isEditable, isSelectable, onRemove, onSelect }) => {
   const { searchTerm } = useSelector((state) => state.ui);
 
   return (
     <span
-      className={`${classes.skillBubble} ${isEditable && classes.editable}`}
+      className={`${classes.skillBubble} ${isEditable && classes.editable} ${
+        isSelectable && classes.selectable
+      }`}
+      onClick={() => onSelect(name)}
     >
       {highlightText(name, searchTerm)}
-      {isEditable && <i className="bi bi-x" onClick={() => onClick(id)}></i>}
+      {isEditable && <i className="bi bi-x" onClick={() => onRemove(id)}></i>}
     </span>
   );
 };
@@ -34,7 +39,9 @@ Skill.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   isEditable: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
+  isSelectable: PropTypes.bool.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
 Skill.displayName = "Skill";

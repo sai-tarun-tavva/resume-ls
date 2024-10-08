@@ -20,7 +20,7 @@ import classes from "./index.module.scss";
 const ResumeViewer = ({ details: { name, size, url } }) => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.viewResume);
-  const { isFileFetchLoading: isFetchingFile } = useSelector(
+  const { isFetchLoading: isFetchingFile } = useSelector(
     (state) => state.loading
   );
 

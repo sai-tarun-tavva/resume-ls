@@ -88,9 +88,9 @@ const Candidates = () => {
      * Fetch resume pdf and update redux state.
      */
     const getPdf = async () => {
-      dispatch(loadingActions.enableFileFetchLoading());
+      dispatch(loadingActions.enableFetchLoading());
       const { status, data } = await fetchPdf();
-      dispatch(loadingActions.disableFileFetchLoading());
+      dispatch(loadingActions.disableFetchLoading());
 
       if (status === STATUS_CODES.SUCCESS) {
         setPdfDetails(data);

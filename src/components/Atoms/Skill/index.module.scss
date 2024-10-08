@@ -27,6 +27,16 @@
     }
   }
 
+  &.selectable {
+    border-radius: 0.1rem;
+    background: #e3f2fd;
+    cursor: pointer;
+
+    &:hover {
+      background: #80bae4;
+    }
+  }
+
   &:hover {
     background-color: #e3f2fd;
   }

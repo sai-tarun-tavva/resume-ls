@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../../hooks";
+import AutoSuggestion from "./AutoSuggestion";
 import Skills from "../../Atoms/Skills";
 import Button from "../../Atoms/Button";
 import Input from "../../Atoms/Input";
@@ -11,6 +12,7 @@ import {
   arraysEqual,
   candidateValidations,
   editCandidate,
+  fetchSuggestedSkills,
   resetStatusAsync,
   transformExperience,
   transformPhoneNumber,
@@ -40,6 +42,8 @@ const CandidateForm = () => {
   const info = candidates.find((candidate) => candidate.id === +candidateId);
 
   const [localSkills, setLocalSkills] = useState(info?.skills);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
   // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
   useEffect(() => {
@@ -54,28 +58,27 @@ const CandidateForm = () => {
   const handleAddSkill = async (newSkill) => {
     await dispatch(resetStatusAsync(statusActions.resetStatus));
 
-    const lowerCaseSkill = newSkill.trim().toLowerCase();
     let skillError = "";
 
     // Validate skill input
-    if (!lowerCaseSkill) {
-      skillError = CONTENT.candidateHub.candidateForm.errors.skill.empty;
-    } else if (localSkills.includes(lowerCaseSkill)) {
+    if (localSkills.includes(newSkill.trim())) {
       skillError = CONTENT.candidateHub.candidateForm.errors.skill.existing;
     }
 
     // If there's an error, reset input and show status message
     if (skillError) {
-      resetSkillValue();
       dispatch(
         statusActions.updateStatus({ message: skillError, type: "failure" })
       );
+      resetSkillValue();
+      setShowSuggestions(false);
       return;
     }
 
     // Update local skills state
-    setLocalSkills((prevSkills) => [lowerCaseSkill, ...prevSkills]);
+    setLocalSkills((prevSkills) => [newSkill, ...prevSkills]);
     resetSkillValue();
+    setShowSuggestions(false);
   };
 
   /**
@@ -187,10 +190,31 @@ const CandidateForm = () => {
    * Add a skill when Enter key is pressed in the skill input field.
    * @param {KeyboardEvent} event - The keyboard event triggered on key press.
    */
-  const addSkillOnEnter = (event) => {
+  const addSkillOnEnter = async (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      handleAddSkill(event.target.value);
+
+      setShowSuggestions(!!skillValue);
+
+      if (!!skillValue) {
+        dispatch(loadingActions.enableFetchLoading());
+        const { status, data } = await fetchSuggestedSkills();
+
+        if (status === STATUS_CODES.SUCCESS) {
+          setSuggestions(data);
+        } else {
+          setShowSuggestions(false);
+          resetSkillValue();
+          dispatch(
+            statusActions.updateStatus({
+              message: CONTENT.serverError,
+              type: "failure",
+            })
+          );
+        }
+      }
+
+      dispatch(loadingActions.disableFetchLoading());
     }
   };
 
@@ -299,6 +323,20 @@ const CandidateForm = () => {
     handleClose();
     dispatch(loadingActions.disableButtonLoading());
   };
+  /**
+   * Create a new skill when the create skill button is clicked.
+   *
+   * @param {MouseEvent} event - The mouse event triggered on button click.
+   *
+   * This function prevents the default form submission, logs the current skill value,
+   * Adds the skill using `handleAddSkill`, and then resets the input field.
+   */
+  const handleCreateSkill = (event) => {
+    event.preventDefault();
+
+    handleAddSkill(skillValue);
+    resetSkillValue();
+  };
 
   return (
     <form
@@ -318,7 +356,7 @@ const CandidateForm = () => {
               onBlur={handleNameBlur}
               onKeyDown={preventSubmitOnEnter}
               error={nameError}
-              leftIcon={<i className="bi bi-person-circle"></i>}
+              leftIcon={<i className="bi bi-person-circle" />}
             />
 
             <Input
@@ -333,7 +371,7 @@ const CandidateForm = () => {
               onBlur={handlePhoneBlur}
               onKeyDown={preventSubmitOnEnter}
               error={phoneError}
-              leftIcon={<i className="bi bi-telephone-fill"></i>}
+              leftIcon={<i className="bi bi-telephone-fill" />}
             />
 
             <Input
@@ -348,7 +386,7 @@ const CandidateForm = () => {
               onBlur={handleEmailBlur}
               onKeyDown={preventSubmitOnEnter}
               error={emailError}
-              leftIcon={<i className="bi bi-envelope-fill"></i>}
+              leftIcon={<i className="bi bi-envelope-fill" />}
             />
 
             <Input
@@ -361,8 +399,16 @@ const CandidateForm = () => {
               onChange={handleSkillChange}
               onBlur={handleSkillBlur}
               onKeyDown={addSkillOnEnter}
-              leftIcon={<i className="bi bi-lightbulb-fill"></i>}
+              leftIcon={<i className="bi bi-tools" />}
             />
+            {showSuggestions && (
+              <AutoSuggestion
+                createSkill={handleCreateSkill}
+                addSkill={handleAddSkill}
+                disableCreate={!skillValue}
+                suggestions={suggestions}
+              />
+            )}
           </div>
 
           <div>
@@ -377,7 +423,7 @@ const CandidateForm = () => {
               onBlur={handleLinkedInBlur}
               onKeyDown={preventSubmitOnEnter}
               error={linkedInError}
-              leftIcon={<i className="bi bi-linkedin"></i>}
+              leftIcon={<i className="bi bi-linkedin" />}
             />
 
             <Input
@@ -389,7 +435,7 @@ const CandidateForm = () => {
               onBlur={handleCityBlur}
               onKeyDown={preventSubmitOnEnter}
               error={cityError}
-              leftIcon={<i className="bi bi-geo-alt-fill"></i>}
+              leftIcon={<i className="bi bi-geo-alt-fill" />}
             />
 
             <Input
@@ -403,7 +449,7 @@ const CandidateForm = () => {
               onBlur={handleStateBlur}
               onKeyDown={preventSubmitOnEnter}
               error={stateError}
-              leftIcon={<i className="bi bi-map-fill"></i>}
+              leftIcon={<i className="bi bi-map-fill" />}
             />
 
             <Input
@@ -418,7 +464,7 @@ const CandidateForm = () => {
               onBlur={handleExperienceBlur}
               onKeyDown={preventSubmitOnEnter}
               error={experienceError}
-              leftIcon={<i className="bi bi-briefcase-fill"></i>}
+              leftIcon={<i className="bi bi-briefcase-fill" />}
             />
           </div>
         </div>
@@ -454,7 +500,7 @@ const CandidateForm = () => {
           <Skills
             skills={localSkills}
             isEditable={true}
-            onClick={handleRemoveSkill}
+            removeHandler={handleRemoveSkill}
           />
         </div>
       </div>
