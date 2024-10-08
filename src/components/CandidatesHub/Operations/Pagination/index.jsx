@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Button from "../../../Atoms/Button";
 import { uiActions } from "../../../../store";
+import { CANDIDATES_PER_PAGE } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -15,8 +16,20 @@ import classes from "./index.module.scss";
  */
 const Pagination = () => {
   const dispatch = useDispatch();
-  const { previousURL, nextURL } = useSelector((state) => state.ui);
+  const { previousURL, nextURL, totalCount } = useSelector((state) => state.ui);
   const { isAppLoading: isLoading } = useSelector((state) => state.loading);
+
+  const totalPages = Math.ceil(totalCount / CANDIDATES_PER_PAGE);
+
+  let currentPage = totalPages;
+
+  if (nextURL) {
+    const url = new URL(nextURL);
+    const page = new URLSearchParams(url.search).get("page");
+    currentPage = +page - 1;
+  }
+
+  const progressPercentage = totalPages ? (currentPage / totalPages) * 100 : 0;
 
   /**
    * Handles the page click event for pagination by enabling refetch and updating the refetch URL.
@@ -38,6 +51,15 @@ const Pagination = () => {
       >
         <i className="bi bi-arrow-left-short"></i>
       </Button>
+      <span>
+        {currentPage} of {totalPages}
+        <div className={classes.progressContainer}>
+          <div
+            className={classes.progressBar}
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+        </div>
+      </span>
       <Button
         onClick={() => handlePageClick(nextURL)}
         disabled={!nextURL || isLoading}

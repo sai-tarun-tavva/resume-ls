@@ -50,6 +50,7 @@ const Candidates = () => {
       const { status, data } = await fetchCandidates(url);
 
       const {
+        count: totalCount,
         previous: previousURL,
         next: nextURL,
         results: candidates,
@@ -61,6 +62,7 @@ const Candidates = () => {
           uiActions.updatePagination({
             previousURL,
             nextURL,
+            totalCount,
           })
         );
       } else {
