@@ -17,7 +17,9 @@ const PageNotFound = () => {
       <p className={classes.notFoundMessage}>{CONTENT.pageNotFound.message}</p>
       <p className={classes.notFoundSuggestion}>
         {CONTENT.pageNotFound.suggestionStart}
-        <Link to={ROUTES.HOME}>{CONTENT.pageNotFound.suggestedPageName}</Link>
+        <Link to={ROUTES.HOME} replace>
+          {CONTENT.pageNotFound.suggestedPageName}
+        </Link>
         {CONTENT.pageNotFound.suggestionEnd}
       </p>
     </div>
