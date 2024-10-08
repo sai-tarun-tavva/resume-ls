@@ -12,16 +12,25 @@ import classes from "./index.module.scss";
  * @param {Object} props - The props for the Skills component.
  * @param {Array<string>} props.skills - The array of skills to display.
  * @param {boolean} props.isEditable - Indicates if the skills are editable.
- * @param {function} props.onClick - Function to call when a skill is clicked for removal.
+ * @param {boolean} props.isSelectable - Indicates if the skill is selectable.
+ * @param {function} props.removeHandler - Function to call when a skill is clicked for removal.
+ * @param {function} props.selectHandler - Function to call when a skill is clicked.
  * @returns {JSX.Element} The rendered Skills component.
  */
-const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
+const Skills = ({
+  skills = [],
+  isEditable = false,
+  isSelectable = false,
+  removeHandler = () => {},
+  selectHandler = () => {},
+}) => {
   const { show: makeSmaller } = useSelector((state) => state.viewResume);
 
   return (
     <div
-      className={`${classes.skills} ${makeSmaller && classes.smaller}`}
-      style={isEditable ? { marginRight: 0, height: "29rem" } : {}}
+      className={`${classes.skills} ${makeSmaller && classes.smaller} ${
+        isEditable && classes.editable
+      } ${isSelectable && classes.selectable}`}
     >
       <div>
         {skills.length > 0 ? (
@@ -31,7 +40,9 @@ const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
               id={index}
               name={skill.trim()}
               isEditable={isEditable}
-              onClick={onClick}
+              isSelectable={isSelectable}
+              onRemove={removeHandler}
+              onSelect={selectHandler}
             />
           ))
         ) : (
@@ -45,7 +56,9 @@ const Skills = ({ skills = [], isEditable = false, onClick = () => {} }) => {
 Skills.propTypes = {
   skills: PropTypes.arrayOf(PropTypes.string),
   isEditable: PropTypes.bool,
-  onClick: PropTypes.func,
+  isSelectable: PropTypes.bool,
+  removeHandler: PropTypes.func,
+  selectHandler: PropTypes.func,
 };
 
 Skills.displayName = "Skills";

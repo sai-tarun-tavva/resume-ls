@@ -94,6 +94,14 @@ export const CONTENT = {
         state: "State",
         experience: "Experience in years",
       },
+      suggestions: {
+        helper: "Choose from suggestions below",
+        button: {
+          create: {
+            default: "Create new skill ?",
+          },
+        },
+      },
       button: {
         close: "Close",
         save: {

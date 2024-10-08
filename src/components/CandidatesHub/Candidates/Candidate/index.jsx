@@ -12,7 +12,6 @@ import {
   replaceRouteParam,
 } from "../../../../utilities";
 import { ROUTES } from "../../../../constants";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
 /**

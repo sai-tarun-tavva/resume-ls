@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { uiActions } from "../../../../store";
 import { buildFetchCandidatesUrl } from "../../../../utilities";
 import { CANDIDATES_PER_PAGE, CONTENT } from "../../../../constants";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
 /**
