@@ -30,6 +30,7 @@ const ResumeViewer = ({ details: { name, size, url } }) => {
    */
   const handleHideResume = () => {
     dispatch(viewResumeActions.hideResume());
+    dispatch(viewResumeActions.updateId(null));
   };
 
   return (
