@@ -42,10 +42,7 @@ const Candidates = () => {
     /**
      * Fetch candidates and update redux state.
      */
-
-    const url = refetch
-      ? refetchURL
-      : buildFetchCandidatesUrl("", CANDIDATES_PER_PAGE);
+    const url = refetchURL || buildFetchCandidatesUrl("", CANDIDATES_PER_PAGE);
 
     const getData = async () => {
       dispatch(loadingActions.enableAppLoading());

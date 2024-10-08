@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Loader from "../../Atoms/Loader";
 import { viewResumeActions } from "../../../store/viewresume";
-import { LOADER_TYPES } from "../../../constants";
+import { END_POINTS, LOADER_TYPES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -19,6 +19,7 @@ import classes from "./index.module.scss";
  */
 const ResumeViewer = ({ details: { name, size, url } }) => {
   const dispatch = useDispatch();
+  const { id } = useSelector((state) => state.viewResume);
   const { isFileFetchLoading: isFetchingFile } = useSelector(
     (state) => state.loading
   );
@@ -37,8 +38,17 @@ const ResumeViewer = ({ details: { name, size, url } }) => {
     <div className={classes.resumeViewer}>
       <div className={classes.header}>
         <span>{`${name} (${size})`}</span>
-        <span onClick={handleHideResume}>
-          <i className="bi bi-x" />
+        <span className={classes.actions}>
+          <a
+            title="Download"
+            href={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
+            download={name}
+          >
+            <i className={`bi bi-download`}></i>
+          </a>
+          <span onClick={handleHideResume}>
+            <i className="bi bi-x" />
+          </span>
         </span>
       </div>
       <div className={classes.iframeContainer}>
