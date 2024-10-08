@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { END_POINTS } from "../../../../../constants";
 import classes from "./index.module.scss";
@@ -14,9 +13,9 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered button with an icon.
  */
 const Action = ({ title, name, ...props }) => (
-  <Link title={title} className={classes.actionButton} {...props}>
+  <button title={title} className={classes.actionButton} {...props}>
     <i className={`bi bi-${name}`}></i>
-  </Link>
+  </button>
 );
 
 /**
@@ -33,11 +32,14 @@ const Actions = ({ id, onEdit, onView }) => {
   return (
     <>
       <Action title="Edit" name="pencil-square" onClick={onEdit} />
-      <Action
+      <a
         title="Download"
         name="download"
-        to={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
-      />
+        href={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
+        className={classes.actionButton}
+      >
+        <i className={`bi bi-download`}></i>
+      </a>
       <Action title="View" name="eye" onClick={onView} />
     </>
   );
