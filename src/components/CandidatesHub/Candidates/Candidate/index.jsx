@@ -42,6 +42,8 @@ const Candidate = ({ candidate }) => {
   const handleEdit = (event) => {
     event.preventDefault();
     dispatch(statusActions.resetStatus());
+    dispatch(viewResumeActions.hideResume());
+    dispatch(viewResumeActions.updateId(null));
 
     const candidateId = candidate.id;
     navigate(replaceRouteParam(ROUTES.CANDIDATE_FORM, { candidateId }));

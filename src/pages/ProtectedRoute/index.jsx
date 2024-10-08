@@ -18,6 +18,8 @@ const ProtectedRoute = ({ element }) => {
   // Check if accessToken exists in sessionStorage
   if (!accessToken) {
     // If no accessToken, redirect to login page
+    sessionStorage.clear();
+    localStorage.clear();
     return <Navigate to={`/${ROUTES.AUTH}`} replace />;
   }
 

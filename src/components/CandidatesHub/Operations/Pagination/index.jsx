@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Button from "../../../Atoms/Button";
 import { uiActions } from "../../../../store";
-import { ITEMS_PER_PAGE } from "../../../../constants";
+import { CANDIDATES_PER_PAGE } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
@@ -13,42 +12,40 @@ import classes from "./index.module.scss";
  * For navigating through paginated data.
  *
  * @param {Object} props - The component props.
- * @param {boolean} props.enablePagination - Determines if pagination is enabled.
  * @returns {JSX.Element} The rendered pagination component.
  */
-const Pagination = ({ enablePagination }) => {
+const Pagination = () => {
   const dispatch = useDispatch();
-  const { filteredCandidates } = useSelector((state) => state.data);
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = filteredCandidates.length;
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const { previousURL, nextURL, totalCount } = useSelector((state) => state.ui);
+  const { isAppLoading: isLoading } = useSelector((state) => state.loading);
 
-  useEffect(() => {
-    // Re-initiate current page to 1 whenever filtered data updates
-    setCurrentPage(1);
-  }, [filteredCandidates]);
+  const totalPages = Math.ceil(totalCount / CANDIDATES_PER_PAGE);
 
-  /**
-   * Handles page click event to change the current page.
-   * Ensures the page number is within a valid range and updates the start index.
-   *
-   * @param {number} page - The page number to navigate to.
-   */
-  const handlePageClick = (page) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+  let currentPage = totalPages;
 
-    const startIndex = (page - 1) * ITEMS_PER_PAGE;
-    dispatch(uiActions.updateStartIndex(startIndex));
-  };
+  if (nextURL) {
+    const url = new URL(nextURL);
+    const page = new URLSearchParams(url.search).get("page");
+    currentPage = +page - 1;
+  }
 
   const progressPercentage = totalPages ? (currentPage / totalPages) * 100 : 0;
+
+  /**
+   * Handles the page click event for pagination by enabling refetch and updating the refetch URL.
+   *
+   * @param {string} url - The URL to be used for refetching data.
+   */
+  const handlePageClick = async (url) => {
+    dispatch(uiActions.enableRefetch());
+    dispatch(uiActions.updateRefetchURL(url));
+  };
 
   return (
     <nav className={classes.pagination}>
       <Button
-        onClick={() => handlePageClick(currentPage - 1)}
-        disabled={currentPage <= 1 || !enablePagination}
+        onClick={() => handlePageClick(previousURL)}
+        disabled={!previousURL || isLoading}
         title="Previous"
         className={classes.prevButton}
       >
@@ -64,8 +61,8 @@ const Pagination = ({ enablePagination }) => {
         </div>
       </span>
       <Button
-        onClick={() => handlePageClick(currentPage + 1)}
-        disabled={currentPage >= totalPages || !enablePagination}
+        onClick={() => handlePageClick(nextURL)}
+        disabled={!nextURL || isLoading}
         title="Next"
         className={classes.nextButton}
       >

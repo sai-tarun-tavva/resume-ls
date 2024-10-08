@@ -201,17 +201,18 @@ export const fetchPdf = async () => {
  *
  * @async
  * @function
+ * @param {string} url - The URL to which the request is sent.
  * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
  */
-export const fetchCandidates = async () => {
+export const fetchCandidates = async (url) => {
   try {
-    const response = await fetchWithToken(END_POINTS.FETCH_CANDIDATES, {
+    const response = await fetchWithToken(url, {
       method: "GET",
     });
     const resData = await response.json();
 
     // Return the response data and status
-    return { status: response.status, data: resData.results };
+    return { status: response.status, data: resData };
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);

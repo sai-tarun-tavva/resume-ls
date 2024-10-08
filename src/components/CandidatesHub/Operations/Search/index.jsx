@@ -1,60 +1,56 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { dataActions, uiActions } from "../../../../store";
-import { handleSearchClick } from "../../../../utilities";
-import { CONTENT } from "../../../../constants";
+import { uiActions } from "../../../../store";
+import { buildFetchCandidatesUrl } from "../../../../utilities";
+import { CANDIDATES_PER_PAGE, CONTENT } from "../../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
 
 /**
  * Search Component
  *
- * Filters data based on search text with debouncing to optimize performance.
+ * Filters data based on search text.
  *
  * @param {Object} props - The component props.
  * @param {boolean} props.enableSearch - Determines if the search input is enabled.
  * @returns {JSX.Element} The rendered search component.
  */
 const Search = ({ enableSearch }) => {
-  const [searchTerm, setSearchTerm] = useState(""); // using useState instead of useRef
+  const searchTextRef = useRef("");
   const dispatch = useDispatch();
-  const { candidates } = useSelector((state) => state.data);
-
-  // Debounce search effect
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      const filteredResults = handleSearchClick(searchTerm, candidates);
-      dispatch(dataActions.replaceFilteredCandidates(filteredResults));
-      dispatch(uiActions.updateSearchTerm(searchTerm));
-      dispatch(uiActions.updateStartIndex(0)); // Reset startIndex to 0 after filter
-    }, 300); // Adjust debounce delay as needed
-
-    return () => clearTimeout(delayDebounceFn); // Clear the timeout if searchTerm changes before delay ends
-  }, [searchTerm, candidates, dispatch]);
 
   /**
-   * Handles the search input change event.
-   * Updates the search term state.
+   * Handles the form submission event.
+   * Prevents default behavior and update refetch and search term redux state.
    *
-   * @param {Object} event - The event object.
+   * @param {Object} e - The event object.
    */
-  const handleInputChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const searchText = searchTextRef.current.value;
+    dispatch(uiActions.enableRefetch());
+    dispatch(
+      uiActions.updateRefetchURL(
+        buildFetchCandidatesUrl(searchText, CANDIDATES_PER_PAGE)
+      )
+    );
+    dispatch(uiActions.updateSearchTerm(searchText));
   };
 
   return (
     <aside className={classes.search}>
-      <input
-        type="text"
-        placeholder={CONTENT.candidateHub.operations.search.placeholder}
-        value={searchTerm}
-        disabled={!enableSearch}
-        onChange={handleInputChange}
-      />
-      <span className={classes.rightIcon}>
-        <i className="bi bi-search"></i>
-      </span>
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          placeholder={CONTENT.candidateHub.operations.search.placeholder}
+          ref={searchTextRef}
+          disabled={!enableSearch}
+        />
+        <span className={classes.rightIcon}>
+          <i className="bi bi-search"></i>
+        </span>
+      </form>
     </aside>
   );
 };

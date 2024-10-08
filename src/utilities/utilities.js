@@ -1,22 +1,20 @@
-import { MAX_FILE_SIZE } from "../constants";
+import { END_POINTS, MAX_FILE_SIZE } from "../constants";
 
 /**
- * Handles the search functionality by filtering data based on the search text.
- * @param {string} searchText - The text to search for.
- * @param {Array<Object>} data - The array of data to filter.
- * @param {function} update - The function to call with the filtered results.
+ * Builds the URL for fetching candidates based on the query, limit, and page parameters.
+ * @param {string} [query=""] - The search query to filter candidates (optional).
+ * @param {string} [limit=""] - The maximum number of candidates to retrieve (optional).
+ * @param {string} [page=""] - The page number for pagination (optional).
+ * @returns {string} The dynamically built URL with encoded query parameters.
  */
-export const handleSearchClick = (searchText, data) => {
-  const lowerCaseSearchText = searchText.toLowerCase();
+export const buildFetchCandidatesUrl = (query = "", limit = "", page = "") => {
+  // Encode query params to ensure special characters are handled
+  const encodedQuery = encodeURIComponent(query);
+  const encodedLimit = encodeURIComponent(limit);
+  const encodedPage = encodeURIComponent(page);
 
-  const filteredResults = data.filter((item) => {
-    return Object.keys(item).some((key) => {
-      const value = item[key]?.toString().toLowerCase();
-      return value.includes(lowerCaseSearchText);
-    });
-  });
-
-  return filteredResults;
+  // Dynamically build the URL by interpolating query parameters
+  return `${END_POINTS.FETCH_CANDIDATES}?query=${encodedQuery}&limit=${encodedLimit}&page=${encodedPage}`;
 };
 
 /**
@@ -169,22 +167,13 @@ export const capitalizeFirstLetter = (text) =>
 /**
  * Transforms and sorts candidate data based on timestamp.
  * @param {Array<Object>} data - The array of candidate objects.
- * @returns {Array<Object>} The transformed and sorted candidate objects.
+ * @returns {Array<Object>} The transformed candidate objects.
  */
 export const transformData = (data) => {
-  return data
-    .map((candidate) => ({
-      ...candidate,
-      skills: Array.isArray(candidate.skills)
-        ? candidate.skills.map((skill) => skill.trim().toLowerCase())
-        : candidate.skills
-        ? candidate.skills.split(",").map((skill) => skill.trim().toLowerCase())
-        : [],
-    }))
-    .sort(
-      (candidate1, candidate2) =>
-        new Date(candidate2.timestamp) - new Date(candidate1.timestamp)
-    );
+  return data.map((candidate) => ({
+    ...candidate,
+    skills: candidate.skills.split(",").map((skill) => skill.trim()),
+  }));
 };
 
 /**
