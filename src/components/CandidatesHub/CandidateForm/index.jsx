@@ -6,7 +6,7 @@ import Skills from "../../Atoms/Skills";
 import Button from "../../Atoms/Button";
 import Input from "../../Atoms/Input";
 import StatusMessage from "../../Atoms/StatusMessage";
-import { dataActions, loadingActions, statusActions } from "../../../store";
+import { loadingActions, statusActions, uiActions } from "../../../store";
 import {
   arraysEqual,
   candidateValidations,
@@ -33,13 +33,11 @@ const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { filteredCandidates } = useSelector((state) => state.data);
+  const { candidates } = useSelector((state) => state.data);
   const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
 
   // Fetch candidate information based on the candidateId
-  const info = filteredCandidates.find(
-    (candidate) => candidate.id === +candidateId
-  );
+  const info = candidates.find((candidate) => candidate.id === +candidateId);
 
   const [localSkills, setLocalSkills] = useState(info?.skills);
 
@@ -278,10 +276,10 @@ const CandidateForm = () => {
       formValues.has("region") ||
       formValues.has("total_experience")
     ) {
-      const { status, data } = await editCandidate(info.id, formValues);
+      const { status } = await editCandidate(info.id, formValues);
 
       if (status === STATUS_CODES.SUCCESS) {
-        dispatch(dataActions.updateCandidate(data));
+        dispatch(uiActions.enableRefetch());
         dispatch(
           statusActions.updateStatus({
             message:

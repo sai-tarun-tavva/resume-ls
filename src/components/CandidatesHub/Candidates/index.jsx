@@ -10,10 +10,16 @@ import {
   uiActions,
   viewResumeActions,
 } from "../../../store";
-import { fetchCandidates, fetchPdf } from "../../../utilities";
-import { CONTENT, ITEMS_PER_PAGE, STATUS_CODES } from "../../../constants";
+import {
+  buildFetchCandidatesUrl,
+  fetchCandidates,
+  fetchPdf,
+} from "../../../utilities";
+import { CONTENT, CANDIDATES_PER_PAGE, STATUS_CODES } from "../../../constants";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import classes from "./index.module.scss";
+
+let isInitial = true;
 
 /**
  * Candidates Component
@@ -24,33 +30,42 @@ import classes from "./index.module.scss";
  */
 const Candidates = () => {
   const dispatch = useDispatch();
-  const { startIndex, shouldRefetch } = useSelector((state) => state.ui);
+  const { candidates } = useSelector((state) => state.data);
+  const { refetch, refetchURL } = useSelector((state) => state.ui);
   const { show: showResume, id: displayResumeId } = useSelector(
     (state) => state.viewResume
   );
-  const { candidates: globalCandidates, filteredCandidates } = useSelector(
-    (state) => state.data
-  );
   const { isAppLoading: isLoading } = useSelector((state) => state.loading);
   const [pdfDetails, setPdfDetails] = useState({ name: "", size: "", url: "" });
-
-  // Slice the filtered candidates to display only the current page
-  const candidates = filteredCandidates.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
 
   useEffect(() => {
     /**
      * Fetch candidates and update redux state.
      */
+
+    const url = refetch
+      ? refetchURL
+      : buildFetchCandidatesUrl("", CANDIDATES_PER_PAGE);
+
     const getData = async () => {
       dispatch(loadingActions.enableAppLoading());
-      const { status, data: candidates } = await fetchCandidates();
+
+      const { status, data } = await fetchCandidates(url);
+
+      const {
+        previous: previousURL,
+        next: nextURL,
+        results: candidates,
+      } = data;
 
       if (status === STATUS_CODES.SUCCESS) {
         dispatch(dataActions.replaceCandidates(candidates));
-        dispatch(dataActions.replaceFilteredCandidates(candidates));
+        dispatch(
+          uiActions.updatePagination({
+            previousURL,
+            nextURL,
+          })
+        );
       } else {
         dispatch(
           statusActions.updateStatus({
@@ -62,12 +77,12 @@ const Candidates = () => {
       dispatch(loadingActions.disableAppLoading());
     };
 
-    // Fetch candidates only for the first time
-    if (globalCandidates.length === 0 || shouldRefetch) {
+    if (isInitial || refetch) {
+      isInitial = false;
       getData();
-      dispatch(uiActions.updateShouldRefetch(false));
-    } else dispatch(loadingActions.disableAppLoading());
-  }, [globalCandidates.length, dispatch, shouldRefetch]);
+      dispatch(uiActions.disableRefetch());
+    }
+  }, [dispatch, refetch, refetchURL]);
 
   useEffect(() => {
     /**

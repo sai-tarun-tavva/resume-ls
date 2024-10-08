@@ -1,4 +1,4 @@
-export const ITEMS_PER_PAGE = 20;
+export const CANDIDATES_PER_PAGE = 20;
 export const MAX_FILES = 30;
 export const MAX_FILE_SIZE = 5; // in MB
 
