@@ -1,8 +1,8 @@
-# Resume Parser: Streamlining Your Hiring Process
+# Resume Insight: Streamlining Your Hiring Process
 
-Welcome to the Resume Parser project, a smart solution developed for Logisoft to enhance your hiring workflow. This application is designed to help hiring managers efficiently share and manage candidate information across departments.
+Welcome to the Resume Insight project, a smart solution developed for Logisoft to enhance your hiring workflow. This application is designed to help hiring managers efficiently share and manage candidate information across departments.
 
-> **Note:** This project focuses solely on the user interface (UI) of the Resume Parser application. It does not include backend functionality or data processing.
+> **Note:** This project focuses solely on the user interface (UI) of the Resume Insight application. It does not include backend functionality or data processing.
 
 ## 🚀 Key Features
 
@@ -32,23 +32,27 @@ Welcome to the Resume Parser project, a smart solution developed for Logisoft to
 ### Prerequisites
 
 Before you begin, ensure you have the following installed:
+
 - **Node.js**: v14.0.0 or higher (v16+ recommended)
 - **npm**: v6.0.0 or higher (or Yarn v1.22.0+)
 
 ### Setup Instructions
 
 1. **Clone the repository**:
+
    ```
    git clone https://github.com/sai-tarun-tavva/resume-parser-ls.git
-   cd resume-parser-frontend
+   cd resume-parser-ls
    ```
 
 2. **Install dependencies**:
+
    ```
    npm install
    ```
 
 3. **Start the development server**:
+
    ```
    npm start
    ```
@@ -73,8 +77,8 @@ This project is proprietary and intended for internal Logisoft use only.
 
 ## 📞 Support
 
-If you have any questions or run into issues, don't hesitate to contact the development team. We're here to help ensure your experience with Resume Parser is smooth and productive.
+If you have any questions or run into issues, don't hesitate to contact the development team. We're here to help ensure your experience with Resume Insight is smooth and productive.
 
 ---
 
-Thank you for using Resume Parser. Let's make hiring simpler, together!
+Thank you for using Resume Insight. Let's make hiring simpler, together!

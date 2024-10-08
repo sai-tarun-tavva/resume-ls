@@ -66,7 +66,7 @@ export const CONTENT = {
       },
     },
     operations: {
-      headerParagraph: "Resume Parser",
+      headerParagraph: "Resume Insight",
       search: {
         placeholder: "Search...",
         title: "Search",
