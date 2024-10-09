@@ -1,11 +1,12 @@
 .iconText {
   font-size: 0.9rem;
-  color: #555555;
-  margin-bottom: 0.4rem;
+  color: #444;
+  margin-bottom: 0.6rem;
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: all 0.3s ease;
 
   &:hover {
     white-space: normal;
@@ -13,6 +14,10 @@
   }
 
   > span {
-    margin-right: 0.4rem;
+    margin-right: 0.6rem;
+
+    i {
+      color: var(--primary-color);
+    }
   }
 }

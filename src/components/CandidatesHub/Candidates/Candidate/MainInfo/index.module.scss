@@ -32,7 +32,7 @@
     }
 
     > i.disabled {
-      color: #6c757d;
+      color: var(--primary-shadow);
       cursor: not-allowed;
     }
   }

@@ -11,9 +11,10 @@ import classes from "./index.module.scss";
  * For navigating through paginated data.
  *
  * @param {Object} props - The component props.
+ * @param {Boolean} props.enablePagination - Determines if the pagination is enabled.
  * @returns {JSX.Element} The rendered pagination component.
  */
-const Pagination = () => {
+const Pagination = ({ enablePagination }) => {
   const dispatch = useDispatch();
   const { previousURL, nextURL, totalCount } = useSelector((state) => state.ui);
   const { isAppLoading: isLoading } = useSelector((state) => state.loading);
@@ -44,7 +45,7 @@ const Pagination = () => {
     <nav className={classes.pagination}>
       <Button
         onClick={() => handlePageClick(previousURL)}
-        disabled={!previousURL || isLoading}
+        disabled={!previousURL || isLoading || !enablePagination}
         title="Previous"
         className={classes.prevButton}
       >
@@ -61,7 +62,7 @@ const Pagination = () => {
       </span>
       <Button
         onClick={() => handlePageClick(nextURL)}
-        disabled={!nextURL || isLoading}
+        disabled={!nextURL || isLoading || !enablePagination}
         title="Next"
         className={classes.nextButton}
       >

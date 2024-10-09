@@ -88,7 +88,7 @@ export const CONTENT = {
         name: "Name",
         phoneNumber: "Phone number",
         email: "Email",
-        skill: "Skill",
+        skill: "Type skill and hit enter!",
         linkedInUrl: "https://www.linkedin.com/in/your-profile",
         city: "City",
         state: "State",

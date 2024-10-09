@@ -21,11 +21,21 @@ const Input = ({
   rightIcon,
   rightIconOnClick,
   children,
+  extraClassControl,
+  extraClassIcons,
   ...props
 }) => {
   return (
-    <div className={`${classes.control} ${error ? classes.error : ""}`}>
-      {leftIcon && <span className={classes.leftIcon}>{leftIcon}</span>}
+    <div
+      className={`${classes.control} ${
+        error ? classes.error : ""
+      } ${extraClassControl}`}
+    >
+      {leftIcon && (
+        <span className={`${classes.leftIcon} ${extraClassIcons}`}>
+          {leftIcon}
+        </span>
+      )}
       <input id={id} {...props} />
       {children}
 

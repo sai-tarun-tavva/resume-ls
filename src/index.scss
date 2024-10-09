@@ -35,9 +35,11 @@ html {
 }
 
 :root {
-  --primary-color: rgb(0, 86, 179);
-  --primary-shadow: rgba(0, 86, 179, 0.3);
-  --primary-hover: rgb(0, 66, 141);
+  --primary-color: rgb(0, 128, 64);
+  --primary-shadow: rgba(0, 128, 64, 0.3);
+  --primary-hover: rgb(0, 102, 51);
+  --light-green: rgb(240, 255, 240);
+  --medium-light-green: rgb(220, 255, 220);
 }
 
 body {
@@ -71,7 +73,7 @@ body {
 }
 
 mark {
-  background-color: #0f8cea;
+  background-color: #0fce6a;
   color: #fff;
 }
 

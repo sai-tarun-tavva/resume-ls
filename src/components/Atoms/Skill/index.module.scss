@@ -4,9 +4,10 @@
   padding: 0.3rem 0.5rem;
   font-size: 0.75rem;
   color: #444;
+  border: 0.1rem solid #e0e0e0;
 
   &.editable {
-    background-color: #0f8cea;
+    background: var(--primary-color);
     font-size: 1rem;
     border-radius: 0.3rem;
     padding: 0.3rem 0.5rem 0.3rem 1rem;
@@ -23,13 +24,14 @@
     }
 
     &:hover {
-      background-color: #0570c1;
+      background-color: var(--primary-hover);
     }
   }
 
   &.selectable {
     border-radius: 0.1rem;
     background: #e3f2fd;
+    border: none;
     cursor: pointer;
 
     &:hover {
@@ -38,7 +40,8 @@
   }
 
   &:hover {
-    background-color: #e3f2fd;
+    background-color: var(--light-green);
+    border-color: var(--primary-color);
   }
 
   @keyframes jiggle {
