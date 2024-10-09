@@ -43,22 +43,30 @@ export const isValidFile = (file) => {
 /**
  * Highlights the matching text within a given string.
  * @param {string} text - The text to search and highlight within.
- * @param {string} highlight - The text to highlight.
+ * @param {string} highlight - The text to highlight, which can include multiple terms separated by commas.
  * @returns {JSX.Element} The text with highlighted matches.
  */
 export const highlightText = (text, highlight) => {
   if (!highlight) return text;
 
-  const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+  // Split the highlight string by commas and trim whitespace
+  const highlightTerms = highlight.split(",").map((term) => term.trim());
+
+  // Create a regular expression to match any of the highlight terms (case insensitive)
+  const regex = new RegExp(`(${highlightTerms.join("|")})`, "gi");
+
+  // Split the text based on the regex
+  const parts = text.split(regex);
+
   return (
     <span>
-      {parts.map((part, index) =>
-        part.toLowerCase() === highlight.toLowerCase() ? (
-          <mark key={index}>{part}</mark>
-        ) : (
-          part
-        )
-      )}
+      {parts.map((part, index) => {
+        // Check if the current part matches any highlight term
+        const isHighlighted = highlightTerms.some(
+          (term) => part.toLowerCase() === term.toLowerCase()
+        );
+        return isHighlighted ? <mark key={index}>{part}</mark> : part;
+      })}
     </span>
   );
 };
@@ -172,7 +180,12 @@ export const capitalizeFirstLetter = (text) =>
 export const transformData = (data) => {
   return data.map((candidate) => ({
     ...candidate,
-    skills: candidate.skills.split(",").map((skill) => skill.trim()),
+    skills: candidate.skills
+      ? candidate.skills
+          .split(",")
+          .map((skill) => skill.trim())
+          .filter((skill) => skill)
+      : [], // Return an empty array if skills are empty or falsy
   }));
 };
 

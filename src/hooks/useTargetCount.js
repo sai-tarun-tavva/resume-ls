@@ -27,7 +27,7 @@ export const useTargetCount = () => {
         }
 
         const data = await response.json();
-        setTargetCount(+data.count); // Set the fetched target count
+        setTargetCount(+data.resume_count);
       } catch (error) {
         console.error("Error fetching target count:", error);
       } finally {

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Candidate from "./Candidate";
 import Loader from "../../Atoms/Loader";
@@ -36,6 +36,14 @@ const Candidates = () => {
   );
   const { isAppLoading: isLoading } = useSelector((state) => state.loading);
   const [pdfDetails, setPdfDetails] = useState({ name: "", size: "", url: "" });
+  const showResumeRef = useRef(showResume);
+
+  useEffect(() => {
+    /**
+     * Update ref value whenever showResume changes
+     */
+    showResumeRef.current = showResume;
+  }, [showResume]);
 
   useEffect(() => {
     /**
@@ -84,17 +92,27 @@ const Candidates = () => {
 
   useEffect(() => {
     /**
+     * Update resume id to be shown when candidates loaded and resume viewer open
+     */
+    if (showResumeRef.current && candidates?.length > 0) {
+      dispatch(viewResumeActions.updateId(candidates[0].id));
+    }
+  }, [candidates, dispatch, showResumeRef]);
+
+  useEffect(() => {
+    /**
      * Fetch resume pdf and update redux state.
      */
     const getPdf = async () => {
       dispatch(loadingActions.enableFetchLoading());
-      const { status, data } = await fetchPdf();
+      const { status, data } = await fetchPdf(displayResumeId);
       dispatch(loadingActions.disableFetchLoading());
 
       if (status === STATUS_CODES.SUCCESS) {
         setPdfDetails(data);
       } else {
         dispatch(viewResumeActions.hideResume());
+        dispatch(viewResumeActions.updateId(null));
         dispatch(
           statusActions.updateStatus({
             message: CONTENT.serverError,

@@ -79,7 +79,7 @@ export const CONTENT = {
         email: "Email",
         location: "City",
         region: "State",
-        experience: "{{EXP}} Years",
+        experience: "{{EXP}} Year",
       },
       noRecord: "No candidates found.",
     },

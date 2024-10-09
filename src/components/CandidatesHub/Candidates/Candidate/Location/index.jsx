@@ -37,7 +37,9 @@ const Location = ({ candidate }) => {
       </IconText>
       <div className={classes.experience}>
         {highlightText(
-          experience.replace("{{EXP}}", candidate.total_experience || "-"),
+          `${experience.replace("{{EXP}}", candidate.total_experience || "-")}${
+            candidate.total_experience !== 1 ? "s" : ""
+          }`,
           searchTerm
         )}
       </div>

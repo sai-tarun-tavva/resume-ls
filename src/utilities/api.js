@@ -134,14 +134,14 @@ export const handleLogout = async () => {
   try {
     // Get the refresh token from localStorage
     const refreshToken = localStorage.getItem("refreshToken");
+    const body = new FormData();
+    body.append("token", refreshToken);
 
     if (refreshToken) {
       // Make an API request to your backend to invalidate/blacklist the refresh token
-      const response = await fetch(END_POINTS.LOGOUT, {
+      const response = await fetchWithToken(END_POINTS.LOGOUT, {
         method: "POST",
-        body: JSON.stringify({
-          token: refreshToken, // Pass the token to the backend
-        }),
+        body,
       });
 
       if (!response.ok) {
@@ -164,9 +164,17 @@ export const handleLogout = async () => {
  * @returns {Promise<Object>}
  *          An object containing the HTTP status and PDF details, or null if an error occurs.
  */
-export const fetchPdf = async () => {
+export const fetchPdf = async (id) => {
   try {
-    const response = await fetch(END_POINTS.VIEW_RESUME);
+    const response = await fetchWithToken(`${END_POINTS.VIEW_RESUME}${id}/`, {
+      method: "GET",
+    });
+
+    // Check if response is ok
+    if (!response.ok) {
+      console.error("Error fetching PDF:", response.statusText);
+      return { status: response.status, data: null };
+    }
 
     // Extract the 'Content-Disposition' header
     const contentDisposition = response.headers.get("Content-Disposition");
@@ -181,6 +189,12 @@ export const fetchPdf = async () => {
     }
 
     const blob = await response.blob();
+
+    if (blob.size === 0) {
+      console.error("Received empty blob.");
+      return { status: 500, data: null };
+    }
+
     const fileSize = formatFileSize(blob.size); // File size in bytes
     const url = URL.createObjectURL(blob);
 
