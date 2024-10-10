@@ -15,15 +15,25 @@
     margin-left: 2.25rem;
     text-align: center;
 
-    img {
-      width: 10rem;
+    p {
+      display: inline;
+      color: #07a2d2;
+      font-size: 2.5rem;
+      cursor: default;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.05rem;
+      text-transform: capitalize;
+      text-shadow: 0.06rem 0.06rem 0.1rem rgba(0, 0, 0, 0.1);
     }
 
-    p {
-      text-transform: uppercase;
-      color: #073f74;
-      font-size: 0.7rem;
-      cursor: default;
+    p:first-child {
+      color: #1860ab;
+      &::before {
+        content: "•";
+        font-size: 2rem;
+        margin-right: 0.3rem;
+      }
     }
   }
 }

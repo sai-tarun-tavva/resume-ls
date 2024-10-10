@@ -66,7 +66,8 @@ export const CONTENT = {
       },
     },
     operations: {
-      headerParagraph: "Resume Insight",
+      logoSuffix: "R",
+      logo: "Insight",
       search: {
         placeholder: "Search...",
         title: "Search",

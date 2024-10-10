@@ -357,6 +357,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               error={nameError}
               leftIcon={<i className="bi bi-person-circle" />}
+              extraClassControl={classes.candidateControl}
             />
 
             <Input
@@ -372,6 +373,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               error={phoneError}
               leftIcon={<i className="bi bi-telephone-fill" />}
+              extraClassControl={classes.candidateControl}
             />
 
             <Input
@@ -387,6 +389,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               error={emailError}
               leftIcon={<i className="bi bi-envelope-fill" />}
+              extraClassControl={classes.candidateControl}
             />
 
             <Input
@@ -400,6 +403,7 @@ const CandidateForm = () => {
               onBlur={handleSkillBlur}
               onKeyDown={addSkillOnEnter}
               leftIcon={<i className="bi bi-tools" />}
+              extraClassControl={classes.candidateControl}
             />
             {showSuggestions && (
               <AutoSuggestion
@@ -424,6 +428,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               error={linkedInError}
               leftIcon={<i className="bi bi-linkedin" />}
+              extraClassControl={classes.candidateControl}
             />
 
             <Input
@@ -436,6 +441,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               error={cityError}
               leftIcon={<i className="bi bi-geo-alt-fill" />}
+              extraClassControl={classes.candidateControl}
             />
 
             <Input
@@ -450,6 +456,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               error={stateError}
               leftIcon={<i className="bi bi-map-fill" />}
+              extraClassControl={classes.candidateControl}
             />
 
             <Input
@@ -465,6 +472,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               error={experienceError}
               leftIcon={<i className="bi bi-briefcase-fill" />}
+              extraClassControl={classes.candidateControl}
             />
           </div>
         </div>

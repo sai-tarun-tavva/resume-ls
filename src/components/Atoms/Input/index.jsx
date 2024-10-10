@@ -11,6 +11,7 @@ import classes from "./index.module.scss";
  * @param {React.ReactNode} leftIcon - Icon to be displayed on the left side of the input.
  * @param {React.ReactNode} rightIcon - Icon to be displayed on the right side of the input.
  * @param {function} rightIconOnClick - Callback function to be called when the right icon is clicked.
+ * @param {string} extraClassControl - Additional CSS classes to apply to the input control.
  * @param {object} props - Additional props to be passed to the input element.
  * @returns {JSX.Element} The rendered Input component.
  */
@@ -20,11 +21,16 @@ const Input = ({
   leftIcon,
   rightIcon,
   rightIconOnClick,
+  extraClassControl,
   children,
   ...props
 }) => {
   return (
-    <div className={`${classes.control} ${error ? classes.error : ""}`}>
+    <div
+      className={`${classes.control} ${extraClassControl} ${
+        error ? classes.error : ""
+      }`}
+    >
       {leftIcon && <span className={classes.leftIcon}>{leftIcon}</span>}
       <input id={id} {...props} />
       {children}
@@ -48,6 +54,7 @@ Input.propTypes = {
   leftIcon: PropTypes.node,
   rightIcon: PropTypes.node,
   rightIconOnClick: PropTypes.func,
+  extraClassControl: PropTypes.string,
   children: PropTypes.node,
 };
 
