@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../../hooks";
@@ -44,11 +44,37 @@ const CandidateForm = () => {
   const [localSkills, setLocalSkills] = useState(info?.skills);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const autoSuggestRef = useRef(null);
 
   // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
   useEffect(() => {
     if (!info) navigate(ROUTES.HOME);
   }, [info, navigate]);
+
+  // Executes whenever user clicks on the screen
+  useEffect(() => {
+    // Add event listener for clicks
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  /**
+   * Hide suggestions if user clicks outside of it.
+   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   */
+  const handleClickOutside = (event) => {
+    // Check if the click is outside the auto-suggestion
+    if (
+      autoSuggestRef.current &&
+      !autoSuggestRef.current.contains(event.target)
+    ) {
+      setShowSuggestions(false);
+    }
+  };
 
   /**
    * Handle adding a new skill to the localSkills state.
@@ -406,12 +432,14 @@ const CandidateForm = () => {
               extraClassControl={classes.candidateControl}
             />
             {showSuggestions && (
-              <AutoSuggestion
-                createSkill={handleCreateSkill}
-                addSkill={handleAddSkill}
-                disableCreate={!skillValue}
-                suggestions={suggestions}
-              />
+              <div ref={autoSuggestRef}>
+                <AutoSuggestion
+                  createSkill={handleCreateSkill}
+                  addSkill={handleAddSkill}
+                  disableCreate={!skillValue}
+                  suggestions={suggestions}
+                />
+              </div>
             )}
           </div>
 
