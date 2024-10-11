@@ -1,9 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import Logo from "./Logo";
 import Search from "./Search";
 import Pagination from "./Pagination";
 import Logout from "./LogOut";
 import { handleLogout as logout } from "../../../utilities";
-import { CONTENT, ROUTES } from "../../../constants";
+import { ROUTES } from "../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -25,11 +26,7 @@ const Operations = () => {
 
   return (
     <header className={classes.operations}>
-      <div className={classes.logo}>
-        <p>{CONTENT.candidateHub.operations.logoSuffix}</p>
-        <p>{CONTENT.candidateHub.operations.logo}</p>
-      </div>
-
+      <Logo />
       <Search enableSearch={enableOperations} />
       <Pagination enablePagination={enableOperations} />
       <Logout onLogout={handleLogout} />
