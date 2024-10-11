@@ -67,7 +67,9 @@ const MainInfo = ({ candidate }) => {
           : phoneNumber}
       </IconText>
       <IconText iconName="envelope" maxWidth={"12.5rem"}>
-        {email ? highlightText(email, searchTerm) : defaultEmail}
+        <a href={`mailto:${email}`} className={classes.email}>
+          {email ? highlightText(email, searchTerm) : defaultEmail}
+        </a>
       </IconText>
     </div>
   );

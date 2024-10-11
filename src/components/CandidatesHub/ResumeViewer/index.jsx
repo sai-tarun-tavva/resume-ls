@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import Header from "./Header";
 import Loader from "../../Atoms/Loader";
 import { viewResumeActions } from "../../../store/viewresume";
-import { END_POINTS, LOADER_TYPES } from "../../../constants";
+import { LOADER_TYPES } from "../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -35,21 +36,8 @@ const ResumeViewer = ({ details: { name, size, url } }) => {
 
   return (
     <div className={classes.resumeViewer}>
-      <div className={classes.header}>
-        <span>{`${name} (${size})`}</span>
-        <span className={classes.actions}>
-          <a
-            title="Download"
-            href={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
-            download={name}
-          >
-            <i className={`bi bi-download`}></i>
-          </a>
-          <span onClick={handleHideResume}>
-            <i className="bi bi-x" />
-          </span>
-        </span>
-      </div>
+      <Header id={id} name={name} size={size} onClose={handleHideResume} />
+
       <div className={classes.iframeContainer}>
         {isFetchingFile ? (
           <Loader type={LOADER_TYPES.BAR} />
@@ -61,6 +49,8 @@ const ResumeViewer = ({ details: { name, size, url } }) => {
   );
 };
 
+ResumeViewer.displayName = "ResumeViewer";
+
 ResumeViewer.propTypes = {
   details: PropTypes.shape({
     name: PropTypes.string.isRequired,
@@ -69,5 +59,4 @@ ResumeViewer.propTypes = {
   }).isRequired,
 };
 
-ResumeViewer.displayName = "ResumeViewer";
 export default ResumeViewer;
