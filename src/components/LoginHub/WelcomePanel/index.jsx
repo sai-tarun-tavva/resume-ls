@@ -21,7 +21,7 @@ const WelcomePanel = ({ targetCount }) => {
       <img src={Logo} alt={CONTENT.logoAlt} className={classes.logo} />
       <h1>{heading}</h1>
 
-      {targetCount > 0 && (
+      {targetCount >= 0 && (
         <div className={classes.counterWrapper}>
           <span className={classes.countUp}>{count}</span>
           <p>{paragraph}</p>
