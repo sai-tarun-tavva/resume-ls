@@ -224,7 +224,7 @@ const CandidateForm = () => {
 
       if (!!skillValue) {
         dispatch(loadingActions.enableFetchLoading());
-        const { status, data } = await fetchSuggestedSkills();
+        const { status, data } = await fetchSuggestedSkills(skillValue);
 
         if (status === STATUS_CODES.SUCCESS) {
           setSuggestions(data);

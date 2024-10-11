@@ -198,11 +198,26 @@ export const fetchPdf = async (id) => {
     const fileSize = formatFileSize(blob.size); // File size in bytes
     const url = URL.createObjectURL(blob);
 
-    // Return the PDF details and status
-    return {
-      status: response.status,
-      data: { name: fileName, size: fileSize, url },
-    };
+    const fileType = blob.type; // e.g., application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    if (fileType === "application/pdf") {
+      // For PDF files, use iframe
+      return {
+        status: response.status,
+        data: { name: fileName, size: fileSize, url, isPdf: true },
+      };
+    } else if (
+      fileType === "application/msword" ||
+      fileType ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      fileType === "text/plain"
+    ) {
+      // For DOC/DOCX files, you can choose to display them differently.
+      // Here, we can also use an iframe, but it might not render directly. Use a service or viewer if needed.
+      return {
+        status: response.status,
+        data: { name: fileName, size: fileSize, url, isPdf: false },
+      };
+    }
   } catch (error) {
     // Handle any server or network issue
     console.error("Server or network issue:", error.message);
@@ -295,17 +310,21 @@ export const uploadFiles = async (body) => {
  *
  * @async
  * @function
+ * @param {String} param - The string to be searched for in skill set.
  * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
  */
-export const fetchSuggestedSkills = async () => {
+export const fetchSuggestedSkills = async (param) => {
   try {
-    const response = await fetchWithToken(END_POINTS.FETCH_SUGGESTED_SKILLS, {
-      method: "GET",
-    });
+    const response = await fetchWithToken(
+      `${END_POINTS.FETCH_SUGGESTED_SKILLS}${param}`,
+      {
+        method: "GET",
+      }
+    );
     const resData = await response.json();
 
     // Return the response data and status
-    return { status: response.status, data: resData.results };
+    return { status: response.status, data: resData.skills };
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);

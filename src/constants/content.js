@@ -73,6 +73,11 @@ export const CONTENT = {
         title: "Search",
       },
     },
+    fileViewer: {
+      header: "Viewer is unsupported for .doc, .docx, .txt files",
+      paragraph: "Please download the file to view its contents",
+      button: "Download Resume",
+    },
     candidate: {
       defaultValues: {
         name: "Name",

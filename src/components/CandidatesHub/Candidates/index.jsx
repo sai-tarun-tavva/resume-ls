@@ -35,7 +35,12 @@ const Candidates = () => {
     (state) => state.viewResume
   );
   const { isAppLoading: isLoading } = useSelector((state) => state.loading);
-  const [pdfDetails, setPdfDetails] = useState({ name: "", size: "", url: "" });
+  const [pdfDetails, setPdfDetails] = useState({
+    name: "",
+    size: "",
+    url: "",
+    isPdf: true,
+  });
   const showResumeRef = useRef(showResume);
 
   useEffect(() => {
@@ -56,14 +61,14 @@ const Candidates = () => {
 
       const { status, data } = await fetchCandidates(url);
 
-      const {
-        count: totalCount,
-        previous: previousURL,
-        next: nextURL,
-        results: candidates,
-      } = data;
-
       if (status === STATUS_CODES.SUCCESS) {
+        const {
+          count: totalCount,
+          previous: previousURL,
+          next: nextURL,
+          results: candidates,
+        } = data;
+
         dispatch(dataActions.replaceCandidates(candidates));
         dispatch(
           uiActions.updatePagination({
