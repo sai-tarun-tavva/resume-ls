@@ -115,6 +115,13 @@ export const CONTENT = {
           loading: "Saving...",
         },
       },
+      statusMessages: {
+        skill: {
+          empty: "Cannot add empty skill.",
+          existing: "Skill already exists.",
+          added: " added to skills.",
+        },
+      },
       errors: {
         name: {
           empty: "Name is required.",
@@ -140,10 +147,6 @@ export const CONTENT = {
         experience: {
           empty: "Experience is required.",
           invalid: "Experience must be between 0 and 100.",
-        },
-        skill: {
-          empty: "Cannot add empty skill.",
-          existing: "Skill already exists.",
         },
         formEditRequest: {
           success: "Successfully updated candidate details!",

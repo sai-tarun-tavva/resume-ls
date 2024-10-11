@@ -11,6 +11,7 @@ import { loadingActions, statusActions, uiActions } from "../../../store";
 import {
   arraysEqual,
   candidateValidations,
+  createNewSkill,
   editCandidate,
   fetchSuggestedSkills,
   resetStatusAsync,
@@ -88,7 +89,8 @@ const CandidateForm = () => {
 
     // Validate skill input
     if (localSkills.includes(newSkill.trim())) {
-      skillError = CONTENT.candidateHub.candidateForm.errors.skill.existing;
+      skillError =
+        CONTENT.candidateHub.candidateForm.statusMessages.skill.existing;
     }
 
     // If there's an error, reset input and show status message
@@ -357,11 +359,28 @@ const CandidateForm = () => {
    * This function prevents the default form submission, logs the current skill value,
    * Adds the skill using `handleAddSkill`, and then resets the input field.
    */
-  const handleCreateSkill = (event) => {
+  const handleCreateSkill = async (event) => {
     event.preventDefault();
 
-    handleAddSkill(skillValue);
-    resetSkillValue();
+    const { status } = await createNewSkill(skillValue);
+
+    if (status === STATUS_CODES.SUCCESS) {
+      handleAddSkill(skillValue);
+      resetSkillValue();
+      dispatch(
+        statusActions.updateStatus({
+          message: `"${skillValue}"${CONTENT.candidateHub.candidateForm.statusMessages.skill.added}`,
+          type: "success",
+        })
+      );
+    } else {
+      dispatch(
+        statusActions.updateStatus({
+          message: CONTENT.serverError,
+          type: "failure",
+        })
+      );
+    }
   };
 
   return (

@@ -331,3 +331,33 @@ export const fetchSuggestedSkills = async (param) => {
     return { status: 500, data: null };
   }
 };
+
+/**
+ * Appends the new skill into backend's skill list.
+ *
+ * @async
+ * @function
+ * @param {String} newSkill - The new skill to be added.
+ * @returns {Promise<Object>} An object containing the response status.
+ */
+export const createNewSkill = async (newSkill) => {
+  try {
+    const response = await fetchWithToken(
+      `${END_POINTS.CREATE_NEW_SKILL}${newSkill}`,
+      {
+        method: "POST",
+      }
+    );
+
+    // Return status
+    if (!response.ok) {
+      return { status: 500 };
+    }
+
+    return { status: response.status };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};
