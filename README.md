@@ -1,4 +1,4 @@
-# Resume Insight: Streamlining Your Hiring Process
+# RInsight: Streamlining Your Hiring Process
 
 Welcome to the Resume Insight project, a smart solution developed for Logisoft to enhance your hiring workflow. This application is designed to help hiring managers efficiently share and manage candidate information across departments.
 
