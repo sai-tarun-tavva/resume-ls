@@ -95,3 +95,31 @@
     }
   }
 }
+
+@media (min-width: 414px) and (max-width: 640px) {
+  .card {
+    &.smaller {
+      height: 23rem;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .card {
+    height: 17rem;
+
+    .cardContent {
+      flex-wrap: wrap;
+
+      &::after {
+        bottom: -1rem;
+      }
+
+      .hiddenActions {
+        position: absolute;
+        top: 0rem;
+        right: 0rem;
+      }
+    }
+  }
+}

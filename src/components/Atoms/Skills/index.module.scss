@@ -31,3 +31,10 @@
     color: #555555;
   }
 }
+
+@media (max-width: 1024px) {
+  .skills {
+    margin-top: 2rem;
+    flex-basis: 100%;
+  }
+}

@@ -13,6 +13,8 @@ export const STATUS_CODES = {
   INVALID: 400,
 };
 
+export const RESUME_VIEWER_WIDTH_START = 414;
+
 export const REGEX = {
   usernameRegex: /^[a-zA-Z-]+$/, // Only letters and hyphens
   phoneRegex: /^\d{1,3}[-\s]?\d{1,3}[-\s]?\d{1,4}$/, // Only 10 digits with random spaces and hyphens

@@ -80,3 +80,18 @@
     }
   }
 }
+
+@media (max-width: 640px) {
+  .candidateFormContainer {
+    display: grid;
+
+    .candidateForm {
+      max-width: 90%;
+    }
+
+    .skillsSection {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
+}

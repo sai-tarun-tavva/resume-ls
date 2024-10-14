@@ -5,12 +5,8 @@
 html {
   font-size: 8px; // Default for small screens (less than 640px)
 
-  @media (min-width: 640px) {
-    font-size: 10px; // For screens 640px and up
-  }
-
   @media (min-width: 768px) {
-    font-size: 12px; // For screens 768px and up (tablets)
+    font-size: 10px; // For screens 768px and up (tablets)
   }
 
   @media (min-width: 1024px) {

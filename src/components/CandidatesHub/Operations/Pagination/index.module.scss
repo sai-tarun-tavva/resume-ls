@@ -41,3 +41,9 @@
     transition: width 0.3s ease-in-out;
   }
 }
+
+@media (max-width: 414px) {
+  .pagination {
+    margin: 0;
+  }
+}

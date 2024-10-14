@@ -11,7 +11,7 @@ import {
   isCandidateNew,
   replaceRouteParam,
 } from "../../../../utilities";
-import { ROUTES } from "../../../../constants";
+import { END_POINTS, ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -20,9 +20,10 @@ import classes from "./index.module.scss";
  * Displays individual candidate information.
  *
  * @param {Object} candidate - The candidate data to display.
+ * @param {Boolean} openResumeInNewTab - Flag to indicate if view opens resume in new tab.
  * @returns {JSX.Element} The rendered candidate component.
  */
-const Candidate = ({ candidate }) => {
+const Candidate = ({ candidate, openResumeInNewTab }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { show: makeSmaller, id: focusedId } = useSelector(
@@ -54,16 +55,20 @@ const Candidate = ({ candidate }) => {
    * @param {Event} event - The event triggered by the edit action.
    */
   const handleView = (event) => {
-    event.preventDefault();
-    dispatch(viewResumeActions.showResume());
-    dispatch(viewResumeActions.updateId(candidate.id));
+    if (openResumeInNewTab) {
+      window.open(`${END_POINTS.VIEW_RESUME}${candidate.id}/`, "_blank");
+    } else {
+      event.preventDefault();
+      dispatch(viewResumeActions.showResume());
+      dispatch(viewResumeActions.updateId(candidate.id));
+    }
   };
 
   return (
     <article
-      className={`${classes.card} ${makeSmaller && classes.smaller} ${
-        focusedId === candidate.id && classes.focus
-      }`}
+      className={`${classes.card} ${
+        makeSmaller && !openResumeInNewTab && classes.smaller
+      } ${focusedId === candidate.id && classes.focus}`}
     >
       <div
         className={classes.cardContent}
@@ -104,6 +109,7 @@ Candidate.propTypes = {
     file_path: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
   }).isRequired,
+  openResumeInNewTab: PropTypes.bool.isRequired,
 };
 
 Candidate.displayName = "Candidate";

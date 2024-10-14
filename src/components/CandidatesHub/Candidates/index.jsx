@@ -15,7 +15,12 @@ import {
   fetchCandidates,
   fetchPdf,
 } from "../../../utilities";
-import { CONTENT, CANDIDATES_PER_PAGE, STATUS_CODES } from "../../../constants";
+import {
+  CONTENT,
+  CANDIDATES_PER_PAGE,
+  STATUS_CODES,
+  RESUME_VIEWER_WIDTH_START,
+} from "../../../constants";
 import classes from "./index.module.scss";
 
 let isInitial = true;
@@ -41,6 +46,9 @@ const Candidates = () => {
     url: "",
     isPdf: true,
   });
+  const [isSmallScreen, setIsSmallScreen] = useState(
+    window.innerWidth < RESUME_VIEWER_WIDTH_START
+  );
   const showResumeRef = useRef(showResume);
 
   useEffect(() => {
@@ -130,8 +138,25 @@ const Candidates = () => {
     if (displayResumeId) getPdf();
   }, [dispatch, displayResumeId]);
 
+  useEffect(() => {
+    // Update the state on window resize
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < RESUME_VIEWER_WIDTH_START);
+    };
+
+    // Check on initial render and set isSmallScreen
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <section className={`${classes.cards} ${showResume && classes.smaller}`}>
+    <section
+      className={`${classes.cards} ${
+        showResume && !isSmallScreen && classes.smaller
+      }`}
+    >
       {isLoading ? (
         <Loader />
       ) : candidates.length === 0 ? (
@@ -144,9 +169,15 @@ const Candidates = () => {
       ) : (
         <Fragment>
           {candidates.map((candidate) => (
-            <Candidate key={candidate.id} candidate={candidate} />
+            <Candidate
+              key={candidate.id}
+              candidate={candidate}
+              openResumeInNewTab={isSmallScreen}
+            />
           ))}
-          {showResume && <ResumeViewer details={pdfDetails} />}
+          {showResume && !isSmallScreen && (
+            <ResumeViewer details={pdfDetails} />
+          )}
         </Fragment>
       )}
     </section>
