@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Initial state for the UI slice
 const initialState = {
-  previousURL: "", // URL to fetch previous set of candidates
-  nextURL: "", // URL to fetch next set of candidates
+  previousPage: "", // Page number to fetch previous set of candidates
+  nextPage: "", // Page number to fetch next set of candidates
   totalCount: 0, // Total number of candidates
   searchTerm: "", // Term to search for and filter the candidates
   refetch: false, // Flag to determine whether to re-fetch the candidates
@@ -19,10 +19,13 @@ const uiSlice = createSlice({
     updateSearchTerm(state, { payload }) {
       state.searchTerm = payload;
     },
-    // Updates the previousURL, nextURL, totalCount in the state
-    updatePagination(state, { payload: { previousURL, nextURL, totalCount } }) {
-      state.previousURL = previousURL;
-      state.nextURL = nextURL;
+    // Updates the previousPage, nextPage, totalCount in the state
+    updatePagination(
+      state,
+      { payload: { previousPage, nextPage, totalCount } }
+    ) {
+      state.previousPage = previousPage;
+      state.nextPage = nextPage;
       state.totalCount = totalCount;
     },
     // Updates the refetchURL in the state

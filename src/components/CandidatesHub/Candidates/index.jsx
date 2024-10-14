@@ -62,7 +62,7 @@ const Candidates = () => {
     /**
      * Fetch candidates and update redux state.
      */
-    const url = refetchURL || buildFetchCandidatesUrl("", CANDIDATES_PER_PAGE);
+    const url = refetchURL || buildFetchCandidatesUrl(CANDIDATES_PER_PAGE);
 
     const getData = async () => {
       dispatch(loadingActions.enableAppLoading());
@@ -72,16 +72,16 @@ const Candidates = () => {
       if (status === STATUS_CODES.SUCCESS) {
         const {
           count: totalCount,
-          previous: previousURL,
-          next: nextURL,
+          previous: previousPage,
+          next: nextPage,
           results: candidates,
         } = data;
 
         dispatch(dataActions.replaceCandidates(candidates));
         dispatch(
           uiActions.updatePagination({
-            previousURL,
-            nextURL,
+            previousPage,
+            nextPage,
             totalCount,
           })
         );

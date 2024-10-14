@@ -7,7 +7,10 @@ export const END_POINTS = {
   SIGN_UP: `${apiUrl}signup/`,
   GET_TOKEN: `${apiUrl}api/token/`,
   REFRESH_TOKEN: `${apiUrl}api/token/refresh/`,
-  FETCH_CANDIDATES: `${apiUrl}resume_list/`,
+  FETCH_CANDIDATES: {
+    url: `${apiUrl}resume_list/`,
+    params: { limit: "limit", page: "page", query: "query" },
+  },
   EDIT_CANDIDATE: `${apiUrl}resume/{{id}}/edit/`,
   VIEW_RESUME: `${apiUrl}view-file/`,
   DOWNLOAD_RESUME: `${apiUrl}home/resume/download/`,

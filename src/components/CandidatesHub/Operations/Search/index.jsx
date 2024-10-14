@@ -31,7 +31,7 @@ const Search = ({ enableSearch }) => {
     dispatch(uiActions.enableRefetch());
     dispatch(
       uiActions.updateRefetchURL(
-        buildFetchCandidatesUrl(searchText, CANDIDATES_PER_PAGE)
+        buildFetchCandidatesUrl(CANDIDATES_PER_PAGE, "", searchText)
       )
     );
     dispatch(uiActions.updateSearchTerm(searchText));

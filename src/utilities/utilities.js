@@ -7,14 +7,24 @@ import { END_POINTS, MAX_FILE_SIZE } from "../constants";
  * @param {string} [page=""] - The page number for pagination (optional).
  * @returns {string} The dynamically built URL with encoded query parameters.
  */
-export const buildFetchCandidatesUrl = (query = "", limit = "", page = "") => {
+export const buildFetchCandidatesUrl = (limit = "", page = "", query = "") => {
   // Encode query params to ensure special characters are handled
-  const encodedQuery = encodeURIComponent(query);
   const encodedLimit = encodeURIComponent(limit);
   const encodedPage = encodeURIComponent(page);
+  const encodedQuery = encodeURIComponent(query);
 
-  // Dynamically build the URL by interpolating query parameters
-  return `${END_POINTS.FETCH_CANDIDATES}?query=${encodedQuery}&limit=${encodedLimit}&page=${encodedPage}`;
+  const { url, params } = END_POINTS.FETCH_CANDIDATES; // Destructure to get the base URL and parameters
+
+  // Create a new URL object for constructing the complete URL
+  const fetchUrl = new URL(url);
+
+  // Set query parameters using the defined params and the values for limit and page
+  fetchUrl.searchParams.set(params.limit, encodedLimit);
+  fetchUrl.searchParams.set(params.page, encodedPage);
+  fetchUrl.searchParams.set(params.query, encodedQuery);
+
+  // Convert URL object back to string
+  return fetchUrl.toString();
 };
 
 /**
