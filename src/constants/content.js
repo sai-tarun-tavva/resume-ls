@@ -1,5 +1,5 @@
 export const CONTENT = {
-  serverError: "Server error. Please try again later.",
+  serverError: "Server error, please try again later.",
   authPage: {
     welcomePanel: {
       heading: "Empowering Resumes, Elevating Careers",
