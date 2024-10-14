@@ -362,7 +362,7 @@ const CandidateForm = () => {
   const handleCreateSkill = async (event) => {
     event.preventDefault();
 
-    const { status } = await createNewSkill(skillValue);
+    const { status } = await createNewSkill({ skills: [skillValue] });
 
     if (status === STATUS_CODES.SUCCESS) {
       handleAddSkill(skillValue);

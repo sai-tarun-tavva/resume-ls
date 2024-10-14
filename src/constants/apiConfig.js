@@ -14,5 +14,5 @@ export const END_POINTS = {
   UPLOAD_RESUME: `${apiUrl}upload-file/`,
   BATCH_PROCESS: `${apiUrl}/dummy`,
   FETCH_SUGGESTED_SKILLS: `${apiUrl}search-skills?query=`,
-  CREATE_NEW_SKILL: `${apiUrl}add-skills?skills=`,
+  CREATE_NEW_SKILL: `${apiUrl}add-skills`,
 };

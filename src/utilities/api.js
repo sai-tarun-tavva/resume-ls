@@ -337,17 +337,18 @@ export const fetchSuggestedSkills = async (param) => {
  *
  * @async
  * @function
- * @param {String} newSkill - The new skill to be added.
+ * @param {Object} body - The request body containing new skill to be added.
  * @returns {Promise<Object>} An object containing the response status.
  */
-export const createNewSkill = async (newSkill) => {
+export const createNewSkill = async (body) => {
   try {
-    const response = await fetchWithToken(
-      `${END_POINTS.CREATE_NEW_SKILL}${newSkill}`,
-      {
-        method: "POST",
-      }
-    );
+    const response = await fetchWithToken(END_POINTS.CREATE_NEW_SKILL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
 
     // Return status
     if (!response.ok) {
