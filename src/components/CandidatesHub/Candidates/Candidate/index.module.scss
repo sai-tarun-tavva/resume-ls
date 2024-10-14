@@ -119,6 +119,11 @@
         position: absolute;
         top: 0rem;
         right: 0rem;
+
+        .actions {
+          opacity: 1;
+          transform: unset;
+        }
       }
     }
   }
