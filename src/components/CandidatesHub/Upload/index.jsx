@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import HelperMessage from "./HelperMessage";
 import DropArea from "./DropArea";
 import FileList from "./FileList";
-import Button from "../../Atoms/Button";
-import Modal from "../../Atoms/Modal";
+import Button from "../../../atoms/Button";
+import Modal from "../../../atoms/Modal";
 import { loadingActions, statusActions, uiActions } from "../../../store";
 import { isValidFile, uploadFiles } from "../../../utilities";
 import {

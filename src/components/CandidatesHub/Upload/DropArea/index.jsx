@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { CONTENT, MAX_FILES, MAX_FILE_SIZE } from "../../../../constants/";
+import { CONTENT, MAX_FILES, MAX_FILE_SIZE } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**

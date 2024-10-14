@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Candidates from "./components/CandidatesHub/Candidates";
 import CandidateForm from "./components/CandidatesHub/CandidateForm";
-import PageNotFound from "./components/Atoms/PageNotFound";
+import PageNotFound from "./atoms/PageNotFound";
 import { ROUTES } from "./constants";
 
 /**

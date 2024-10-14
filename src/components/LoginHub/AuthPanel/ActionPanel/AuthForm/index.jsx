@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { useInput } from "../../../../../hooks";
-import Input from "../../../../Atoms/Input";
-import Button from "../../../../Atoms/Button";
+import Input from "../../../../../atoms/Input";
+import Button from "../../../../../atoms/Button";
 import { loadingActions, statusActions } from "../../../../../store";
 import {
   authenticateUser,

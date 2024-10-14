@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { highlightText } from "../../../utilities";
+import { highlightText } from "../../utilities";
 import classes from "./index.module.scss";
 
 /**

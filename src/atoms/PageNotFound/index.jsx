@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CONTENT, ROUTES } from "../../../constants";
+import { CONTENT, ROUTES } from "../../constants";
 import classes from "./index.module.scss";
 
 /**

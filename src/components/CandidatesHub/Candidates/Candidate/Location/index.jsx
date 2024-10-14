@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import IconText from "../../../../Atoms/IconText";
+import IconText from "../../../../../atoms/IconText";
 import { highlightText } from "../../../../../utilities";
 import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";

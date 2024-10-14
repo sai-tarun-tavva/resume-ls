@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Candidate from "./Candidate";
-import Loader from "../../Atoms/Loader";
+import Loader from "../../../atoms/Loader";
 import ResumeViewer from "../ResumeViewer";
 import {
   dataActions,

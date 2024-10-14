@@ -3,10 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../../hooks";
 import AutoSuggestion from "./AutoSuggestion";
-import Skills from "../../Atoms/Skills";
-import Button from "../../Atoms/Button";
-import Input from "../../Atoms/Input";
-import StatusMessage from "../../Atoms/StatusMessage";
+import Skills from "../../../atoms/Skills";
+import Button from "../../../atoms/Button";
+import Input from "../../../atoms/Input";
+import StatusMessage from "../../../atoms/StatusMessage";
 import { loadingActions, statusActions, uiActions } from "../../../store";
 import {
   arraysEqual,

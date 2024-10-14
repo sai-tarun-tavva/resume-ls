@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Actions from "./Actions";
-import Skills from "../../../Atoms/Skills";
+import Skills from "../../../../atoms/Skills";
 import { statusActions, viewResumeActions } from "../../../../store";
 import {
   calculateTimeAgo,
