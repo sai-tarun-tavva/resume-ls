@@ -1,4 +1,4 @@
-# RInsight: Streamlining Your Hiring Process
+# 🔍 RInsight: Streamlining Your Hiring Process
 
 Welcome to the Resume Insight project, a smart solution developed for Logisoft to enhance your hiring workflow. This application is designed to help hiring managers efficiently share and manage candidate information across departments.
 
@@ -11,6 +11,7 @@ Welcome to the Resume Insight project, a smart solution developed for Logisoft t
 - **Effortless Resume Upload**: Simplify the process of adding new candidates to your system.
 - **Intuitive Editing**: Update candidate profiles with ease through our user-friendly interface.
 - **Smart Search**: Quickly find the right candidates using our powerful search functionality.
+- **Responsive Design**: Enjoy a seamless experience across all devices, from desktops to mobile phones, ensuring that you can manage candidates anytime, anywhere.
 
 ## 🛠️ Technology Stack
 
@@ -22,7 +23,7 @@ Welcome to the Resume Insight project, a smart solution developed for Logisoft t
 ## 📚 Libraries and Frameworks
 
 - **React Router**: Enabling smooth navigation throughout the application.
-- **Context API**: Managing global state for a cohesive user experience.
+- **Redux**: Managing global state efficiently for a cohesive user experience.
 - **SCSS**: Providing stylish and maintainable component styling.
 - **Bootstrap Icons**: Enhancing the UI with a comprehensive icon set.
 - **Fetch API**: Built-in web API for making HTTP requests to interact with the backend.
@@ -81,4 +82,4 @@ If you have any questions or run into issues, don't hesitate to contact the deve
 
 ---
 
-Thank you for using Resume Insight. Let's make hiring simpler, together!
+Thank you for using RInsight. Let's make hiring simpler, together!
