@@ -11,16 +11,19 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered PageNotFound component.
  */
 const PageNotFound = () => {
+  const { title, message, suggestionStart, suggestedPageName, suggestionEnd } =
+    CONTENT.COMMON.pageNotFound;
   return (
     <div className={classes.notFoundContainer}>
-      <h1 className={classes.notFoundTitle}>{CONTENT.pageNotFound.title}</h1>
-      <p className={classes.notFoundMessage}>{CONTENT.pageNotFound.message}</p>
+      <h1 className={classes.notFoundTitle}>{title}</h1>
+      <p className={classes.notFoundMessage}>{message}</p>
       <p className={classes.notFoundSuggestion}>
-        {CONTENT.pageNotFound.suggestionStart}
-        <Link to={ROUTES.HOME} replace>
-          {CONTENT.pageNotFound.suggestedPageName}
+        {suggestionStart}
+        <Link to={ROUTES.INSIGHT.HOME} replace>
+          {/* pending */}
+          {suggestedPageName}
         </Link>
-        {CONTENT.pageNotFound.suggestionEnd}
+        {suggestionEnd}
       </p>
     </div>
   );

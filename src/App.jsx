@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import StatusMessage from "./atoms/StatusMessage";
+import StatusMessage from "./micro-frontends/Atoms/components/StatusMessage";
 import appRouter from "./app-router";
 
 /**

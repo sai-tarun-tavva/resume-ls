@@ -1,27 +1,42 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import Home from "./pages/Home";
 import Welcome from "./pages/Welcome";
-import Candidates from "./components/CandidatesHub/Candidates";
-import CandidateForm from "./components/CandidatesHub/CandidateForm";
-import PageNotFound from "./atoms/PageNotFound";
+import Insight from "./pages/Insight";
+import Onboard from "./pages/Onboard";
+import Candidates from "./micro-frontends/Insight/components/Candidates";
+import CandidateForm from "./micro-frontends/Insight/components/CandidateForm";
+import PageNotFound from "./micro-frontends/Atoms/components/PageNotFound";
 import { ROUTES } from "./constants";
 
+const { INSIGHT, ONBOARD } = ROUTES;
+
 /**
- * Router configuration for the application.
- * Defines routes for the application, including home, login, candidate forms, and a catch-all for 404 pages.
+ * Router configuration, defines for the application.
+ *
  * @returns {Object} The router configuration object.
  */
 const appRouter = createBrowserRouter([
+  // Default Welcome page
   { path: "", element: <Welcome /> },
+  // Insight Home Page
   {
-    path: ROUTES.HOME,
-    element: <ProtectedRoute element={<Home />} />,
+    path: INSIGHT.HOME,
+    element: <ProtectedRoute element={<Insight />} />,
     children: [
       { index: true, element: <Candidates /> },
-      { path: ROUTES.CANDIDATE_FORM, element: <CandidateForm /> },
+      { path: INSIGHT.CANDIDATE_FORM, element: <CandidateForm /> },
     ],
   },
+  // Onboard Home Page
+  {
+    path: ONBOARD.HOME,
+    element: <ProtectedRoute element={<Onboard />} />,
+    children: [
+      // { index: true, element: <Candidates /> },
+      // { path: INSIGHT.CANDIDATE_FORM, element: <CandidateForm /> },
+    ],
+  },
+  // Not Found Page
   { path: "*", element: <PageNotFound /> },
 ]);
 

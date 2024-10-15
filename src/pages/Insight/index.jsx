@@ -3,7 +3,7 @@ import CandidatesHub from "../../components/CandidatesHub";
 /**
  * Insight Component
  *
- * Serves as the main entry point for the application.
+ * Serves as the main entry point for the Insight application.
  * It renders the CandidatesHub component to display the candidates' information.
  *
  * @returns {JSX.Element} The rendered Insight component.

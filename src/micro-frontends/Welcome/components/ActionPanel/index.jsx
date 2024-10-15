@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AuthForm from "./AuthForm";
+import AuthForm from "../AuthForm";
 import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 

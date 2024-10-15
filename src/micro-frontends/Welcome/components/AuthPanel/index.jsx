@@ -1,4 +1,4 @@
-import ActionPanel from "./ActionPanel";
+import ActionPanel from "../ActionPanel";
 import classes from "./index.module.scss";
 
 /**

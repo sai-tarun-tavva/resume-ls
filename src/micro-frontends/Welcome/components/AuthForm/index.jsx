@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { useInput } from "../../../../../hooks";
-import Input from "../../../../../atoms/Input";
-import Button from "../../../../../atoms/Button";
-import { loadingActions, statusActions } from "../../../../../store";
+import { useInput } from "../../../Atoms/hooks";
+import Input from "../../../Atoms/components/Input";
+import Button from "../../../Atoms/Button";
+import { loadingActions, statusActions } from "../../../../store";
 import {
   authenticateUser,
   authValidations,
   resetStatusAsync,
-} from "../../../../../utilities";
+} from "../../../../utilities";
 import {
   CONTENT,
   END_POINTS,
   ROUTES,
   STATUS_CODES,
-} from "../../../../../constants";
+} from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
