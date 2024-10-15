@@ -134,7 +134,7 @@ const AuthForm = ({ haveAccount }) => {
       if (status === STATUS_CODES.SUCCESS) {
         localStorage.setItem("refreshToken", data.data.refresh); // For persistent storage
         sessionStorage.setItem("accessToken", data.data.access); // Or store in memory/state
-        navigate(`/${ROUTES.HOME}`, { replace: true });
+        navigate(`/${ROUTES.INSIGHT.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
@@ -161,7 +161,7 @@ const AuthForm = ({ haveAccount }) => {
       if (status === STATUS_CODES.CREATED) {
         localStorage.setItem("refreshToken", data.data.refresh); // For persistent storage
         sessionStorage.setItem("accessToken", data.data.access); // Or store in memory/state
-        navigate(`/${ROUTES.HOME}`, { replace: true });
+        navigate(`/${ROUTES.INSIGHT.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({

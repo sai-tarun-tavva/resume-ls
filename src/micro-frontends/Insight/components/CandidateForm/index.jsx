@@ -49,7 +49,7 @@ const CandidateForm = () => {
 
   // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
   useEffect(() => {
-    if (!info) navigate(ROUTES.HOME);
+    if (!info) navigate(ROUTES.INSIGHT.HOME);
   }, [info, navigate]);
 
   // Executes whenever user clicks on the screen

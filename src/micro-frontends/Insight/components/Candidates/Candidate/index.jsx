@@ -46,7 +46,7 @@ const Candidate = ({ candidate, openResumeInNewTab }) => {
     dispatch(viewResumeActions.updateId(null));
 
     const candidateId = candidate.id;
-    navigate(replaceRouteParam(ROUTES.CANDIDATE_FORM, { candidateId }));
+    navigate(replaceRouteParam(ROUTES.INSIGHT.CANDIDATE_FORM, { candidateId }));
   };
 
   /**

@@ -1,5 +1,5 @@
 import { formatFileSize } from "./utilities";
-import { END_POINTS, ROUTES } from "../constants";
+import { END_POINTS } from "../constants";
 
 /**
  * Makes an API call using the provided URL and options, including handling of the access token.
@@ -22,7 +22,7 @@ export const fetchWithToken = async (url, options = {}) => {
       // Clear storage and redirect to login if token refresh fails
       sessionStorage.clear();
       localStorage.clear();
-      window.location.href = `/${ROUTES.AUTH}`; // Adjust the path as necessary
+      window.location.href = `/`; // Adjust the path as necessary
       return; // Prevent further execution
     }
   }
@@ -49,7 +49,7 @@ export const fetchWithToken = async (url, options = {}) => {
       // Clear storage and redirect to login if refresh fails
       sessionStorage.clear();
       localStorage.clear();
-      window.location.href = `/${ROUTES.AUTH}`; // Adjust the path as necessary
+      window.location.href = `/`; // Adjust the path as necessary
       return; // Prevent further execution
     }
   }

@@ -20,7 +20,7 @@ const ProtectedRoute = ({ element }) => {
     // If no accessToken, redirect to login page
     sessionStorage.clear();
     localStorage.clear();
-    return <Navigate to={`/${ROUTES.AUTH}`} replace />;
+    return <Navigate to={`/`} replace />;
   }
 
   // If authenticated, render the protected component

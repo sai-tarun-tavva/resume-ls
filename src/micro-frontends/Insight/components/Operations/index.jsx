@@ -17,11 +17,11 @@ import classes from "./index.module.scss";
 const Operations = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const enableOperations = location.pathname === `/${ROUTES.HOME}`;
+  const enableOperations = location.pathname === `/${ROUTES.INSIGHT.HOME}`;
 
   const handleLogout = () => {
     logout();
-    navigate(`/${ROUTES.AUTH}`);
+    navigate(`/`);
   };
 
   return (

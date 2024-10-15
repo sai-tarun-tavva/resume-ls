@@ -151,7 +151,7 @@ const Upload = () => {
       setFiles([]); // Clear files after successful upload
       toggleAllowUpload();
       dispatch(uiActions.enableRefetch());
-      navigate(`/${ROUTES.HOME}`);
+      navigate(`/${ROUTES.INSIGHT.HOME}`);
     } else {
       dispatch(
         statusActions.updateStatus({
