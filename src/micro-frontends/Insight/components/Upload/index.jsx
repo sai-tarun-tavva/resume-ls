@@ -4,17 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import HelperMessage from "./HelperMessage";
 import DropArea from "./DropArea";
 import FileList from "./FileList";
-import Button from "../../../atoms/Button";
-import Modal from "../../../atoms/Modal";
-import { loadingActions, statusActions, uiActions } from "../../../store";
-import { isValidFile, uploadFiles } from "../../../utilities";
+import Button from "../../../Atoms/components/Button";
+import Modal from "../../../Atoms/components/Modal";
+import { loadingActions, statusActions, uiActions } from "../../../../store";
+import { isValidFile, uploadFiles } from "../../../../utilities";
 import {
   CONTENT,
   MAX_FILES,
   MAX_FILE_SIZE,
   ROUTES,
   STATUS_CODES,
-} from "../../../constants";
+} from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**

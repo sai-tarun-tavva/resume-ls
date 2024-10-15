@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { formatFileSize, getFileIcon } from "../../../../utilities";
+import { formatFileSize, getFileIcon } from "../../../../../utilities";
 import classes from "./index.module.scss";
 
 /**

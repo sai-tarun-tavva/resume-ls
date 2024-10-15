@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { uiActions } from "../../../../store";
-import { buildFetchCandidatesUrl } from "../../../../utilities";
-import { CANDIDATES_PER_PAGE, CONTENT } from "../../../../constants";
+import { uiActions } from "../../../../../store";
+import { buildFetchCandidatesUrl } from "../../../../../utilities";
+import { CANDIDATES_PER_PAGE, CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**

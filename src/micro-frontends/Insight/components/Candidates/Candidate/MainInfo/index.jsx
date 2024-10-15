@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import IconText from "../../../../../atoms/IconText";
+import IconText from "../../../../../Atoms/components/IconText";
 import {
   capitalizeFirstLetter,
   highlightText,
   transformPhoneNumber,
-} from "../../../../../utilities";
-import { CONTENT } from "../../../../../constants";
+} from "../../../../../../utilities";
+import { CONTENT } from "../../../../../../constants";
 import classes from "./index.module.scss";
 
 /**

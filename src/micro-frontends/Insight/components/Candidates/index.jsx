@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Candidate from "./Candidate";
-import Loader from "../../../atoms/Loader";
+import Loader from "../../../Atoms/components/Loader";
 import ResumeViewer from "../ResumeViewer";
 import {
   dataActions,
@@ -9,18 +9,18 @@ import {
   statusActions,
   uiActions,
   viewResumeActions,
-} from "../../../store";
+} from "../../../../store";
 import {
   buildFetchCandidatesUrl,
   fetchCandidates,
   fetchPdf,
-} from "../../../utilities";
+} from "../../../../utilities";
 import {
   CONTENT,
   CANDIDATES_PER_PAGE,
   STATUS_CODES,
   RESUME_VIEWER_WIDTH_START,
-} from "../../../constants";
+} from "../../../../constants";
 import classes from "./index.module.scss";
 
 let isInitial = true;

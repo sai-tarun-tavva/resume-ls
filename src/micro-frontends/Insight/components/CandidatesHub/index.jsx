@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
-import Operations from "./Operations";
-import Upload from "./Upload";
+import Operations from "../Operations";
+import Upload from "../Upload";
 import store from "../../store/store";
 
 /**

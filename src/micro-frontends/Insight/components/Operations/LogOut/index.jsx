@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import Button from "../../../../atoms/Button";
+import Button from "../../../../Atoms/components/Button";
 import classes from "./index.module.scss";
 
 /**

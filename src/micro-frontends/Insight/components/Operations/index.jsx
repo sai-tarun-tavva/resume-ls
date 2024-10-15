@@ -3,8 +3,8 @@ import Logo from "./Logo";
 import Search from "./Search";
 import Pagination from "./Pagination";
 import Logout from "./LogOut";
-import { handleLogout as logout } from "../../../utilities";
-import { ROUTES } from "../../../constants";
+import { handleLogout as logout } from "../../../../utilities";
+import { ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**

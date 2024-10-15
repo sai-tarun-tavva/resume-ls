@@ -1,4 +1,4 @@
-import { CONTENT, END_POINTS } from "../../../../constants";
+import { CONTENT, END_POINTS } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**

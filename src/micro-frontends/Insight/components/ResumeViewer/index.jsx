@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Header from "./Header";
-import Loader from "../../../atoms/Loader";
-import { viewResumeActions } from "../../../store/viewresume";
-import { LOADER_TYPES } from "../../../constants";
+import Loader from "../../../Atoms/components/Loader";
+import { viewResumeActions } from "../../../../store";
+import { LOADER_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**

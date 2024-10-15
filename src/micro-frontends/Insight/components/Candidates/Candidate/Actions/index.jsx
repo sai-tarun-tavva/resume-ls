@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { END_POINTS } from "../../../../../constants";
+import { END_POINTS } from "../../../../../../constants";
 import classes from "./index.module.scss";
 
 /**

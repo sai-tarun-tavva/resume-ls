@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import Skills from "../../../../atoms/Skills";
-import Button from "../../../../atoms/Button";
-import { CONTENT } from "../../../../constants";
+import Skills from "../../../../Atoms/components/Skills";
+import Button from "../../../../Atoms/components/Button";
+import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**

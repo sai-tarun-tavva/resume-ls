@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useInput } from "../../../hooks";
-import AutoSuggestion from "../AutoSuggestion";
-import Skills from "../../../atoms/Skills";
-import Button from "../../../atoms/Button";
-import Input from "../../../atoms/Input";
-import StatusMessage from "../../../atoms/StatusMessage";
-import { loadingActions, statusActions, uiActions } from "../../../store";
+import { useInput } from "../../../Atoms/hooks";
+import AutoSuggestion from "./AutoSuggestion";
+import Skills from "../../../Atoms/components/Skills";
+import Button from "../../../Atoms/components/Button";
+import Input from "../../../Atoms/components/Input";
+import StatusMessage from "../../../Atoms/components/StatusMessage";
+import { loadingActions, statusActions, uiActions } from "../../../../store";
 import {
   arraysEqual,
   candidateValidations,
@@ -17,8 +17,8 @@ import {
   resetStatusAsync,
   transformExperience,
   transformPhoneNumber,
-} from "../../../utilities";
-import { CONTENT, ROUTES, STATUS_CODES } from "../../../constants";
+} from "../../../../utilities";
+import { CONTENT, ROUTES, STATUS_CODES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**

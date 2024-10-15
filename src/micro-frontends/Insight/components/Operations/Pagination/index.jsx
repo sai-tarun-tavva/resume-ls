@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import Button from "../../../../atoms/Button";
-import { uiActions } from "../../../../store";
-import { buildFetchCandidatesUrl } from "../../../../utilities";
-import { CANDIDATES_PER_PAGE } from "../../../../constants";
+import Button from "../../../../Atoms/components/Button";
+import { uiActions } from "../../../../../store";
+import { buildFetchCandidatesUrl } from "../../../../../utilities";
+import { CANDIDATES_PER_PAGE } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**

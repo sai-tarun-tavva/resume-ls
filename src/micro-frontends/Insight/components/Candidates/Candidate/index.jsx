@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Actions from "./Actions";
-import Skills from "../../../../atoms/Skills";
-import { statusActions, viewResumeActions } from "../../../../store";
+import Skills from "../../../../Atoms/components/Skills";
+import { statusActions, viewResumeActions } from "../../../../../store";
 import {
   calculateTimeAgo,
   isCandidateNew,
   replaceRouteParam,
-} from "../../../../utilities";
-import { END_POINTS, ROUTES } from "../../../../constants";
+} from "../../../../../utilities";
+import { END_POINTS, ROUTES } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
