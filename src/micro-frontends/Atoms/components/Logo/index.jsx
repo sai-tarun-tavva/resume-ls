@@ -1,4 +1,3 @@
-import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -9,15 +8,13 @@ import classes from "./index.module.scss";
  *
  * @returns {JSX.Element} - Rendered logo component
  */
-const Logo = () => {
-  const { logoSuffix, logo } = CONTENT.INSIGHT.operations;
-
+const Logo = ({ logoIcon, logoSuffix, logoText }) => {
   return (
     <div className={classes.logo}>
-      <i className={`bi bi-zoom-in ${classes.icon}`}></i>
+      <i className={`${logoIcon} ${classes.icon}`}></i>
       <span className={classes.text}>
         {logoSuffix}
-        <span>{logo}</span>
+        <span>{logoText}</span>
       </span>
     </div>
   );

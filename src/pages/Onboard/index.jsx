@@ -1,3 +1,5 @@
+import OnboardHub from "../../micro-frontends/Onboard/components/OnboardHub";
+
 /**
  * Onboard Component
  *
@@ -7,7 +9,7 @@
  * @returns {JSX.Element} The rendered Insight component.
  */
 const Onboard = () => {
-  //   return <CandidatesHub />;
+  return <OnboardHub />;
 };
 
 Onboard.displayName = "Onboard";

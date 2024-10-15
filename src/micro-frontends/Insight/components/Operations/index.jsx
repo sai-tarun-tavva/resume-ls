@@ -1,11 +1,10 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "./Logo";
+import { useLocation } from "react-router-dom";
+import Header from "../../../Atoms/components/Header";
+import Logo from "../../../Atoms/components/Logo";
+import Logout from "../../../Atoms/components/LogOut";
 import Search from "./Search";
 import Pagination from "./Pagination";
-import Logout from "./LogOut";
-import { handleLogout as logout } from "../../../../utilities";
-import { ROUTES } from "../../../../constants";
-import classes from "./index.module.scss";
+import { CONTENT, ROUTES } from "../../../../constants";
 
 /**
  * Operations Component
@@ -16,21 +15,20 @@ import classes from "./index.module.scss";
  */
 const Operations = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const enableOperations = location.pathname === `/${ROUTES.INSIGHT.HOME}`;
-
-  const handleLogout = () => {
-    logout();
-    navigate(`/`);
-  };
+  const { logoSuffix, logo } = CONTENT.INSIGHT.operations;
 
   return (
-    <header className={classes.operations}>
-      <Logo />
+    <Header>
+      <Logo
+        logoIcon={"bi bi-zoom-in"}
+        logoSuffix={logoSuffix}
+        logoText={logo}
+      />
       <Search enableSearch={enableOperations} />
       <Pagination enablePagination={enableOperations} />
-      <Logout onLogout={handleLogout} />
-    </header>
+      <Logout />
+    </Header>
   );
 };
 

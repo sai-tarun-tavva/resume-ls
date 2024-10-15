@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Button from "../../../../Atoms/components/Button";
+import Button from "../Button";
+import { handleLogout as logout } from "../../../../utilities";
 import classes from "./index.module.scss";
 
 /**
@@ -8,13 +10,17 @@ import classes from "./index.module.scss";
  * Handles the logout action.
  * It will be executed when the button is clicked.
  *
- * @param {Object} props - Component props
- * @param {function} props.onLogout - Callback function to handle logout action
  * @returns {JSX.Element} - Rendered logout button component
  */
-const Logout = ({ onLogout }) => {
+const Logout = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate(`/`);
+  };
+
   return (
-    <Button className={classes.logout} title="Log Out" onClick={onLogout}>
+    <Button className={classes.logout} title="Log Out" onClick={handleLogout}>
       <i className="bi bi-box-arrow-left"></i>
     </Button>
   );

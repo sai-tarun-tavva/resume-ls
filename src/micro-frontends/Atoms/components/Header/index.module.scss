@@ -1,0 +1,29 @@
+.operations {
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.6rem 3.2rem;
+
+  background-color: #f5f5f5;
+  box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 414px) {
+  .operations {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+
+  .operations > :nth-child(3) {
+    justify-self: start;
+  }
+
+  .operations > :nth-child(4) {
+    justify-self: end;
+  }
+}

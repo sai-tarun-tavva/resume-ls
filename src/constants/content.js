@@ -159,4 +159,10 @@ export const CONTENT = {
       },
     },
   },
+  ONBOARD: {
+    operations: {
+      logoSuffix: "R",
+      logo: "Onboard",
+    },
+  },
 };
