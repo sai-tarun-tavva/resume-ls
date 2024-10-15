@@ -5,14 +5,14 @@ import Upload from "../Upload";
 import store from "../../store/store";
 
 /**
- * CandidatesHub Component
+ * InsightHub Component
  *
  * Serves as a wrapper for candidate-related operations.
  * It includes the status message, operations, upload functionality, and any nested routes.
  *
- * @returns {JSX.Element} The rendered CandidatesHub component.
+ * @returns {JSX.Element} The rendered InsightHub component.
  */
-const CandidatesHub = () => {
+const InsightHub = () => {
   return (
     <Provider store={store}>
       <Operations />
@@ -22,5 +22,5 @@ const CandidatesHub = () => {
   );
 };
 
-CandidatesHub.displayName = "CandidatesHub";
-export default CandidatesHub;
+InsightHub.displayName = "InsightHub";
+export default InsightHub;

@@ -1,4 +1,4 @@
-import CandidatesHub from "../../micro-frontends/Insight/components/CandidatesHub";
+import InsightHub from "../../micro-frontends/Insight/components/InsightHub";
 
 /**
  * Insight Component
@@ -9,7 +9,7 @@ import CandidatesHub from "../../micro-frontends/Insight/components/CandidatesHu
  * @returns {JSX.Element} The rendered Insight component.
  */
 const Insight = () => {
-  return <CandidatesHub />;
+  return <InsightHub />;
 };
 
 Insight.displayName = "Insight";
