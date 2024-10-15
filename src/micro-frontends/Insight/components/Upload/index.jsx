@@ -66,7 +66,7 @@ const Upload = () => {
       ) {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.candidateHub.upload.errors.maxFiles
+            message: CONTENT.INSIGHT.statusMessages.upload.maxFiles
               .replace("{{MAX_FILES}}", MAX_FILES)
               .replace("{{MAX_FILE_SIZE}}", MAX_FILE_SIZE),
             type: "failure",
@@ -112,7 +112,7 @@ const Upload = () => {
 
   const buttonText = isLoading
     ? `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`
-    : CONTENT.candidateHub.upload.button + (files.length > 1 ? "s" : "");
+    : CONTENT.INSIGHT.upload.button + (files.length > 1 ? "s" : "");
 
   /**
    * Handles file upload on button click.
@@ -150,7 +150,7 @@ const Upload = () => {
     } else {
       dispatch(
         statusActions.updateStatus({
-          message: CONTENT.serverError,
+          message: CONTENT.COMMON.serverError,
           type: "failure",
           darkMode: true,
         })

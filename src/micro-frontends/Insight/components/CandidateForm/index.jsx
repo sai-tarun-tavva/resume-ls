@@ -89,8 +89,7 @@ const CandidateForm = () => {
 
     // Validate skill input
     if (localSkills.includes(newSkill.trim())) {
-      skillError =
-        CONTENT.candidateHub.candidateForm.statusMessages.skill.existing;
+      skillError = CONTENT.INSIGHT.statusMessages.skill.existing;
     }
 
     // If there's an error, reset input and show status message
@@ -235,7 +234,7 @@ const CandidateForm = () => {
           resetSkillValue();
           dispatch(
             statusActions.updateStatus({
-              message: CONTENT.serverError,
+              message: CONTENT.COMMON.serverError,
               type: "failure",
             })
           );
@@ -334,15 +333,14 @@ const CandidateForm = () => {
         dispatch(uiActions.enableRefetch());
         dispatch(
           statusActions.updateStatus({
-            message:
-              CONTENT.candidateHub.candidateForm.errors.formEditRequest.success,
+            message: CONTENT.INSIGHT.statusMessages.form.success,
             type: "success",
           })
         );
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.serverError,
+            message: CONTENT.COMMON.serverError,
             type: "failure",
           })
         );
@@ -369,14 +367,14 @@ const CandidateForm = () => {
       resetSkillValue();
       dispatch(
         statusActions.updateStatus({
-          message: `"${skillValue}"${CONTENT.candidateHub.candidateForm.statusMessages.skill.added}`,
+          message: `"${skillValue}"${CONTENT.INSIGHT.statusMessages.skill.added}`,
           type: "success",
         })
       );
     } else {
       dispatch(
         statusActions.updateStatus({
-          message: CONTENT.serverError,
+          message: CONTENT.COMMON.serverError,
           type: "failure",
         })
       );
@@ -395,7 +393,7 @@ const CandidateForm = () => {
             <Input
               id="name"
               name="name"
-              placeholder={CONTENT.candidateHub.candidateForm.placeholders.name}
+              placeholder={CONTENT.INSIGHT.candidateForm.placeholders.name}
               value={nameValue}
               onChange={handleNameChange}
               onBlur={handleNameBlur}
@@ -410,7 +408,7 @@ const CandidateForm = () => {
               name="phoneNumber"
               type="tel"
               placeholder={
-                CONTENT.candidateHub.candidateForm.placeholders.phoneNumber
+                CONTENT.INSIGHT.candidateForm.placeholders.phoneNumber
               }
               value={phoneValue}
               onChange={handlePhoneChange}
@@ -425,9 +423,7 @@ const CandidateForm = () => {
               id="email"
               name="email"
               type="email"
-              placeholder={
-                CONTENT.candidateHub.candidateForm.placeholders.email
-              }
+              placeholder={CONTENT.INSIGHT.candidateForm.placeholders.email}
               value={emailValue}
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
@@ -440,9 +436,7 @@ const CandidateForm = () => {
             <Input
               id="addSkill"
               name="addSkill"
-              placeholder={
-                CONTENT.candidateHub.candidateForm.placeholders.skill
-              }
+              placeholder={CONTENT.INSIGHT.candidateForm.placeholders.skill}
               value={skillValue}
               onChange={handleSkillChange}
               onBlur={handleSkillBlur}
@@ -467,7 +461,7 @@ const CandidateForm = () => {
               id="linkedIn"
               name="linkedIn"
               placeholder={
-                CONTENT.candidateHub.candidateForm.placeholders.linkedInUrl
+                CONTENT.INSIGHT.candidateForm.placeholders.linkedInUrl
               }
               value={linkedInValue}
               onChange={handleLinkedInChange}
@@ -481,7 +475,7 @@ const CandidateForm = () => {
             <Input
               id="city"
               name="city"
-              placeholder={CONTENT.candidateHub.candidateForm.placeholders.city}
+              placeholder={CONTENT.INSIGHT.candidateForm.placeholders.city}
               value={cityValue}
               onChange={handleCityChange}
               onBlur={handleCityBlur}
@@ -494,9 +488,7 @@ const CandidateForm = () => {
             <Input
               id="state"
               name="state"
-              placeholder={
-                CONTENT.candidateHub.candidateForm.placeholders.state
-              }
+              placeholder={CONTENT.INSIGHT.candidateForm.placeholders.state}
               value={stateValue}
               onChange={handleStateChange}
               onBlur={handleStateBlur}
@@ -511,7 +503,7 @@ const CandidateForm = () => {
               name="experience"
               type="number"
               placeholder={
-                CONTENT.candidateHub.candidateForm.placeholders.experience
+                CONTENT.INSIGHT.candidateForm.placeholders.experience
               }
               value={experienceValue}
               onChange={handleExperienceChange}
@@ -537,7 +529,7 @@ const CandidateForm = () => {
             className={classes.closeButton}
             onClick={handleClose}
           >
-            {CONTENT.candidateHub.candidateForm.button.close}
+            {CONTENT.INSIGHT.candidateForm.button.close}
           </Button>
           <Button
             title="Save"
@@ -545,8 +537,8 @@ const CandidateForm = () => {
             disabled={!enableSave}
           >
             {isLoading
-              ? CONTENT.candidateHub.candidateForm.button.save.loading
-              : CONTENT.candidateHub.candidateForm.button.save.default}
+              ? CONTENT.INSIGHT.candidateForm.button.save.loading
+              : CONTENT.INSIGHT.candidateForm.button.save.default}
           </Button>
         </div>
       </div>

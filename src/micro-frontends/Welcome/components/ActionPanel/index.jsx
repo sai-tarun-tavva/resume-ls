@@ -13,7 +13,7 @@ import classes from "./index.module.scss";
  */
 const ActionPanel = () => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and sign-up
-  const { login, signUp } = CONTENT.authPage.authPanel.advisor;
+  const { login, signUp } = CONTENT.WELCOME.authPanel.advisor;
 
   return (
     <div className={classes.actionPanel}>

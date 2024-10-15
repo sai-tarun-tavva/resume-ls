@@ -27,7 +27,7 @@ const AutoSuggestion = ({
   const { isFetchLoading: fetchingSkills } = useSelector(
     (state) => state.loading
   );
-  const { helper, button } = CONTENT.candidateHub.candidateForm.suggestions;
+  const { helper, button } = CONTENT.INSIGHT.candidateForm.suggestions;
 
   return (
     <div className={classes.suggestionContainer}>

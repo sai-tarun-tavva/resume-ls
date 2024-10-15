@@ -64,11 +64,11 @@ const AuthForm = ({ haveAccount }) => {
 
   const buttonText = isLoading
     ? haveAccount
-      ? CONTENT.authPage.authPanel.buttons.login.loading
-      : CONTENT.authPage.authPanel.buttons.signUp.loading
+      ? CONTENT.WELCOME.authPanel.buttons.login.loading
+      : CONTENT.WELCOME.authPanel.buttons.signUp.loading
     : haveAccount
-    ? CONTENT.authPage.authPanel.buttons.login.default
-    : CONTENT.authPage.authPanel.buttons.signUp.default;
+    ? CONTENT.WELCOME.authPanel.buttons.login.default
+    : CONTENT.WELCOME.authPanel.buttons.signUp.default;
 
   /**
    * Toggles the visibility of the password input field.
@@ -138,7 +138,7 @@ const AuthForm = ({ haveAccount }) => {
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.authPage.authPanel.errors.server.login,
+            message: CONTENT.WELCOME.authPanel.errors.server.login,
             type: "failure",
             darkMode: true,
           })
@@ -146,7 +146,7 @@ const AuthForm = ({ haveAccount }) => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.serverError,
+            message: CONTENT.COMMON.serverError,
             type: "failure",
             darkMode: true,
           })
@@ -165,7 +165,7 @@ const AuthForm = ({ haveAccount }) => {
       } else if (status === STATUS_CODES.INVALID) {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.authPage.authPanel.errors.server.signUp,
+            message: CONTENT.WELCOME.authPanel.errors.server.signUp,
             type: "failure",
             darkMode: true,
           })
@@ -173,7 +173,7 @@ const AuthForm = ({ haveAccount }) => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.serverError,
+            message: CONTENT.COMMON.serverError,
             type: "failure",
             darkMode: true,
           })
@@ -196,7 +196,7 @@ const AuthForm = ({ haveAccount }) => {
       <Input
         id="userName"
         name="userName"
-        placeholder={CONTENT.authPage.authPanel.placeholders.username}
+        placeholder={CONTENT.WELCOME.authPanel.placeholders.username}
         autoComplete="username"
         value={userNameValue}
         onChange={handleUserNameChange}
@@ -209,7 +209,7 @@ const AuthForm = ({ haveAccount }) => {
         id="password"
         name="password"
         type={showPassword ? "text" : "password"}
-        placeholder={CONTENT.authPage.authPanel.placeholders.password}
+        placeholder={CONTENT.WELCOME.authPanel.placeholders.password}
         autoComplete={haveAccount ? "current-password" : "new-password"}
         value={passwordValue}
         onChange={handlePasswordChange}
@@ -231,7 +231,7 @@ const AuthForm = ({ haveAccount }) => {
           id="email"
           name="email"
           type="email"
-          placeholder={CONTENT.authPage.authPanel.placeholders.email}
+          placeholder={CONTENT.WELCOME.authPanel.placeholders.email}
           autoComplete="email"
           value={emailValue}
           onChange={handleEmailChange}

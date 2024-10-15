@@ -1,7 +1,6 @@
 import { CONTENT, REGEX } from "../constants";
 
-const candidateValidationMsgs = CONTENT.candidateHub.candidateForm.errors;
-const authValidationMsgs = CONTENT.authPage.authPanel.errors;
+const validationMsgs = CONTENT.COMMON.errors;
 
 // Helper function for empty value checks
 const isEmpty = (value) => value === "";
@@ -18,57 +17,49 @@ const validateEmpty = (enteredValue, value, errorMsg) => {
 
 export const candidateValidations = {
   name: (value, enteredValue) =>
-    validateEmpty(enteredValue, value, candidateValidationMsgs.name.empty),
+    validateEmpty(enteredValue, value, validationMsgs.name.empty),
 
   phone: (value, enteredValue) => {
     const digitsOnly = enteredValue.replace(/[\s()-]+/g, "");
     return (
-      validateEmpty(enteredValue, value, candidateValidationMsgs.phone.empty) ||
+      validateEmpty(enteredValue, value, validationMsgs.phone.empty) ||
       validateWithRegex(
         digitsOnly,
         REGEX.phoneRegex,
-        candidateValidationMsgs.phone.invalid
+        validationMsgs.phone.invalid
       )
     );
   },
 
   email: (value, enteredValue) =>
-    validateEmpty(enteredValue, value, candidateValidationMsgs.email.empty) ||
+    validateEmpty(enteredValue, value, validationMsgs.email.empty) ||
     validateWithRegex(
       enteredValue,
       REGEX.emailRegex,
-      candidateValidationMsgs.email.invalid
+      validationMsgs.email.invalid
     ),
 
   linkedIn: (value, enteredValue) =>
-    validateEmpty(
-      enteredValue,
-      value,
-      candidateValidationMsgs.linkedInUrl.empty
-    ) ||
+    validateEmpty(enteredValue, value, validationMsgs.linkedInUrl.empty) ||
     validateWithRegex(
       enteredValue,
       REGEX.linkedInRegex,
-      candidateValidationMsgs.linkedInUrl.invalid
+      validationMsgs.linkedInUrl.invalid
     ),
 
   city: (value, enteredValue) =>
-    validateEmpty(enteredValue, value, candidateValidationMsgs.city.empty),
+    validateEmpty(enteredValue, value, validationMsgs.city.empty),
 
   state: (value, enteredValue) =>
-    validateEmpty(enteredValue, value, candidateValidationMsgs.state.empty),
+    validateEmpty(enteredValue, value, validationMsgs.state.empty),
 
   experience: (value, enteredValue) => {
     const experienceNumber = Number(enteredValue);
     return (
-      validateEmpty(
-        enteredValue,
-        value,
-        candidateValidationMsgs.experience.empty
-      ) ||
+      validateEmpty(enteredValue, value, validationMsgs.experience.empty) ||
       (enteredValue &&
         (experienceNumber < 0 || experienceNumber > 100
-          ? candidateValidationMsgs.experience.invalid
+          ? validationMsgs.experience.invalid
           : undefined))
     );
   },
@@ -77,34 +68,34 @@ export const candidateValidations = {
 export const authValidations = {
   userName: (value) => {
     return isEmpty(value)
-      ? authValidationMsgs.username.empty
+      ? validationMsgs.username.empty
       : undefined ||
           (value.length < 3 ||
           value.length > 20 ||
           !REGEX.usernameRegex.test(value)
-            ? authValidationMsgs.username.invalid
+            ? validationMsgs.username.invalid
             : undefined);
   },
 
   password: (value) => {
     return isEmpty(value)
-      ? authValidationMsgs.password.empty
+      ? validationMsgs.password.empty
       : undefined ||
           validateWithRegex(
             value,
             REGEX.passwordRegex,
-            authValidationMsgs.password.invalid
+            validationMsgs.password.invalid
           );
   },
 
   email: (value) => {
     return isEmpty(value)
-      ? authValidationMsgs.email.empty
+      ? validationMsgs.email.empty
       : undefined ||
           validateWithRegex(
             value,
             REGEX.emailRegex,
-            authValidationMsgs.email.invalid
+            validationMsgs.email.invalid
           );
   },
 };

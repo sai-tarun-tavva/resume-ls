@@ -89,6 +89,10 @@ export const CONTENT = {
         existing: "Skill already exists.",
         added: " added to skills.",
       },
+      upload: {
+        maxFiles:
+          "Only the first {{MAX_FILES}} files, each under {{MAX_FILE_SIZE}}MB will be included.",
+      },
     },
     upload: {
       helper: {
@@ -99,14 +103,9 @@ export const CONTENT = {
       dragDrop: {
         heading: "Drag and drop or click here",
         paragraphFile: "to choose your files",
-        paragraphFolder: "to choose your folder",
         info: "`Only the first {{MAX_FILES}} files in TXT, DOC, DOCX, and PDF formats, each under {{MAX_FILE_SIZE}}MB will be accepted.",
       },
       button: "Upload file",
-      errors: {
-        maxFiles:
-          "Only the first {{MAX_FILES}} files, each under {{MAX_FILE_SIZE}}MB will be included.",
-      },
     },
     operations: {
       logoSuffix: "R",

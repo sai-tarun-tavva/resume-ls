@@ -43,7 +43,7 @@ const Search = ({ enableSearch }) => {
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
-          placeholder={CONTENT.candidateHub.operations.search.placeholder}
+          placeholder={CONTENT.INSIGHT.operations.search.placeholder}
           ref={searchTextRef}
           disabled={!enableSearch}
         />

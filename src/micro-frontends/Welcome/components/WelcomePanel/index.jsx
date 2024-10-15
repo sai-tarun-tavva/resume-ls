@@ -14,11 +14,15 @@ import classes from "./index.module.scss";
  */
 const WelcomePanel = ({ targetCount }) => {
   const count = useCountAnimation(targetCount);
-  const { heading, paragraph } = CONTENT.authPage.welcomePanel;
+  const { heading, paragraph } = CONTENT.WELCOME.welcomePanel;
 
   return (
     <div className={classes.welcomePanel}>
-      <img src={Logo} alt={CONTENT.logoAlt} className={classes.logo} />
+      <img
+        src={Logo}
+        alt={CONTENT.WELCOME.welcomePanel.logoAlt}
+        className={classes.logo}
+      />
       <h1>{heading}</h1>
 
       {targetCount >= 0 && (

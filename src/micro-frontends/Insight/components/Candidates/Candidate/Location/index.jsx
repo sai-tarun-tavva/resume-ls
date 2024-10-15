@@ -21,7 +21,7 @@ import classes from "./index.module.scss";
 const Location = ({ candidate }) => {
   const { searchTerm } = useSelector((state) => state.ui);
   const { location, region, experience } =
-    CONTENT.candidateHub.candidate.defaultValues;
+    CONTENT.INSIGHT.candidate.defaultValues;
 
   return (
     <div className={classes.location}>

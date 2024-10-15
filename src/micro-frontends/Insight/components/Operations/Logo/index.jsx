@@ -10,7 +10,7 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} - Rendered logo component
  */
 const Logo = () => {
-  const { logoSuffix, logo } = CONTENT.candidateHub.operations;
+  const { logoSuffix, logo } = CONTENT.INSIGHT.operations;
 
   return (
     <div className={classes.logo}>

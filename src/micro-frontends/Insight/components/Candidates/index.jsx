@@ -84,7 +84,7 @@ const Candidates = () => {
       } else {
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.serverError,
+            message: CONTENT.COMMON.serverError,
             type: "failure",
           })
         );
@@ -124,7 +124,7 @@ const Candidates = () => {
         dispatch(viewResumeActions.updateId(null));
         dispatch(
           statusActions.updateStatus({
-            message: CONTENT.serverError,
+            message: CONTENT.COMMON.serverError,
             type: "failure",
           })
         );
@@ -160,7 +160,7 @@ const Candidates = () => {
           <i
             className={`bi bi-exclamation-circle ${classes.noRecordsIcon}`}
           ></i>
-          {CONTENT.candidateHub.candidate.noRecord}
+          {CONTENT.INSIGHT.candidate.noRecord}
         </p>
       ) : (
         <Fragment>

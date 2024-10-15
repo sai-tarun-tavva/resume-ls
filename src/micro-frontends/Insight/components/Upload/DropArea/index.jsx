@@ -14,6 +14,7 @@ import classes from "./index.module.scss";
  */
 const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
   const { MAX_FILES, MAX_FILE_SIZE } = INSIGHT;
+  const { heading, paragraphFile, info } = CONTENT.INSIGHT.upload.dragDrop;
 
   return (
     <>
@@ -31,12 +32,12 @@ const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
           className={classes.fileInput}
         />
         <i className={`bi bi-cloud-arrow-up-fill ${classes.icon}`}></i>
-        <h2>{CONTENT.candidateHub.upload.dragDrop.heading}</h2>
-        <p>{CONTENT.candidateHub.upload.dragDrop.paragraphFile}</p>
+        <h2>{heading}</h2>
+        <p>{paragraphFile}</p>
       </div>
 
       <small className={classes.infoText}>
-        {CONTENT.candidateHub.upload.dragDrop.info
+        {info
           .replace("{{MAX_FILES}}", MAX_FILES)
           .replace("{{MAX_FILE_SIZE}}", MAX_FILE_SIZE)}
       </small>

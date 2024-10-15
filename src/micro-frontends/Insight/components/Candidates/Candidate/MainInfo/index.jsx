@@ -48,7 +48,7 @@ const MainInfo = ({ candidate }) => {
     name: defaultName,
     phoneNumber,
     email: defaultEmail,
-  } = CONTENT.candidateHub.candidate.defaultValues;
+  } = CONTENT.INSIGHT.candidate.defaultValues;
 
   return (
     <div className={`${classes.mainInfo} ${makeSmaller && classes.smaller}`}>

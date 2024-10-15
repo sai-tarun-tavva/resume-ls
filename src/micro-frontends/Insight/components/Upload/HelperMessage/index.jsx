@@ -11,7 +11,7 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} Rendered HelperMessage component
  */
 const HelperMessage = () => {
-  const { message, urlText } = CONTENT.candidateHub.upload.helper;
+  const { message, urlText } = CONTENT.INSIGHT.upload.helper;
 
   return (
     <div className={classes.helper}>
