@@ -23,3 +23,14 @@ export const REGEX = {
   passwordRegex: /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/, // General password validation
   linkedInRegex: /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/, // https://www.linkedin.com/in/your-profile
 };
+
+export const LOADING_ACTION_TYPES = {
+  APP: "app",
+  BUTTON: "button",
+  FETCH: "fetch",
+};
+
+export const STATUS_ACTION_TYPES = {
+  UPDATE: "update",
+  RESET: "reset",
+};

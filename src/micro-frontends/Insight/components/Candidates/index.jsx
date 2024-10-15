@@ -3,13 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Candidate from "./Candidate";
 import Loader from "../../../Atoms/components/Loader";
 import ResumeViewer from "../ResumeViewer";
-import {
-  dataActions,
-  loadingActions,
-  statusActions,
-  uiActions,
-  viewResumeActions,
-} from "../../../../store";
+import { dataActions, uiActions, viewResumeActions } from "../../store";
+import { useLoading, useStatus } from "../../../../store";
 import {
   buildFetchCandidatesUrl,
   fetchCandidates,
@@ -19,6 +14,7 @@ import { CONTENT, INSIGHT, STATUS_CODES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 let isInitial = true;
+const { CANDIDATES_PER_PAGE, RESUME_VIEWER_WIDTH_START } = INSIGHT;
 
 /**
  * Candidates Component
@@ -28,14 +24,20 @@ let isInitial = true;
  * @returns {JSX.Element} The rendered candidates component.
  */
 const Candidates = () => {
-  const { CANDIDATES_PER_PAGE, RESUME_VIEWER_WIDTH_START } = INSIGHT;
   const dispatch = useDispatch();
   const { candidates } = useSelector((state) => state.data);
   const { refetch, refetchURL } = useSelector((state) => state.ui);
   const { show: showResume, id: displayResumeId } = useSelector(
     (state) => state.viewResume
   );
-  const { isAppLoading: isLoading } = useSelector((state) => state.loading);
+  const {
+    isLoading,
+    enableAppLoading,
+    disableAppLoading,
+    enableFetchLoading,
+    disableFetchLoading,
+  } = useLoading();
+  const { updateStatus } = useStatus();
   const [pdfDetails, setPdfDetails] = useState({
     name: "",
     size: "",
@@ -61,7 +63,7 @@ const Candidates = () => {
     const url = refetchURL || buildFetchCandidatesUrl(CANDIDATES_PER_PAGE);
 
     const getData = async () => {
-      dispatch(loadingActions.enableAppLoading());
+      enableAppLoading();
 
       const { status, data } = await fetchCandidates(url);
 
@@ -82,14 +84,12 @@ const Candidates = () => {
           })
         );
       } else {
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.COMMON.serverError,
-            type: "failure",
-          })
-        );
+        updateStatus({
+          message: CONTENT.COMMON.serverError,
+          type: "failure",
+        });
       }
-      dispatch(loadingActions.disableAppLoading());
+      disableAppLoading();
     };
 
     if (isInitial || refetch) {
@@ -97,7 +97,14 @@ const Candidates = () => {
       getData();
       dispatch(uiActions.disableRefetch());
     }
-  }, [dispatch, refetch, refetchURL]);
+  }, [
+    dispatch,
+    refetch,
+    refetchURL,
+    enableAppLoading,
+    disableAppLoading,
+    updateStatus,
+  ]);
 
   useEffect(() => {
     /**
@@ -113,26 +120,30 @@ const Candidates = () => {
      * Fetch resume pdf and update redux state.
      */
     const getPdf = async () => {
-      dispatch(loadingActions.enableFetchLoading());
+      enableFetchLoading();
       const { status, data } = await fetchPdf(displayResumeId);
-      dispatch(loadingActions.disableFetchLoading());
+      disableFetchLoading();
 
       if (status === STATUS_CODES.SUCCESS) {
         setPdfDetails(data);
       } else {
         dispatch(viewResumeActions.hideResume());
         dispatch(viewResumeActions.updateId(null));
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.COMMON.serverError,
-            type: "failure",
-          })
-        );
+        updateStatus({
+          message: CONTENT.COMMON.serverError,
+          type: "failure",
+        });
       }
     };
 
     if (displayResumeId) getPdf();
-  }, [dispatch, displayResumeId]);
+  }, [
+    dispatch,
+    displayResumeId,
+    enableFetchLoading,
+    disableFetchLoading,
+    updateStatus,
+  ]);
 
   useEffect(() => {
     // Update the state on window resize
@@ -153,7 +164,7 @@ const Candidates = () => {
         showResume && !isSmallScreen && classes.smaller
       }`}
     >
-      {isLoading ? (
+      {isLoading.app ? (
         <Loader />
       ) : candidates.length === 0 ? (
         <p>

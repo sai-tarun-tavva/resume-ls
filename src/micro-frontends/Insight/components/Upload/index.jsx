@@ -1,15 +1,18 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import HelperMessage from "./HelperMessage";
 import DropArea from "./DropArea";
 import FileList from "./FileList";
 import Button from "../../../Atoms/components/Button";
 import Modal from "../../../Atoms/components/Modal";
-import { loadingActions, statusActions, uiActions } from "../../../../store";
+import { uiActions } from "../../store";
+import { useLoading, useStatus } from "../../../../store";
 import { isValidFile, uploadFiles } from "../../../../utilities";
 import { CONTENT, INSIGHT, ROUTES, STATUS_CODES } from "../../../../constants";
 import classes from "./index.module.scss";
+
+const { MAX_FILES, MAX_FILE_SIZE } = INSIGHT;
 
 /**
  * Upload Component
@@ -23,10 +26,10 @@ import classes from "./index.module.scss";
 const Upload = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
-  const { MAX_FILES, MAX_FILE_SIZE } = INSIGHT;
+  const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
+  const { updateStatus } = useStatus();
 
   /**
    * Toggles the upload modal visibility and manages body overflow style.
@@ -64,21 +67,19 @@ const Upload = () => {
         files.length + validFiles.length > MAX_FILES ||
         selectedFiles.length - validFiles.length > 0
       ) {
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.INSIGHT.statusMessages.upload.maxFiles
-              .replace("{{MAX_FILES}}", MAX_FILES)
-              .replace("{{MAX_FILE_SIZE}}", MAX_FILE_SIZE),
-            type: "failure",
-            darkMode: true,
-          })
-        );
+        updateStatus({
+          message: CONTENT.INSIGHT.statusMessages.upload.maxFiles
+            .replace("{{MAX_FILES}}", MAX_FILES)
+            .replace("{{MAX_FILE_SIZE}}", MAX_FILE_SIZE),
+          type: "failure",
+          darkMode: true,
+        });
         validFiles.splice(MAX_FILES - files.length); // Ensure we don't exceed the limit
       }
 
       setFiles((prevFiles) => [...validFiles, ...prevFiles]);
     },
-    [files, dispatch]
+    [files, updateStatus]
   );
 
   /**
@@ -110,7 +111,7 @@ const Upload = () => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
   };
 
-  const buttonText = isLoading
+  const buttonText = isLoading.button
     ? `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`
     : CONTENT.INSIGHT.upload.button + (files.length > 1 ? "s" : "");
 
@@ -121,9 +122,9 @@ const Upload = () => {
   const handleUpload = async (event) => {
     event.preventDefault();
 
-    if (isLoading) return;
+    if (isLoading.button) return;
 
-    dispatch(loadingActions.enableButtonLoading());
+    enableButtonLoading();
 
     // Prepare form data for upload
     const formData = new FormData();
@@ -135,28 +136,24 @@ const Upload = () => {
     const { status } = await uploadFiles(formData);
 
     if (status === STATUS_CODES.SUCCESS) {
-      dispatch(
-        statusActions.updateStatus({
-          message: `${files.length} file${
-            files.length > 1 ? "s" : ""
-          } uploaded successfully!`,
-          type: "success",
-        })
-      );
+      updateStatus({
+        message: `${files.length} file${
+          files.length > 1 ? "s" : ""
+        } uploaded successfully!`,
+        type: "success",
+      });
       setFiles([]); // Clear files after successful upload
       toggleAllowUpload();
       dispatch(uiActions.enableRefetch());
       navigate(`/${ROUTES.INSIGHT.HOME}`);
     } else {
-      dispatch(
-        statusActions.updateStatus({
-          message: CONTENT.COMMON.serverError,
-          type: "failure",
-          darkMode: true,
-        })
-      );
+      updateStatus({
+        message: CONTENT.COMMON.serverError,
+        type: "failure",
+        darkMode: true,
+      });
     }
-    dispatch(loadingActions.disableButtonLoading());
+    disableButtonLoading();
   };
 
   return (
@@ -179,7 +176,7 @@ const Upload = () => {
               disabled={files.length === 0}
               onClick={handleUpload}
               className={`${classes.uploadButton} ${
-                isLoading ? "loading" : ""
+                isLoading.button ? "loading" : ""
               }`}
             >
               {buttonText}

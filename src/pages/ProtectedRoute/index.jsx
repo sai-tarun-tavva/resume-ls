@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { ROUTES } from "../../constants";
 
 /**
  * ProtectedRoute Component

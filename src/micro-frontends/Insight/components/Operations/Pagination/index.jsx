@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Button from "../../../../Atoms/components/Button";
-import { uiActions } from "../../../../../store";
+import { useLoading } from "../../../../../store";
+import { uiActions } from "../../../store";
 import { buildFetchCandidatesUrl } from "../../../../../utilities";
 import { INSIGHT } from "../../../../../constants";
 import classes from "./index.module.scss";
@@ -19,7 +20,7 @@ const Pagination = () => {
   const { previousPage, nextPage, totalCount, searchTerm } = useSelector(
     (state) => state.ui
   );
-  const { isAppLoading: isLoading } = useSelector((state) => state.loading);
+  const { isLoading } = useLoading();
   const { CANDIDATES_PER_PAGE } = INSIGHT;
 
   const totalPages = Math.ceil(totalCount / CANDIDATES_PER_PAGE);
@@ -48,7 +49,7 @@ const Pagination = () => {
     <nav className={classes.pagination}>
       <Button
         onClick={() => handlePageClick(previousPage)}
-        disabled={!previousPage || isLoading}
+        disabled={!previousPage || isLoading.app}
         title="Previous"
         className={classes.prevButton}
       >
@@ -65,7 +66,7 @@ const Pagination = () => {
       </span>
       <Button
         onClick={() => handlePageClick(nextPage)}
-        disabled={!nextPage || isLoading}
+        disabled={!nextPage || isLoading.app}
         title="Next"
         className={classes.nextButton}
       >

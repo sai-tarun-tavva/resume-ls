@@ -1,4 +1,4 @@
-import CandidatesHub from "../../components/CandidatesHub";
+import CandidatesHub from "../../micro-frontends/Insight/components/CandidatesHub";
 
 /**
  * Insight Component

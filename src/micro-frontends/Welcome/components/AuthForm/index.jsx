@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { useInput } from "../../../Atoms/hooks";
 import Input from "../../../Atoms/components/Input";
-import Button from "../../../Atoms/Button";
-import { loadingActions, statusActions } from "../../../../store";
+import Button from "../../../Atoms/components/Button";
+import { useLoading, useStatus } from "../../../../store";
 import {
   authenticateUser,
   authValidations,
@@ -29,9 +28,9 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered AuthForm component.
  */
 const AuthForm = ({ haveAccount }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
+  const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
+  const { updateStatus, resetStatus } = useStatus();
 
   const {
     value: userNameValue,
@@ -62,7 +61,7 @@ const AuthForm = ({ haveAccount }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const buttonText = isLoading
+  const buttonText = isLoading.button
     ? haveAccount
       ? CONTENT.WELCOME.authPanel.buttons.login.loading
       : CONTENT.WELCOME.authPanel.buttons.signUp.loading
@@ -106,8 +105,8 @@ const AuthForm = ({ haveAccount }) => {
    */
   const handleAuth = async (event) => {
     event.preventDefault();
-    if (isLoading) return;
-    await dispatch(resetStatusAsync(statusActions.resetStatus));
+    if (isLoading.button) return;
+    await resetStatusAsync(resetStatus);
 
     if (!enableAuth) {
       forceUserNameValidations();
@@ -116,7 +115,7 @@ const AuthForm = ({ haveAccount }) => {
       return;
     }
 
-    dispatch(loadingActions.enableButtonLoading());
+    enableButtonLoading();
 
     const formData = new FormData();
     formData.append("username", userNameValue);
@@ -136,21 +135,17 @@ const AuthForm = ({ haveAccount }) => {
         sessionStorage.setItem("accessToken", data.data.access); // Or store in memory/state
         navigate(`/${ROUTES.INSIGHT.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.WELCOME.authPanel.errors.server.login,
-            type: "failure",
-            darkMode: true,
-          })
-        );
+        updateStatus({
+          message: CONTENT.WELCOME.authPanel.errors.server.login,
+          type: "failure",
+          darkMode: true,
+        });
       } else {
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.COMMON.serverError,
-            type: "failure",
-            darkMode: true,
-          })
-        );
+        updateStatus({
+          message: CONTENT.COMMON.serverError,
+          type: "failure",
+          darkMode: true,
+        });
       }
     } else {
       const { status, data } = await authenticateUser(
@@ -163,25 +158,21 @@ const AuthForm = ({ haveAccount }) => {
         sessionStorage.setItem("accessToken", data.data.access); // Or store in memory/state
         navigate(`/${ROUTES.INSIGHT.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.WELCOME.authPanel.errors.server.signUp,
-            type: "failure",
-            darkMode: true,
-          })
-        );
+        updateStatus({
+          message: CONTENT.WELCOME.authPanel.errors.server.signUp,
+          type: "failure",
+          darkMode: true,
+        });
       } else {
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.COMMON.serverError,
-            type: "failure",
-            darkMode: true,
-          })
-        );
+        updateStatus({
+          message: CONTENT.COMMON.serverError,
+          type: "failure",
+          darkMode: true,
+        });
       }
     }
 
-    dispatch(loadingActions.disableButtonLoading());
+    disableButtonLoading();
   };
 
   // Reset input fields when switching between login and sign-up
@@ -243,7 +234,7 @@ const AuthForm = ({ haveAccount }) => {
 
       <Button
         title={buttonText}
-        className={`${classes.authButton} ${isLoading ? "loading" : ""}`}
+        className={`${classes.authButton} ${isLoading.button ? "loading" : ""}`}
         onClick={handleAuth}
       >
         {buttonText}

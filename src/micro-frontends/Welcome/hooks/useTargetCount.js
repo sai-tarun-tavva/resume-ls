@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loadingActions } from "../../../store";
+import { useLoading } from "../../../store";
 import { END_POINTS } from "../../../constants";
 
 /**
@@ -10,12 +9,11 @@ import { END_POINTS } from "../../../constants";
  * @returns {object} An object containing the target count and the loading state.
  */
 export const useTargetCount = () => {
-  const dispatch = useDispatch();
-  const { isAppLoading: isLoading } = useSelector((state) => state.loading);
+  const { isLoading, enableAppLoading, disableAppLoading } = useLoading();
   const [targetCount, setTargetCount] = useState(0);
 
   useEffect(() => {
-    dispatch(loadingActions.enableAppLoading());
+    enableAppLoading();
 
     // Fetch the target count asynchronously
     const fetchTargetCount = async () => {
@@ -31,12 +29,12 @@ export const useTargetCount = () => {
       } catch (error) {
         console.error("Error fetching target count:", error);
       } finally {
-        dispatch(loadingActions.disableAppLoading());
+        disableAppLoading();
       }
     };
 
     fetchTargetCount();
-  }, [dispatch]);
+  }, [enableAppLoading, disableAppLoading]);
 
-  return { targetCount, isLoading };
+  return { targetCount, isLoading: isLoading.app };
 };

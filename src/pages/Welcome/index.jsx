@@ -1,4 +1,4 @@
-import LoginHub from "../../components/LoginHub";
+import LoginHub from "../../micro-frontends/Welcome/components/LoginHub";
 
 /**
  * Welcome Component

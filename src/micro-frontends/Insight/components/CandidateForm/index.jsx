@@ -7,7 +7,8 @@ import Skills from "../../../Atoms/components/Skills";
 import Button from "../../../Atoms/components/Button";
 import Input from "../../../Atoms/components/Input";
 import StatusMessage from "../../../Atoms/components/StatusMessage";
-import { loadingActions, statusActions, uiActions } from "../../../../store";
+import { uiActions } from "../../store";
+import { useLoading, useStatus } from "../../../../store";
 import {
   arraysEqual,
   candidateValidations,
@@ -37,7 +38,14 @@ const CandidateForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { candidates } = useSelector((state) => state.data);
-  const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
+  const {
+    isLoading,
+    enableFetchLoading,
+    disableFetchLoading,
+    enableButtonLoading,
+    disableButtonLoading,
+  } = useLoading();
+  const { updateStatus, resetStatus } = useStatus();
 
   // Fetch candidate information based on the candidateId
   const info = candidates.find((candidate) => candidate.id === +candidateId);
@@ -83,7 +91,7 @@ const CandidateForm = () => {
    * @param {string} newSkill - The skill to be added.
    */
   const handleAddSkill = async (newSkill) => {
-    await dispatch(resetStatusAsync(statusActions.resetStatus));
+    await resetStatusAsync(resetStatus());
 
     let skillError = "";
 
@@ -94,9 +102,7 @@ const CandidateForm = () => {
 
     // If there's an error, reset input and show status message
     if (skillError) {
-      dispatch(
-        statusActions.updateStatus({ message: skillError, type: "failure" })
-      );
+      updateStatus({ message: skillError, type: "failure" });
       resetSkillValue();
       setShowSuggestions(false);
       return;
@@ -224,7 +230,7 @@ const CandidateForm = () => {
       setShowSuggestions(!!skillValue);
 
       if (!!skillValue) {
-        dispatch(loadingActions.enableFetchLoading());
+        enableFetchLoading();
         const { status, data } = await fetchSuggestedSkills(skillValue);
 
         if (status === STATUS_CODES.SUCCESS) {
@@ -232,16 +238,14 @@ const CandidateForm = () => {
         } else {
           setShowSuggestions(false);
           resetSkillValue();
-          dispatch(
-            statusActions.updateStatus({
-              message: CONTENT.COMMON.serverError,
-              type: "failure",
-            })
-          );
+          updateStatus({
+            message: CONTENT.COMMON.serverError,
+            type: "failure",
+          });
         }
       }
 
-      dispatch(loadingActions.disableFetchLoading());
+      disableFetchLoading();
     }
   };
 
@@ -287,9 +291,9 @@ const CandidateForm = () => {
    */
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    if (isLoading) return;
+    if (isLoading.button) return;
 
-    dispatch(loadingActions.enableButtonLoading());
+    enableButtonLoading();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -331,23 +335,19 @@ const CandidateForm = () => {
 
       if (status === STATUS_CODES.SUCCESS) {
         dispatch(uiActions.enableRefetch());
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.INSIGHT.statusMessages.form.success,
-            type: "success",
-          })
-        );
+        updateStatus({
+          message: CONTENT.INSIGHT.statusMessages.form.success,
+          type: "success",
+        });
       } else {
-        dispatch(
-          statusActions.updateStatus({
-            message: CONTENT.COMMON.serverError,
-            type: "failure",
-          })
-        );
+        updateStatus({
+          message: CONTENT.COMMON.serverError,
+          type: "failure",
+        });
       }
     }
     handleClose();
-    dispatch(loadingActions.disableButtonLoading());
+    disableButtonLoading();
   };
   /**
    * Create a new skill when the create skill button is clicked.
@@ -365,19 +365,15 @@ const CandidateForm = () => {
     if (status === STATUS_CODES.SUCCESS) {
       handleAddSkill(skillValue);
       resetSkillValue();
-      dispatch(
-        statusActions.updateStatus({
-          message: `"${skillValue}"${CONTENT.INSIGHT.statusMessages.skill.added}`,
-          type: "success",
-        })
-      );
+      updateStatus({
+        message: `"${skillValue}"${CONTENT.INSIGHT.statusMessages.skill.added}`,
+        type: "success",
+      });
     } else {
-      dispatch(
-        statusActions.updateStatus({
-          message: CONTENT.COMMON.serverError,
-          type: "failure",
-        })
-      );
+      updateStatus({
+        message: CONTENT.COMMON.serverError,
+        type: "failure",
+      });
     }
   };
 
@@ -533,10 +529,12 @@ const CandidateForm = () => {
           </Button>
           <Button
             title="Save"
-            className={`${classes.saveButton} ${isLoading ? "loading" : ""}`}
+            className={`${classes.saveButton} ${
+              isLoading.button ? "loading" : ""
+            }`}
             disabled={!enableSave}
           >
-            {isLoading
+            {isLoading.button
               ? CONTENT.INSIGHT.candidateForm.button.save.loading
               : CONTENT.INSIGHT.candidateForm.button.save.default}
           </Button>

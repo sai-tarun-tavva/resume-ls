@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { uiActions } from "../../../../../store";
+import { uiActions } from "../../../store";
 import { buildFetchCandidatesUrl } from "../../../../../utilities";
 import { CONTENT, INSIGHT } from "../../../../../constants";
 import classes from "./index.module.scss";

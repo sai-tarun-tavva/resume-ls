@@ -5,7 +5,8 @@ import MainInfo from "./MainInfo";
 import Location from "./Location";
 import Actions from "./Actions";
 import Skills from "../../../../Atoms/components/Skills";
-import { statusActions, viewResumeActions } from "../../../../../store";
+import { viewResumeActions } from "../../../store";
+import { useStatus } from "../../../../../store";
 import {
   calculateTimeAgo,
   isCandidateNew,
@@ -26,6 +27,7 @@ import classes from "./index.module.scss";
 const Candidate = ({ candidate, openResumeInNewTab }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { resetStatus } = useStatus();
   const { show: makeSmaller, id: focusedId } = useSelector(
     (state) => state.viewResume
   );
@@ -41,7 +43,7 @@ const Candidate = ({ candidate, openResumeInNewTab }) => {
    */
   const handleEdit = (event) => {
     event.preventDefault();
-    dispatch(statusActions.resetStatus());
+    resetStatus();
     dispatch(viewResumeActions.hideResume());
     dispatch(viewResumeActions.updateId(null));
 
