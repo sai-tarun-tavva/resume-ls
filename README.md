@@ -42,8 +42,8 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository**:
 
    ```
-   git clone https://github.com/sai-tarun-tavva/resume-parser-ls.git
-   cd resume-parser-ls
+   git clone https://github.com/sai-tarun-tavva/resume-ls.git
+   cd resume-ls
    ```
 
 2. **Install dependencies**:
