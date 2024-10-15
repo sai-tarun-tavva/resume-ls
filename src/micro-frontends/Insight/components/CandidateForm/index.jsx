@@ -322,6 +322,7 @@ const CandidateForm = () => {
     handleClose();
     disableButtonLoading();
   };
+
   /**
    * Create a new skill when the create skill button is clicked.
    *
