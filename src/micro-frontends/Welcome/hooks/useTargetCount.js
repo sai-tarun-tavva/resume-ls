@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loadingActions } from "../store";
-import { END_POINTS } from "../constants";
+import { loadingActions } from "../../../store";
+import { END_POINTS } from "../../../constants";
 
 /**
  * Custom hook to fetch and manage the target count.

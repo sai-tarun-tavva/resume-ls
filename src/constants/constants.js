@@ -1,6 +1,9 @@
-export const CANDIDATES_PER_PAGE = 20;
-export const MAX_FILES = 30;
-export const MAX_FILE_SIZE = 5; // in MB
+export const INSIGHT = {
+  CANDIDATES_PER_PAGE: 20,
+  MAX_FILES: 30,
+  MAX_FILE_SIZE: 5, // in MB
+  RESUME_VIEWER_WIDTH_START: 414,
+};
 
 export const LOADER_TYPES = {
   BAR: "bar",
@@ -12,8 +15,6 @@ export const STATUS_CODES = {
   CREATED: 201,
   INVALID: 400,
 };
-
-export const RESUME_VIEWER_WIDTH_START = 414;
 
 export const REGEX = {
   usernameRegex: /^[a-zA-Z-]+$/, // Only letters and hyphens

@@ -1,4 +1,4 @@
-import { LOADER_TYPES } from "../../constants";
+import { LOADER_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**

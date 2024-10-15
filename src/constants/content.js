@@ -1,7 +1,58 @@
 export const CONTENT = {
-  serverError: "Server error, please try again later.",
-  authPage: {
+  COMMON: {
+    serverError: "Server error, please try again later.",
+    errors: {
+      username: {
+        empty: "Username is required.",
+        invalid:
+          "Username must be 3-20 characters and can only include letters or hyphens.",
+      },
+      password: {
+        empty: "Password is required.",
+        invalid: "Include 8+ chars, upper, lower, number, symbol.",
+      },
+      email: {
+        empty: "Email is required.",
+        invalid: "Please enter a valid email address.",
+      },
+      name: {
+        empty: "Name is required.",
+      },
+      phone: {
+        empty: "Phone number is required.",
+        invalid: "Phone number must contain exactly 10 digits.",
+      },
+      linkedInUrl: {
+        empty: "LinkedIn URL is required.",
+        invalid: "Please enter a valid LinkedIn profile URL.",
+      },
+      city: {
+        empty: "City is required.",
+      },
+      state: {
+        empty: "State is required.",
+      },
+      experience: {
+        empty: "Experience is required.",
+        invalid: "Experience must be between 0 and 100.",
+      },
+    },
+    pageNotFound: {
+      title: "404",
+      message:
+        "It seems the resume you were looking for got lost in cyberspace! 🚀",
+      suggestionStart: "Head back to the ",
+      suggestionEnd: " to find the perfect candidate!",
+      suggestedPageName: "Home page",
+    },
+  },
+  WELCOME: {
+    statusMessages: {
+      login: "Incorrect username or password.",
+      signUp: "Username is already taken.",
+    },
     welcomePanel: {
+      logoAlt: "Logisoft logo",
       heading: "Empowering Resumes, Elevating Careers",
       paragraph: "Resumes parsed",
     },
@@ -10,25 +61,6 @@ export const CONTENT = {
         username: "username",
         password: "password",
         email: "email",
-      },
-      errors: {
-        username: {
-          empty: "Username is required.",
-          invalid:
-            "Username must be 3-20 characters and can only include letters or hyphens.",
-        },
-        password: {
-          empty: "Password is required.",
-          invalid: "Include 8+ chars, upper, lower, number, symbol.",
-        },
-        email: {
-          empty: "Email is required.",
-          invalid: "Please enter a valid email address.",
-        },
-        server: {
-          login: "Incorrect username or password.",
-          signUp: "Username is already taken.",
-        },
       },
       buttons: {
         login: {
@@ -46,7 +78,18 @@ export const CONTENT = {
       },
     },
   },
-  candidateHub: {
+  INSIGHT: {
+    statusMessages: {
+      form: {
+        success: "Successfully updated candidate details!",
+        failure: "Failed to update candidate information. Please try again.",
+      },
+      skill: {
+        empty: "Cannot add empty skill.",
+        existing: "Skill already exists.",
+        added: " added to skills.",
+      },
+    },
     upload: {
       helper: {
         message:
@@ -115,54 +158,6 @@ export const CONTENT = {
           loading: "Saving...",
         },
       },
-      statusMessages: {
-        skill: {
-          empty: "Cannot add empty skill.",
-          existing: "Skill already exists.",
-          added: " added to skills.",
-        },
-      },
-      errors: {
-        name: {
-          empty: "Name is required.",
-        },
-        phone: {
-          empty: "Phone number is required.",
-          invalid: "Phone number must contain exactly 10 digits.",
-        },
-        email: {
-          empty: "Email is required.",
-          invalid: "Please enter a valid email address.",
-        },
-        linkedInUrl: {
-          empty: "LinkedIn URL is required.",
-          invalid: "Please enter a valid LinkedIn profile URL.",
-        },
-        city: {
-          empty: "City is required.",
-        },
-        state: {
-          empty: "State is required.",
-        },
-        experience: {
-          empty: "Experience is required.",
-          invalid: "Experience must be between 0 and 100.",
-        },
-        formEditRequest: {
-          success: "Successfully updated candidate details!",
-          failure: "Failed to update candidate information. Please try again.",
-          network: "Network error. Please check your connection.",
-        },
-      },
     },
-  },
-  logoAlt: "Logisoft logo",
-  pageNotFound: {
-    title: "404",
-    message:
-      "It seems the resume you were looking for got lost in cyberspace! 🚀",
-    suggestionStart: "Head back to the ",
-    suggestionEnd: " to find the perfect candidate!",
-    suggestedPageName: "Home page",
   },
 };

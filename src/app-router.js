@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Welcome from "./pages/Welcome";
 import Candidates from "./components/CandidatesHub/Candidates";
 import CandidateForm from "./components/CandidatesHub/CandidateForm";
 import PageNotFound from "./atoms/PageNotFound";
@@ -13,8 +13,7 @@ import { ROUTES } from "./constants";
  * @returns {Object} The router configuration object.
  */
 const appRouter = createBrowserRouter([
-  { path: "", element: <Navigate to={ROUTES.AUTH} /> }, // pending to change based on auth
-  { path: ROUTES.AUTH, element: <Login /> },
+  { path: "", element: <Welcome /> },
   {
     path: ROUTES.HOME,
     element: <ProtectedRoute element={<Home />} />,

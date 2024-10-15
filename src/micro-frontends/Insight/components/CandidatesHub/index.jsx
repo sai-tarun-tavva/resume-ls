@@ -1,7 +1,8 @@
-import { Fragment } from "react";
+import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Operations from "./Operations";
 import Upload from "./Upload";
+import store from "../../store/store";
 
 /**
  * CandidatesHub Component
@@ -13,11 +14,11 @@ import Upload from "./Upload";
  */
 const CandidatesHub = () => {
   return (
-    <Fragment>
+    <Provider store={store}>
       <Operations />
       <Outlet />
       <Upload />
-    </Fragment>
+    </Provider>
   );
 };
 

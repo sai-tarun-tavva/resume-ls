@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { transformData } from "../utilities";
+import { transformData } from "../../../utilities";
 
 // Initial state of the slice
 const initialState = {

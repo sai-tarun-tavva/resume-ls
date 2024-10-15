@@ -1,17 +1,17 @@
 import CandidatesHub from "../../components/CandidatesHub";
 
 /**
- * Home Component
+ * Insight Component
  *
  * Serves as the main entry point for the application.
  * It renders the CandidatesHub component to display the candidates' information.
  *
- * @returns {JSX.Element} The rendered Home component.
+ * @returns {JSX.Element} The rendered Insight component.
  */
-const Home = () => {
+const Insight = () => {
   return <CandidatesHub />;
 };
 
-Home.displayName = "Home";
+Insight.displayName = "Insight";
 
-export default Home;
+export default Insight;

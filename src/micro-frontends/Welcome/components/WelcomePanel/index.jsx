@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import { useCountAnimation } from "../../../hooks";
+import { useCountAnimation } from "../../../../hooks";
 import Logo from "../../../assets/logo.png";
-import { CONTENT } from "../../../constants";
+import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**

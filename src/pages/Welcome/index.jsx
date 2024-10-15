@@ -1,16 +1,16 @@
 import LoginHub from "../../components/LoginHub";
 
 /**
- * Login Component
+ * Welcome Component
  *
  * Serves as the entry point for user authentication.
  * It renders the LoginHub component to manage user login functionality.
  *
- * @returns {JSX.Element} The rendered Login component.
+ * @returns {JSX.Element} The rendered Welcome component.
  */
-const Login = () => {
+const Welcome = () => {
   return <LoginHub />;
 };
 
-Login.displayName = "Login";
-export default Login;
+Welcome.displayName = "Welcome";
+export default Welcome;

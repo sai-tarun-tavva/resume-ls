@@ -1,6 +1,6 @@
 import { useTargetCount } from "../../hooks";
-import WelcomePanel from "./WelcomePanel";
-import AuthPanel from "./AuthPanel";
+import WelcomePanel from "../WelcomePanel";
+import AuthPanel from "../AuthPanel";
 import Loader from "../../atoms/Loader";
 import classes from "./index.module.scss";
 
