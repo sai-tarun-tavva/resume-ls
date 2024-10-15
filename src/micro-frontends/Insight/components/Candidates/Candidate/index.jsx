@@ -56,7 +56,10 @@ const Candidate = ({ candidate, openResumeInNewTab }) => {
    */
   const handleView = (event) => {
     if (openResumeInNewTab) {
-      window.open(`${END_POINTS.VIEW_RESUME}${candidate.id}/`, "_blank");
+      window.open(
+        `${END_POINTS.INSIGHT.VIEW_RESUME}${candidate.id}/`,
+        "_blank"
+      );
     } else {
       event.preventDefault();
       dispatch(viewResumeActions.showResume());

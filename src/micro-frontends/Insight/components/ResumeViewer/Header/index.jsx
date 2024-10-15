@@ -20,7 +20,7 @@ const Header = ({ id, name, size, onClose }) => {
       <span className={classes.actions}>
         <a
           title="Download"
-          href={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
+          href={`${END_POINTS.INSIGHT.DOWNLOAD_RESUME}${id}`}
           download={name}
         >
           <i className={`bi bi-download`}></i>

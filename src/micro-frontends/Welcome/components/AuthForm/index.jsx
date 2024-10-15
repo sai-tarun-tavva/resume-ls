@@ -127,7 +127,7 @@ const AuthForm = ({ haveAccount }) => {
 
     if (haveAccount) {
       const { status, data } = await authenticateUser(
-        END_POINTS.LOGIN,
+        END_POINTS.WELCOME.LOGIN,
         formData
       );
 
@@ -154,7 +154,7 @@ const AuthForm = ({ haveAccount }) => {
       }
     } else {
       const { status, data } = await authenticateUser(
-        END_POINTS.SIGN_UP,
+        END_POINTS.WELCOME.SIGN_UP,
         formData
       );
 

@@ -19,8 +19,8 @@ const HelperMessage = () => {
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={END_POINTS.BATCH_PROCESS}
-        aria-label={`Learn more about batch processing at ${END_POINTS.BATCH_PROCESS}`}
+        href={END_POINTS.INSIGHT.BATCH_PROCESS}
+        aria-label={`Learn more about batch processing at ${END_POINTS.INSIGHT.BATCH_PROCESS}`}
       >
         {urlText}
       </a>

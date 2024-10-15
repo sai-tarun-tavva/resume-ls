@@ -70,7 +70,7 @@ export const refreshAccessToken = async () => {
   if (!refreshToken) return "failure";
 
   try {
-    const response = await fetch(END_POINTS.REFRESH_TOKEN, {
+    const response = await fetch(END_POINTS.WELCOME.REFRESH_TOKEN, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +139,7 @@ export const handleLogout = async () => {
 
     if (refreshToken) {
       // Make an API request to your backend to invalidate/blacklist the refresh token
-      const response = await fetchWithToken(END_POINTS.LOGOUT, {
+      const response = await fetchWithToken(END_POINTS.WELCOME.LOGOUT, {
         method: "POST",
         body,
       });
@@ -166,9 +166,12 @@ export const handleLogout = async () => {
  */
 export const fetchPdf = async (id) => {
   try {
-    const response = await fetchWithToken(`${END_POINTS.VIEW_RESUME}${id}/`, {
-      method: "GET",
-    });
+    const response = await fetchWithToken(
+      `${END_POINTS.INSIGHT.VIEW_RESUME}${id}/`,
+      {
+        method: "GET",
+      }
+    );
 
     // Check if response is ok
     if (!response.ok) {
@@ -262,7 +265,7 @@ export const editCandidate = async (id, body) => {
   try {
     // Make the API request to update candidate data
     const response = await fetchWithToken(
-      END_POINTS.EDIT_CANDIDATE.replace("{{id}}", id),
+      END_POINTS.INSIGHT.EDIT_CANDIDATE.replace("{{id}}", id),
       {
         method: "PUT",
         body,
@@ -291,7 +294,7 @@ export const editCandidate = async (id, body) => {
 export const uploadFiles = async (body) => {
   try {
     // Make the API request to upload files
-    const response = await fetchWithToken(END_POINTS.UPLOAD_RESUME, {
+    const response = await fetchWithToken(END_POINTS.INSIGHT.UPLOAD_RESUME, {
       method: "POST",
       body,
     });
@@ -316,7 +319,7 @@ export const uploadFiles = async (body) => {
 export const fetchSuggestedSkills = async (param) => {
   try {
     const response = await fetchWithToken(
-      `${END_POINTS.FETCH_SUGGESTED_SKILLS}${param}`,
+      `${END_POINTS.INSIGHT.FETCH_SUGGESTED_SKILLS}${param}`,
       {
         method: "GET",
       }
@@ -342,7 +345,7 @@ export const fetchSuggestedSkills = async (param) => {
  */
 export const createNewSkill = async (body) => {
   try {
-    const response = await fetchWithToken(END_POINTS.CREATE_NEW_SKILL, {
+    const response = await fetchWithToken(END_POINTS.INSIGHT.CREATE_NEW_SKILL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

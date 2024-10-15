@@ -13,7 +13,7 @@ export const buildFetchCandidatesUrl = (limit = "", page = "", query = "") => {
   const encodedPage = encodeURIComponent(page);
   const encodedQuery = encodeURIComponent(query);
 
-  const { url, params } = END_POINTS.FETCH_CANDIDATES; // Destructure to get the base URL and parameters
+  const { url, params } = END_POINTS.INSIGHT.FETCH_CANDIDATES; // Destructure to get the base URL and parameters
 
   // Create a new URL object for constructing the complete URL
   const fetchUrl = new URL(url);

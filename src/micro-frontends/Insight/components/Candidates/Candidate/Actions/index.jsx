@@ -35,7 +35,7 @@ const Actions = ({ id, onEdit, onView }) => {
       <a
         title="Download"
         name="download"
-        href={`${END_POINTS.DOWNLOAD_RESUME}${id}`}
+        href={`${END_POINTS.INSIGHT.DOWNLOAD_RESUME}${id}`}
         className={classes.actionButton}
       >
         <i className={`bi bi-download`}></i>

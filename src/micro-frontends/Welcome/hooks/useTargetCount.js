@@ -20,7 +20,7 @@ export const useTargetCount = () => {
     // Fetch the target count asynchronously
     const fetchTargetCount = async () => {
       try {
-        const response = await fetch(END_POINTS.FETCH_RESUME_COUNT);
+        const response = await fetch(END_POINTS.WELCOME.FETCH_RESUME_COUNT);
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
