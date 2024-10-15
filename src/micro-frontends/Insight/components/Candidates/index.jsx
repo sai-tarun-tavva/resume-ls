@@ -15,12 +15,7 @@ import {
   fetchCandidates,
   fetchPdf,
 } from "../../../../utilities";
-import {
-  CONTENT,
-  CANDIDATES_PER_PAGE,
-  STATUS_CODES,
-  RESUME_VIEWER_WIDTH_START,
-} from "../../../../constants";
+import { CONTENT, INSIGHT, STATUS_CODES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 let isInitial = true;
@@ -33,6 +28,7 @@ let isInitial = true;
  * @returns {JSX.Element} The rendered candidates component.
  */
 const Candidates = () => {
+  const { CANDIDATES_PER_PAGE, RESUME_VIEWER_WIDTH_START } = INSIGHT;
   const dispatch = useDispatch();
   const { candidates } = useSelector((state) => state.data);
   const { refetch, refetchURL } = useSelector((state) => state.ui);

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { uiActions } from "../../../../../store";
 import { buildFetchCandidatesUrl } from "../../../../../utilities";
-import { CANDIDATES_PER_PAGE, CONTENT } from "../../../../../constants";
+import { CONTENT, INSIGHT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -18,6 +18,7 @@ import classes from "./index.module.scss";
 const Search = ({ enableSearch }) => {
   const searchTextRef = useRef("");
   const dispatch = useDispatch();
+  const { CANDIDATES_PER_PAGE } = INSIGHT;
 
   /**
    * Handles the form submission event.

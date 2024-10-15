@@ -8,13 +8,7 @@ import Button from "../../../Atoms/components/Button";
 import Modal from "../../../Atoms/components/Modal";
 import { loadingActions, statusActions, uiActions } from "../../../../store";
 import { isValidFile, uploadFiles } from "../../../../utilities";
-import {
-  CONTENT,
-  MAX_FILES,
-  MAX_FILE_SIZE,
-  ROUTES,
-  STATUS_CODES,
-} from "../../../../constants";
+import { CONTENT, INSIGHT, ROUTES, STATUS_CODES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -32,6 +26,7 @@ const Upload = () => {
   const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
+  const { MAX_FILES, MAX_FILE_SIZE } = INSIGHT;
 
   /**
    * Toggles the upload modal visibility and manages body overflow style.

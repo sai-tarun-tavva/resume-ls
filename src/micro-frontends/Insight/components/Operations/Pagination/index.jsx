@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Button from "../../../../Atoms/components/Button";
 import { uiActions } from "../../../../../store";
 import { buildFetchCandidatesUrl } from "../../../../../utilities";
-import { CANDIDATES_PER_PAGE } from "../../../../../constants";
+import { INSIGHT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -20,6 +20,7 @@ const Pagination = () => {
     (state) => state.ui
   );
   const { isAppLoading: isLoading } = useSelector((state) => state.loading);
+  const { CANDIDATES_PER_PAGE } = INSIGHT;
 
   const totalPages = Math.ceil(totalCount / CANDIDATES_PER_PAGE);
 

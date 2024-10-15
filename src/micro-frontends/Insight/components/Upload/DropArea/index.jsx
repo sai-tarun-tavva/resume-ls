@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { CONTENT, MAX_FILES, MAX_FILE_SIZE } from "../../../../../constants";
+import { CONTENT, INSIGHT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -13,6 +13,8 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} Rendered DropArea component
  */
 const DropArea = ({ handleDrop, handleDragOver, handleFileChange }) => {
+  const { MAX_FILES, MAX_FILE_SIZE } = INSIGHT;
+
   return (
     <>
       <div

@@ -1,4 +1,4 @@
-import { END_POINTS, MAX_FILE_SIZE } from "../constants";
+import { END_POINTS, INSIGHT } from "../constants";
 
 /**
  * Builds the URL for fetching candidates based on the query, limit, and page parameters.
@@ -41,7 +41,7 @@ export const isValidFile = (file) => {
   ];
 
   // Convert the file size from MB to bytes
-  const maxSizeInBytes = MAX_FILE_SIZE * 1024 * 1024;
+  const maxSizeInBytes = INSIGHT.MAX_FILE_SIZE * 1024 * 1024;
 
   // Check file type and file size
   const isValidType = validTypes.includes(file.type);
