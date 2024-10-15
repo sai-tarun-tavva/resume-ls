@@ -1,10 +1,13 @@
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Header from "../../../Atoms/components/Header";
 import Logo from "../../../Atoms/components/Logo";
 import Logout from "../../../Atoms/components/LogOut";
-import Search from "./Search";
+import Search from "../../../Atoms/components/Search";
 import Pagination from "./Pagination";
-import { CONTENT, ROUTES } from "../../../../constants";
+import { uiActions } from "../../store";
+import { buildFetchCandidatesUrl } from "../../../../utilities";
+import { CONTENT, INSIGHT, ROUTES } from "../../../../constants";
 
 /**
  * Operations Component
@@ -15,8 +18,29 @@ import { CONTENT, ROUTES } from "../../../../constants";
  */
 const Operations = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const enableOperations = location.pathname === `/${ROUTES.INSIGHT.HOME}`;
-  const { logoSuffix, logo } = CONTENT.INSIGHT.operations;
+  const {
+    logoSuffix,
+    logo,
+    search: { placeholder },
+  } = CONTENT.INSIGHT.operations;
+
+  const { CANDIDATES_PER_PAGE } = INSIGHT;
+
+  /**
+   * Handles the search on submit event.
+   * Update refetch and search term redux state.
+   */
+  const handleSearch = (searchText) => {
+    dispatch(uiActions.enableRefetch());
+    dispatch(
+      uiActions.updateRefetchURL(
+        buildFetchCandidatesUrl(CANDIDATES_PER_PAGE, "", searchText)
+      )
+    );
+    dispatch(uiActions.updateSearchTerm(searchText));
+  };
 
   return (
     <Header>
@@ -25,7 +49,11 @@ const Operations = () => {
         logoSuffix={logoSuffix}
         logoText={logo}
       />
-      <Search enableSearch={enableOperations} />
+      <Search
+        enableSearch={enableOperations}
+        placeholder={placeholder}
+        onSubmit={handleSearch}
+      />
       <Pagination enablePagination={enableOperations} />
       <Logout />
     </Header>

@@ -1,9 +1,5 @@
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { uiActions } from "../../../store";
-import { buildFetchCandidatesUrl } from "../../../../../utilities";
-import { CONTENT, INSIGHT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -15,27 +11,19 @@ import classes from "./index.module.scss";
  * @param {boolean} props.enableSearch - Determines if the search input is enabled.
  * @returns {JSX.Element} The rendered search component.
  */
-const Search = ({ enableSearch }) => {
+const Search = ({ enableSearch = true, placeholder, onSubmit }) => {
   const searchTextRef = useRef("");
-  const dispatch = useDispatch();
-  const { CANDIDATES_PER_PAGE } = INSIGHT;
 
   /**
    * Handles the form submission event.
-   * Prevents default behavior and update refetch and search term redux state.
+   * Prevents default behavior.
    *
    * @param {Object} e - The event object.
    */
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
     const searchText = searchTextRef.current.value;
-    dispatch(uiActions.enableRefetch());
-    dispatch(
-      uiActions.updateRefetchURL(
-        buildFetchCandidatesUrl(CANDIDATES_PER_PAGE, "", searchText)
-      )
-    );
-    dispatch(uiActions.updateSearchTerm(searchText));
+    onSubmit(searchText);
   };
 
   return (
@@ -43,7 +31,7 @@ const Search = ({ enableSearch }) => {
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
-          placeholder={CONTENT.INSIGHT.operations.search.placeholder}
+          placeholder={placeholder}
           ref={searchTextRef}
           disabled={!enableSearch}
         />
@@ -59,6 +47,8 @@ Search.displayName = "Search";
 
 Search.propTypes = {
   enableSearch: PropTypes.bool.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default Search;

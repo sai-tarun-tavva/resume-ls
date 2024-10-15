@@ -1,7 +1,9 @@
+import { useLocation } from "react-router-dom";
 import Header from "../../../Atoms/components/Header";
 import Logo from "../../../Atoms/components/Logo";
+import Search from "../../../Atoms/components/Search";
 import Logout from "../../../Atoms/components/LogOut";
-import { CONTENT } from "../../../../constants";
+import { CONTENT, ROUTES } from "../../../../constants";
 
 /**
  * Operations Component
@@ -11,7 +13,21 @@ import { CONTENT } from "../../../../constants";
  * @returns {JSX.Element} The rendered Operations component.
  */
 const Operations = () => {
-  const { logoSuffix, logo } = CONTENT.ONBOARD.operations;
+  const location = useLocation();
+  const {
+    logoSuffix,
+    logo,
+    search: { placeholder },
+  } = CONTENT.ONBOARD.operations;
+  const enableOperations = location.pathname === `/${ROUTES.ONBOARD.HOME}`;
+
+  /**
+   * Handles the search on submit event.
+   * Update refetch and search term redux state.
+   */
+  const handleSearch = (searchText) => {
+    console.log(searchText);
+  };
 
   return (
     <Header>
@@ -19,6 +35,11 @@ const Operations = () => {
         logoIcon={"bi bi-clipboard-check"}
         logoSuffix={logoSuffix}
         logoText={logo}
+      />
+      <Search
+        enableSearch={enableOperations}
+        placeholder={placeholder}
+        onSubmit={handleSearch}
       />
       <Logout />
     </Header>

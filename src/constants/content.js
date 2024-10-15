@@ -163,6 +163,9 @@ export const CONTENT = {
     operations: {
       logoSuffix: "R",
       logo: "Onboard",
+      search: {
+        placeholder: "Search...",
+      },
     },
   },
 };
