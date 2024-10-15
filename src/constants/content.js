@@ -104,7 +104,7 @@ export const CONTENT = {
         helper: "Choose from suggestions below",
         button: {
           create: {
-            default: "Create new skill ?",
+            default: "Couldn't find? create a skill",
           },
         },
       },
