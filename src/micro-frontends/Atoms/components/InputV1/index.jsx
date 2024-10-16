@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import classes from "./index.module.scss";
 
 /**
- * Input Component
+ * InputV1 Component
  *
  * Renders a styled input field with optional icons and error message.
  *
@@ -13,9 +13,9 @@ import classes from "./index.module.scss";
  * @param {function} rightIconOnClick - Callback function to be called when the right icon is clicked.
  * @param {string} extraClassControl - Additional CSS classes to apply to the input control.
  * @param {object} props - Additional props to be passed to the input element.
- * @returns {JSX.Element} The rendered Input component.
+ * @returns {JSX.Element} The rendered InputV1 component.
  */
-const Input = ({
+const InputV1 = ({
   id,
   error,
   leftIcon,
@@ -46,9 +46,9 @@ const Input = ({
   );
 };
 
-Input.displayName = "Input";
+InputV1.displayName = "InputVersion1";
 
-Input.propTypes = {
+InputV1.propTypes = {
   id: PropTypes.string.isRequired,
   error: PropTypes.string,
   leftIcon: PropTypes.node,
@@ -58,4 +58,4 @@ Input.propTypes = {
   children: PropTypes.node,
 };
 
-export default Input;
+export default InputV1;

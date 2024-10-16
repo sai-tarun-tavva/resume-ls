@@ -5,7 +5,7 @@ import { useInput } from "../../../Atoms/hooks";
 import AutoSuggestion from "./AutoSuggestion";
 import Skills from "../../../Atoms/components/Skills";
 import Button from "../../../Atoms/components/Button";
-import Input from "../../../Atoms/components/Input";
+import InputV1 from "../../../Atoms/components/InputV1";
 import StatusMessage from "../../../Atoms/components/StatusMessage";
 import { uiActions } from "../../store";
 import { useLoading, useStatus } from "../../../../store";
@@ -386,7 +386,7 @@ const CandidateForm = () => {
       <div className={classes.candidateForm}>
         <div className={classes.inputColumns}>
           <div>
-            <Input
+            <InputV1
               id="name"
               name="name"
               placeholder={CONTENT.INSIGHT.candidateForm.placeholders.name}
@@ -399,7 +399,7 @@ const CandidateForm = () => {
               extraClassControl={classes.candidateControl}
             />
 
-            <Input
+            <InputV1
               id="phoneNumber"
               name="phoneNumber"
               type="tel"
@@ -415,7 +415,7 @@ const CandidateForm = () => {
               extraClassControl={classes.candidateControl}
             />
 
-            <Input
+            <InputV1
               id="email"
               name="email"
               type="email"
@@ -429,7 +429,7 @@ const CandidateForm = () => {
               extraClassControl={classes.candidateControl}
             />
 
-            <Input
+            <InputV1
               id="addSkill"
               name="addSkill"
               placeholder={CONTENT.INSIGHT.candidateForm.placeholders.skill}
@@ -453,7 +453,7 @@ const CandidateForm = () => {
           </div>
 
           <div>
-            <Input
+            <InputV1
               id="linkedIn"
               name="linkedIn"
               placeholder={
@@ -468,7 +468,7 @@ const CandidateForm = () => {
               extraClassControl={classes.candidateControl}
             />
 
-            <Input
+            <InputV1
               id="city"
               name="city"
               placeholder={CONTENT.INSIGHT.candidateForm.placeholders.city}
@@ -481,7 +481,7 @@ const CandidateForm = () => {
               extraClassControl={classes.candidateControl}
             />
 
-            <Input
+            <InputV1
               id="state"
               name="state"
               placeholder={CONTENT.INSIGHT.candidateForm.placeholders.state}
@@ -494,7 +494,7 @@ const CandidateForm = () => {
               extraClassControl={classes.candidateControl}
             />
 
-            <Input
+            <InputV1
               id="experience"
               name="experience"
               type="number"
@@ -511,7 +511,7 @@ const CandidateForm = () => {
             />
           </div>
         </div>
-        <Input
+        <InputV1
           id="skills"
           type="hidden"
           name="skills"

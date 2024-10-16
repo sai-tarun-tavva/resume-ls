@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useInput } from "../../../Atoms/hooks";
-import Input from "../../../Atoms/components/Input";
+import InputV1 from "../../../Atoms/components/InputV1";
 import Button from "../../../Atoms/components/Button";
 import { useLoading, useStatus } from "../../../../store";
 import {
@@ -184,7 +184,7 @@ const AuthForm = ({ haveAccount }) => {
 
   return (
     <form className={classes.authForm}>
-      <Input
+      <InputV1
         id="userName"
         name="userName"
         placeholder={CONTENT.WELCOME.authPanel.placeholders.username}
@@ -196,7 +196,7 @@ const AuthForm = ({ haveAccount }) => {
         leftIcon={<i className="bi bi-person-fill"></i>}
       />
 
-      <Input
+      <InputV1
         id="password"
         name="password"
         type={showPassword ? "text" : "password"}
@@ -218,7 +218,7 @@ const AuthForm = ({ haveAccount }) => {
       />
 
       {!haveAccount && (
-        <Input
+        <InputV1
           id="email"
           name="email"
           type="email"
