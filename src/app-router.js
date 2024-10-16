@@ -3,7 +3,8 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 import Welcome from "./pages/Welcome";
 import Insight from "./pages/Insight";
 import Onboard from "./pages/Onboard";
-import Candidates from "./micro-frontends/Insight/components/Candidates";
+import InsightCandidates from "./micro-frontends/Insight/components/Candidates";
+import OnboardCandidates from "./micro-frontends/Onboard/components/Candidates";
 import CandidateForm from "./micro-frontends/Insight/components/CandidateForm";
 import PageNotFound from "./micro-frontends/Atoms/components/PageNotFound";
 import { ROUTES } from "./constants";
@@ -23,7 +24,7 @@ const appRouter = createBrowserRouter([
     path: INSIGHT.HOME,
     element: <ProtectedRoute element={<Insight />} />,
     children: [
-      { index: true, element: <Candidates /> },
+      { index: true, element: <InsightCandidates /> },
       { path: INSIGHT.CANDIDATE_FORM, element: <CandidateForm /> },
     ],
   },
@@ -32,7 +33,7 @@ const appRouter = createBrowserRouter([
     path: ONBOARD.HOME,
     element: <ProtectedRoute element={<Onboard />} />,
     children: [
-      // { index: true, element: <Candidates /> },
+      { index: true, element: <OnboardCandidates /> },
       // { path: INSIGHT.CANDIDATE_FORM, element: <CandidateForm /> },
     ],
   },

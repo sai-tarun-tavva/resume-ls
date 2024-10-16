@@ -17,13 +17,13 @@ let isInitial = true;
 const { CANDIDATES_PER_PAGE, RESUME_VIEWER_WIDTH_START } = INSIGHT;
 
 /**
- * Candidates Component
+ * InsightCandidates Component
  *
  * Fetches and displays candidate information.
  *
- * @returns {JSX.Element} The rendered candidates component.
+ * @returns {JSX.Element} The rendered InsightCandidates component.
  */
-const Candidates = () => {
+const InsightCandidates = () => {
   const dispatch = useDispatch();
   const { candidates } = useSelector((state) => state.data);
   const { refetch, refetchURL } = useSelector((state) => state.ui);
@@ -191,5 +191,5 @@ const Candidates = () => {
   );
 };
 
-Candidates.displayName = "Candidates";
-export default Candidates;
+InsightCandidates.displayName = "InsightCandidates";
+export default InsightCandidates;
