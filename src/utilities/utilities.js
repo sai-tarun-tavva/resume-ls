@@ -11,20 +11,24 @@ export const buildFetchCandidatesUrl = (limit = "", page = "", query = "") => {
   // Encode query params to ensure special characters are handled
   const encodedLimit = encodeURIComponent(limit);
   const encodedPage = encodeURIComponent(page);
-  const encodedQuery = encodeURIComponent(query);
 
-  const { url, params } = END_POINTS.FETCH_CANDIDATES; // Destructure to get the base URL and parameters
+  // Destructure to get the base URL and parameters
+  const { url, params } = END_POINTS.FETCH_CANDIDATES;
 
   // Create a new URL object for constructing the complete URL
   const fetchUrl = new URL(url);
 
-  // Set query parameters using the defined params and the values for limit and page
+  // Set the limit and page parameters using the defined params and values for limit and page
   fetchUrl.searchParams.set(params.limit, encodedLimit);
   fetchUrl.searchParams.set(params.page, encodedPage);
-  fetchUrl.searchParams.set(params.query, encodedQuery);
 
-  // Convert URL object back to string
-  return fetchUrl.toString();
+  // Conditionally append the query parameter if it's provided
+  let finalUrl = fetchUrl.toString();
+  if (query) {
+    finalUrl += `&${params.query}=${query}`;
+  }
+
+  return finalUrl;
 };
 
 /**
