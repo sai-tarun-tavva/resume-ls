@@ -34,6 +34,14 @@ html {
   --primary-color: rgb(24, 94, 170);
   --primary-shadow: rgba(24, 94, 170, 0.3);
   --primary-hover: rgb(0, 74, 132);
+  --error-color: rgb(239, 67, 67);
+  --error-shadow: rgba(239, 68, 68, 0.5);
+  --text-color: rgb(31, 41, 56);
+  --text-light: rgb(107, 114, 128);
+  --bg-color: rgb(242, 243, 245);
+  --card-bg: rgb(255, 255, 255);
+  --border-color: rgb(230, 231, 235);
+  --transition: all 0.3s ease;
 }
 
 body {
