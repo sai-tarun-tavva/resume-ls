@@ -5,10 +5,10 @@ const Select = ({
   id,
   label,
   options,
-  extraClass,
-  defaultValue,
+  extraClass = "",
+  defaultValue = "",
   validationFunc = () => {},
-  transformFunc = () => {},
+  transformFunc = (value) => value,
   ...props
 }) => {
   const {
@@ -22,14 +22,7 @@ const Select = ({
 
   return (
     <div className={`${classes.control} ${extraClass}`}>
-      <label
-        htmlFor={id}
-        className={`${isFocused || value ? classes.active : ""} ${
-          error ? classes.error : ""
-        }`}
-      >
-        {label}
-      </label>
+      <label htmlFor={id}>{label}</label>
       <select
         id={id}
         className={`${isFocused ? classes.focused : ""} ${
@@ -42,9 +35,9 @@ const Select = ({
         onFocus={handleInputFocus}
         {...props}
       >
-        {options.map((option, index) => (
-          <option key={index} value={option}>
-            {option}
+        {options.map(({ value, label }, index) => (
+          <option key={index} value={value}>
+            {label}
           </option>
         ))}
       </select>

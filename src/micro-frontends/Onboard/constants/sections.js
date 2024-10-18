@@ -1,9 +1,26 @@
+import InputV2 from "../../Atoms/components/Inputs/InputV2";
+import Select from "../../Atoms/components/Inputs/Select";
+
 export const sections = [
   {
     title: "Onboarding",
     fields: [
-      { id: "onboardingDate", label: "Date", type: "date" },
-      { id: "onboardingStatus", label: "Status", type: "text" },
+      {
+        id: "onboardingDate",
+        label: "Date",
+        type: "date",
+        element: <InputV2 />,
+      },
+      {
+        id: "onboardingStatus",
+        label: "Status",
+        options: [
+          { value: "", label: "Status" },
+          { value: "inProgress", label: "In Progress" },
+          { value: "started", label: "Started" },
+        ],
+        element: <Select />,
+      },
     ],
   },
   {

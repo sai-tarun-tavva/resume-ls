@@ -6,8 +6,8 @@ import Button from "../../../Atoms/components/Button";
 import classes from "./index.module.scss";
 
 const Form = () => {
-  const { currentSection: index } = useSelector((state) => state.input);
-  const fields = sections[index];
+  const { currentSectionIndex: index } = useSelector((state) => state.input);
+  const fields = sections[index].fields;
   const fieldTitles = sections.map((section) => section.title);
 
   return (
@@ -18,9 +18,11 @@ const Form = () => {
         <div className={classes.actions}>
           <Button className={classes.closeButton}>Close</Button>
           <div className={classes.navActions}>
-            <Button className={classes.button}>
-              <i className="bi bi-caret-left-fill" />
-            </Button>
+            {index !== 0 && (
+              <Button className={classes.button}>
+                <i className="bi bi-caret-left-fill" />
+              </Button>
+            )}
             <Button className={classes.button}>
               <i className="bi bi-caret-right-fill" />
             </Button>

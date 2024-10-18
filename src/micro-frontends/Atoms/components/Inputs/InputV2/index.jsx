@@ -4,10 +4,10 @@ import classes from "./index.module.scss";
 const InputV2 = ({
   id,
   label,
-  extraClass,
-  defaultValue,
+  extraClass = "",
+  defaultValue = "",
   validationFunc = () => {},
-  transformFunc = () => {},
+  transformFunc = (value) => value,
   ...props
 }) => {
   const {
@@ -21,14 +21,7 @@ const InputV2 = ({
 
   return (
     <div className={`${classes.control} ${extraClass}`}>
-      <label
-        htmlFor={id}
-        className={`${isFocused || value ? classes.active : ""} ${
-          error ? classes.error : ""
-        }`}
-      >
-        {label}
-      </label>
+      <label htmlFor={id}>{label}</label>
       <input
         id={id}
         className={`${isFocused ? classes.focused : ""} ${
