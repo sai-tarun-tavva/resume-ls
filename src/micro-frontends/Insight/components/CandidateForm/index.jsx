@@ -5,7 +5,7 @@ import { useInput } from "../../../Atoms/hooks";
 import AutoSuggestion from "./AutoSuggestion";
 import Skills from "../../../Atoms/components/Skills";
 import Button from "../../../Atoms/components/Button";
-import InputV1 from "../../../Atoms/components/InputV1";
+import InputV1 from "../../../Atoms/components/Inputs/InputV1";
 import StatusMessage from "../../../Atoms/components/StatusMessage";
 import { uiActions } from "../../store";
 import { useLoading, useStatus } from "../../../../store";

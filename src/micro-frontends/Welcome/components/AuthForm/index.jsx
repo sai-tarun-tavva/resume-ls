@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useInput } from "../../../Atoms/hooks";
-import InputV1 from "../../../Atoms/components/InputV1";
+import InputV1 from "../../../Atoms/components/Inputs/InputV1";
 import Button from "../../../Atoms/components/Button";
 import { useLoading, useStatus } from "../../../../store";
 import {
