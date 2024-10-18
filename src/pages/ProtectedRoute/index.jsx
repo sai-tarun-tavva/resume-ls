@@ -1,4 +1,5 @@
 import React from "react";
+import GlobalWrapper from "../GlobalWrapper";
 import { Navigate } from "react-router-dom";
 
 /**
@@ -23,7 +24,7 @@ const ProtectedRoute = ({ element }) => {
   }
 
   // If authenticated, render the protected component
-  return element;
+  return <GlobalWrapper>{element}</GlobalWrapper>;
 };
 
 ProtectedRoute.displayName = "ProtectedRoute";

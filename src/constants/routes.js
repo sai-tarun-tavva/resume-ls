@@ -4,4 +4,7 @@ export const ROUTES = {
     HOME: "onboard/candidates",
     CANDIDATE_FORM: { NEW: "/new", EDIT: "/edit/:candidateId" },
   },
+  SPARK: {
+    HOME: "spark",
+  },
 };

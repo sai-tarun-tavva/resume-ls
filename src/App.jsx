@@ -1,5 +1,4 @@
 import { RouterProvider } from "react-router-dom";
-import StatusMessage from "./micro-frontends/Atoms/components/StatusMessage";
 import appRouter from "./app-router";
 
 /**
@@ -10,7 +9,6 @@ import appRouter from "./app-router";
 const App = () => {
   return (
     <main>
-      <StatusMessage />
       <RouterProvider router={appRouter} />
     </main>
   );
