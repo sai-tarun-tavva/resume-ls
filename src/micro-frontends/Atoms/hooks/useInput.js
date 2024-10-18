@@ -17,6 +17,7 @@ export const useInput = (
 ) => {
   const [enteredValue, setEnteredValue] = useState(defaultValue);
   const [didEdit, setDidEdit] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const errorMessage = checkForErrors(String(enteredValue).trim());
 
@@ -25,8 +26,13 @@ export const useInput = (
     setDidEdit(false);
   };
 
+  const handleInputFocus = () => {
+    setIsFocused(true);
+  };
+
   const handleInputBlur = () => {
     setDidEdit(true);
+    setIsFocused(false);
     setEnteredValue(transform(enteredValue));
   };
 
@@ -47,8 +53,10 @@ export const useInput = (
     value: enteredValue,
     handleInputChange,
     handleInputBlur,
+    handleInputFocus,
     resetValue,
     error: showError,
+    isFocused,
     forceValidations,
   };
 };

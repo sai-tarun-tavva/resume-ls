@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useInput } from "../../../hooks";
 import classes from "./index.module.scss";
 
 const InputV2 = ({
   id,
   label,
-  placeholder,
-  value,
-  error,
-  isFocused,
   extraClass,
+  defaultValue,
+  validationFunc = () => {},
+  transformFunc = () => {},
   ...props
 }) => {
+  const {
+    value,
+    handleInputChange,
+    handleInputBlur,
+    handleInputFocus,
+    error,
+    isFocused,
+  } = useInput(defaultValue, validationFunc, transformFunc);
+
   return (
     <div className={`${classes.control} ${extraClass}`}>
       <label
@@ -23,11 +31,13 @@ const InputV2 = ({
       </label>
       <input
         id={id}
-        placeholder=""
         className={`${isFocused ? classes.focused : ""} ${
           error ? classes.error : ""
         }`}
         value={value}
+        onChange={handleInputChange}
+        onBlur={handleInputBlur}
+        onFocus={handleInputFocus}
         aria-required="true"
         {...props}
       />

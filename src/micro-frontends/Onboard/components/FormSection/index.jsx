@@ -1,6 +1,6 @@
 import classes from "./index.module.scss";
 
-const FormSection = () => {
+const FormSection = ({ fields }) => {
   return <div></div>;
 };
 

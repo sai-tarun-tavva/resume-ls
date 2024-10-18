@@ -2,8 +2,8 @@ export const sections = [
   {
     title: "Onboarding",
     fields: [
-      { id: "onboardingDate", label: "Onboarding Date", type: "date" },
-      { id: "onboardingStatus", label: "Onboarding Status", type: "text" },
+      { id: "onboardingDate", label: "Date", type: "date" },
+      { id: "onboardingStatus", label: "Status", type: "text" },
     ],
   },
   {

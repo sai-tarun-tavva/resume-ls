@@ -1,33 +1,24 @@
-import { useState } from "react";
+import { useInput } from "../../../hooks";
 import classes from "./index.module.scss";
 
 const Select = ({
   id,
   label,
-  placeholder = "default",
-  //   value,
-  //   isFocused,
-  //   error,
+  options,
   extraClass,
+  defaultValue,
+  validationFunc = () => {},
+  transformFunc = () => {},
   ...props
 }) => {
-  const [value, setValue] = useState("");
-  const [error, setError] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
-
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
-    setError("");
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    if (!value) setError("Select is required.");
-  };
+  const {
+    value,
+    handleInputChange,
+    handleInputBlur,
+    handleInputFocus,
+    error,
+    isFocused,
+  } = useInput(defaultValue, validationFunc, transformFunc);
 
   return (
     <div className={`${classes.control} ${extraClass}`}>
@@ -37,7 +28,7 @@ const Select = ({
           error ? classes.error : ""
         }`}
       >
-        {placeholder}
+        {label}
       </label>
       <select
         id={id}
@@ -46,17 +37,16 @@ const Select = ({
         }`}
         value={value}
         aria-required="true"
-        onChange={handleChange}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
+        onChange={handleInputChange}
+        onBlur={handleInputBlur}
+        onFocus={handleInputFocus}
         {...props}
       >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-        <option value="admin">Admin</option>
-        <option value="user">User</option>
-        <option value="manager">Manager</option>
+        {options.map((option, index) => (
+          <option key={index} value={option}>
+            {option}
+          </option>
+        ))}
       </select>
       <small className={classes.errorText}>{error || ""}</small>
     </div>
