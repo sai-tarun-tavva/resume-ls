@@ -1,1 +1,2 @@
-export * from "./inputData";
+export * from "./data";
+export * from "./input";
