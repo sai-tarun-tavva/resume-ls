@@ -1,24 +1,23 @@
-import { sections } from "../../constants";
 import classes from "./index.module.scss";
 
-const FormProgress = ({ currentSection }) => {
+const FormProgress = ({ currentSectionIndex, titles }) => {
   return (
     <div className={classes.progressContainer}>
       <ul className={classes.progressList}>
-        {sections.map((section, index) => (
+        {titles.map((title, index) => (
           <li
             key={index}
             className={`
               ${classes.section}
               ${
-                index === currentSection
+                index === currentSectionIndex
                   ? classes.active + " " + classes.currentSection
                   : ""
               }
-              ${index < currentSection ? classes.completed : ""}
+              ${index < currentSectionIndex ? classes.completed : ""}
             `}
           >
-            <h3 className={classes.sectionTitle}>{section.title}</h3>
+            <h3 className={classes.sectionTitle}>{title}</h3>
           </li>
         ))}
       </ul>

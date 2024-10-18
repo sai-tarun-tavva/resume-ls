@@ -8,16 +8,6 @@ const MainNavigation = () => {
       <ul>
         <li>
           <NavLink
-            to={`/${ROUTES.INSIGHT.HOME}`}
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-          >
-            Insight
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
             to={`/${ROUTES.ONBOARD.HOME}`}
             className={({ isActive }) =>
               isActive ? classes.active : undefined
@@ -26,6 +16,17 @@ const MainNavigation = () => {
             Onboard
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to={`/${ROUTES.INSIGHT.HOME}`}
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+          >
+            Insight
+          </NavLink>
+        </li>
+
         <li>
           <NavLink
             to={`/${ROUTES.SPARK.HOME}`}

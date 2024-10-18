@@ -25,90 +25,93 @@ export const defaultReference = {
 };
 
 const initialState = {
-  onboarding: {
-    id: null,
-    createdDate: "",
-    updatedDate: "",
-    onboardingDate: "",
-    onboardingStatus: "",
-  },
-  personal: {
-    firstName: "",
-    lastName: "",
-    emailId: "",
-    phoneNumber: "",
-    currentLocation: defaultAddress,
-    dob: "",
-    maritalStatus: "",
-    passportNumber: "",
-    visaType: "",
-    photoID: {
-      type: "",
-      number: "",
+  currentSectionIndex: 0,
+  data: {
+    onboarding: {
+      id: null,
+      createdDate: "",
+      updatedDate: "",
+      onboardingDate: "",
+      onboardingStatus: "",
     },
-    eadNumber: "",
-    SSN: "",
-    skypeId: "",
-    referenceName: "",
-  },
-  relocation: {
-    intereseted: "",
-    preference: "",
-    address: defaultAddress,
-  },
-  education: {
-    sevisID: "",
-    dso: {
-      name: "",
-      email: "",
-      phone: "",
+    personal: {
+      firstName: "",
+      lastName: "",
+      emailId: "",
+      phoneNumber: "",
+      currentLocation: defaultAddress,
+      dob: "",
+      maritalStatus: "",
+      passportNumber: "",
+      visaType: "",
+      photoID: {
+        type: "",
+        number: "",
+      },
+      eadNumber: "",
+      SSN: "",
+      skypeId: "",
+      referenceName: "",
     },
-    graduatedUniversity: {
-      name: "",
+    relocation: {
+      intereseted: "",
+      preference: "",
       address: defaultAddress,
-      passedYear: "",
-      stream: "",
-      additionalCertifications: [],
     },
-  },
-  profession: {
-    trainingAttended: "",
-    experience: {
-      years: "",
-      months: "",
+    education: {
+      sevisID: "",
+      dso: {
+        name: "",
+        email: "",
+        phone: "",
+      },
+      graduatedUniversity: {
+        name: "",
+        address: defaultAddress,
+        passedYear: "",
+        stream: "",
+        additionalCertifications: [],
+      },
     },
-    technologiesKnown: [],
-    previousExperience: [],
-    references: [],
-  },
-  offerLetter: {
-    status: "",
-    lastUpdated: "",
-    designation: "",
-    startDate: "",
-    endDate: "",
-    rolesAndResponsibilities: "",
-  },
-  usTravelAndStay: {
-    usEntry: {
-      month: "",
-      year: "",
+    profession: {
+      trainingAttended: "",
+      experience: {
+        years: "",
+        months: "",
+      },
+      technologiesKnown: [],
+      previousExperience: [],
+      references: [],
     },
-    stayAddresses: [],
-  },
-  emergencyContacts: {
-    usa: {
-      name: "",
-      phone: "",
+    offerLetter: {
+      status: "",
+      lastUpdated: "",
+      designation: "",
+      startDate: "",
+      endDate: "",
+      rolesAndResponsibilities: "",
     },
-    homeCountry: {
-      name: "",
-      phone: "",
+    usTravelAndStay: {
+      usEntry: {
+        month: "",
+        year: "",
+      },
+      stayAddresses: [],
     },
-  },
-  additional: {
-    remarks: "",
-    notes: "",
+    emergencyContacts: {
+      usa: {
+        name: "",
+        phone: "",
+      },
+      homeCountry: {
+        name: "",
+        phone: "",
+      },
+    },
+    additional: {
+      remarks: "",
+      notes: "",
+    },
   },
 };
 
@@ -119,7 +122,15 @@ const InputSlice = createSlice({
     // Update fields
     updateField(state, action) {
       const { section, field, value } = action.payload;
-      state[section][field] = value;
+      state.data[section][field] = value;
+    },
+    // Update current section index
+    incrementCurrentSectionIndex(state) {
+      state.currentSectionIndex += 1;
+    },
+    // Update current section index
+    decrementCurrentSectionIndex(state) {
+      state.currentSectionIndex -= 1;
     },
     // Resets the form
     resetForm: () => initialState,

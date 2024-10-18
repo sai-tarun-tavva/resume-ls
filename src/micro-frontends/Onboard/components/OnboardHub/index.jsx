@@ -1,8 +1,8 @@
-// import { Provider } from "react-redux";
+import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Operations from "../Operations";
 // import Add from "../Add";
-// import store from "../../store/store";
+import store from "../../store/store";
 
 /**
  * OnboardHub Component
@@ -14,13 +14,11 @@ import Operations from "../Operations";
  */
 const OnboardHub = () => {
   return (
-    // <Provider store={store}>
-    <>
+    <Provider store={store}>
       <Operations />
       <Outlet />
       {/* <Add /> */}
-    </>
-    // </Provider>
+    </Provider>
   );
 };
 
