@@ -99,3 +99,10 @@ export const authValidations = {
           );
   },
 };
+
+export const onboardingValidations = {
+  onboarding: {
+    date: (value) => (isEmpty(value) ? validationMsgs.date.empty : ""),
+    status: (value) => (isEmpty(value) ? validationMsgs.status.empty : ""),
+  },
+};

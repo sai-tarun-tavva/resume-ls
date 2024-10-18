@@ -1,20 +1,7 @@
-import { cloneElement } from "react";
-import classes from "./index.module.scss";
+import Onboarding from "./Onboarding";
 
-const FormSection = ({ fields }) => {
-  return (
-    <div>
-      {fields.map(({ element, ...field }, index) => {
-        return (
-          <div key={index} className={classes.formElement}>
-            {cloneElement(element, {
-              ...field,
-            })}
-          </div>
-        );
-      })}
-    </div>
-  );
+const FormSection = ({ index }) => {
+  return <div>{index === 0 && <Onboarding />}</div>;
 };
 
 FormSection.displayName = "FormSection";

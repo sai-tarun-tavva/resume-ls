@@ -7,14 +7,13 @@ import classes from "./index.module.scss";
 
 const Form = () => {
   const { currentSectionIndex: index } = useSelector((state) => state.input);
-  const fields = sections[index].fields;
   const fieldTitles = sections.map((section) => section.title);
 
   return (
     <div className={classes.formContainer}>
       <FormProgress currentSectionIndex={index} titles={fieldTitles} />
       <form className={classes.form}>
-        <FormSection fields={fields} />
+        <FormSection index={index} />
         <div className={classes.actions}>
           <Button className={classes.closeButton}>Close</Button>
           <div className={classes.navActions}>

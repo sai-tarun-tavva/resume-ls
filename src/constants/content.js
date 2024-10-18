@@ -36,6 +36,12 @@ export const CONTENT = {
         empty: "Experience is required.",
         invalid: "Experience must be between 0 and 100.",
       },
+      date: {
+        empty: "Date is required.",
+      },
+      status: {
+        empty: "Status is required.",
+      },
     },
     pageNotFound: {
       title: "404",
