@@ -4,10 +4,11 @@ import Welcome from "./pages/Welcome";
 import Insight from "./pages/Insight";
 import Onboard from "./pages/Onboard";
 import InsightCandidates from "./micro-frontends/Insight/components/Candidates";
-import OnboardCandidates from "./micro-frontends/Onboard/components/Candidates";
+// import OnboardCandidates from "./micro-frontends/Onboard/components/Candidates";
 import CandidateForm from "./micro-frontends/Insight/components/CandidateForm";
 import PageNotFound from "./micro-frontends/Atoms/components/PageNotFound";
 import { ROUTES } from "./constants";
+import Form from "./micro-frontends/Onboard/components/Form";
 
 const { INSIGHT, ONBOARD } = ROUTES;
 
@@ -33,7 +34,7 @@ const appRouter = createBrowserRouter([
     path: ONBOARD.HOME,
     element: <ProtectedRoute element={<Onboard />} />,
     children: [
-      { index: true, element: <OnboardCandidates /> },
+      { index: true, element: <Form /> },
       // { path: INSIGHT.CANDIDATE_FORM, element: <CandidateForm /> },
     ],
   },
