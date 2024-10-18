@@ -1,116 +1,119 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  SECTIONS,
+  FIELDS,
+  FIELDS_ADDRESS,
+  FIELDS_PREV_EXP,
+  FIELDS_REFERENCE,
+} from "../constants";
 
 export const defaultAddress = {
-  address1: "",
-  address2: "",
-  city: "",
-  state: "",
-  country: "",
-  zipcode: "",
+  [FIELDS_ADDRESS.ADDRESS1]: "",
+  [FIELDS_ADDRESS.ADDRESS2]: "",
+  [FIELDS_ADDRESS.CITY]: "",
+  [FIELDS_ADDRESS.STATE]: "",
+  [FIELDS_ADDRESS.COUNTRY]: "",
+  [FIELDS_ADDRESS.ZIPCODE]: "",
 };
 
 export const defaultPrevExp = {
-  employerName: "",
-  address: defaultAddress,
-  email: "",
-  phone: "",
+  [FIELDS_PREV_EXP.EMPLOYER_NAME]: "",
+  [FIELDS_PREV_EXP.ADDRESS]: defaultAddress,
+  [FIELDS_PREV_EXP.EMAIL]: "",
+  [FIELDS_PREV_EXP.PHONE]: "",
 };
 
 export const defaultReference = {
-  name: "",
-  phone: "",
-  mail: "",
-  designation: "",
-  company: "",
+  [FIELDS_REFERENCE.NAME]: "",
+  [FIELDS_REFERENCE.PHONE]: "",
+  [FIELDS_REFERENCE.MAIL]: "",
+  [FIELDS_REFERENCE.DESIGNATION]: "",
+  [FIELDS_REFERENCE.COMPANY]: "",
 };
 
 const initialState = {
   currentSectionIndex: 0,
   data: {
-    onboarding: {
-      id: null,
-      createdDate: "",
-      updatedDate: "",
-      onboardingDate: "",
-      onboardingStatus: "",
+    [SECTIONS.RECORD]: {
+      [FIELDS.RECORD.ID]: null,
+      [FIELDS.RECORD.CREATED_DATE]: "",
+      [FIELDS.RECORD.UPDATED_DATE]: "",
     },
-    personal: {
-      firstName: "",
-      lastName: "",
-      emailId: "",
-      phoneNumber: "",
-      currentLocation: defaultAddress,
-      dob: "",
-      maritalStatus: "",
-      passportNumber: "",
-      visaType: "",
-      photoID: {
-        type: "",
-        number: "",
+    [SECTIONS.ONBOARDING]: {
+      [FIELDS.ONBOARDING.DATE]: "",
+      [FIELDS.ONBOARDING.STATUS]: "",
+    },
+    [SECTIONS.PERSONAL]: {
+      [FIELDS.PERSONAL.FIRST_NAME]: "",
+      [FIELDS.PERSONAL.LAST_NAME]: "",
+      [FIELDS.PERSONAL.EMAIL_ID]: "",
+      [FIELDS.PERSONAL.PHONE_NUMBER]: "",
+      [FIELDS.PERSONAL.CURRENT_LOCATION]: defaultAddress,
+      [FIELDS.PERSONAL.DOB]: "",
+      [FIELDS.PERSONAL.MARITAL_STATUS]: "",
+      [FIELDS.PERSONAL.PASSPORT_NUMBER]: "",
+      [FIELDS.PERSONAL.VISA_TYPE]: "",
+      [FIELDS.PERSONAL.PHOTO_ID.VALUE]: {
+        [FIELDS.PERSONAL.PHOTO_ID.TYPE]: "",
+        [FIELDS.PERSONAL.PHOTO_ID.NUMBER]: "",
       },
-      eadNumber: "",
-      SSN: "",
-      skypeId: "",
-      referenceName: "",
+      [FIELDS.PERSONAL.EAD_NUMBER]: "",
+      [FIELDS.PERSONAL.SSN]: "",
+      [FIELDS.PERSONAL.SKYPE_ID]: "",
+      [FIELDS.PERSONAL.REFERENCE_NAME]: "",
     },
-    relocation: {
-      intereseted: "",
-      preference: "",
-      address: defaultAddress,
+    [SECTIONS.RELOCATION]: {
+      [FIELDS.RELOCATION.INTERESTED]: "",
+      [FIELDS.RELOCATION.PREFERENCE]: "",
+      [FIELDS.RELOCATION.ADDRESS]: defaultAddress,
     },
-    education: {
-      sevisID: "",
-      dso: {
-        name: "",
-        email: "",
-        phone: "",
+    [SECTIONS.EDUCATION]: {
+      [FIELDS.EDUCATION.SEVIS_ID]: "",
+      [FIELDS.EDUCATION.DSO.VALUE]: {
+        [FIELDS.EDUCATION.DSO.NAME]: "",
+        [FIELDS.EDUCATION.DSO.EMAIL]: "",
+        [FIELDS.EDUCATION.DSO.PHONE]: "",
       },
-      graduatedUniversity: {
-        name: "",
-        address: defaultAddress,
-        passedYear: "",
-        stream: "",
-        additionalCertifications: [],
-      },
-    },
-    profession: {
-      trainingAttended: "",
-      experience: {
-        years: "",
-        months: "",
-      },
-      technologiesKnown: [],
-      previousExperience: [],
-      references: [],
-    },
-    offerLetter: {
-      status: "",
-      lastUpdated: "",
-      designation: "",
-      startDate: "",
-      endDate: "",
-      rolesAndResponsibilities: "",
-    },
-    usTravelAndStay: {
-      usEntry: {
-        month: "",
-        year: "",
-      },
-      stayAddresses: [],
-    },
-    emergencyContacts: {
-      usa: {
-        name: "",
-        phone: "",
-      },
-      homeCountry: {
-        name: "",
-        phone: "",
+      [FIELDS.EDUCATION.GRADUATED_UNIVERSITY]: {
+        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
+        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
+        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_YEAR]: "",
+        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
+        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]: [],
       },
     },
-    additional: {
-      remarks: "",
-      notes: "",
+    [SECTIONS.PROFESSION]: {
+      [FIELDS.PROFESSION.TRAINING_ATTENDED]: "",
+      [FIELDS.PROFESSION.EXPERIENCE]: "",
+      [FIELDS.PROFESSION.TECHNOLOGIES_KNOWN]: [],
+      [FIELDS.PROFESSION.PREVIOUS_EXPERIENCE]: [],
+      [FIELDS.PROFESSION.REFERENCES]: [],
+    },
+    [SECTIONS.OFFER_LETTER]: {
+      [FIELDS.OFFER_LETTER.STATUS]: "",
+      [FIELDS.OFFER_LETTER.LAST_UPDATED]: "",
+      [FIELDS.OFFER_LETTER.DESIGNATION]: "",
+      [FIELDS.OFFER_LETTER.START_DATE]: "",
+      [FIELDS.OFFER_LETTER.END_DATE]: "",
+      [FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES]: "",
+    },
+    [SECTIONS.US_TRAVEL_AND_STAY]: {
+      [FIELDS.US_TRAVEL_AND_STAY.US_ENTRY]: "",
+      [FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES]: [],
+    },
+    [SECTIONS.EMERGENCY_CONTACTS]: {
+      [FIELDS.EMERGENCY_CONTACTS.USA.VALUE]: {
+        [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: "",
+        [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]: "",
+      },
+      [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE]: {
+        [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: "",
+        [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: "",
+      },
+    },
+    [SECTIONS.ADDITIONAL]: {
+      [FIELDS.ADDITIONAL.REMARKS]: "",
+      [FIELDS.ADDITIONAL.NOTES]: "",
     },
   },
 };
@@ -124,13 +127,17 @@ const InputSlice = createSlice({
       const { section, field, value } = action.payload;
       state.data[section][field] = value;
     },
-    // Update current section index
+    // Increment current section index by 1
     incrementCurrentSectionIndex(state) {
       state.currentSectionIndex += 1;
     },
-    // Update current section index
+    // Decrement current section index by 1
     decrementCurrentSectionIndex(state) {
       state.currentSectionIndex -= 1;
+    },
+    // Update current section index with payload
+    updateCurrentSectionIndex(state, { payload }) {
+      state.currentSectionIndex = payload;
     },
     // Resets the form
     resetForm: () => initialState,

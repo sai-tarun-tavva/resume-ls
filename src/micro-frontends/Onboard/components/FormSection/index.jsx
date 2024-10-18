@@ -1,7 +1,12 @@
 import Onboarding from "./Onboarding";
 
 const FormSection = ({ index }) => {
-  return <div>{index === 0 && <Onboarding />}</div>;
+  switch (index) {
+    case 0:
+      return <Onboarding index={index} />;
+    default:
+      return null;
+  }
 };
 
 FormSection.displayName = "FormSection";

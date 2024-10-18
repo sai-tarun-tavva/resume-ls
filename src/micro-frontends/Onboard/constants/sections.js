@@ -1,4 +1,3 @@
-import InputV2 from "../../Atoms/components/Inputs/InputV2";
 import Select from "../../Atoms/components/Inputs/Select";
 import { onboardingValidations } from "../../../utilities";
 
@@ -13,16 +12,11 @@ export const sections = [
         label: "Date",
         type: "date",
         validationFunc: onboarding.date,
-        element: <InputV2 />,
       },
       {
         id: "onboardingStatus",
         label: "Status",
-        options: [
-          { value: "", label: "" },
-          { value: "inProgress", label: "In Progress" },
-          { value: "started", label: "Started" },
-        ],
+        options: null,
         validationFunc: onboarding.status,
         element: <Select />,
       },

@@ -1,4 +1,3 @@
-import { useInput } from "../../../hooks";
 import classes from "./index.module.scss";
 
 const Select = ({
@@ -6,20 +5,14 @@ const Select = ({
   label,
   options,
   extraClass = "",
-  defaultValue = "",
-  validationFunc = () => {},
-  transformFunc = (value) => value,
+  value,
+  changeHandler,
+  blurHandler,
+  focusHandler,
+  error,
+  isFocused,
   ...props
 }) => {
-  const {
-    value,
-    handleInputChange,
-    handleInputBlur,
-    handleInputFocus,
-    error,
-    isFocused,
-  } = useInput(defaultValue, validationFunc, transformFunc);
-
   return (
     <div className={`${classes.control} ${extraClass}`}>
       <label htmlFor={id}>{label}</label>
@@ -30,9 +23,9 @@ const Select = ({
         }`}
         value={value}
         aria-required="true"
-        onChange={handleInputChange}
-        onBlur={handleInputBlur}
-        onFocus={handleInputFocus}
+        onChange={changeHandler}
+        onBlur={blurHandler}
+        onFocus={focusHandler}
         {...props}
       >
         {options.map(({ value, label }, index) => (

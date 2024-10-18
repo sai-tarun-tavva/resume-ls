@@ -1,24 +1,17 @@
-import { useInput } from "../../../hooks";
 import classes from "./index.module.scss";
 
 const InputV2 = ({
   id,
   label,
   extraClass = "",
-  defaultValue = "",
-  validationFunc = () => {},
-  transformFunc = (value) => value,
+  value,
+  changeHandler,
+  blurHandler,
+  focusHandler,
+  error,
+  isFocused,
   ...props
 }) => {
-  const {
-    value,
-    handleInputChange,
-    handleInputBlur,
-    handleInputFocus,
-    error,
-    isFocused,
-  } = useInput(defaultValue, validationFunc, transformFunc);
-
   return (
     <div className={`${classes.control} ${extraClass}`}>
       <label htmlFor={id}>{label}</label>
@@ -28,9 +21,9 @@ const InputV2 = ({
           error ? classes.error : ""
         }`}
         value={value}
-        onChange={handleInputChange}
-        onBlur={handleInputBlur}
-        onFocus={handleInputFocus}
+        onChange={changeHandler}
+        onBlur={blurHandler}
+        onFocus={focusHandler}
         aria-required="true"
         {...props}
       />
