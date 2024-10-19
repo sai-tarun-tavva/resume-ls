@@ -51,6 +51,9 @@ export const CONTENT = {
       dob: {
         empty: "Date of birth is required.",
       },
+      gender: {
+        empty: "Gender is required.",
+      },
       passportNumber: {
         empty: "Passport number is required.",
         invalid: "Please enter a valid passport number.",
