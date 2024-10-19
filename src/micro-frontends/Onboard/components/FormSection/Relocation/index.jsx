@@ -23,7 +23,6 @@ const Relocation = () => {
     value: interestedValue,
     handleInputChange: interestedChange,
     handleInputBlur: interestedBlur,
-    handleInputFocus: interestedFocus,
     error: interestedError,
     forceValidations: forceInterestedValidations,
   } = useInput(
@@ -103,7 +102,6 @@ const Relocation = () => {
           value={interestedValue}
           changeHandler={interestedChange}
           blurHandler={interestedBlur}
-          focusHandler={interestedFocus}
           error={interestedError}
           helperText="(Considered yes by default)"
           extraClass={classes.fullInputWidth}

@@ -48,6 +48,7 @@ const initialState = {
       [FIELDS.PERSONAL.LAST_NAME]: "",
       [FIELDS.PERSONAL.EMAIL_ID]: "",
       [FIELDS.PERSONAL.PHONE_NUMBER]: "",
+      [FIELDS.PERSONAL.GENDER]: "",
       [FIELDS.PERSONAL.CURRENT_LOCATION]: defaultAddress,
       [FIELDS.PERSONAL.DOB]: "",
       [FIELDS.PERSONAL.MARITAL_STATUS]: "",

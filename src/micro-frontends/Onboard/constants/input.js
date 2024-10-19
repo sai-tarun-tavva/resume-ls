@@ -50,6 +50,7 @@ export const FIELDS = {
     LAST_NAME: "lastName",
     EMAIL_ID: "emailId",
     PHONE_NUMBER: "phoneNumber",
+    GENDER: "gender",
     CURRENT_LOCATION: "currentLocation",
     DOB: "dob",
     MARITAL_STATUS: "maritalStatus",

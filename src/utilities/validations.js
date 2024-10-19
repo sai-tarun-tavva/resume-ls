@@ -130,6 +130,7 @@ export const onboardingValidations = {
           );
     },
     dob: (value) => (isEmpty(value) ? validationMsgs.dob.empty : ""),
+    gender: (value) => (isEmpty(value) ? validationMsgs.gender.empty : ""),
     passportNumber: (value) =>
       isEmpty(value)
         ? validationMsgs.passportNumber.empty

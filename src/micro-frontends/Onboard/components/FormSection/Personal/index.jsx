@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FormActions from "../../FormActions";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
+import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
@@ -23,6 +24,7 @@ const Personal = () => {
         lastName,
         emailId,
         phoneNumber,
+        gender,
         dob,
         maritalStatus,
         passportNumber,
@@ -76,6 +78,14 @@ const Personal = () => {
     isFocused: isPhoneNumberFocused,
     forceValidations: forcePhoneNumberValidations,
   } = useInput(phoneNumber, validations.phone, transformPhoneNumber, true);
+
+  const {
+    value: genderValue,
+    handleInputChange: genderChange,
+    handleInputBlur: genderBlur,
+    error: genderError,
+    forceValidations: forceGenderValidations,
+  } = useInput(gender, validations.gender, undefined, true);
 
   const {
     value: dobValue,
@@ -191,6 +201,7 @@ const Personal = () => {
     !lastNameError &&
     !emailIdError &&
     !phoneNumberError &&
+    !genderError &&
     !dobError &&
     !passportNumberError &&
     !visaStatusError &&
@@ -205,6 +216,7 @@ const Personal = () => {
     !lastNameValue ||
     !emailIdValue ||
     !phoneNumberValue ||
+    !genderValue ||
     !dobValue ||
     !passportNumberValue ||
     !visaStatusValue ||
@@ -218,6 +230,7 @@ const Personal = () => {
     forceLastNameValidations();
     forceEmailValidations();
     forcePhoneNumberValidations();
+    forceGenderValidations();
     forceDobValidations();
     forcePassportNumberValidations();
     forceVisaStatusValidations();
@@ -268,6 +281,13 @@ const Personal = () => {
         section: SECTIONS.PERSONAL,
         field: FIELDS.PERSONAL.PHONE_NUMBER,
         value: phoneNumberValue,
+      })
+    );
+    dispatch(
+      inputActions.updateField({
+        section: SECTIONS.PERSONAL,
+        field: FIELDS.PERSONAL.GENDER,
+        value: genderValue,
       })
     );
     dispatch(
@@ -400,6 +420,23 @@ const Personal = () => {
             isRequired
           />
         </div>
+
+        <RadioGroup
+          id="gender"
+          label="Gender"
+          value={genderValue}
+          options={[
+            { value: "male", label: "Male" },
+            { value: "female", label: "Female" },
+            { value: "other", label: "Other" },
+          ]}
+          changeHandler={genderChange}
+          blurHandler={genderBlur}
+          error={genderError}
+          extraClass={classes.fullInputWidth}
+          isRequired
+        />
+
         <div className={classes.personalRow}>
           <InputV2
             id="dob"
