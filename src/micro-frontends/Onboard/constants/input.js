@@ -66,7 +66,13 @@ export const FIELDS = {
     REFERENCE_NAME: "referenceName",
   },
   RELOCATION: {
-    INTERESTED: "intereseted",
+    INTERESTED: {
+      VALUE: "interested",
+      OPTIONS: {
+        YES: "Yes",
+        NO: "No",
+      },
+    },
     PREFERENCE: "preference",
     ADDRESS: "address",
   },

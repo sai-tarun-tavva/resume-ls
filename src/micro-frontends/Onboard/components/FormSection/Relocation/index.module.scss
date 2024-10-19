@@ -1,0 +1,11 @@
+.relocationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 55vh;
+  overflow-y: auto;
+
+  .fullInputWidth {
+    width: 80%;
+  }
+}

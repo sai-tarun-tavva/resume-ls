@@ -1,6 +1,7 @@
 import Onboarding from "./Onboarding";
 import Personal from "./Personal";
 import CurrentLocation from "./Address";
+import Relocation from "./Relocation";
 
 const FormSection = ({ index }) => {
   switch (index) {
@@ -10,6 +11,8 @@ const FormSection = ({ index }) => {
       return <Personal />;
     case 2:
       return <CurrentLocation />;
+    case 3:
+      return <Relocation />;
     default:
       return null;
   }

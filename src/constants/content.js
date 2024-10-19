@@ -87,6 +87,9 @@ export const CONTENT = {
         empty: "Zipcode is required.",
         invalid: "Please enter a valid Zipcode.",
       },
+      stayPreference: {
+        empty: "Preference of stay is required.",
+      },
     },
     pageNotFound: {
       title: "404",

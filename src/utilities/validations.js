@@ -191,4 +191,8 @@ export const onboardingValidations = {
     state: (value) => (isEmpty(value) ? validationMsgs.state.empty : ""),
     country: (value) => (isEmpty(value) ? validationMsgs.country.empty : ""),
   },
+  relocation: {
+    stayPreference: (value) =>
+      isEmpty(value) ? validationMsgs.stayPreference.empty : "",
+  },
 };

@@ -21,8 +21,9 @@ export const useInput = (
 
   const errorMessage = checkForErrors(String(enteredValue).trim());
 
-  const handleInputChange = (event) => {
-    setEnteredValue(event.target.value);
+  const handleInputChange = (event, isCheckbox = false) => {
+    if (isCheckbox) setEnteredValue(event.target.checked);
+    else setEnteredValue(event.target.value);
     setDidEdit(false);
   };
 
