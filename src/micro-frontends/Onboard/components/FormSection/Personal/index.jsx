@@ -12,7 +12,7 @@ import {
   transformPhoneNumber,
   transformSSN,
 } from "../../../../../utilities";
-import { SECTIONS, FIELDS } from "../../../constants";
+import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
 const Personal = () => {
@@ -425,11 +425,7 @@ const Personal = () => {
           id="gender"
           label="Gender"
           value={genderValue}
-          options={[
-            { value: "male", label: "Male" },
-            { value: "female", label: "Female" },
-            { value: "other", label: "Other" },
-          ]}
+          options={OPTIONS.GENDER}
           changeHandler={genderChange}
           blurHandler={genderBlur}
           error={genderError}
@@ -457,13 +453,7 @@ const Personal = () => {
             id="maritalStatus"
             type="text"
             label="Marital Status"
-            options={[
-              { value: "", label: "Select marital status" },
-              { value: "single", label: "Single" },
-              { value: "married", label: "Married" },
-              { value: "divorced", label: "Divorced" },
-              { value: "widowed", label: "Widowed" },
-            ]}
+            options={OPTIONS.MARITAL_STATUS}
             value={maritalStatusValue}
             changeHandler={maritalStatusChange}
             blurHandler={maritalStatusBlur}
@@ -492,19 +482,7 @@ const Personal = () => {
             id="visaStatus"
             type="text"
             label="Visa Status"
-            options={[
-              { value: "", label: "Select Visa Status" },
-              { value: "F1", label: "F1" },
-              { value: "F1-OPT", label: "F1-OPT" },
-              { value: "F1-CPT", label: "F1-CPT" },
-              { value: "STEM-OPT", label: "STEM-OPT" },
-              { value: "H1B", label: "H1B" },
-              { value: "J1", label: "J1" },
-              {
-                value: "GreenCardPending",
-                label: "Green Card Application Pending",
-              },
-            ]}
+            options={OPTIONS.VISA_STATUS}
             value={visaStatusValue}
             changeHandler={visaStatusChange}
             blurHandler={visaStatusBlur}
@@ -549,11 +527,7 @@ const Personal = () => {
           id="photoIDType"
           type="text"
           label="Photo ID Type"
-          options={[
-            { value: "", label: "Select Photo ID Type" },
-            { value: "DL", label: "Driver's License" },
-            { value: "StateID", label: "State ID" },
-          ]}
+          options={OPTIONS.PHOTO_ID_TYPE}
           value={photoIDTypeValue}
           changeHandler={photoIDTypeChange}
           blurHandler={photoIDTypeBlur}

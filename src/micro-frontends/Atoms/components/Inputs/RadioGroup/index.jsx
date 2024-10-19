@@ -53,7 +53,6 @@ const RadioGroup = ({
               onBlur={blurHandler}
               onFocus={focusHandler}
               className={`${classes.radioInput} ${error ? classes.error : ""}`}
-              aria-required={isRequired}
             />
             <span className={classes.radioSlider}></span>
             <span className={classes.radioOptionLabel}>{option.label}</span>

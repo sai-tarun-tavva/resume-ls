@@ -6,7 +6,7 @@ import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
-import { SECTIONS, FIELDS } from "../../../constants";
+import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
 const Relocation = () => {
@@ -112,11 +112,7 @@ const Relocation = () => {
           <Select
             id="relocationPreference"
             label="Preference of stay"
-            options={[
-              { value: "", label: "Select stay preference" },
-              { value: "guesthouse", label: "Opt for guest house" },
-              { value: "other", label: "Other" },
-            ]}
+            options={OPTIONS.STAY_PREFERENCE}
             value={preferenceValue}
             changeHandler={preferenceChange}
             blurHandler={preferenceBlur}

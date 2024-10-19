@@ -5,7 +5,7 @@ import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
-import { SECTIONS, FIELDS } from "../../../constants";
+import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
 const Onboarding = () => {
@@ -87,11 +87,7 @@ const Onboarding = () => {
         <Select
           id="onboardingStatus"
           label="Status"
-          options={[
-            { value: "", label: "" },
-            { value: "inProgress", label: "In Progress" },
-            { value: "started", label: "Started" },
-          ]}
+          options={OPTIONS.ONBOARDING_STATUS}
           value={statusValue}
           changeHandler={statusChange}
           blurHandler={statusBlur}

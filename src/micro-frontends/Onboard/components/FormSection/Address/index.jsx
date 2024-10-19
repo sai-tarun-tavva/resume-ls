@@ -1,11 +1,24 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FormActions from "../../FormActions";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
+import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
-import { SECTIONS, FIELDS_ADDRESS, FIELDS } from "../../../constants";
+import { SECTIONS, FIELDS_ADDRESS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
+
+const getStateOptions = (country) => {
+  switch (country) {
+    case "india":
+      return OPTIONS.STATE_INDIA;
+    case "usa":
+      return OPTIONS.STATE_USA;
+    default:
+      return OPTIONS.STATE_USA;
+  }
+};
 
 const Address = () => {
   const dispatch = useDispatch();
@@ -55,6 +68,7 @@ const Address = () => {
     handleInputFocus: stateFocus,
     error: stateError,
     isFocused: isStateFocused,
+    resetValue: resetState,
     forceValidations: forceStateValidations,
   } = useInput(state, validations.state, undefined, true);
 
@@ -77,6 +91,10 @@ const Address = () => {
     isFocused: isZipcodeFocused,
     forceValidations: forceZipcodeValidations,
   } = useInput(zipcode, validations.zipcode, undefined, true);
+
+  useEffect(() => {
+    resetState();
+  }, [countryValue, resetState]);
 
   // Check if section is valid based on errors
   const isSectionValid =
@@ -181,11 +199,11 @@ const Address = () => {
             isRequired
           />
 
-          <InputV2
+          <Select
             id="currentState"
-            type="text"
             label="State"
             value={stateValue}
+            options={getStateOptions(countryValue)}
             changeHandler={stateChange}
             blurHandler={stateBlur}
             focusHandler={stateFocus}
@@ -197,11 +215,11 @@ const Address = () => {
         </div>
 
         <div className={classes.addressRow}>
-          <InputV2
+          <Select
             id="currentCountry"
-            type="text"
             label="Country"
             value={countryValue}
+            options={OPTIONS.COUNTRY}
             changeHandler={countryChange}
             blurHandler={countryBlur}
             focusHandler={countryFocus}
