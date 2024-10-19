@@ -118,10 +118,10 @@ const AuthForm = ({ haveAccount }) => {
     enableButtonLoading();
 
     const formData = new FormData();
-    formData.append("username", userNameValue);
-    formData.append("password", passwordValue);
+    formData.append("username", userNameValue.trim());
+    formData.append("password", passwordValue.trim());
     if (!haveAccount) {
-      formData.append("email", emailValue);
+      formData.append("email", emailValue.trim());
     }
 
     if (haveAccount) {

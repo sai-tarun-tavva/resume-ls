@@ -70,11 +70,11 @@ export const authValidations = {
     return isEmpty(value)
       ? validationMsgs.username.empty
       : undefined ||
-          (value.length < 3 ||
-          value.length > 20 ||
-          !REGEX.usernameRegex.test(value)
-            ? validationMsgs.username.invalid
-            : undefined);
+          validateWithRegex(
+            value,
+            REGEX.usernameRegex,
+            validationMsgs.username.invalid
+          );
   },
 
   password: (value) => {
@@ -104,5 +104,91 @@ export const onboardingValidations = {
   onboarding: {
     date: (value) => (isEmpty(value) ? validationMsgs.date.empty : ""),
     status: (value) => (isEmpty(value) ? validationMsgs.status.empty : ""),
+  },
+  personal: {
+    firstName: (value) =>
+      isEmpty(value) ? validationMsgs.firstName.empty : "",
+    lastName: (value) => (isEmpty(value) ? validationMsgs.lastName.empty : ""),
+    email: (value) => {
+      return isEmpty(value)
+        ? validationMsgs.email.empty
+        : undefined ||
+            validateWithRegex(
+              value,
+              REGEX.emailRegex,
+              validationMsgs.email.invalid
+            );
+    },
+    phone: (value) => {
+      const digitsOnly = value.replace(/[\s()-]+/g, "");
+      return isEmpty(value)
+        ? validationMsgs.phone.empty
+        : validateWithRegex(
+            digitsOnly,
+            REGEX.phoneRegex,
+            validationMsgs.phone.invalid
+          );
+    },
+    dob: (value) => (isEmpty(value) ? validationMsgs.dob.empty : ""),
+    passportNumber: (value) =>
+      isEmpty(value)
+        ? validationMsgs.passportNumber.empty
+        : validateWithRegex(
+            value,
+            REGEX.passportNumberRegex,
+            validationMsgs.passportNumber.invalid
+          ),
+    visaStatus: (value) =>
+      isEmpty(value) ? validationMsgs.visaStatus.empty : "",
+    eadNumber: (value) =>
+      isEmpty(value)
+        ? validationMsgs.eadNumber.empty
+        : validateWithRegex(
+            value,
+            REGEX.eadNumberRegex,
+            validationMsgs.eadNumber.invalid
+          ),
+    SSN: (value) =>
+      isEmpty(value)
+        ? validationMsgs.ssn.empty
+        : validateWithRegex(value, REGEX.ssnRegex, validationMsgs.ssn.invalid),
+    licenseNumber: (value) =>
+      isEmpty(value)
+        ? validationMsgs.licenseNumber.empty
+        : validateWithRegex(
+            value,
+            REGEX.licenseNumberRegex,
+            validationMsgs.licenseNumber.invalid
+          ),
+    stateIDNumber: (value) =>
+      isEmpty(value)
+        ? validationMsgs.stateIDNumber.empty
+        : validateWithRegex(
+            value,
+            REGEX.stateIDNumberRegex,
+            validationMsgs.stateIDNumber.invalid
+          ),
+    skypeId: (value) =>
+      isEmpty(value)
+        ? ""
+        : validateWithRegex(
+            value,
+            REGEX.skypeIDRegex,
+            validationMsgs.skypeIDNumber.invalid
+          ),
+  },
+  address: {
+    zipcode: (value) =>
+      isEmpty(value)
+        ? validationMsgs.zipcode.empty
+        : validateWithRegex(
+            value,
+            REGEX.zipCodeRegex,
+            validationMsgs.zipcode.invalid
+          ),
+    address1: (value) => (isEmpty(value) ? validationMsgs.address1.empty : ""),
+    city: (value) => (isEmpty(value) ? validationMsgs.city.empty : ""),
+    state: (value) => (isEmpty(value) ? validationMsgs.state.empty : ""),
+    country: (value) => (isEmpty(value) ? validationMsgs.country.empty : ""),
   },
 };

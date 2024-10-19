@@ -54,7 +54,7 @@ export const FIELDS = {
     DOB: "dob",
     MARITAL_STATUS: "maritalStatus",
     PASSPORT_NUMBER: "passportNumber",
-    VISA_TYPE: "visaType",
+    VISA_STATUS: "visaStatus",
     PHOTO_ID: {
       VALUE: "photoID",
       TYPE: "type",

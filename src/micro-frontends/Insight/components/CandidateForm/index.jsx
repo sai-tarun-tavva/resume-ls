@@ -300,12 +300,12 @@ const CandidateForm = () => {
 
     const formValues = new FormData();
     const fields = {
-      name: nameValue,
-      phone_numbers: phoneValue.replace(/\D/g, ""),
-      email: emailValue,
-      linkedin: linkedInValue,
-      location: cityValue,
-      region: stateValue,
+      name: nameValue.trim(),
+      phone_numbers: phoneValue.replace(/\D/g, "").trim(),
+      email: emailValue.trim(),
+      linkedin: linkedInValue.trim(),
+      location: cityValue.trim(),
+      region: stateValue.trim(),
       total_experience: +experienceValue,
     };
 
@@ -360,7 +360,7 @@ const CandidateForm = () => {
   const handleCreateSkill = async (event) => {
     event.preventDefault();
 
-    const { status } = await createNewSkill({ skills: [skillValue] });
+    const { status } = await createNewSkill({ skills: [skillValue.trim()] });
 
     if (status === STATUS_CODES.SUCCESS) {
       handleAddSkill(skillValue);

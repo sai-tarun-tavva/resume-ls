@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 0,
+  currentSectionIndex: 2,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -52,7 +52,7 @@ const initialState = {
       [FIELDS.PERSONAL.DOB]: "",
       [FIELDS.PERSONAL.MARITAL_STATUS]: "",
       [FIELDS.PERSONAL.PASSPORT_NUMBER]: "",
-      [FIELDS.PERSONAL.VISA_TYPE]: "",
+      [FIELDS.PERSONAL.VISA_STATUS]: "",
       [FIELDS.PERSONAL.PHOTO_ID.VALUE]: {
         [FIELDS.PERSONAL.PHOTO_ID.TYPE]: "",
         [FIELDS.PERSONAL.PHOTO_ID.NUMBER]: "",

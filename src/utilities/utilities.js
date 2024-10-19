@@ -51,6 +51,20 @@ export const isValidFile = (file) => {
 };
 
 /**
+ * Calculates and returns the date exactly 18 years ago from today.
+ * The returned date is formatted as YYYY-MM-DD.
+ *
+ * @returns {string} The date 18 years ago in the format YYYY-MM-DD.
+ */
+export const getEighteenYearsAgoDate = () => {
+  const today = new Date();
+  // Subtract 18 years from today's date
+  today.setFullYear(today.getFullYear() - 18);
+  // Return the date in the YYYY-MM-DD format
+  return today.toISOString().split("T")[0]; // Format the date as YYYY-MM-DD
+};
+
+/**
  * Highlights the matching text within a given string.
  * @param {string} text - The text to search and highlight within.
  * @param {string} highlight - The text to highlight, which can include multiple terms separated by commas.
@@ -246,6 +260,27 @@ export const transformPhoneNumber = (value, isCountryCode = false) => {
       6
     )}-${digitsOnly.slice(6)}`;
   }
+};
+
+/**
+ * Transforms a Social Security Number (SSN) into the xxx-xx-xxxx format.
+ * @param {string} value - The SSN as a string.
+ * @returns {string} The formatted SSN, or the original if not valid.
+ */
+export const transformSSN = (value) => {
+  // Remove all spaces and hyphens from the input
+  const digitsOnly = value.replace(/[\s-]+/g, "");
+
+  // Ensure we only reformat if we have exactly 9 digits
+  if (digitsOnly.length !== 9) {
+    return value; // Return the original input if it's not exactly 9 digits
+  }
+
+  // Format the SSN into xxx-xx-xxxx
+  return `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(
+    3,
+    5
+  )}-${digitsOnly.slice(5)}`;
 };
 
 /**

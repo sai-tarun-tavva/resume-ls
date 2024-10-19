@@ -24,7 +24,8 @@ const Onboarding = () => {
     handleInputFocus: dateFocus,
     error: dateError,
     isFocused: isDateFocused,
-  } = useInput(date, validations.date);
+    forceValidations: forceDateValidations,
+  } = useInput(date, validations.date, undefined, true);
 
   const {
     value: statusValue,
@@ -33,12 +34,23 @@ const Onboarding = () => {
     handleInputFocus: statusFocus,
     error: statusError,
     isFocused: isStatusFocused,
-  } = useInput(status, validations.status);
+    forceValidations: forceStatusValidations,
+  } = useInput(status, validations.status, undefined, true);
 
-  const isSectionValid = !!dateValue && !!statusValue;
+  const isSectionValid = !dateError && !statusError;
+  const isValuesEmpty = !dateValue || !statusValue;
+
+  const forceValidations = () => {
+    forceDateValidations();
+    forceStatusValidations();
+  };
 
   const nextClickHandler = (event) => {
     event.preventDefault();
+    if (isValuesEmpty) {
+      forceValidations();
+      return;
+    }
 
     dispatch(
       inputActions.updateField({
@@ -70,6 +82,7 @@ const Onboarding = () => {
           focusHandler={dateFocus}
           error={dateError}
           isFocused={isDateFocused}
+          isRequired
         />
         <Select
           id="onboardingStatus"
@@ -85,6 +98,7 @@ const Onboarding = () => {
           focusHandler={statusFocus}
           error={statusError}
           isFocused={isStatusFocused}
+          isRequired
         />
       </div>
       <FormActions

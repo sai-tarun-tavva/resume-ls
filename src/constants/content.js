@@ -42,6 +42,51 @@ export const CONTENT = {
       status: {
         empty: "Status is required.",
       },
+      firstName: {
+        empty: "First name is required.",
+      },
+      lastName: {
+        empty: "Last name is required.",
+      },
+      dob: {
+        empty: "Date of birth is required.",
+      },
+      passportNumber: {
+        empty: "Passport number is required.",
+        invalid: "Please enter a valid passport number.",
+      },
+      visaStatus: {
+        empty: "Visa status is required.",
+      },
+      eadNumber: {
+        empty: "EAD card number is required.",
+        invalid: "Please enter a valid EAD card number.",
+      },
+      ssn: {
+        empty: "SSN is required.",
+        invalid: "Please enter a valid SSN.",
+      },
+      licenseNumber: {
+        empty: "License number is required.",
+        invalid: "Please enter a valid license number.",
+      },
+      stateIDNumber: {
+        empty: "State ID number is required.",
+        invalid: "Please enter a valid state ID.",
+      },
+      skypeIDNumber: {
+        invalid: "Please enter a valid Skype ID.",
+      },
+      address1: {
+        empty: "Address Line 1 is required.",
+      },
+      country: {
+        empty: "Country is required.",
+      },
+      zipcode: {
+        empty: "Zipcode is required.",
+        invalid: "Please enter a valid Zipcode.",
+      },
     },
     pageNotFound: {
       title: "404",

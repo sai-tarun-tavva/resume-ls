@@ -11,11 +11,14 @@ const Select = ({
   focusHandler,
   error,
   isFocused,
+  isRequired = false,
   ...props
 }) => {
   return (
     <div className={`${classes.control} ${extraClass}`}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        {label} {isRequired && <span className={classes.required}>*</span>}
+      </label>
       <select
         id={id}
         className={`${isFocused ? classes.focused : ""} ${

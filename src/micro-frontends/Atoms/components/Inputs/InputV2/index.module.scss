@@ -14,6 +14,11 @@
     margin-left: 0.1rem;
   }
 
+  .required {
+    color: var(--error-color);
+    margin-left: 0.25rem;
+  }
+
   input {
     width: 100%;
     height: 3rem;
