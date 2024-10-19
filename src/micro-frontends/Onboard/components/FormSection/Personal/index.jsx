@@ -228,6 +228,12 @@ const Personal = () => {
     }
   };
 
+  const previousClickHandler = (event) => {
+    event.preventDefault();
+
+    dispatch(inputActions.decrementCurrentSectionIndex());
+  };
+
   const nextClickHandler = (event) => {
     event.preventDefault();
 
@@ -569,6 +575,7 @@ const Personal = () => {
 
       <FormActions
         isNextDisabled={!isSectionValid}
+        previousHandler={previousClickHandler}
         nextHandler={nextClickHandler}
       />
     </>

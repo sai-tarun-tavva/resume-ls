@@ -103,6 +103,12 @@ const Address = () => {
     forceZipcodeValidations();
   };
 
+  const previousClickHandler = (event) => {
+    event.preventDefault();
+
+    dispatch(inputActions.decrementCurrentSectionIndex());
+  };
+
   const nextClickHandler = (event) => {
     event.preventDefault();
 
@@ -223,6 +229,7 @@ const Address = () => {
 
       <FormActions
         isNextDisabled={!isSectionValid}
+        previousHandler={previousClickHandler}
         nextHandler={nextClickHandler}
       />
     </>
