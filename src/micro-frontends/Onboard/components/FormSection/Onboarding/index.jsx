@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import FormActions from "../../FormActions";
+import { useImperativeHandle, forwardRef } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
-import classes from "./index.module.scss";
 
-const Onboarding = () => {
+const Onboarding = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
@@ -37,7 +36,9 @@ const Onboarding = () => {
     forceValidations: forceStatusValidations,
   } = useInput(status, validations.status, undefined, true);
 
-  const isSectionValid = !dateError && !statusError;
+  const isSectionValid = () => {
+    return !dateError && !statusError && dateValue && statusValue;
+  };
   const isValuesEmpty = !dateValue || !statusValue;
 
   const forceValidations = () => {
@@ -45,11 +46,10 @@ const Onboarding = () => {
     forceStatusValidations();
   };
 
-  const nextClickHandler = (event) => {
-    event.preventDefault();
+  const submit = () => {
     if (isValuesEmpty) {
       forceValidations();
-      return;
+      return false; // return false to indicate the submission was invalid
     }
 
     dispatch(
@@ -66,44 +66,44 @@ const Onboarding = () => {
         value: statusValue,
       })
     );
-    dispatch(inputActions.incrementCurrentSectionIndex());
+    return true; // return true to indicate successful submission
   };
+
+  // Expose submit method to parent via ref
+  useImperativeHandle(ref, () => ({
+    isSectionValid,
+    submit,
+  }));
 
   return (
     <>
-      <div className={classes.onboardingContainer}>
-        <InputV2
-          id="onboardingDate"
-          type="date"
-          label="Date"
-          value={dateValue}
-          changeHandler={dateChange}
-          blurHandler={dateBlur}
-          focusHandler={dateFocus}
-          error={dateError}
-          isFocused={isDateFocused}
-          isRequired
-        />
-        <Select
-          id="onboardingStatus"
-          label="Status"
-          options={OPTIONS.ONBOARDING_STATUS}
-          value={statusValue}
-          changeHandler={statusChange}
-          blurHandler={statusBlur}
-          focusHandler={statusFocus}
-          error={statusError}
-          isFocused={isStatusFocused}
-          isRequired
-        />
-      </div>
-      <FormActions
-        isNextDisabled={!isSectionValid}
-        nextHandler={nextClickHandler}
+      <InputV2
+        id="onboardingDate"
+        type="date"
+        label="Date"
+        value={dateValue}
+        changeHandler={dateChange}
+        blurHandler={dateBlur}
+        focusHandler={dateFocus}
+        error={dateError}
+        isFocused={isDateFocused}
+        isRequired
+      />
+      <Select
+        id="onboardingStatus"
+        label="Status"
+        options={OPTIONS.ONBOARDING_STATUS}
+        value={statusValue}
+        changeHandler={statusChange}
+        blurHandler={statusBlur}
+        focusHandler={statusFocus}
+        error={statusError}
+        isFocused={isStatusFocused}
+        isRequired
       />
     </>
   );
-};
+});
 
 Onboarding.displayName = "FormOnboarding";
 export default Onboarding;
