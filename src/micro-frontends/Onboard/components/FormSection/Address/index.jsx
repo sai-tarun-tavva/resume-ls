@@ -154,24 +154,20 @@ const Address = forwardRef(
     const submit = () => {
       if (!isSectionValid) {
         forceValidations();
-        return false;
+        return { isAddressValid: false, address: null };
       }
 
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.CURRENT_LOCATION,
-          value: {
-            [FIELDS_ADDRESS.ADDRESS1]: address1Value,
-            [FIELDS_ADDRESS.ADDRESS2]: address2Value,
-            [FIELDS_ADDRESS.CITY]: cityValue,
-            [FIELDS_ADDRESS.STATE]: stateValue,
-            [FIELDS_ADDRESS.COUNTRY]: countryValue,
-            [FIELDS_ADDRESS.ZIPCODE]: zipcodeValue,
-          },
-        })
-      );
-      return true;
+      return {
+        isAddressValid: true,
+        address: {
+          [FIELDS_ADDRESS.ADDRESS1]: address1Value,
+          [FIELDS_ADDRESS.ADDRESS2]: address2Value,
+          [FIELDS_ADDRESS.CITY]: cityValue,
+          [FIELDS_ADDRESS.STATE]: stateValue,
+          [FIELDS_ADDRESS.COUNTRY]: countryValue,
+          [FIELDS_ADDRESS.ZIPCODE]: zipcodeValue,
+        },
+      };
     };
 
     // Expose methods to parent using ref

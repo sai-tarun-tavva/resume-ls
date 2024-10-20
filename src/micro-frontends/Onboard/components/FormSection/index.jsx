@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import Onboarding from "./Onboarding";
 import Personal from "./Personal";
-import CurrentLocation from "./Address";
+import CurrentLocation from "./CurrentLocation";
 import Relocation from "./Relocation";
 import Education from "./Education";
 
