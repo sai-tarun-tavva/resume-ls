@@ -9,7 +9,7 @@ import Button from "../../../../Atoms/components/Button";
 import classes from "./index.module.scss";
 
 const ListAdd = forwardRef(
-  ({ label, itemLabel, element, savedListItems }, ref) => {
+  ({ label, itemLabel, element, savedListItems, helperText = "" }, ref) => {
     const [items, setItems] = useState(savedListItems);
     const itemRefs = useRef(items.map(() => createRef()));
 
@@ -53,7 +53,12 @@ const ListAdd = forwardRef(
     return (
       <div className={classes.list}>
         <div className={classes.control}>
-          <h3 className={classes.label}>{label}</h3>
+          <h3 className={classes.label}>
+            {label}
+            {helperText && (
+              <small className={classes.helperText}>{helperText}</small>
+            )}
+          </h3>
           <Button
             type="button"
             className={classes.addButton}

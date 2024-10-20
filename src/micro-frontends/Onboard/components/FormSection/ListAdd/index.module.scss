@@ -8,6 +8,12 @@
 
     .label {
       color: var(--primary-color);
+
+      .helperText {
+        font-size: 0.75rem;
+        color: var(--text-light);
+        margin-left: 0.5rem;
+      }
     }
 
     .addButton {

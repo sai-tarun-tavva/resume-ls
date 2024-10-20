@@ -1,21 +1,10 @@
 import { useDispatch } from "react-redux";
 import { inputActions } from "../../store";
+import { SECTION_TITLES } from "../../constants";
 import classes from "./index.module.scss";
 
 const FormProgress = ({ currentSectionIndex }) => {
   const dispatch = useDispatch();
-  const titles = [
-    "Onboarding",
-    "Personal",
-    "Current Location",
-    "Relocation",
-    "Education",
-    "Profession",
-    "Offer Letter",
-    "US Travel and Stay",
-    "Emergency Contacts",
-    "Additional Information",
-  ];
 
   const titleClickHandler = (index) => {
     if (index < currentSectionIndex)
@@ -25,7 +14,7 @@ const FormProgress = ({ currentSectionIndex }) => {
   return (
     <div className={classes.progressContainer}>
       <ul className={classes.progressList}>
-        {titles.map((title, index) => (
+        {SECTION_TITLES.map((title, index) => (
           <li
             key={index}
             className={`

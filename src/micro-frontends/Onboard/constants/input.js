@@ -22,6 +22,19 @@ export const FIELDS_REFERENCE = {
   COMPANY: "company",
 };
 
+export const SECTION_TITLES = [
+  "Onboarding",
+  "Personal",
+  "Current Location",
+  "Relocation",
+  "Education",
+  "Profession",
+  "Offer Letter",
+  "US Travel and Stay",
+  "Emergency Contacts",
+  "Additional Information",
+];
+
 export const SECTIONS = {
   RECORD: "record",
   ONBOARDING: "onboarding",
