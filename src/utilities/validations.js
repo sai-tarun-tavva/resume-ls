@@ -196,4 +196,38 @@ export const onboardingValidations = {
     stayPreference: (value) =>
       isEmpty(value) ? validationMsgs.stayPreference.empty : "",
   },
+  education: {
+    sevisID: (value) =>
+      isEmpty(value)
+        ? validationMsgs.sevisID.empty
+        : validateWithRegex(
+            value,
+            REGEX.sevisIDRegex,
+            validationMsgs.sevisID.invalid
+          ),
+    dsoName: (value) => (isEmpty(value) ? validationMsgs.dsoName.empty : ""),
+    dsoEmail: (value) =>
+      isEmpty(value)
+        ? validationMsgs.email.empty
+        : validateWithRegex(
+            value,
+            REGEX.emailRegex,
+            validationMsgs.email.invalid
+          ),
+    dsoPhone: (value) => {
+      const digitsOnly = value.replace(/[\s()-]+/g, "");
+      return isEmpty(value)
+        ? validationMsgs.phone.empty
+        : validateWithRegex(
+            digitsOnly,
+            REGEX.phoneRegex,
+            validationMsgs.phone.invalid
+          );
+    },
+    universityName: (value) =>
+      isEmpty(value) ? validationMsgs.universityName.empty : "",
+    year: (value) => (isEmpty(value) ? validationMsgs.passedYear.empty : ""),
+    universityStream: (value) =>
+      isEmpty(value) ? validationMsgs.stream.empty : "",
+  },
 };

@@ -86,6 +86,7 @@ export const FIELDS = {
       PHONE: "phone",
     },
     GRADUATED_UNIVERSITY: {
+      VALUE: "graduatedUniversity",
       NAME: "name",
       ADDRESS: "address",
       PASSED_YEAR: "passedYear",

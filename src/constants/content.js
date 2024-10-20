@@ -93,6 +93,32 @@ export const CONTENT = {
       stayPreference: {
         empty: "Preference of stay is required.",
       },
+      sevisID: {
+        empty: "SEVIS ID is required.",
+        invalid:
+          "SEVIS ID must start with 'N' and be followed by exactly 10 digits.",
+      },
+      dsoName: {
+        empty: "DSO Name is required.",
+      },
+      dsoEmail: {
+        empty: "DSO Email is required.",
+        invalid: "Please enter a valid DSO email address.",
+      },
+      dsoPhone: {
+        empty: "DSO Phone number is required.",
+        invalid: "Please enter a valid DSO phone number.",
+      },
+      universityName: {
+        empty: "University Name is required.",
+      },
+      passedYear: {
+        empty: "Passed Year is required.",
+        invalid: "Please enter a valid year.",
+      },
+      stream: {
+        empty: "Stream is required.",
+      },
     },
     pageNotFound: {
       title: "404",

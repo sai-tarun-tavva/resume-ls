@@ -1,30 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FormActions from "../../FormActions";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
+import Address from "../Address";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
-const Relocation = () => {
+const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
       relocation: { interested, preference },
     },
   } = useSelector((state) => state.input);
+  const addressRef = useRef(); // Create a ref to call Address validation
 
   const { relocation: validations } = onboardingValidations;
 
+  // Relocation validation and input handling
   const {
     value: interestedValue,
     handleInputChange: interestedChange,
     handleInputBlur: interestedBlur,
-    error: interestedError,
-    forceValidations: forceInterestedValidations,
   } = useInput(
     interested === FIELDS.RELOCATION.INTERESTED.OPTIONS.YES ? true : false
   );
@@ -44,95 +44,91 @@ const Relocation = () => {
     resetPreference();
   }, [interestedValue, resetPreference]);
 
-  // Check if section is valid based on errors
-  const isSectionValid =
-    !interestedError && (interestedValue ? !preferenceError : true);
+  useEffect(() => {
+    addressRef.current?.resetValues?.();
+  }, [preferenceValue]);
 
-  // Check if values are empty to force validation
-  const isValuesEmpty = interestedValue ? !preferenceValue : false;
+  // Group all errors and values for relocation
+  const relocationErrors = [interestedValue ? preferenceError : false];
+  const relocationValues = [interestedValue ? preferenceValue : true];
 
-  // Force all validations
-  const forceValidations = () => {
-    forceInterestedValidations();
+  const noRelocationErrors = relocationErrors.every((error) => !error);
+  const allRelocationValuesPresent = relocationValues.every((value) => value);
+
+  const isRelocationValid = noRelocationErrors && allRelocationValuesPresent;
+
+  // Force Relocation validations
+  const forceRelocationValidations = () => {
     if (interestedValue) forcePreferenceValidations();
   };
 
-  const previousClickHandler = (event) => {
-    event.preventDefault();
-
-    dispatch(inputActions.decrementCurrentSectionIndex());
-  };
-
-  const nextClickHandler = (event) => {
-    event.preventDefault();
-
-    if (isValuesEmpty) {
-      forceValidations();
-      return;
+  const submit = () => {
+    const isAddressValid = addressRef.current?.submit?.(); // Check if Address is valid
+    if (!isRelocationValid || isAddressValid === false) {
+      // isAddressValid is undefined when unmounted or not rendered
+      forceRelocationValidations();
+      addressRef.current?.forceValidations(); // Force Address validation
+      return false;
     }
 
-    if (isSectionValid) {
+    // Dispatch actions for Relocation data
+    dispatch(
+      inputActions.updateField({
+        section: SECTIONS.RELOCATION,
+        field: FIELDS.RELOCATION.INTERESTED.VALUE,
+        value: interestedValue
+          ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
+          : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
+      })
+    );
+    if (interestedValue) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.RELOCATION,
-          field: FIELDS.RELOCATION.INTERESTED.VALUE,
-          value: interestedValue
-            ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
-            : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
+          field: FIELDS.RELOCATION.PREFERENCE,
+          value: preferenceValue,
         })
       );
-      if (interestedValue)
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.RELOCATION,
-            field: FIELDS.RELOCATION.PREFERENCE,
-            value: preferenceValue,
-          })
-        );
-      dispatch(inputActions.incrementCurrentSectionIndex());
     }
+    return true;
   };
+
+  // Expose methods to parent using ref
+  useImperativeHandle(ref, () => ({
+    submit,
+  }));
 
   return (
     <>
-      <div className={classes.relocationContainer}>
-        <Checkbox
-          id="relocationInterested"
-          label="Interested in Relocation?"
-          value={interestedValue}
-          changeHandler={interestedChange}
-          blurHandler={interestedBlur}
-          error={interestedError}
-          helperText="(Considered yes by default)"
+      <Checkbox
+        id="relocationInterested"
+        label="Interested in Relocation?"
+        value={interestedValue}
+        changeHandler={interestedChange}
+        blurHandler={interestedBlur}
+        helperText="(Considered yes by default)"
+        extraClass={classes.fullInputWidth}
+        isRequired
+      />
+      {interestedValue && (
+        <Select
+          id="relocationPreference"
+          label="Preference of stay"
+          options={OPTIONS.STAY_PREFERENCE}
+          value={preferenceValue}
+          changeHandler={preferenceChange}
+          blurHandler={preferenceBlur}
+          focusHandler={preferenceFocus}
+          error={preferenceError}
+          isFocused={isPreferenceFocused}
           extraClass={classes.fullInputWidth}
           isRequired
         />
-
-        {interestedValue && (
-          <Select
-            id="relocationPreference"
-            label="Preference of stay"
-            options={OPTIONS.STAY_PREFERENCE}
-            value={preferenceValue}
-            changeHandler={preferenceChange}
-            blurHandler={preferenceBlur}
-            focusHandler={preferenceFocus}
-            error={preferenceError}
-            isFocused={isPreferenceFocused}
-            extraClass={classes.fullInputWidth}
-            isRequired
-          />
-        )}
-      </div>
-
-      <FormActions
-        isNextDisabled={!isSectionValid}
-        previousHandler={previousClickHandler}
-        nextHandler={nextClickHandler}
-      />
+      )}
+      {preferenceValue === "other" && <Address ref={addressRef} />}
     </>
   );
-};
+});
 
 Relocation.displayName = "FormRelocation";
 export default Relocation;

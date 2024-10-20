@@ -1,9 +1,9 @@
-import { useImperativeHandle, forwardRef, useEffect } from "react";
+import { useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
-import { inputActions } from "../../../store";
+import { defaultAddress, inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
 import { SECTIONS, FIELDS_ADDRESS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
@@ -39,6 +39,7 @@ const Address = forwardRef((_, ref) => {
     error: address1Error,
     isFocused: isAddress1Focused,
     forceValidations: forceAddress1Validations,
+    resetValue: resetAddress1,
   } = useInput(address1, validations.address1, undefined, true);
 
   const {
@@ -48,6 +49,7 @@ const Address = forwardRef((_, ref) => {
     handleInputFocus: address2Focus,
     error: address2Error,
     isFocused: isAddress2Focused,
+    resetValue: resetAddress2,
   } = useInput(address2);
 
   const {
@@ -58,6 +60,7 @@ const Address = forwardRef((_, ref) => {
     error: cityError,
     isFocused: isCityFocused,
     forceValidations: forceCityValidations,
+    resetValue: resetCity,
   } = useInput(city, validations.city, undefined, true);
 
   const {
@@ -79,6 +82,7 @@ const Address = forwardRef((_, ref) => {
     error: countryError,
     isFocused: isCountryFocused,
     forceValidations: forceCountryValidations,
+    resetValue: resetCountry,
   } = useInput(country, validations.country, undefined, true);
 
   const {
@@ -89,11 +93,8 @@ const Address = forwardRef((_, ref) => {
     error: zipcodeError,
     isFocused: isZipcodeFocused,
     forceValidations: forceZipcodeValidations,
+    resetValue: resetZipcode,
   } = useInput(zipcode, validations.zipcode, undefined, true);
-
-  useEffect(() => {
-    resetState();
-  }, [countryValue, resetState]);
 
   // Group all errors and values dynamically
   const allErrors = [
@@ -125,6 +126,23 @@ const Address = forwardRef((_, ref) => {
     forceZipcodeValidations();
   };
 
+  const resetValues = () => {
+    resetAddress1();
+    resetAddress2();
+    resetCity();
+    resetState();
+    resetCountry();
+    resetZipcode();
+
+    dispatch(
+      inputActions.updateField({
+        section: SECTIONS.PERSONAL,
+        field: FIELDS.PERSONAL.CURRENT_LOCATION,
+        value: defaultAddress,
+      })
+    );
+  };
+
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();
@@ -151,6 +169,8 @@ const Address = forwardRef((_, ref) => {
   // Expose methods to parent using ref
   useImperativeHandle(ref, () => ({
     submit,
+    forceValidations,
+    resetValues,
   }));
 
   return (

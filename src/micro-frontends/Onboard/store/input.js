@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 3,
+  currentSectionIndex: 4,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -76,7 +76,7 @@ const initialState = {
         [FIELDS.EDUCATION.DSO.EMAIL]: "",
         [FIELDS.EDUCATION.DSO.PHONE]: "",
       },
-      [FIELDS.EDUCATION.GRADUATED_UNIVERSITY]: {
+      [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE]: {
         [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
         [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
         [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_YEAR]: "",
