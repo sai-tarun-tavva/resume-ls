@@ -1,11 +1,9 @@
 import { useImperativeHandle, forwardRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
-import { defaultAddress, inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
-import { SECTIONS, FIELDS_ADDRESS, FIELDS, OPTIONS } from "../../../constants";
+import { FIELDS_ADDRESS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
 const getStateOptions = (country) => {
@@ -20,23 +18,14 @@ const getStateOptions = (country) => {
 };
 
 const Address = forwardRef(
-  ({ heading = "Where are you currently located?" }, ref) => {
-    const dispatch = useDispatch();
-    const {
-      data: {
-        personal: {
-          currentLocation: {
-            address1,
-            address2,
-            city,
-            state,
-            country,
-            zipcode,
-          },
-        },
-      },
-    } = useSelector((state) => state.input);
-
+  (
+    {
+      heading = "",
+      defaultValues: { address1, address2, city, state, country, zipcode },
+      id = "",
+    },
+    ref
+  ) => {
     const { address: validations } = onboardingValidations;
 
     const {
@@ -141,14 +130,6 @@ const Address = forwardRef(
       resetState();
       resetCountry();
       resetZipcode();
-
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.CURRENT_LOCATION,
-          value: defaultAddress,
-        })
-      );
     };
 
     const submit = () => {
@@ -182,7 +163,7 @@ const Address = forwardRef(
         {heading && <h4 className={classes.heading}>{heading}</h4>}
         <div className={classes.addressRow}>
           <InputV2
-            id="currentAddress1"
+            id={`${id}-address1`}
             type="text"
             label="Address Line 1"
             value={address1Value}
@@ -196,7 +177,7 @@ const Address = forwardRef(
           />
 
           <InputV2
-            id="currentAddress2"
+            id={`${id}-address2`}
             type="text"
             label="Address Line 2"
             value={address2Value}
@@ -211,7 +192,7 @@ const Address = forwardRef(
 
         <div className={classes.addressRow}>
           <InputV2
-            id="currentCity"
+            id={`${id}-city`}
             type="text"
             label="City"
             value={cityValue}
@@ -225,7 +206,7 @@ const Address = forwardRef(
           />
 
           <Select
-            id="currentState"
+            id={`${id}-state`}
             label="State"
             value={stateValue}
             options={getStateOptions(countryValue)}
@@ -241,7 +222,7 @@ const Address = forwardRef(
 
         <div className={classes.addressRow}>
           <Select
-            id="currentCountry"
+            id={`${id}-country`}
             label="Country"
             value={countryValue}
             options={OPTIONS.COUNTRY}
@@ -255,7 +236,7 @@ const Address = forwardRef(
           />
 
           <InputV2
-            id="currentZipcode"
+            id={`${id}-zipcode`}
             type="text"
             label="Zipcode"
             value={zipcodeValue}

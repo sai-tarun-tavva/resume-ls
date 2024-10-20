@@ -4,7 +4,7 @@ import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Address from "../Address";
 import { useInput } from "../../../../Atoms/hooks";
-import { inputActions } from "../../../store";
+import { defaultAddress, inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
@@ -13,7 +13,7 @@ const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
-      relocation: { interested, preference },
+      relocation: { interested, preference, address },
     },
   } = useSelector((state) => state.input);
   const addressRef = useRef(); // Create a ref to call Address validation
@@ -46,7 +46,15 @@ const Relocation = forwardRef((_, ref) => {
 
   useEffect(() => {
     addressRef.current?.resetValues?.();
-  }, [preferenceValue]);
+    if (preferenceValue !== "other")
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.RELOCATION,
+          field: FIELDS.RELOCATION.ADDRESS,
+          value: defaultAddress,
+        })
+      );
+  }, [preferenceValue, dispatch]);
 
   // Group all errors and values for relocation
   const relocationErrors = [interestedValue ? preferenceError : false];
@@ -63,7 +71,7 @@ const Relocation = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    const isAddressValid = addressRef.current?.submit?.(); // Check if Address is valid
+    const { isAddressValid, address } = addressRef.current?.submit?.(); // Check if Address is valid
 
     if (!isRelocationValid || isAddressValid === false) {
       // isAddressValid is undefined when unmounted or not rendered
@@ -91,6 +99,13 @@ const Relocation = forwardRef((_, ref) => {
         })
       );
     }
+    dispatch(
+      inputActions.updateField({
+        section: SECTIONS.RELOCATION,
+        field: FIELDS.RELOCATION.ADDRESS,
+        value: address,
+      })
+    );
     return true;
   };
 
@@ -129,6 +144,8 @@ const Relocation = forwardRef((_, ref) => {
       {preferenceValue === "other" && (
         <Address
           heading="Which address are you willing to relocate to?"
+          defaultValues={address}
+          id="relocation"
           ref={addressRef}
         />
       )}

@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Address from "../Address";
 import { inputActions } from "../../../store";
 import { FIELDS, SECTIONS } from "../../../constants";
@@ -7,6 +7,11 @@ import { FIELDS, SECTIONS } from "../../../constants";
 const CurrentLocation = forwardRef((_, ref) => {
   const addressRef = useRef();
   const dispatch = useDispatch();
+  const {
+    data: {
+      personal: { currentLocation },
+    },
+  } = useSelector((state) => state.input);
 
   const submit = () => {
     const { isAddressValid, address } = addressRef.current?.submit?.(); // Check if Address is valid
@@ -32,7 +37,14 @@ const CurrentLocation = forwardRef((_, ref) => {
     submit,
   }));
 
-  return <Address ref={addressRef} />;
+  return (
+    <Address
+      heading="Where are you currently located?"
+      defaultValues={currentLocation}
+      id="current"
+      ref={addressRef}
+    />
+  );
 });
 
 CurrentLocation.displayName = "CurrentLocation";

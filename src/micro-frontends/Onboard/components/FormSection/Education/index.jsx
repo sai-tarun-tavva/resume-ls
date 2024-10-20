@@ -20,7 +20,7 @@ const Education = forwardRef((_, ref) => {
         dso: { name: dsoName, email: dsoEmail, phone: dsoPhone },
         graduatedUniversity: {
           name: universityName,
-          //   address: universityAddress,
+          address: universityAddress,
           passedYear,
           stream,
           //   additionalCertifications,
@@ -138,7 +138,7 @@ const Education = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    const isAddressValid = addressRef.current?.submit?.(); // Check if Address is valid
+    const { isAddressValid, address } = addressRef.current?.submit?.(); // Check if Address is valid
 
     if (!isSectionValid || !isAddressValid) {
       forceValidations();
@@ -172,6 +172,7 @@ const Education = forwardRef((_, ref) => {
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: universityNameValue,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_YEAR]: passedYearValue,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
+          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
         },
       })
     );
@@ -285,7 +286,12 @@ const Education = forwardRef((_, ref) => {
         extraClass={classes.fullInputWidth}
         isRequired
       />
-      <Address heading="University Address" ref={addressRef} />
+      <Address
+        heading="University Address"
+        defaultValues={universityAddress}
+        id="university"
+        ref={addressRef}
+      />
     </>
   );
 });
