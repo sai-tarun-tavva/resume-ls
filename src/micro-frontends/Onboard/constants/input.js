@@ -89,7 +89,7 @@ export const FIELDS = {
       VALUE: "graduatedUniversity",
       NAME: "name",
       ADDRESS: "address",
-      PASSED_YEAR: "passedYear",
+      PASSED_MONTH_YEAR: "passedMonthAndYear",
       STREAM: "stream",
       ADDITIONAL_CERTIFICATIONS: "additionalCertifications",
     },

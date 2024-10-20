@@ -112,9 +112,8 @@ export const CONTENT = {
       universityName: {
         empty: "University Name is required.",
       },
-      passedYear: {
-        empty: "Passed Year is required.",
-        invalid: "Please enter a valid year.",
+      passedMonthAndYear: {
+        empty: "Passed month and year are required.",
       },
       stream: {
         empty: "Stream is required.",

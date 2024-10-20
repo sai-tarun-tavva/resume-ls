@@ -21,7 +21,7 @@ const Education = forwardRef((_, ref) => {
         graduatedUniversity: {
           name: universityName,
           address: universityAddress,
-          passedYear,
+          passedMonthAndYear,
           stream,
           //   additionalCertifications,
         },
@@ -83,14 +83,14 @@ const Education = forwardRef((_, ref) => {
   } = useInput(universityName, validations.universityName, undefined, true);
 
   const {
-    value: passedYearValue,
-    handleInputChange: passedYearChange,
-    handleInputBlur: passedYearBlur,
-    handleInputFocus: passedYearFocus,
-    error: passedYearError,
-    isFocused: isPassedYearFocused,
-    forceValidations: forcePassedYearValidations,
-  } = useInput(passedYear, validations.year, undefined, true);
+    value: passedMonthAndYearValue,
+    handleInputChange: passedMonthAndYearChange,
+    handleInputBlur: passedMonthAndYearBlur,
+    handleInputFocus: passedMonthAndYearFocus,
+    error: passedMonthAndYearError,
+    isFocused: isPassedMonthAndYearFocused,
+    forceValidations: forcePassedMonthAndYearValidations,
+  } = useInput(passedMonthAndYear, validations.year, undefined, true);
 
   const {
     value: streamValue,
@@ -108,7 +108,7 @@ const Education = forwardRef((_, ref) => {
     dsoEmailError,
     dsoPhoneError,
     universityNameError,
-    passedYearError,
+    passedMonthAndYearError,
     streamError,
   ];
 
@@ -118,7 +118,7 @@ const Education = forwardRef((_, ref) => {
     dsoEmailValue,
     dsoPhoneValue,
     universityNameValue,
-    passedYearValue,
+    passedMonthAndYearValue,
     streamValue,
   ];
 
@@ -133,7 +133,7 @@ const Education = forwardRef((_, ref) => {
     forceDSOEmailValidations();
     forceDSOPhoneValidations();
     forceUniversityNameValidations();
-    forcePassedYearValidations();
+    forcePassedMonthAndYearValidations();
     forceStreamValidations();
   };
 
@@ -170,7 +170,8 @@ const Education = forwardRef((_, ref) => {
         field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
         value: {
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: universityNameValue,
-          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_YEAR]: passedYearValue,
+          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]:
+            passedMonthAndYearValue,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
         },
@@ -260,15 +261,15 @@ const Education = forwardRef((_, ref) => {
         />
 
         <InputV2
-          id="graduatedUniversityPassedYear"
-          label="Passed Year"
-          type="date"
-          value={passedYearValue}
-          changeHandler={passedYearChange}
-          blurHandler={passedYearBlur}
-          focusHandler={passedYearFocus}
-          error={passedYearError}
-          isFocused={isPassedYearFocused}
+          id="graduatedUniversityPassedMonthAndYear"
+          label="Passed month and year"
+          type="month"
+          value={passedMonthAndYearValue}
+          changeHandler={passedMonthAndYearChange}
+          blurHandler={passedMonthAndYearBlur}
+          focusHandler={passedMonthAndYearFocus}
+          error={passedMonthAndYearError}
+          isFocused={isPassedMonthAndYearFocused}
           extraClass={classes.halfInputWidth}
           isRequired
         />

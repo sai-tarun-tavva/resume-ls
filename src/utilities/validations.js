@@ -226,7 +226,8 @@ export const onboardingValidations = {
     },
     universityName: (value) =>
       isEmpty(value) ? validationMsgs.universityName.empty : "",
-    year: (value) => (isEmpty(value) ? validationMsgs.passedYear.empty : ""),
+    year: (value) =>
+      isEmpty(value) ? validationMsgs.passedMonthAndYear.empty : "",
     universityStream: (value) =>
       isEmpty(value) ? validationMsgs.stream.empty : "",
   },
