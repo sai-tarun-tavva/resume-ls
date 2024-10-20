@@ -1,0 +1,49 @@
+.list {
+  width: 80%;
+  margin-bottom: 1.5rem;
+  .control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .label {
+      color: var(--primary-color);
+    }
+
+    .addButton {
+      background-color: transparent;
+      color: var(--primary-color);
+      font-size: 2rem;
+      box-shadow: unset;
+
+      i::before {
+        box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+      }
+
+      &:hover {
+        color: var(--primary-hover);
+      }
+    }
+  }
+
+  .listItem {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+
+    .removeButton {
+      background-color: transparent;
+      color: var(--primary-color);
+      font-size: 1rem;
+      box-shadow: unset;
+
+      i::before {
+        box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+      }
+
+      &:hover {
+        color: var(--primary-hover);
+      }
+    }
+  }
+}

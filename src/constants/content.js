@@ -118,6 +118,9 @@ export const CONTENT = {
       stream: {
         empty: "Stream is required.",
       },
+      certificate: {
+        empty: "Certificate is required.",
+      },
     },
     pageNotFound: {
       title: "404",

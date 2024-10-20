@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ListAdd from "../ListAdd";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Address from "../Address";
 import { useInput } from "../../../../Atoms/hooks";
@@ -10,6 +11,7 @@ import {
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS } from "../../../constants";
 import classes from "./index.module.scss";
+import Certificate from "../../FormListItems/Certificate";
 
 const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -23,12 +25,13 @@ const Education = forwardRef((_, ref) => {
           address: universityAddress,
           passedMonthAndYear,
           stream,
-          //   additionalCertifications,
+          additionalCertifications,
         },
       },
     },
   } = useSelector((state) => state.input);
   const addressRef = useRef();
+  const listRef = useRef();
 
   const { education: validations } = onboardingValidations;
 
@@ -138,11 +141,16 @@ const Education = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    const { isAddressValid, address } = addressRef.current?.submit?.(); // Check if Address is valid
+    const { isAddressValid, address } = addressRef?.current?.submit?.(); // Check if Address is valid
+    const { isSectionValid: areCertificatesValid, listItems } =
+      listRef?.current?.submit?.(); // ListAdd validation
 
-    if (!isSectionValid || !isAddressValid) {
+    console.log(isSectionValid);
+
+    if (!isSectionValid || !isAddressValid || !areCertificatesValid) {
       forceValidations();
-      addressRef.current?.forceValidations(); // Force Address validation
+      addressRef.current?.forceValidations?.(); // Force Address validation
+      listRef?.current?.forceValidations?.();
       return false;
     }
 
@@ -174,6 +182,8 @@ const Education = forwardRef((_, ref) => {
             passedMonthAndYearValue,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
+          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
+            listItems,
         },
       })
     );
@@ -292,6 +302,12 @@ const Education = forwardRef((_, ref) => {
         defaultValues={universityAddress}
         id="university"
         ref={addressRef}
+      />
+      <ListAdd
+        label="Any certifications?"
+        element={(props) => <Certificate {...props} />}
+        savedListItems={additionalCertifications}
+        ref={listRef}
       />
     </>
   );
