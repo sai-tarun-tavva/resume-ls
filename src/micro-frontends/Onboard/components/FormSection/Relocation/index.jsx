@@ -71,7 +71,9 @@ const Relocation = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    const { isAddressValid, address } = addressRef.current?.submit?.(); // Check if Address is valid
+    const addressSubmitResult = addressRef.current?.submit?.();
+    const isAddressValid = addressSubmitResult?.isAddressValid;
+    const address = addressSubmitResult?.address;
 
     if (!isRelocationValid || isAddressValid === false) {
       // isAddressValid is undefined when unmounted or not rendered
@@ -99,13 +101,15 @@ const Relocation = forwardRef((_, ref) => {
         })
       );
     }
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.RELOCATION,
-        field: FIELDS.RELOCATION.ADDRESS,
-        value: address,
-      })
-    );
+    if (address) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.RELOCATION,
+          field: FIELDS.RELOCATION.ADDRESS,
+          value: address,
+        })
+      );
+    }
     return true;
   };
 

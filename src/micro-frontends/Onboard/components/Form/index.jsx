@@ -9,7 +9,20 @@ import classes from "./index.module.scss";
 const Form = () => {
   const dispatch = useDispatch();
   const { currentSectionIndex: current } = useSelector((state) => state.input);
-  const formSectionRef = useRef();
+
+  const onboardingRef = useRef();
+  const personalRef = useRef();
+  const locationRef = useRef();
+  const relocationRef = useRef();
+  const educationRef = useRef();
+
+  const refs = {
+    onboarding: onboardingRef,
+    personal: personalRef,
+    location: locationRef,
+    relocation: relocationRef,
+    education: educationRef,
+  };
 
   const previousClickHandler = (event) => {
     event.preventDefault();
@@ -18,7 +31,22 @@ const Form = () => {
 
   const nextClickHandler = (event) => {
     event.preventDefault();
-    const hasSectionNoErrors = formSectionRef.current?.submit?.();
+
+    // Check the current section and call the appropriate ref's submit method
+    let hasSectionNoErrors = false;
+
+    if (current === 0) {
+      hasSectionNoErrors = onboardingRef.current?.submit?.();
+    } else if (current === 1) {
+      hasSectionNoErrors = personalRef.current?.submit?.();
+    } else if (current === 2) {
+      hasSectionNoErrors = locationRef.current?.submit?.();
+    } else if (current === 3) {
+      hasSectionNoErrors = relocationRef.current?.submit?.();
+    } else if (current === 4) {
+      hasSectionNoErrors = educationRef.current?.submit?.();
+    }
+
     if (hasSectionNoErrors) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
@@ -28,8 +56,8 @@ const Form = () => {
     <div className={classes.formContainer}>
       <FormProgress currentSectionIndex={current} />
       <form className={classes.form}>
-        <div className={classes.sectionContainer}>
-          <FormSection index={current} ref={formSectionRef} />
+        <div className={classes.carouselContainer}>
+          <FormSection currentSectionIndex={current} refs={refs} />
         </div>
         <FormActions
           previousHandler={previousClickHandler}
