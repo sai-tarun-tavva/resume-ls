@@ -103,6 +103,7 @@ export const FIELDS = {
   },
   OFFER_LETTER: {
     STATUS: "status",
+    MARKETING_NAME: "marketingName",
     LAST_UPDATED: "lastUpdated",
     DESIGNATION: "designation",
     START_DATE: "startDate",

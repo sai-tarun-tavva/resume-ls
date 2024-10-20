@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ListAdd from "../ListAdd";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Address from "../Address";
+import SingleInput from "../../FormListItems/SingleInput";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
@@ -11,7 +12,6 @@ import {
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS } from "../../../constants";
 import classes from "./index.module.scss";
-import Certificate from "../../FormListItems/Certificate";
 
 const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -145,7 +145,7 @@ const Education = forwardRef((_, ref) => {
     const { isSectionValid: areCertificatesValid, listItems } =
       listRef?.current?.submit?.(); // ListAdd validation
 
-    console.log(isSectionValid);
+    console.log(areCertificatesValid);
 
     if (!isSectionValid || !isAddressValid || !areCertificatesValid) {
       forceValidations();
@@ -305,7 +305,8 @@ const Education = forwardRef((_, ref) => {
       />
       <ListAdd
         label="Any certifications?"
-        element={(props) => <Certificate {...props} />}
+        itemLabel="Certificate"
+        element={(props) => <SingleInput {...props} />}
         savedListItems={additionalCertifications}
         ref={listRef}
       />
