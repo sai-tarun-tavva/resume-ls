@@ -1,6 +1,5 @@
-import { useEffect } from "react";
+import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FormActions from "../../FormActions";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -15,7 +14,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
-const Personal = () => {
+const Personal = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
@@ -193,38 +192,42 @@ const Personal = () => {
 
   useEffect(() => {
     resetPhotoIDNumber();
-  }, [photoIDTypeValue, resetPhotoIDNumber, dispatch]);
+  }, [photoIDTypeValue, resetPhotoIDNumber]);
 
-  // Check for validation errors
-  const isSectionValid =
-    !firstNameError &&
-    !lastNameError &&
-    !emailIdError &&
-    !phoneNumberError &&
-    !genderError &&
-    !dobError &&
-    !passportNumberError &&
-    !visaStatusError &&
-    !eadNumberError &&
-    !SSNError &&
-    (photoIDTypeValue ? !photoIDNumberError : true) &&
-    !skypeIdError;
+  const allErrors = [
+    firstNameError,
+    lastNameError,
+    emailIdError,
+    phoneNumberError,
+    genderError,
+    dobError,
+    passportNumberError,
+    visaStatusError,
+    eadNumberError,
+    SSNError,
+    photoIDTypeValue ? photoIDNumberError : false,
+    skypeIdError,
+  ];
 
-  // Check if values are empty to force validation
-  const isValuesEmpty =
-    !firstNameValue ||
-    !lastNameValue ||
-    !emailIdValue ||
-    !phoneNumberValue ||
-    !genderValue ||
-    !dobValue ||
-    !passportNumberValue ||
-    !visaStatusValue ||
-    !eadNumberValue ||
-    !SSNValue ||
-    (photoIDTypeValue ? !photoIDNumberValue : false);
+  const allValues = [
+    firstNameValue,
+    lastNameValue,
+    emailIdValue,
+    phoneNumberValue,
+    genderValue,
+    dobValue,
+    passportNumberValue,
+    visaStatusValue,
+    eadNumberValue,
+    SSNValue,
+    photoIDTypeValue ? photoIDNumberValue : true,
+  ];
 
-  // Force all validations
+  const noErrors = allErrors.every((error) => !error);
+  const allValuesPresent = allValues.every((value) => value);
+
+  const isSectionValid = noErrors && allValuesPresent;
+
   const forceValidations = () => {
     forceFirstNameValidations();
     forceLastNameValidations();
@@ -241,18 +244,10 @@ const Personal = () => {
     }
   };
 
-  const previousClickHandler = (event) => {
-    event.preventDefault();
-
-    dispatch(inputActions.decrementCurrentSectionIndex());
-  };
-
-  const nextClickHandler = (event) => {
-    event.preventDefault();
-
-    if (isValuesEmpty) {
+  const submit = () => {
+    if (!isSectionValid) {
       forceValidations();
-      return;
+      return false;
     }
 
     dispatch(
@@ -356,242 +351,239 @@ const Personal = () => {
         value: referenceNameValue,
       })
     );
-    dispatch(inputActions.incrementCurrentSectionIndex());
+    return true;
   };
+
+  // Expose methods to parent using ref
+  useImperativeHandle(ref, () => ({
+    submit,
+  }));
 
   return (
     <>
-      <div className={classes.personalContainer}>
-        <div className={classes.personalRow}>
-          <InputV2
-            id="firstName"
-            type="text"
-            label="First Name"
-            value={firstNameValue}
-            changeHandler={firstNameChange}
-            blurHandler={firstNameBlur}
-            focusHandler={firstNameFocus}
-            error={firstNameError}
-            isFocused={isFirstNameFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-
-          <InputV2
-            id="lastName"
-            type="text"
-            label="Last Name"
-            value={lastNameValue}
-            changeHandler={lastNameChange}
-            blurHandler={lastNameBlur}
-            focusHandler={lastNameFocus}
-            error={lastNameError}
-            isFocused={isLastNameFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-        </div>
-        <div className={classes.personalRow}>
-          <InputV2
-            id="emailId"
-            type="email"
-            label="Email ID"
-            value={emailIdValue}
-            changeHandler={emailIdChange}
-            blurHandler={emailIdBlur}
-            focusHandler={emailIdFocus}
-            error={emailIdError}
-            isFocused={isEmailIdFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-
-          <InputV2
-            id="phoneNumber"
-            type="tel"
-            label="Phone Number"
-            value={phoneNumberValue}
-            changeHandler={phoneNumberChange}
-            blurHandler={phoneNumberBlur}
-            focusHandler={phoneNumberFocus}
-            error={phoneNumberError}
-            isFocused={isPhoneNumberFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-        </div>
-
-        <RadioGroup
-          id="gender"
-          label="Gender"
-          value={genderValue}
-          options={OPTIONS.GENDER}
-          changeHandler={genderChange}
-          blurHandler={genderBlur}
-          error={genderError}
-          extraClass={classes.fullInputWidth}
+      <div className={classes.personalRow}>
+        <InputV2
+          id="firstName"
+          type="text"
+          label="First Name"
+          value={firstNameValue}
+          changeHandler={firstNameChange}
+          blurHandler={firstNameBlur}
+          focusHandler={firstNameFocus}
+          error={firstNameError}
+          isFocused={isFirstNameFocused}
+          extraClass={classes.halfInputWidth}
           isRequired
         />
 
-        <div className={classes.personalRow}>
-          <InputV2
-            id="dob"
-            type="date"
-            label="Date of Birth"
-            value={dobValue}
-            changeHandler={dobChange}
-            blurHandler={dobBlur}
-            focusHandler={dobFocus}
-            error={dobError}
-            isFocused={isDobFocused}
-            extraClass={classes.halfInputWidth}
-            max={getEighteenYearsAgoDate()}
-            isRequired
-          />
-
-          <Select
-            id="maritalStatus"
-            type="text"
-            label="Marital Status"
-            options={OPTIONS.MARITAL_STATUS}
-            value={maritalStatusValue}
-            changeHandler={maritalStatusChange}
-            blurHandler={maritalStatusBlur}
-            focusHandler={maritalStatusFocus}
-            error={maritalStatusError}
-            isFocused={isMaritalStatusFocused}
-            extraClass={classes.halfInputWidth}
-          />
-        </div>
-        <div className={classes.personalRow}>
-          <InputV2
-            id="passportNumber"
-            type="text"
-            label="Passport Number"
-            value={passportNumberValue}
-            changeHandler={passportNumberChange}
-            blurHandler={passportNumberBlur}
-            focusHandler={passportNumberFocus}
-            error={passportNumberError}
-            isFocused={isPassportNumberFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-
-          <Select
-            id="visaStatus"
-            type="text"
-            label="Visa Status"
-            options={OPTIONS.VISA_STATUS}
-            value={visaStatusValue}
-            changeHandler={visaStatusChange}
-            blurHandler={visaStatusBlur}
-            focusHandler={visaStatusFocus}
-            error={visaStatusError}
-            isFocused={isVisaStatusFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-        </div>
-        <div className={classes.personalRow}>
-          <InputV2
-            id="eadNumber"
-            type="text"
-            label="EAD Number"
-            value={eadNumberValue}
-            changeHandler={eadNumberChange}
-            blurHandler={eadNumberBlur}
-            focusHandler={eadNumberFocus}
-            error={eadNumberError}
-            isFocused={isEadNumberFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-
-          <InputV2
-            id="SSN"
-            type="text"
-            label="SSN"
-            value={SSNValue}
-            changeHandler={SSNChange}
-            blurHandler={SSNBlur}
-            focusHandler={SSNFocus}
-            error={SSNError}
-            isFocused={isSSNFocused}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-        </div>
-
-        <Select
-          id="photoIDType"
+        <InputV2
+          id="lastName"
           type="text"
-          label="Photo ID Type"
-          options={OPTIONS.PHOTO_ID_TYPE}
-          value={photoIDTypeValue}
-          changeHandler={photoIDTypeChange}
-          blurHandler={photoIDTypeBlur}
-          focusHandler={photoIDTypeFocus}
-          error={photoIDTypeError}
-          isFocused={isPhotoIDTypeFocused}
-          extraClass={classes.fullInputWidth}
+          label="Last Name"
+          value={lastNameValue}
+          changeHandler={lastNameChange}
+          blurHandler={lastNameBlur}
+          focusHandler={lastNameFocus}
+          error={lastNameError}
+          isFocused={isLastNameFocused}
+          extraClass={classes.halfInputWidth}
+          isRequired
+        />
+      </div>
+      <div className={classes.personalRow}>
+        <InputV2
+          id="emailId"
+          type="email"
+          label="Email ID"
+          value={emailIdValue}
+          changeHandler={emailIdChange}
+          blurHandler={emailIdBlur}
+          focusHandler={emailIdFocus}
+          error={emailIdError}
+          isFocused={isEmailIdFocused}
+          extraClass={classes.halfInputWidth}
+          isRequired
         />
 
-        {photoIDTypeValue && (
-          <InputV2
-            id="photoIDNumber"
-            type="text"
-            label={
-              photoIDTypeValue === "DL" ? "License number" : "State ID number"
-            }
-            value={photoIDNumberValue}
-            changeHandler={photoIDNumberChange}
-            blurHandler={photoIDNumberBlur}
-            focusHandler={photoIDNumberFocus}
-            error={photoIDNumberError}
-            isFocused={isPhotoIDNumberFocused}
-            extraClass={classes.fullInputWidth}
-            isRequired
-          />
-        )}
-
-        <div className={classes.personalRow}>
-          <InputV2
-            id="skypeId"
-            type="text"
-            label="Skype ID"
-            value={skypeIdValue}
-            changeHandler={skypeIdChange}
-            blurHandler={skypeIdBlur}
-            focusHandler={skypeIdFocus}
-            error={skypeIdError}
-            isFocused={isSkypeIdFocused}
-            extraClass={classes.halfInputWidth}
-          />
-
-          <InputV2
-            id="referenceName"
-            type="text"
-            label="Reference Name"
-            value={referenceNameValue}
-            changeHandler={referenceNameChange}
-            blurHandler={referenceNameBlur}
-            focusHandler={referenceNameFocus}
-            error={referenceNameError}
-            isFocused={isReferenceNameFocused}
-            extraClass={classes.halfInputWidth}
-          />
-        </div>
+        <InputV2
+          id="phoneNumber"
+          type="tel"
+          label="Phone Number"
+          value={phoneNumberValue}
+          changeHandler={phoneNumberChange}
+          blurHandler={phoneNumberBlur}
+          focusHandler={phoneNumberFocus}
+          error={phoneNumberError}
+          isFocused={isPhoneNumberFocused}
+          extraClass={classes.halfInputWidth}
+          isRequired
+        />
       </div>
 
-      <FormActions
-        isNextDisabled={!isSectionValid}
-        previousHandler={previousClickHandler}
-        nextHandler={nextClickHandler}
+      <RadioGroup
+        id="gender"
+        label="Gender"
+        value={genderValue}
+        options={OPTIONS.GENDER}
+        changeHandler={genderChange}
+        blurHandler={genderBlur}
+        error={genderError}
+        extraClass={classes.fullInputWidth}
+        isRequired
       />
+
+      <div className={classes.personalRow}>
+        <InputV2
+          id="dob"
+          type="date"
+          label="Date of Birth"
+          value={dobValue}
+          changeHandler={dobChange}
+          blurHandler={dobBlur}
+          focusHandler={dobFocus}
+          error={dobError}
+          isFocused={isDobFocused}
+          extraClass={classes.halfInputWidth}
+          max={getEighteenYearsAgoDate()}
+          isRequired
+        />
+
+        <Select
+          id="maritalStatus"
+          type="text"
+          label="Marital Status"
+          options={OPTIONS.MARITAL_STATUS}
+          value={maritalStatusValue}
+          changeHandler={maritalStatusChange}
+          blurHandler={maritalStatusBlur}
+          focusHandler={maritalStatusFocus}
+          error={maritalStatusError}
+          isFocused={isMaritalStatusFocused}
+          extraClass={classes.halfInputWidth}
+        />
+      </div>
+      <div className={classes.personalRow}>
+        <InputV2
+          id="passportNumber"
+          type="text"
+          label="Passport Number"
+          value={passportNumberValue}
+          changeHandler={passportNumberChange}
+          blurHandler={passportNumberBlur}
+          focusHandler={passportNumberFocus}
+          error={passportNumberError}
+          isFocused={isPassportNumberFocused}
+          extraClass={classes.halfInputWidth}
+          isRequired
+        />
+
+        <Select
+          id="visaStatus"
+          type="text"
+          label="Visa Status"
+          options={OPTIONS.VISA_STATUS}
+          value={visaStatusValue}
+          changeHandler={visaStatusChange}
+          blurHandler={visaStatusBlur}
+          focusHandler={visaStatusFocus}
+          error={visaStatusError}
+          isFocused={isVisaStatusFocused}
+          extraClass={classes.halfInputWidth}
+          isRequired
+        />
+      </div>
+      <div className={classes.personalRow}>
+        <InputV2
+          id="eadNumber"
+          type="text"
+          label="EAD Number"
+          value={eadNumberValue}
+          changeHandler={eadNumberChange}
+          blurHandler={eadNumberBlur}
+          focusHandler={eadNumberFocus}
+          error={eadNumberError}
+          isFocused={isEadNumberFocused}
+          extraClass={classes.halfInputWidth}
+          isRequired
+        />
+
+        <InputV2
+          id="SSN"
+          type="text"
+          label="SSN"
+          value={SSNValue}
+          changeHandler={SSNChange}
+          blurHandler={SSNBlur}
+          focusHandler={SSNFocus}
+          error={SSNError}
+          isFocused={isSSNFocused}
+          extraClass={classes.halfInputWidth}
+          isRequired
+        />
+      </div>
+
+      <Select
+        id="photoIDType"
+        type="text"
+        label="Photo ID Type"
+        options={OPTIONS.PHOTO_ID_TYPE}
+        value={photoIDTypeValue}
+        changeHandler={photoIDTypeChange}
+        blurHandler={photoIDTypeBlur}
+        focusHandler={photoIDTypeFocus}
+        error={photoIDTypeError}
+        isFocused={isPhotoIDTypeFocused}
+        extraClass={classes.fullInputWidth}
+      />
+
+      {photoIDTypeValue && (
+        <InputV2
+          id="photoIDNumber"
+          type="text"
+          label={
+            photoIDTypeValue === "DL" ? "License number" : "State ID number"
+          }
+          value={photoIDNumberValue}
+          changeHandler={photoIDNumberChange}
+          blurHandler={photoIDNumberBlur}
+          focusHandler={photoIDNumberFocus}
+          error={photoIDNumberError}
+          isFocused={isPhotoIDNumberFocused}
+          extraClass={classes.fullInputWidth}
+          isRequired
+        />
+      )}
+
+      <div className={classes.personalRow}>
+        <InputV2
+          id="skypeId"
+          type="text"
+          label="Skype ID"
+          value={skypeIdValue}
+          changeHandler={skypeIdChange}
+          blurHandler={skypeIdBlur}
+          focusHandler={skypeIdFocus}
+          error={skypeIdError}
+          isFocused={isSkypeIdFocused}
+          extraClass={classes.halfInputWidth}
+        />
+
+        <InputV2
+          id="referenceName"
+          type="text"
+          label="Reference Name"
+          value={referenceNameValue}
+          changeHandler={referenceNameChange}
+          blurHandler={referenceNameBlur}
+          focusHandler={referenceNameFocus}
+          error={referenceNameError}
+          isFocused={isReferenceNameFocused}
+          extraClass={classes.halfInputWidth}
+        />
+      </div>
     </>
   );
-};
+});
 
 Personal.displayName = "FormPersonal";
 export default Personal;

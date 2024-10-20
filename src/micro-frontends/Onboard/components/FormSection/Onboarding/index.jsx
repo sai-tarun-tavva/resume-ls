@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useImperativeHandle, forwardRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
@@ -36,10 +36,13 @@ const Onboarding = forwardRef((_, ref) => {
     forceValidations: forceStatusValidations,
   } = useInput(status, validations.status, undefined, true);
 
-  const isSectionValid = () => {
-    return !dateError && !statusError && dateValue && statusValue;
-  };
-  const isValuesEmpty = !dateValue || !statusValue;
+  const allErrors = [dateError, statusError];
+  const allValues = [dateValue, statusValue];
+
+  const noErrors = allErrors.every((error) => !error); // No errors should be present
+  const allValuesPresent = allValues.every((value) => value); // All values must be present
+
+  const isSectionValid = noErrors && allValuesPresent;
 
   const forceValidations = () => {
     forceDateValidations();
@@ -47,7 +50,7 @@ const Onboarding = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    if (isValuesEmpty) {
+    if (!isSectionValid) {
       forceValidations();
       return false; // return false to indicate the submission was invalid
     }
@@ -71,7 +74,6 @@ const Onboarding = forwardRef((_, ref) => {
 
   // Expose submit method to parent via ref
   useImperativeHandle(ref, () => ({
-    isSectionValid,
     submit,
   }));
 

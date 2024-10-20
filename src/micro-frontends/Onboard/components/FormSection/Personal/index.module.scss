@@ -1,20 +1,13 @@
-.personalContainer {
+.personalRow {
+  width: 80%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 55vh;
-  overflow-y: auto;
+  justify-content: space-between;
 
-  .personalRow {
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
+  .halfInputWidth {
+    width: 45%;
+  }
+}
 
-    .halfInputWidth {
-      width: 45%;
-    }
-  }
-  .fullInputWidth {
-    width: 80%;
-  }
+.fullInputWidth {
+  width: 80%;
 }
