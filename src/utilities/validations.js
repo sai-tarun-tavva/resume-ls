@@ -230,7 +230,7 @@ export const onboardingValidations = {
       isEmpty(value) ? validationMsgs.passedMonthAndYear.empty : "",
     universityStream: (value) =>
       isEmpty(value) ? validationMsgs.stream.empty : "",
-    certificate: (value) =>
+    singleInput: (value) =>
       isEmpty(value) ? validationMsgs.certificate.empty : "",
   },
 };
