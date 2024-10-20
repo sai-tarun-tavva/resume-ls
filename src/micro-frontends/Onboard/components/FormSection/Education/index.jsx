@@ -1,6 +1,7 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
+import Address from "../Address";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
@@ -27,6 +28,7 @@ const Education = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
+  const addressRef = useRef();
 
   const { education: validations } = onboardingValidations;
 
@@ -136,8 +138,11 @@ const Education = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    if (!isSectionValid) {
+    const isAddressValid = addressRef.current?.submit?.(); // Check if Address is valid
+
+    if (!isSectionValid || !isAddressValid) {
       forceValidations();
+      addressRef.current?.forceValidations(); // Force Address validation
       return false;
     }
 
@@ -280,6 +285,7 @@ const Education = forwardRef((_, ref) => {
         extraClass={classes.fullInputWidth}
         isRequired
       />
+      <Address heading="University Address" ref={addressRef} />
     </>
   );
 });
