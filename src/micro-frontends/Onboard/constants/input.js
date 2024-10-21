@@ -32,7 +32,7 @@ export const SECTION_TITLES = [
   "Offer Letter",
   "US Travel and Stay",
   "Emergency Contacts",
-  "Additional Information",
+  "Miscellaneous",
 ];
 
 export const SECTIONS = {
@@ -45,7 +45,7 @@ export const SECTIONS = {
   OFFER_LETTER: "offerLetter",
   US_TRAVEL_AND_STAY: "usTravelAndStay",
   EMERGENCY_CONTACTS: "emergencyContacts",
-  ADDITIONAL: "additional",
+  MISCELLANEOUS: "miscellaneous",
 };
 
 export const FIELDS = {
@@ -150,7 +150,7 @@ export const FIELDS = {
       PHONE: "phone",
     },
   },
-  ADDITIONAL: {
+  MISCELLANEOUS: {
     REMARKS: "remarks",
     NOTES: "notes",
   },

@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 8,
+  currentSectionIndex: 9,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -120,9 +120,9 @@ const initialState = {
         [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: "",
       },
     },
-    [SECTIONS.ADDITIONAL]: {
-      [FIELDS.ADDITIONAL.REMARKS]: "",
-      [FIELDS.ADDITIONAL.NOTES]: "",
+    [SECTIONS.MISCELLANEOUS]: {
+      [FIELDS.MISCELLANEOUS.REMARKS]: "",
+      [FIELDS.MISCELLANEOUS.NOTES]: "",
     },
   },
 };

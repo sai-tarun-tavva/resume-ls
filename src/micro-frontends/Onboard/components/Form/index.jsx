@@ -19,6 +19,7 @@ const Form = () => {
   const offerLetterRef = useRef();
   const usTravelAndStayRef = useRef();
   const emergencyContactsRef = useRef();
+  const miscellaneousRef = useRef();
 
   const refs = {
     onboarding: onboardingRef,
@@ -30,6 +31,7 @@ const Form = () => {
     offerLetter: offerLetterRef,
     usTravelAndStay: usTravelAndStayRef,
     emergencyContacts: emergencyContactsRef,
+    miscellaneous: miscellaneousRef,
   };
 
   const previousClickHandler = (event) => {
@@ -60,7 +62,10 @@ const Form = () => {
       hasSectionNoErrors = usTravelAndStayRef.current?.submit?.();
     } else if (current === 8) {
       hasSectionNoErrors = emergencyContactsRef.current?.submit?.();
+    } else if (current === 9) {
+      hasSectionNoErrors = miscellaneousRef.current?.submit?.();
     }
+
     if (hasSectionNoErrors) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
