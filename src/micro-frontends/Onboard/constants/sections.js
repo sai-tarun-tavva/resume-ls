@@ -43,7 +43,7 @@ export const sections = [
     ],
   },
   {
-    title: "Current Location",
+    title: "Location",
     fields: [
       { id: "currentAddress1", label: "Address Line 1", type: "text" },
       { id: "currentAddress2", label: "Address Line 2", type: "text" },

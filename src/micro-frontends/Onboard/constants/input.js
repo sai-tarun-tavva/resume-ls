@@ -25,7 +25,7 @@ export const FIELDS_REFERENCE = {
 export const SECTION_TITLES = [
   "Onboarding",
   "Personal",
-  "Current Location",
+  "Location",
   "Relocation",
   "Education",
   "Profession",
@@ -64,7 +64,7 @@ export const FIELDS = {
     EMAIL_ID: "emailId",
     PHONE_NUMBER: "phoneNumber",
     GENDER: "gender",
-    CURRENT_LOCATION: "currentLocation",
+    LOCATION: "location",
     DOB: "dob",
     MARITAL_STATUS: "maritalStatus",
     PASSPORT_NUMBER: "passportNumber",

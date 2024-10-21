@@ -4,12 +4,12 @@ import Address from "../Address";
 import { inputActions } from "../../../store";
 import { FIELDS, SECTIONS } from "../../../constants";
 
-const CurrentLocation = forwardRef((_, ref) => {
+const Location = forwardRef((_, ref) => {
   const addressRef = useRef();
   const dispatch = useDispatch();
   const {
     data: {
-      personal: { currentLocation },
+      personal: { location },
     },
   } = useSelector((state) => state.input);
 
@@ -24,7 +24,7 @@ const CurrentLocation = forwardRef((_, ref) => {
     dispatch(
       inputActions.updateField({
         section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.CURRENT_LOCATION,
+        field: FIELDS.PERSONAL.LOCATION,
         value: address,
       })
     );
@@ -40,12 +40,12 @@ const CurrentLocation = forwardRef((_, ref) => {
   return (
     <Address
       heading="Where are you currently located?"
-      defaultValues={currentLocation}
+      defaultValues={location}
       id="current"
       ref={addressRef}
     />
   );
 });
 
-CurrentLocation.displayName = "CurrentLocation";
-export default CurrentLocation;
+Location.displayName = "Location";
+export default Location;

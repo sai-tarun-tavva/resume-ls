@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import Onboarding from "./Onboarding";
 import Personal from "./Personal";
-import CurrentLocation from "./CurrentLocation";
+import Location from "./Location";
 import Relocation from "./Relocation";
 import Education from "./Education";
 import Profession from "./Profession";
@@ -39,7 +39,7 @@ const FormSection = ({
   const sections = [
     { Component: Onboarding, ref: onboarding },
     { Component: Personal, ref: personal },
-    { Component: CurrentLocation, ref: location },
+    { Component: Location, ref: location },
     { Component: Relocation, ref: relocation },
     { Component: Education, ref: education },
     { Component: Profession, ref: profession },
