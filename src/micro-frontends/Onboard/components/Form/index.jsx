@@ -18,6 +18,7 @@ const Form = () => {
   const professionRef = useRef();
   const offerLetterRef = useRef();
   const usTravelAndStayRef = useRef();
+  const emergencyContactsRef = useRef();
 
   const refs = {
     onboarding: onboardingRef,
@@ -28,6 +29,7 @@ const Form = () => {
     profession: professionRef,
     offerLetter: offerLetterRef,
     usTravelAndStay: usTravelAndStayRef,
+    emergencyContacts: emergencyContactsRef,
   };
 
   const previousClickHandler = (event) => {
@@ -56,6 +58,8 @@ const Form = () => {
       hasSectionNoErrors = offerLetterRef.current?.submit?.();
     } else if (current === 7) {
       hasSectionNoErrors = usTravelAndStayRef.current?.submit?.();
+    } else if (current === 8) {
+      hasSectionNoErrors = emergencyContactsRef.current?.submit?.();
     }
     if (hasSectionNoErrors) {
       dispatch(inputActions.incrementCurrentSectionIndex());

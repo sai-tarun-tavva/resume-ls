@@ -323,4 +323,17 @@ export const onboardingValidations = {
   usTravelAndStay: {
     usEntry: (value) => (isEmpty(value) ? validationMsgs.usEntry.empty : ""),
   },
+  emergencyContacts: {
+    name: (value) => (isEmpty(value) ? validationMsgs.name.empty : ""),
+    phone: (value) => {
+      const digitsOnly = value.replace(/[\s()-]+/g, "");
+      return isEmpty(value)
+        ? validationMsgs.phone.empty
+        : validateWithRegex(
+            digitsOnly,
+            REGEX.phoneRegex,
+            validationMsgs.phone.invalid
+          );
+    },
+  },
 };
