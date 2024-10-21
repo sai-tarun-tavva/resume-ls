@@ -15,9 +15,9 @@ const Location = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
 
   const submit = () => {
-    const { isAddressValid: isUSAAddressValid, address: usaAddress } =
+    const { isSectionValid: isUSAAddressValid, item: usaAddress } =
       usaLocRef.current?.submit?.(); // Check if Address is valid
-    const { isAddressValid: isIndiaAddressValid, address: indiaAddress } =
+    const { isSectionValid: isIndiaAddressValid, item: indiaAddress } =
       indiaLocRef.current?.submit?.();
 
     if (!isUSAAddressValid || !isIndiaAddressValid) {
@@ -53,13 +53,13 @@ const Location = forwardRef((_, ref) => {
     <>
       <Address
         heading="Address in USA"
-        defaultValues={usaLocation}
+        defaultValue={usaLocation}
         id="current"
         ref={usaLocRef}
       />
       <Address
         heading="Address in India"
-        defaultValues={indiaLocation}
+        defaultValue={indiaLocation}
         id="current"
         ref={indiaLocRef}
       />

@@ -314,4 +314,7 @@ export const onboardingValidations = {
       return ""; // No error
     },
   },
+  usTravelAndStay: {
+    usEntry: (value) => (isEmpty(value) ? validationMsgs.usEntry.empty : ""),
+  },
 };

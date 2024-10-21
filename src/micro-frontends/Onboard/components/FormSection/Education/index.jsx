@@ -139,7 +139,8 @@ const Education = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    const { isAddressValid, address } = addressRef?.current?.submit?.(); // Check if Address is valid
+    const { isSectionValid: isAddressValid, item: address } =
+      addressRef?.current?.submit?.(); // Check if Address is valid
     const { isSectionValid: areCertificatesValid, listItems: certificates } =
       listRef?.current?.submit?.(); // ListAdd validation
 
@@ -295,7 +296,7 @@ const Education = forwardRef((_, ref) => {
       />
       <Address
         heading="University Address"
-        defaultValues={universityAddress}
+        defaultValue={universityAddress}
         id="university"
         ref={addressRef}
       />

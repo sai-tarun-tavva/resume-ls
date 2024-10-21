@@ -24,7 +24,7 @@ const Address = forwardRef(
   (
     {
       heading = "",
-      defaultValues: { address1, address2, city, state, country, zipcode },
+      defaultValue: { address1, address2, city, state, country, zipcode },
       id = "",
       extraClass = "",
     },
@@ -136,12 +136,12 @@ const Address = forwardRef(
     const submit = () => {
       if (!isSectionValid) {
         forceValidations();
-        return { isAddressValid: false, address: null };
+        return { isSectionValid: false, item: null };
       }
 
       return {
-        isAddressValid: true,
-        address: {
+        isSectionValid: true,
+        item: {
           [FIELDS_ADDRESS.ADDRESS1]: address1Value,
           [FIELDS_ADDRESS.ADDRESS2]: address2Value,
           [FIELDS_ADDRESS.CITY]: cityValue,

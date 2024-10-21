@@ -18,8 +18,11 @@ const ListAdd = forwardRef(
       savedListItems,
       validationFuncs,
       helperText = "",
+      heading = "",
       newValue,
       mandatoryItems = 0, // by default nothing is mandatory
+      maxItems, // no limit by default
+      extraClass = "",
     },
     ref
   ) => {
@@ -48,6 +51,7 @@ const ListAdd = forwardRef(
     }, [items]);
 
     const addHandler = () => {
+      if (maxItems && items.length >= maxItems) return; // Prevent adding more than maxItems
       const newItem = {
         id: `${items.length}-${Date.now()}`,
         value: newValue,
@@ -99,6 +103,7 @@ const ListAdd = forwardRef(
             type="button"
             className={classes.addButton}
             onClick={addHandler}
+            disabled={maxItems && items.length >= maxItems} // Disable button if maxItems reached
           >
             <i className="bi bi-plus-square-fill" />
           </Button>
@@ -118,9 +123,11 @@ const ListAdd = forwardRef(
               {element({
                 id: index + 1,
                 defaultValue: item.value,
+                heading: `${heading} ${index + 1}`,
                 labels: itemLabels,
                 validationFuncs,
                 ref: itemRefs.current.get(item.id),
+                extraClass: extraClass,
               })}
             </div>
           </div>

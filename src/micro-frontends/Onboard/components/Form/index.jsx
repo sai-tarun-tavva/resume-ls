@@ -17,6 +17,7 @@ const Form = () => {
   const educationRef = useRef();
   const professionRef = useRef();
   const offerLetterRef = useRef();
+  const usTravelAndStayRef = useRef();
 
   const refs = {
     onboarding: onboardingRef,
@@ -26,6 +27,7 @@ const Form = () => {
     education: educationRef,
     profession: professionRef,
     offerLetter: offerLetterRef,
+    usTravelAndStay: usTravelAndStayRef,
   };
 
   const previousClickHandler = (event) => {
@@ -35,7 +37,6 @@ const Form = () => {
 
   const nextClickHandler = (event) => {
     event.preventDefault();
-
     // Check the current section and call the appropriate ref's submit method
     let hasSectionNoErrors = false;
 
@@ -53,8 +54,9 @@ const Form = () => {
       hasSectionNoErrors = professionRef.current?.submit?.();
     } else if (current === 6) {
       hasSectionNoErrors = offerLetterRef.current?.submit?.();
+    } else if (current === 7) {
+      hasSectionNoErrors = usTravelAndStayRef.current?.submit?.();
     }
-
     if (hasSectionNoErrors) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }

@@ -183,6 +183,9 @@ export const CONTENT = {
           "Roles and responsibilities should be at least 50 characters.",
         maxLength: "Roles and responsibilities cannot exceed 1000 characters.",
       },
+      usEntry: {
+        empty: "US entry month and year is required.",
+      },
     },
     pageNotFound: {
       title: "404",

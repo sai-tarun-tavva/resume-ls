@@ -76,8 +76,8 @@ const PreviousExperience = forwardRef(
 
     const submit = () => {
       const addressSubmitResult = addressRef.current?.submit?.();
-      const isAddressValid = addressSubmitResult?.isAddressValid;
-      const address = addressSubmitResult?.address;
+      const isAddressValid = addressSubmitResult?.isSectionValid;
+      const address = addressSubmitResult?.item;
 
       const prevExp = {
         name: nameValue,
@@ -148,7 +148,7 @@ const PreviousExperience = forwardRef(
         </div>
         <Address
           heading={`${addressLabel} ${id}`}
-          defaultValues={addressDefaultValue}
+          defaultValue={addressDefaultValue}
           id={`companyAddress${id}`}
           ref={addressRef}
           extraClass={classes.fullInputWidth}

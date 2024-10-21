@@ -75,8 +75,8 @@ const Relocation = forwardRef((_, ref) => {
 
   const submit = () => {
     const addressSubmitResult = addressRef.current?.submit?.();
-    const isAddressValid = addressSubmitResult?.isAddressValid;
-    const address = addressSubmitResult?.address;
+    const isAddressValid = addressSubmitResult?.isSectionValid;
+    const address = addressSubmitResult?.item;
 
     if (!isRelocationValid || isAddressValid === false) {
       // isAddressValid is undefined when unmounted or not rendered
@@ -151,7 +151,7 @@ const Relocation = forwardRef((_, ref) => {
       {preferenceValue === "other" && (
         <Address
           heading="What is the relocation address?"
-          defaultValues={address}
+          defaultValue={address}
           id="relocation"
           ref={addressRef}
         />
