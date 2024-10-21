@@ -5,27 +5,39 @@ import { inputActions } from "../../../store";
 import { FIELDS, SECTIONS } from "../../../constants";
 
 const Location = forwardRef((_, ref) => {
-  const addressRef = useRef();
+  const usaLocRef = useRef();
+  const indiaLocRef = useRef();
   const dispatch = useDispatch();
   const {
     data: {
-      personal: { location },
+      personal: { usaLocation, indiaLocation },
     },
   } = useSelector((state) => state.input);
 
   const submit = () => {
-    const { isAddressValid, address } = addressRef.current?.submit?.(); // Check if Address is valid
+    const { isAddressValid: isUSAAddressValid, address: usaAddress } =
+      usaLocRef.current?.submit?.(); // Check if Address is valid
+    const { isAddressValid: isIndiaAddressValid, address: indiaAddress } =
+      indiaLocRef.current?.submit?.();
 
-    if (!isAddressValid) {
-      addressRef.current?.forceValidations(); // Force Address validation
+    if (!isUSAAddressValid || !isIndiaAddressValid) {
+      usaLocRef.current?.forceValidations?.(); // Force Address validation
+      indiaLocRef.current?.forceValidations?.();
       return false;
     }
 
     dispatch(
       inputActions.updateField({
         section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.LOCATION,
-        value: address,
+        field: FIELDS.PERSONAL.USA_LOCATION,
+        value: usaAddress,
+      })
+    );
+    dispatch(
+      inputActions.updateField({
+        section: SECTIONS.PERSONAL,
+        field: FIELDS.PERSONAL.INDIA_LOCATION,
+        value: indiaAddress,
       })
     );
 
@@ -38,12 +50,20 @@ const Location = forwardRef((_, ref) => {
   }));
 
   return (
-    <Address
-      heading="Where are you currently located?"
-      defaultValues={location}
-      id="current"
-      ref={addressRef}
-    />
+    <>
+      <Address
+        heading="Where is the candidate currently located in the USA?"
+        defaultValues={usaLocation}
+        id="current"
+        ref={usaLocRef}
+      />
+      <Address
+        heading="Where does the candidate live in India?"
+        defaultValues={indiaLocation}
+        id="current"
+        ref={indiaLocRef}
+      />
+    </>
   );
 });
 
