@@ -42,7 +42,6 @@ export const OPTIONS = {
     { value: [VISA_STATUS_VALUES.F1], label: "F1-CPT" },
     { value: [VISA_STATUS_VALUES.F1STEMOPT], label: "STEM-OPT" },
     { value: [VISA_STATUS_VALUES.H1B], label: "H1B" },
-    { value: [VISA_STATUS_VALUES.J1], label: "J1" },
     {
       value: [VISA_STATUS_VALUES.GREEN_CARD_PENDING],
       label: "Green Card Application Pending",

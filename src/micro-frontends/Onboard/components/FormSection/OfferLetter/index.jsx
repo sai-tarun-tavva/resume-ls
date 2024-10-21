@@ -191,7 +191,7 @@ const OfferLetter = forwardRef((_, ref) => {
     <>
       <Select
         id="status"
-        label="Status"
+        label="Offer Letter Status"
         value={statusValue}
         options={OPTIONS.OFFER_LETTER_STATUS}
         changeHandler={statusChange}
