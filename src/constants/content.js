@@ -159,6 +159,30 @@ export const CONTENT = {
       referenceCompany: {
         empty: "Reference company is required.",
       },
+      offerLetterStatus: {
+        empty: "Offer letter status is required.",
+      },
+      offerLetterLastUpdated: {
+        empty: "Offer letter status last updation date is required.",
+      },
+      marketingName: {
+        empty: "Marketing name is required.",
+      },
+      offerLetterDesignation: {
+        empty: "Designation is required.",
+      },
+      startDate: {
+        empty: "Start date is required.",
+      },
+      endDate: {
+        empty: "End date is required.",
+      },
+      rolesAndResponsibilities: {
+        empty: "Roles and responsibilities are required.",
+        minLength:
+          "Roles and responsibilities should be at least 50 characters.",
+        maxLength: "Roles and responsibilities cannot exceed 1000 characters.",
+      },
     },
     pageNotFound: {
       title: "404",

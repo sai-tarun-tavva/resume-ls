@@ -5,12 +5,21 @@ import Location from "./Location";
 import Relocation from "./Relocation";
 import Education from "./Education";
 import Profession from "./Profession";
+import OfferLetter from "./OfferLetter";
+import { useScrollShadows } from "../../hooks";
 import classes from "./index.module.scss";
-import { useScrollShadows } from "../../hooks/useScrollShadows";
 
 const FormSection = ({
   currentSectionIndex,
-  refs: { onboarding, personal, location, relocation, education, profession },
+  refs: {
+    onboarding,
+    personal,
+    location,
+    relocation,
+    education,
+    profession,
+    offerLetter,
+  },
 }) => {
   const onboardingRef = useRef();
   const personalRef = useRef();
@@ -18,6 +27,7 @@ const FormSection = ({
   const relocationRef = useRef();
   const educationRef = useRef();
   const professionRef = useRef();
+  const offerLetterRef = useRef();
 
   const sectionRefs = useMemo(
     () => ({
@@ -27,6 +37,7 @@ const FormSection = ({
       relocation: relocationRef,
       education: educationRef,
       profession: professionRef,
+      offerLetter: offerLetterRef,
     }),
     []
   );
@@ -43,6 +54,7 @@ const FormSection = ({
     { Component: Relocation, ref: relocation },
     { Component: Education, ref: education },
     { Component: Profession, ref: profession },
+    { Component: OfferLetter, ref: offerLetter },
   ];
 
   return (

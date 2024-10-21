@@ -1,0 +1,13 @@
+.offerLetterRow {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+
+  .halfInputWidth {
+    width: 45%;
+  }
+}
+
+.fullInputWidth {
+  width: 80%;
+}

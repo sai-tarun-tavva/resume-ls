@@ -289,4 +289,29 @@ export const onboardingValidations = {
     referenceCompany: (value) =>
       isEmpty(value) ? validationMsgs.referenceCompany.empty : "",
   },
+  offerLetter: {
+    status: (value) =>
+      isEmpty(value) ? validationMsgs.offerLetterStatus.empty : "",
+    lastUpdated: (value) =>
+      isEmpty(value) ? validationMsgs.offerLetterLastUpdated.empty : "",
+    marketingName: (value) =>
+      isEmpty(value) ? validationMsgs.marketingName.empty : "",
+    designation: (value) =>
+      isEmpty(value) ? validationMsgs.offerLetterDesignation.empty : "",
+    startDate: (value) =>
+      isEmpty(value) ? validationMsgs.startDate.empty : "",
+    endDate: (value) => (isEmpty(value) ? validationMsgs.endDate.empty : ""),
+    rolesAndResponsibilities: (value) => {
+      if (isEmpty(value)) {
+        return validationMsgs.rolesAndResponsibilities.empty;
+      }
+      if (value.length < 50) {
+        return validationMsgs.rolesAndResponsibilities.minLength;
+      }
+      if (value.length > 1000) {
+        return validationMsgs.rolesAndResponsibilities.maxLength;
+      }
+      return ""; // No error
+    },
+  },
 };

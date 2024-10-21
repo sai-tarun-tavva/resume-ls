@@ -16,6 +16,7 @@ const Form = () => {
   const relocationRef = useRef();
   const educationRef = useRef();
   const professionRef = useRef();
+  const offerLetterRef = useRef();
 
   const refs = {
     onboarding: onboardingRef,
@@ -24,6 +25,7 @@ const Form = () => {
     relocation: relocationRef,
     education: educationRef,
     profession: professionRef,
+    offerLetter: offerLetterRef,
   };
 
   const previousClickHandler = (event) => {
@@ -49,6 +51,8 @@ const Form = () => {
       hasSectionNoErrors = educationRef.current?.submit?.();
     } else if (current === 5) {
       hasSectionNoErrors = professionRef.current?.submit?.();
+    } else if (current === 6) {
+      hasSectionNoErrors = offerLetterRef.current?.submit?.();
     }
 
     if (hasSectionNoErrors) {

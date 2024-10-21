@@ -135,4 +135,9 @@ export const OPTIONS = {
       label: `${i + 1}`,
     })),
   ],
+  OFFER_LETTER_STATUS: [
+    { value: "", label: "" },
+    { value: "inProgress", label: "In Progress" },
+    { value: "started", label: "Started" },
+  ],
 };
