@@ -94,7 +94,7 @@ const initialState = {
       },
       [FIELDS.PROFESSION.TECHNOLOGIES_KNOWN]: [],
       [FIELDS.PROFESSION.PREVIOUS_EXPERIENCE]: [],
-      [FIELDS.PROFESSION.REFERENCES]: [],
+      [FIELDS.PROFESSION.REFERENCES]: [defaultReference, defaultReference], // two references are mandatory
     },
     [SECTIONS.OFFER_LETTER]: {
       [FIELDS.OFFER_LETTER.STATUS]: "",

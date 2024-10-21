@@ -226,6 +226,8 @@ const Profession = forwardRef((_, ref) => {
           designation: "Designation",
           company: "Company",
         }}
+        helperText="(two references are mandatory)"
+        mandatoryItems={2}
         element={(props) => <Reference {...props} />}
         savedListItems={references}
         validationFuncs={{

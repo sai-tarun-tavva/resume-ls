@@ -19,6 +19,7 @@ const ListAdd = forwardRef(
       validationFuncs,
       helperText = "",
       newValue,
+      mandatoryItems = 0, // by default nothing is mandatory
     },
     ref
   ) => {
@@ -95,13 +96,15 @@ const ListAdd = forwardRef(
         </div>
         {items.map((item, index) => (
           <div key={item.id} className={classes.listItem}>
-            <Button
-              type="button"
-              className={classes.removeButton}
-              onClick={() => removeHandler(item.id)}
-            >
-              <i className="bi bi-dash-square" />
-            </Button>
+            {items.length > mandatoryItems && ( // Display remove button only if more than mandatory items
+              <Button
+                type="button"
+                className={classes.removeButton}
+                onClick={() => removeHandler(item.id)}
+              >
+                <i className="bi bi-dash-square" />
+              </Button>
+            )}
             <div>
               {element({
                 id: index + 1,
