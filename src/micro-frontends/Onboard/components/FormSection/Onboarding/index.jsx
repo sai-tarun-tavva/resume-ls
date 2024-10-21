@@ -82,7 +82,7 @@ const Onboarding = forwardRef((_, ref) => {
       <InputV2
         id="onboardingDate"
         type="date"
-        label="Date"
+        label="Onboarding Date"
         value={dateValue}
         changeHandler={dateChange}
         blurHandler={dateBlur}
@@ -93,7 +93,7 @@ const Onboarding = forwardRef((_, ref) => {
       />
       <Select
         id="onboardingStatus"
-        label="Status"
+        label="Onboarding Status"
         options={OPTIONS.ONBOARDING_STATUS}
         value={statusValue}
         changeHandler={statusChange}

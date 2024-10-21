@@ -52,13 +52,13 @@ const Location = forwardRef((_, ref) => {
   return (
     <>
       <Address
-        heading="Where is the candidate currently located in the USA?"
+        heading="Address in USA"
         defaultValues={usaLocation}
         id="current"
         ref={usaLocRef}
       />
       <Address
-        heading="Where does the candidate live in India?"
+        heading="Address in India"
         defaultValues={indiaLocation}
         id="current"
         ref={indiaLocRef}

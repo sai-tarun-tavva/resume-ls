@@ -147,7 +147,7 @@ const Relocation = forwardRef((_, ref) => {
       )}
       {preferenceValue === "other" && (
         <Address
-          heading="Which address are you willing to relocate to?"
+          heading="What is the relocation address?"
           defaultValues={address}
           id="relocation"
           ref={addressRef}

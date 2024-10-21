@@ -149,7 +149,7 @@ const Profession = forwardRef((_, ref) => {
     <>
       <Checkbox
         id="trainingAttended"
-        label="Did candidate attend training?"
+        label="Attended training?"
         value={trainingAttendedValue}
         changeHandler={trainingAttendedChange}
         blurHandler={trainingAttendedBlur}
@@ -189,7 +189,7 @@ const Profession = forwardRef((_, ref) => {
       </div>
 
       <ListAdd
-        label="Does candidate has any past experience?"
+        label="Any past experience?"
         itemLabels={{
           employerName: "Company Name",
           email: "Company Email",
@@ -208,7 +208,7 @@ const Profession = forwardRef((_, ref) => {
       />
 
       <ListAdd
-        label="Any technologies candidate is familiar with?"
+        label="Any familiar technologies?"
         itemLabels={{ input: "Technology" }}
         element={(props) => <SingleInput {...props} />}
         savedListItems={technologiesKnown}
