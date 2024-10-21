@@ -18,7 +18,6 @@ const OfferLetter = forwardRef((_, ref) => {
     data: {
       offerLetter: {
         status,
-        lastUpdated,
         marketingName,
         designation,
         startDate,
@@ -31,7 +30,6 @@ const OfferLetter = forwardRef((_, ref) => {
   const {
     offerLetter: {
       status: statusValidationFunc,
-      lastUpdated: lastUpdatedValidationFunc,
       marketingName: marketingNameValidationFunc,
       designation: designationValidationFunc,
       startDate: startDateValidationFunc,
@@ -49,16 +47,6 @@ const OfferLetter = forwardRef((_, ref) => {
     isFocused: isStatusFocused,
     forceValidations: forceStatusValidations,
   } = useInput(status, statusValidationFunc, undefined, true);
-
-  const {
-    value: lastUpdatedValue,
-    handleInputChange: lastUpdatedChange,
-    handleInputBlur: lastUpdatedBlur,
-    handleInputFocus: lastUpdatedFocus,
-    error: lastUpdatedError,
-    isFocused: isLastUpdatedFocused,
-    forceValidations: forceLastUpdatedValidations,
-  } = useInput(lastUpdated, lastUpdatedValidationFunc, undefined, true);
 
   const {
     value: marketingNameValue,
@@ -117,7 +105,6 @@ const OfferLetter = forwardRef((_, ref) => {
 
   const allErrors = [
     statusError,
-    lastUpdatedError,
     marketingNameError,
     designationError,
     startDateError,
@@ -126,7 +113,6 @@ const OfferLetter = forwardRef((_, ref) => {
   ];
   const allValues = [
     statusValue,
-    lastUpdatedValue,
     marketingNameValue,
     designationValue,
     startDateValue,
@@ -138,7 +124,6 @@ const OfferLetter = forwardRef((_, ref) => {
 
   const forceValidations = () => {
     forceStatusValidations();
-    forceLastUpdatedValidations();
     forceMarketingNameValidations();
     forceDesignationValidations();
     forceStartDateValidations();
@@ -157,13 +142,6 @@ const OfferLetter = forwardRef((_, ref) => {
         section: SECTIONS.OFFER_LETTER,
         field: FIELDS.OFFER_LETTER.STATUS,
         value: statusValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.OFFER_LETTER,
-        field: FIELDS.OFFER_LETTER.LAST_UPDATED,
-        value: lastUpdatedValue,
       })
     );
     dispatch(
@@ -211,35 +189,19 @@ const OfferLetter = forwardRef((_, ref) => {
 
   return (
     <>
-      <div className={classes.offerLetterRow}>
-        <Select
-          id="status"
-          label="Status"
-          value={statusValue}
-          options={OPTIONS.OFFER_LETTER_STATUS}
-          changeHandler={statusChange}
-          blurHandler={statusBlur}
-          focusHandler={statusFocus}
-          error={statusError}
-          isFocused={isStatusFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-
-        <InputV2
-          id="lastUpdated"
-          label="Last Updated"
-          type="date"
-          value={lastUpdatedValue}
-          changeHandler={lastUpdatedChange}
-          blurHandler={lastUpdatedBlur}
-          focusHandler={lastUpdatedFocus}
-          error={lastUpdatedError}
-          isFocused={isLastUpdatedFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-      </div>
+      <Select
+        id="status"
+        label="Status"
+        value={statusValue}
+        options={OPTIONS.OFFER_LETTER_STATUS}
+        changeHandler={statusChange}
+        blurHandler={statusBlur}
+        focusHandler={statusFocus}
+        error={statusError}
+        isFocused={isStatusFocused}
+        extraClass={classes.fullInputWidth}
+        isRequired
+      />
       <div className={classes.offerLetterRow}>
         <InputV2
           id="marketingName"

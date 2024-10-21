@@ -165,9 +165,6 @@ export const CONTENT = {
       offerLetterStatus: {
         empty: "Offer letter status is required.",
       },
-      offerLetterLastUpdated: {
-        empty: "Offer letter status last updation date is required.",
-      },
       marketingName: {
         empty: "Marketing name is required.",
       },

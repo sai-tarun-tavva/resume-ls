@@ -309,8 +309,6 @@ export const onboardingValidations = {
   offerLetter: {
     status: (value) =>
       isEmpty(value) ? validationMsgs.offerLetterStatus.empty : "",
-    lastUpdated: (value) =>
-      isEmpty(value) ? validationMsgs.offerLetterLastUpdated.empty : "",
     marketingName: (value) =>
       isEmpty(value) ? validationMsgs.marketingName.empty : "",
     designation: (value) =>
