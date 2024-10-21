@@ -2,6 +2,7 @@ import { forwardRef, useImperativeHandle } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import { useInput } from "../../../../Atoms/hooks";
 import classes from "./index.module.scss";
+import { determineSectionValidity } from "../../../../../utilities";
 
 const SingleInput = forwardRef(
   ({ labels, defaultValue, validationFuncs, id }, ref) => {
@@ -16,13 +17,9 @@ const SingleInput = forwardRef(
     } = useInput(defaultValue, validationFuncs.input, undefined, true);
 
     const allErrors = [singleInputError];
-
     const allValues = [singleInputValue];
 
-    const noErrors = allErrors.every((error) => !error); // Ensure no errors
-    const allValuesPresent = allValues.every((value) => value); // Ensure all values are filled
-
-    const isSectionValid = noErrors && allValuesPresent;
+    const isSectionValid = determineSectionValidity(allErrors, allValues);
 
     const forceValidations = () => {
       forceSingleInputValidations();

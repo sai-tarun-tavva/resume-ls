@@ -4,7 +4,10 @@ import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
-import { onboardingValidations } from "../../../../../utilities";
+import {
+  determineSectionValidity,
+  onboardingValidations,
+} from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 
 const Onboarding = forwardRef((_, ref) => {
@@ -39,16 +42,11 @@ const Onboarding = forwardRef((_, ref) => {
   const allErrors = [dateError, statusError];
   const allValues = [dateValue, statusValue];
 
-  const noErrors = allErrors.every((error) => !error); // No errors should be present
-  const allValuesPresent = allValues.every((value) => value); // All values must be present
-
-  const isSectionValid = noErrors && allValuesPresent;
-
+  const isSectionValid = determineSectionValidity(allErrors, allValues);
   const forceValidations = () => {
     forceDateValidations();
     forceStatusValidations();
   };
-
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();

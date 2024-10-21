@@ -2,7 +2,10 @@ import { useImperativeHandle, forwardRef } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
-import { onboardingValidations } from "../../../../../utilities";
+import {
+  determineSectionValidity,
+  onboardingValidations,
+} from "../../../../../utilities";
 import { FIELDS_ADDRESS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -111,10 +114,7 @@ const Address = forwardRef(
       zipcodeValue,
     ];
 
-    const noErrors = allErrors.every((error) => !error); // Ensure no errors
-    const allValuesPresent = allValues.every((value) => value); // Ensure all values are filled
-
-    const isSectionValid = noErrors && allValuesPresent;
+    const isSectionValid = determineSectionValidity(allErrors, allValues);
 
     const forceValidations = () => {
       forceAddress1Validations();

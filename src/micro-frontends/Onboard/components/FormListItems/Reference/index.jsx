@@ -1,7 +1,10 @@
 import { forwardRef, useImperativeHandle } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import { useInput } from "../../../../Atoms/hooks";
-import { transformPhoneNumber } from "../../../../../utilities";
+import {
+  determineSectionValidity,
+  transformPhoneNumber,
+} from "../../../../../utilities";
 import classes from "./index.module.scss";
 
 const Reference = forwardRef(
@@ -104,11 +107,7 @@ const Reference = forwardRef(
       designationValue,
       companyValue,
     ];
-    const noErrors = allErrors.every((error) => !error);
-    const allValuesPresent = allValues.every((value) => value);
-
-    const isSectionValid = noErrors && allValuesPresent;
-
+    const isSectionValid = determineSectionValidity(allErrors, allValues);
     const forceValidations = () => {
       forceNameValidations();
       forcePhoneValidations();

@@ -7,6 +7,7 @@ import SingleInput from "../../FormListItems/SingleInput";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
+  determineSectionValidity,
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
@@ -125,10 +126,7 @@ const Education = forwardRef((_, ref) => {
     streamValue,
   ];
 
-  const noErrors = allErrors.every((error) => !error);
-  const allValuesPresent = allValues.every((value) => value);
-
-  const isSectionValid = noErrors && allValuesPresent;
+  const isSectionValid = determineSectionValidity(allErrors, allValues);
 
   const forceValidations = () => {
     forceSevisIDValidations();

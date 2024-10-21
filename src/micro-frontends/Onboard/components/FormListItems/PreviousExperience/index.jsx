@@ -2,7 +2,10 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Address from "../../FormSection/Address";
 import { useInput } from "../../../../Atoms/hooks";
-import { transformPhoneNumber } from "../../../../../utilities";
+import {
+  determineSectionValidity,
+  transformPhoneNumber,
+} from "../../../../../utilities";
 import classes from "./index.module.scss";
 
 const PreviousExperience = forwardRef(
@@ -62,14 +65,9 @@ const PreviousExperience = forwardRef(
     );
 
     const allErrors = [nameError, emailIdError, phoneNumberError];
-
     const allValues = [nameValue, emailIdValue, phoneNumberValue];
 
-    const noErrors = allErrors.every((error) => !error); // Ensure no errors
-    const allValuesPresent = allValues.every((value) => value); // Ensure all values are filled
-
-    const isSectionValid = noErrors && allValuesPresent;
-
+    const isSectionValid = determineSectionValidity(allErrors, allValues);
     const forceValidations = () => {
       forceNameValidations();
       forceEmailValidations();
@@ -87,8 +85,6 @@ const PreviousExperience = forwardRef(
         email: emailIdValue,
         address,
       };
-
-      console.log(prevExp);
 
       if (!isSectionValid || isAddressValid === false) {
         forceValidations();

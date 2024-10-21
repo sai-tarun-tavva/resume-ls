@@ -6,6 +6,7 @@ import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
+  determineSectionValidity,
   getEighteenYearsAgoDate,
   onboardingValidations,
   transformPhoneNumber,
@@ -223,10 +224,7 @@ const Personal = forwardRef((_, ref) => {
     photoIDTypeValue ? photoIDNumberValue : true,
   ];
 
-  const noErrors = allErrors.every((error) => !error);
-  const allValuesPresent = allValues.every((value) => value);
-
-  const isSectionValid = noErrors && allValuesPresent;
+  const isSectionValid = determineSectionValidity(allErrors, allValues);
 
   const forceValidations = () => {
     forceFirstNameValidations();

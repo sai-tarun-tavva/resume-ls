@@ -9,7 +9,10 @@ import PreviousExperience from "../../FormListItems/PreviousExperience";
 import Reference from "../../FormListItems/Reference";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
-import { onboardingValidations } from "../../../../../utilities";
+import {
+  determineSectionValidity,
+  onboardingValidations,
+} from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -64,10 +67,7 @@ const Profession = forwardRef((_, ref) => {
   const allErrors = [experienceYearsError, experienceMonthsError];
   const allValues = [experienceYearsValue, experienceMonthsValue];
 
-  const noErrors = allErrors.every((error) => !error); // No errors should be present
-  const allValuesPresent = allValues.every((value) => value); // All values must be present
-
-  const isSectionValid = noErrors && allValuesPresent;
+  const isSectionValid = determineSectionValidity(allErrors, allValues);
 
   const forceValidations = () => {
     forceExperienceYearsValidations();
@@ -149,7 +149,7 @@ const Profession = forwardRef((_, ref) => {
     <>
       <Checkbox
         id="trainingAttended"
-        label="Attended training?"
+        label="Training Attended?"
         value={trainingAttendedValue}
         changeHandler={trainingAttendedChange}
         blurHandler={trainingAttendedBlur}
@@ -161,7 +161,7 @@ const Profession = forwardRef((_, ref) => {
       <div className={classes.professionRow}>
         <InputV2
           id="experienceYears"
-          label="Experience Years"
+          label="Experience in Years"
           type="number"
           value={experienceYearsValue}
           changeHandler={experienceYearsChange}
@@ -175,7 +175,7 @@ const Profession = forwardRef((_, ref) => {
 
         <Select
           id="experienceMonths"
-          label="Experience Months"
+          label="Experience in Months"
           value={experienceMonthsValue}
           options={OPTIONS.EXPERIENCE_MONTHS}
           changeHandler={experienceMonthsChange}

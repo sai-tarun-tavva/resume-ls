@@ -263,6 +263,18 @@ export const transformPhoneNumber = (value, isCountryCode = false) => {
 };
 
 /**
+ * Validates an array of error states and value states.
+ * @param {Array} errors - An array of error states to check if they are falsy.
+ * @param {Array} values - An array of values to check if they are truthy (not empty).
+ * @returns {boolean} True if all errors are falsy and all values are truthy, false otherwise.
+ */
+export const determineSectionValidity = (errors, values) => {
+  const noErrors = errors.every((error) => !error); // No errors should be present
+  const allValuesPresent = values.every((value) => value); // All values must be present
+  return noErrors && allValuesPresent;
+};
+
+/**
  * Transforms a Social Security Number (SSN) into the xxx-xx-xxxx format.
  * @param {string} value - The SSN as a string.
  * @returns {string} The formatted SSN, or the original if not valid.

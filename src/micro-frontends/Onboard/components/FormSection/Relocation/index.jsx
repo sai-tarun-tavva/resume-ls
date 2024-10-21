@@ -5,7 +5,10 @@ import Select from "../../../../Atoms/components/Inputs/Select";
 import Address from "../Address";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
-import { onboardingValidations } from "../../../../../utilities";
+import {
+  determineSectionValidity,
+  onboardingValidations,
+} from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -60,10 +63,10 @@ const Relocation = forwardRef((_, ref) => {
   const relocationErrors = [interestedValue ? preferenceError : false];
   const relocationValues = [interestedValue ? preferenceValue : true];
 
-  const noRelocationErrors = relocationErrors.every((error) => !error);
-  const allRelocationValuesPresent = relocationValues.every((value) => value);
-
-  const isRelocationValid = noRelocationErrors && allRelocationValuesPresent;
+  const isRelocationValid = determineSectionValidity(
+    relocationErrors,
+    relocationValues
+  );
 
   // Force Relocation validations
   const forceRelocationValidations = () => {
