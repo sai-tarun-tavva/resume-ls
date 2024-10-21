@@ -11,13 +11,18 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
-import { SECTIONS, FIELDS } from "../../../constants";
+import {
+  SECTIONS,
+  FIELDS,
+  STUDENT_VISA_STATUS_VALUES,
+} from "../../../constants";
 import classes from "./index.module.scss";
 
 const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
+      personal: { visaStatus },
       education: {
         sevisID,
         dso: { name: dsoName, email: dsoEmail, phone: dsoPhone },
@@ -33,6 +38,7 @@ const Education = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
   const addressRef = useRef();
   const listRef = useRef();
+  const isStudent = STUDENT_VISA_STATUS_VALUES.includes(visaStatus);
 
   const { education: validations } = onboardingValidations;
 
@@ -106,36 +112,29 @@ const Education = forwardRef((_, ref) => {
     forceValidations: forceStreamValidations,
   } = useInput(stream, validations.universityStream, undefined, true);
 
-  const allErrors = [
-    sevisIDError,
-    dsoNameError,
-    dsoEmailError,
-    dsoPhoneError,
-    universityNameError,
-    passedMonthAndYearError,
-    streamError,
-  ];
+  const allErrors = [universityNameError, passedMonthAndYearError, streamError];
 
-  const allValues = [
-    sevisIDValue,
-    dsoNameValue,
-    dsoEmailValue,
-    dsoPhoneValue,
-    universityNameValue,
-    passedMonthAndYearValue,
-    streamValue,
-  ];
+  const allValues = [universityNameValue, passedMonthAndYearValue, streamValue];
+
+  // Add SEVIS ID and DSO details errors/values only if the visa status requires them
+  if (isStudent) {
+    allErrors.push(sevisIDError, dsoNameError, dsoEmailError, dsoPhoneError);
+    allValues.push(sevisIDValue, dsoNameValue, dsoEmailValue, dsoPhoneValue);
+  }
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
   const forceValidations = () => {
-    forceSevisIDValidations();
-    forceDSONameValidations();
-    forceDSOEmailValidations();
-    forceDSOPhoneValidations();
     forceUniversityNameValidations();
     forcePassedMonthAndYearValidations();
     forceStreamValidations();
+
+    if (isStudent) {
+      forceSevisIDValidations();
+      forceDSONameValidations();
+      forceDSOEmailValidations();
+      forceDSOPhoneValidations();
+    }
   };
 
   const submit = () => {
@@ -195,63 +194,66 @@ const Education = forwardRef((_, ref) => {
 
   return (
     <>
-      <div className={classes.educationRow}>
-        <InputV2
-          id="sevisID"
-          label="SEVIS ID"
-          value={sevisIDValue}
-          changeHandler={sevisIDChange}
-          blurHandler={sevisIDBlur}
-          focusHandler={sevisIDFocus}
-          error={sevisIDError}
-          isFocused={isSevisIDFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
+      {isStudent && (
+        <>
+          <div className={classes.educationRow}>
+            <InputV2
+              id="sevisID"
+              label="SEVIS ID"
+              value={sevisIDValue}
+              changeHandler={sevisIDChange}
+              blurHandler={sevisIDBlur}
+              focusHandler={sevisIDFocus}
+              error={sevisIDError}
+              isFocused={isSevisIDFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired
+            />
 
-        <InputV2
-          id="dsoName"
-          label="DSO Name"
-          value={dsoNameValue}
-          changeHandler={dsoNameChange}
-          blurHandler={dsoNameBlur}
-          focusHandler={dsoNameFocus}
-          error={dsoNameError}
-          isFocused={isDSONameFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-      </div>
+            <InputV2
+              id="dsoName"
+              label="DSO Name"
+              value={dsoNameValue}
+              changeHandler={dsoNameChange}
+              blurHandler={dsoNameBlur}
+              focusHandler={dsoNameFocus}
+              error={dsoNameError}
+              isFocused={isDSONameFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired
+            />
+          </div>
+          <div className={classes.educationRow}>
+            <InputV2
+              id="dsoEmail"
+              label="DSO Email"
+              type="email"
+              value={dsoEmailValue}
+              changeHandler={dsoEmailChange}
+              blurHandler={dsoEmailBlur}
+              focusHandler={dsoEmailFocus}
+              error={dsoEmailError}
+              isFocused={isDSOEmailFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired
+            />
 
-      <div className={classes.educationRow}>
-        <InputV2
-          id="dsoEmail"
-          label="DSO Email"
-          type="email"
-          value={dsoEmailValue}
-          changeHandler={dsoEmailChange}
-          blurHandler={dsoEmailBlur}
-          focusHandler={dsoEmailFocus}
-          error={dsoEmailError}
-          isFocused={isDSOEmailFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-
-        <InputV2
-          id="dsoPhone"
-          label="DSO Phone"
-          type="tel"
-          value={dsoPhoneValue}
-          changeHandler={dsoPhoneChange}
-          blurHandler={dsoPhoneBlur}
-          focusHandler={dsoPhoneFocus}
-          error={dsoPhoneError}
-          isFocused={isDSOPhoneFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-      </div>
+            <InputV2
+              id="dsoPhone"
+              label="DSO Phone"
+              type="tel"
+              value={dsoPhoneValue}
+              changeHandler={dsoPhoneChange}
+              blurHandler={dsoPhoneBlur}
+              focusHandler={dsoPhoneFocus}
+              error={dsoPhoneError}
+              isFocused={isDSOPhoneFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired
+            />
+          </div>
+        </>
+      )}
 
       <div className={classes.educationRow}>
         <InputV2

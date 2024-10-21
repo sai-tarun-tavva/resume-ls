@@ -1,8 +1,27 @@
+export const VISA_STATUS_VALUES = {
+  F1: "F1",
+  F1OPT: "F1-OPT",
+  F1CPT: "F1-CPT",
+  F1STEMOPT: "STEM-OPT",
+  H1B: "H1B",
+  J1: "J1",
+  GREEN_CARD_PENDING: "GreenCardPending",
+  US_CITIZEN: "USCitizen",
+};
+
+export const STUDENT_VISA_STATUS_VALUES = [
+  VISA_STATUS_VALUES.F1,
+  VISA_STATUS_VALUES.F1CPT,
+  VISA_STATUS_VALUES.F1OPT,
+  VISA_STATUS_VALUES.F1STEMOPT,
+];
+
 export const OPTIONS = {
   ONBOARDING_STATUS: [
     { value: "", label: "" },
+    { value: "yetToStart", label: "Yet To Start" },
     { value: "inProgress", label: "In Progress" },
-    { value: "started", label: "Started" },
+    { value: "completed", label: "Completed" },
   ],
   GENDER: [
     { value: "male", label: "Male" },
@@ -18,15 +37,19 @@ export const OPTIONS = {
   ],
   VISA_STATUS: [
     { value: "", label: "Select Visa Status" },
-    { value: "F1", label: "F1" },
-    { value: "F1-OPT", label: "F1-OPT" },
-    { value: "F1-CPT", label: "F1-CPT" },
-    { value: "STEM-OPT", label: "STEM-OPT" },
-    { value: "H1B", label: "H1B" },
-    { value: "J1", label: "J1" },
+    { value: [VISA_STATUS_VALUES.F1], label: "F1" },
+    { value: [VISA_STATUS_VALUES.F1OPT], label: "F1-OPT" },
+    { value: [VISA_STATUS_VALUES.F1], label: "F1-CPT" },
+    { value: [VISA_STATUS_VALUES.F1STEMOPT], label: "STEM-OPT" },
+    { value: [VISA_STATUS_VALUES.H1B], label: "H1B" },
+    { value: [VISA_STATUS_VALUES.J1], label: "J1" },
     {
-      value: "GreenCardPending",
+      value: [VISA_STATUS_VALUES.GREEN_CARD_PENDING],
       label: "Green Card Application Pending",
+    },
+    {
+      value: [VISA_STATUS_VALUES.US_CITIZEN],
+      label: "US Citizen",
     },
   ],
   PHOTO_ID_TYPE: [

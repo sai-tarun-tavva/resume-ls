@@ -12,7 +12,12 @@ import {
   transformPhoneNumber,
   transformSSN,
 } from "../../../../../utilities";
-import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
+import {
+  SECTIONS,
+  FIELDS,
+  OPTIONS,
+  STUDENT_VISA_STATUS_VALUES,
+} from "../../../constants";
 import classes from "./index.module.scss";
 
 const Personal = forwardRef((_, ref) => {
@@ -264,6 +269,29 @@ const Personal = forwardRef((_, ref) => {
     if (!isSectionValid) {
       forceValidations();
       return false;
+    }
+
+    // Resetting SevisID and DSO details if visa status is not one of F1, F1-OPT, F1-CPT, STEM-OPT
+    // This case is required if user selects a student visa and enter sevis and dso details later, if he/she comes back to personal and updates visa not to student
+    if (!STUDENT_VISA_STATUS_VALUES.includes(visaStatusValue)) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.SEVIS_ID,
+          value: "",
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.DSO.VALUE,
+          value: {
+            [FIELDS.EDUCATION.DSO.NAME]: "",
+            [FIELDS.EDUCATION.DSO.EMAIL]: "",
+            [FIELDS.EDUCATION.DSO.PHONE]: "",
+          },
+        })
+      );
     }
 
     dispatch(
