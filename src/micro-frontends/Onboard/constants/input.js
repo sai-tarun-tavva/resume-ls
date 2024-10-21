@@ -17,7 +17,7 @@ export const FIELDS_PREV_EXP = {
 export const FIELDS_REFERENCE = {
   NAME: "name",
   PHONE: "phone",
-  MAIL: "mail",
+  EMAIL: "email",
   DESIGNATION: "designation",
   COMPANY: "company",
 };

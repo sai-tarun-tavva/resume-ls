@@ -26,7 +26,7 @@ export const defaultPrevExp = {
 export const defaultReference = {
   [FIELDS_REFERENCE.NAME]: "",
   [FIELDS_REFERENCE.PHONE]: "",
-  [FIELDS_REFERENCE.MAIL]: "",
+  [FIELDS_REFERENCE.EMAIL]: "",
   [FIELDS_REFERENCE.DESIGNATION]: "",
   [FIELDS_REFERENCE.COMPANY]: "",
 };

@@ -262,5 +262,31 @@ export const onboardingValidations = {
             REGEX.phoneRegex,
             validationMsgs.phone.invalid
           ),
+    referenceName: (value) =>
+      isEmpty(value) ? validationMsgs.referenceName.empty : "",
+
+    referencePhone: (value) =>
+      isEmpty(value)
+        ? validationMsgs.referencePhone.empty
+        : validateWithRegex(
+            value,
+            REGEX.phoneRegex,
+            validationMsgs.referencePhone.invalid
+          ),
+
+    referenceEmail: (value) =>
+      isEmpty(value)
+        ? validationMsgs.referenceEmail.empty
+        : validateWithRegex(
+            value,
+            REGEX.emailRegex,
+            validationMsgs.referenceEmail.invalid
+          ),
+
+    referenceDesignation: (value) =>
+      isEmpty(value) ? validationMsgs.referenceDesignation.empty : "",
+
+    referenceCompany: (value) =>
+      isEmpty(value) ? validationMsgs.referenceCompany.empty : "",
   },
 };

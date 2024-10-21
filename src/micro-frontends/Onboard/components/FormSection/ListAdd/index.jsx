@@ -79,12 +79,12 @@ const ListAdd = forwardRef(
     return (
       <div className={classes.list}>
         <div className={classes.control}>
-          <h3 className={classes.label}>
+          <h4 className={classes.label}>
             {label}
             {helperText && (
               <small className={classes.helperText}>{helperText}</small>
             )}
-          </h3>
+          </h4>
           <Button
             type="button"
             className={classes.addButton}

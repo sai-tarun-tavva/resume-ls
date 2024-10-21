@@ -6,8 +6,9 @@ import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import ListAdd from "../ListAdd";
 import SingleInput from "../../FormListItems/SingleInput";
 import PreviousExperience from "../../FormListItems/PreviousExperience";
+import Reference from "../../FormListItems/Reference";
 import { useInput } from "../../../../Atoms/hooks";
-import { defaultPrevExp, inputActions } from "../../../store";
+import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
 import { onboardingValidations } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
@@ -21,6 +22,7 @@ const Profession = forwardRef((_, ref) => {
         experience: { years, months },
         previousExperience,
         technologiesKnown,
+        references,
       },
     },
   } = useSelector((state) => state.input);
@@ -57,6 +59,7 @@ const Profession = forwardRef((_, ref) => {
 
   const technologiesRef = useRef();
   const prevExpRef = useRef();
+  const referencesRef = useRef();
 
   const allErrors = [experienceYearsError, experienceMonthsError];
   const allValues = [experienceYearsValue, experienceMonthsValue];
@@ -78,11 +81,19 @@ const Profession = forwardRef((_, ref) => {
     } = prevExpRef?.current?.submit?.();
     const { isSectionValid: areTechnologiesValid, listItems: technologies } =
       technologiesRef?.current?.submit?.();
+    const { isSectionValid: areReferencesValid, listItems: referencesList } =
+      referencesRef?.current?.submit?.();
 
-    if (!isSectionValid || !arePrevExperiencesValid || !areTechnologiesValid) {
+    if (
+      !isSectionValid ||
+      !arePrevExperiencesValid ||
+      !areTechnologiesValid ||
+      !areReferencesValid
+    ) {
       forceValidations();
       prevExpRef.current?.forceValidations?.();
       technologiesRef.current?.forceValidations?.();
+      referencesRef.current?.forceValidations?.();
       return false;
     }
 
@@ -117,6 +128,13 @@ const Profession = forwardRef((_, ref) => {
         section: SECTIONS.PROFESSION,
         field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
         value: prevExperiences,
+      })
+    );
+    dispatch(
+      inputActions.updateField({
+        section: SECTIONS.PROFESSION,
+        field: FIELDS.PROFESSION.REFERENCES,
+        value: referencesList,
       })
     );
 
@@ -197,6 +215,28 @@ const Profession = forwardRef((_, ref) => {
         validationFuncs={{ input: validations.technology }}
         newValue={""}
         ref={technologiesRef}
+      />
+
+      <ListAdd
+        label="Any references?"
+        itemLabels={{
+          name: "Reference Name",
+          phone: "Reference Phone",
+          email: "Reference Email",
+          designation: "Designation",
+          company: "Company",
+        }}
+        element={(props) => <Reference {...props} />}
+        savedListItems={references}
+        validationFuncs={{
+          name: validations.referenceName,
+          phone: validations.referencePhone,
+          email: validations.referenceEmail,
+          designation: validations.referenceDesignation,
+          company: validations.referenceCompany,
+        }}
+        newValue={defaultReference}
+        ref={referencesRef}
       />
     </>
   );

@@ -142,6 +142,23 @@ export const CONTENT = {
         empty: "Company email is required.",
         invalid: "Company email is invalid.",
       },
+      referenceName: {
+        empty: "Reference name is required.",
+      },
+      referencePhone: {
+        empty: "Reference phone is required.",
+        invalid: "Reference phone is invalid.",
+      },
+      referenceEmail: {
+        empty: "Reference email is required.",
+        invalid: "Reference email is invalid.",
+      },
+      referenceDesignation: {
+        empty: "Reference designation is required.",
+      },
+      referenceCompany: {
+        empty: "Reference company is required.",
+      },
     },
     pageNotFound: {
       title: "404",
