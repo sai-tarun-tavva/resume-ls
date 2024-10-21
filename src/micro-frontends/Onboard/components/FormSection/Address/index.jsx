@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef } from "react";
+import { useImperativeHandle, forwardRef, useEffect } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
@@ -19,6 +19,8 @@ const getStateOptions = (country) => {
       return OPTIONS.STATE_USA;
   }
 };
+
+let isInitial = true;
 
 const Address = forwardRef(
   (
@@ -95,7 +97,21 @@ const Address = forwardRef(
       isFocused: isZipcodeFocused,
       forceValidations: forceZipcodeValidations,
       resetValue: resetZipcode,
-    } = useInput(zipcode, validations.zipcode, undefined, true);
+    } = useInput(
+      zipcode,
+      (value) => validations.zipcode(value, countryValue),
+      undefined,
+      true
+    );
+
+    useEffect(() => {
+      // force zip code validations based on new country's zipcode regex
+      // ALERT: DO NOT FORCE WHILE MOUNTING
+      if (!isInitial) {
+        forceZipcodeValidations();
+      }
+      isInitial = true;
+    }, [countryValue, forceZipcodeValidations]);
 
     // Group all errors and values dynamically
     const allErrors = [

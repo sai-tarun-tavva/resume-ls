@@ -179,12 +179,18 @@ export const onboardingValidations = {
           ),
   },
   address: {
-    zipcode: (value) =>
+    zipcode: (value, country) =>
       isEmpty(value)
         ? validationMsgs.zipcode.empty
+        : country === "india"
+        ? validateWithRegex(
+            value,
+            REGEX.indiaZipCodeRegex,
+            validationMsgs.zipcode.invalid
+          )
         : validateWithRegex(
             value,
-            REGEX.zipCodeRegex,
+            REGEX.usZipCodeRegex,
             validationMsgs.zipcode.invalid
           ),
     address1: (value) => (isEmpty(value) ? validationMsgs.address1.empty : ""),

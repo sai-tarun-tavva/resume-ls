@@ -28,7 +28,8 @@ export const REGEX = {
   licenseNumberRegex: /^[A-Z0-9]{5,15}$/, // License number: allows 5 to 15 alphanumeric characters (uppercase letters and digits)
   stateIDNumberRegex: /^[A-Z0-9]{5,15}$/, // State ID number: similar to license number, allows 5 to 15 alphanumeric characters (uppercase letters and digits)
   skypeIDRegex: /^[a-zA-Z][a-zA-Z0-9_.,-:]{5,31}$/, // Skype ID: must start with a letter, followed by 5 to 31 characters that can include letters, digits, underscores, commas, periods, hyphens, and colons
-  zipCodeRegex: /^\d{5}(-\d{4})?$/, // US ZIP code: exactly 5 digits, optionally followed by a hyphen and exactly 4 more digits (e.g., 12345 or 12345-6789)
+  usZipCodeRegex: /^\d{5}(-\d{4})?$/, // US ZIP code: exactly 5 digits, optionally followed by a hyphen and exactly 4 more digits
+  indiaZipCodeRegex: /^\d{6}$/, // Indian ZIP code: exactly 6 digits
   sevisIDRegex: /^N[0-9]{10}$/, // Starts with "N" followed by exactly 10 digits
 };
 
