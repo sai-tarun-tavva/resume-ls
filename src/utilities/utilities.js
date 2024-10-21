@@ -86,6 +86,34 @@ export const highlightText = (text, highlight) => {
 };
 
 /**
+ * Filters an array of skills to return those that start with or contain the search key.
+ * Skills that start with the search key are prioritized over those that just contain it.
+ *
+ * @param {string} searchKey - The key to filter skills by.
+ * @param {Array<string>} skills - The list of skills to filter.
+ * @returns {Array<string>} - An array of filtered skills, starting with those that match the search key.
+ */
+export const filterSkills = (searchKey, skills) => {
+  // Convert searchKey to lowercase for case-insensitive comparison
+  const keyLower = searchKey.toLowerCase();
+
+  // Filter skills that start with the search key
+  const startsWithSearchKey = skills.filter((skill) =>
+    skill.toLowerCase().startsWith(keyLower)
+  );
+
+  // Filter skills that contain the search key but don't start with it
+  const containsSearchKey = skills.filter(
+    (skill) =>
+      skill.toLowerCase().includes(keyLower) &&
+      !skill.toLowerCase().startsWith(keyLower)
+  );
+
+  // Combine the two lists, starting with those that start with the search key
+  return [...startsWithSearchKey, ...containsSearchKey];
+};
+
+/**
  * Replaces route parameters in a given route string with actual parameter values.
  * @param {string} route - The route string with parameters.
  * @param {Object} params - An object containing the parameters to replace.

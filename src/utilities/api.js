@@ -313,7 +313,7 @@ export const uploadFiles = async (body) => {
  * @param {String} param - The string to be searched for in skill set.
  * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
  */
-export const fetchSuggestedSkills = async (param) => {
+export const fetchSuggestedSkills = async (param = "") => {
   try {
     const response = await fetchWithToken(
       `${END_POINTS.FETCH_SUGGESTED_SKILLS}${param}`,

@@ -116,6 +116,8 @@ export const CONTENT = {
         },
       },
       statusMessages: {
+        skillSet:
+          "Failed to fetch skill set, auto skill suggestions does not work!",
         skill: {
           empty: "Cannot add empty skill.",
           existing: "Skill already exists.",

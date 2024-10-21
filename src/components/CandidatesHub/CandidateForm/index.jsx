@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../../hooks";
@@ -7,13 +7,19 @@ import Skills from "../../../atoms/Skills";
 import Button from "../../../atoms/Button";
 import Input from "../../../atoms/Input";
 import StatusMessage from "../../../atoms/StatusMessage";
-import { loadingActions, statusActions, uiActions } from "../../../store";
+import {
+  dataActions,
+  loadingActions,
+  statusActions,
+  uiActions,
+} from "../../../store";
 import {
   arraysEqual,
   candidateValidations,
   createNewSkill,
   editCandidate,
   fetchSuggestedSkills,
+  filterSkills,
   resetStatusAsync,
   transformExperience,
   transformPhoneNumber,
@@ -36,7 +42,9 @@ const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { candidates } = useSelector((state) => state.data);
+  const { candidates, skills: globalFetchedSkills } = useSelector(
+    (state) => state.data
+  );
   const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
 
   // Fetch candidate information based on the candidateId
@@ -46,88 +54,6 @@ const CandidateForm = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const autoSuggestRef = useRef(null);
-
-  // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
-  useEffect(() => {
-    if (!info) navigate(ROUTES.HOME);
-  }, [info, navigate]);
-
-  // Executes whenever user clicks on the screen
-  useEffect(() => {
-    // Add event listener for clicks
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  /**
-   * Hide suggestions if user clicks outside of it.
-   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
-   */
-  const handleClickOutside = (event) => {
-    // Check if the click is outside the auto-suggestion
-    if (
-      autoSuggestRef.current &&
-      !autoSuggestRef.current.contains(event.target)
-    ) {
-      setShowSuggestions(false);
-    }
-  };
-
-  /**
-   * Handle adding a new skill to the localSkills state.
-   * Validates the skill and checks for duplicates before adding.
-   * @param {string} newSkill - The skill to be added.
-   */
-  const handleAddSkill = async (newSkill) => {
-    await dispatch(resetStatusAsync(statusActions.resetStatus));
-
-    let skillError = "";
-
-    // Validate skill input
-    if (localSkills.includes(newSkill.trim())) {
-      skillError =
-        CONTENT.candidateHub.candidateForm.statusMessages.skill.existing;
-    }
-
-    // If there's an error, reset input and show status message
-    if (skillError) {
-      dispatch(
-        statusActions.updateStatus({ message: skillError, type: "failure" })
-      );
-      resetSkillValue();
-      setShowSuggestions(false);
-      return;
-    }
-
-    // Update local skills state
-    setLocalSkills((prevSkills) => [newSkill, ...prevSkills]);
-    resetSkillValue();
-    setShowSuggestions(false);
-  };
-
-  /**
-   * Handle removing a skill from localSkills state.
-   * @param {number} skillIndex - The index of the skill to be removed.
-   */
-  const handleRemoveSkill = (skillIndex) => {
-    const updatedSkills = localSkills.filter(
-      (_, index) => index !== skillIndex
-    );
-
-    // Update the state with the new skills list
-    setLocalSkills(updatedSkills);
-  };
-
-  /**
-   * Close the candidate form and navigate back to the previous route.
-   */
-  const handleClose = () => {
-    navigate("..");
-  };
 
   // Input state management for various candidate fields
   const {
@@ -205,44 +131,94 @@ const CandidateForm = () => {
   );
 
   /**
+   * Add a skill when Enter key is pressed in the skill input field.
+   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   */
+  const displayDynamicSuggestions = useCallback(() => {
+    setShowSuggestions(!!skillValue);
+
+    if (!!skillValue) {
+      setSuggestions(filterSkills(skillValue, globalFetchedSkills));
+    }
+  }, [skillValue, globalFetchedSkills]);
+
+  /**
+   * Hide suggestions if user clicks outside of it.
+   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   */
+  const handleClickOutside = (event) => {
+    // Check if the click is outside the auto-suggestion
+    if (
+      autoSuggestRef.current &&
+      !autoSuggestRef.current.contains(event.target)
+    ) {
+      setShowSuggestions(false);
+    }
+  };
+
+  /**
+   * Handle adding a new skill to the localSkills state.
+   * Validates the skill and checks for duplicates before adding.
+   * @param {string} newSkill - The skill to be added.
+   */
+  const handleAddSkill = async (newSkill) => {
+    await dispatch(resetStatusAsync(statusActions.resetStatus));
+
+    let skillError = "";
+
+    // Validate skill input
+    if (
+      localSkills
+        .map((skill) => skill.toLowerCase())
+        .includes(newSkill.trim().toLowerCase())
+    ) {
+      skillError =
+        CONTENT.candidateHub.candidateForm.statusMessages.skill.existing;
+    }
+
+    // If there's an error, reset input and show status message
+    if (skillError) {
+      dispatch(
+        statusActions.updateStatus({ message: skillError, type: "failure" })
+      );
+      resetSkillValue();
+      setShowSuggestions(false);
+      return;
+    }
+
+    // Update local skills state
+    setLocalSkills((prevSkills) => [newSkill, ...prevSkills]);
+    resetSkillValue();
+    setShowSuggestions(false);
+  };
+
+  /**
+   * Handle removing a skill from localSkills state.
+   * @param {number} skillIndex - The index of the skill to be removed.
+   */
+  const handleRemoveSkill = (skillIndex) => {
+    const updatedSkills = localSkills.filter(
+      (_, index) => index !== skillIndex
+    );
+
+    // Update the state with the new skills list
+    setLocalSkills(updatedSkills);
+  };
+
+  /**
+   * Close the candidate form and navigate back to the previous route.
+   */
+  const handleClose = () => {
+    navigate("..");
+  };
+
+  /**
    * Prevent form submission when Enter key is pressed.
    * @param {KeyboardEvent} event - The keyboard event triggered on key press.
    */
   const preventSubmitOnEnter = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-    }
-  };
-
-  /**
-   * Add a skill when Enter key is pressed in the skill input field.
-   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
-   */
-  const addSkillOnEnter = async (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-
-      setShowSuggestions(!!skillValue);
-
-      if (!!skillValue) {
-        dispatch(loadingActions.enableFetchLoading());
-        const { status, data } = await fetchSuggestedSkills(skillValue);
-
-        if (status === STATUS_CODES.SUCCESS) {
-          setSuggestions(data);
-        } else {
-          setShowSuggestions(false);
-          resetSkillValue();
-          dispatch(
-            statusActions.updateStatus({
-              message: CONTENT.serverError,
-              type: "failure",
-            })
-          );
-        }
-      }
-
-      dispatch(loadingActions.disableFetchLoading());
     }
   };
 
@@ -351,6 +327,7 @@ const CandidateForm = () => {
     handleClose();
     dispatch(loadingActions.disableButtonLoading());
   };
+
   /**
    * Create a new skill when the create skill button is clicked.
    *
@@ -382,6 +359,46 @@ const CandidateForm = () => {
       );
     }
   };
+
+  // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
+  useEffect(() => {
+    if (!info) navigate(ROUTES.HOME);
+  }, [info, navigate]);
+
+  // Fetches the skills list on mount
+  useEffect(() => {
+    const fetchSkills = async () => {
+      const { status, data } = await fetchSuggestedSkills();
+
+      if (status === STATUS_CODES.SUCCESS) {
+        dispatch(dataActions.replaceSkills(data));
+      } else {
+        dispatch(
+          statusActions.updateStatus({
+            message: CONTENT.candidateHub.candidateForm.statusMessages.skillSet,
+            type: "failure",
+          })
+        );
+      }
+    };
+
+    fetchSkills();
+  }, [dispatch]);
+
+  // Executes whenever user clicks on the screen
+  useEffect(() => {
+    // Add event listener for clicks
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    displayDynamicSuggestions();
+  }, [skillValue, displayDynamicSuggestions]);
 
   return (
     <form
@@ -446,7 +463,7 @@ const CandidateForm = () => {
               value={skillValue}
               onChange={handleSkillChange}
               onBlur={handleSkillBlur}
-              onKeyDown={addSkillOnEnter}
+              onKeyDown={preventSubmitOnEnter}
               leftIcon={<i className="bi bi-tools" />}
               extraClassControl={classes.candidateControl}
             />

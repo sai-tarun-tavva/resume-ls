@@ -16,6 +16,6 @@ export const END_POINTS = {
   DOWNLOAD_RESUME: `${apiUrl}home/resume/download/`,
   UPLOAD_RESUME: `${apiUrl}upload-file/`,
   BATCH_PROCESS: `${apiUrl}/dummy`,
-  FETCH_SUGGESTED_SKILLS: `${apiUrl}search-skills?query=`,
+  FETCH_SUGGESTED_SKILLS: `${apiUrl}search-skills/?query=`,
   CREATE_NEW_SKILL: `${apiUrl}add-skills`,
 };
