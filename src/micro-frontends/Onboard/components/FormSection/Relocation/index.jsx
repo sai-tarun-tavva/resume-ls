@@ -16,7 +16,7 @@ const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
-      relocation: { interested, preference, address },
+      relocation: { interested, preference, howSoon, address },
     },
   } = useSelector((state) => state.input);
   const addressRef = useRef(); // Create a ref to call Address validation
@@ -43,6 +43,16 @@ const Relocation = forwardRef((_, ref) => {
     resetValue: resetPreference,
   } = useInput(preference, validations.stayPreference, undefined, true);
 
+  const {
+    value: howSoonValue,
+    handleInputChange: howSoonChange,
+    handleInputBlur: howSoonBlur,
+    handleInputFocus: howSoonFocus,
+    error: howSoonError,
+    isFocused: isHowSoonFocused,
+    forceValidations: forceHowSoonValidations,
+  } = useInput(howSoon, validations.howSoon, undefined, true);
+
   useEffect(() => {
     resetPreference();
   }, [interestedValue, resetPreference]);
@@ -60,8 +70,14 @@ const Relocation = forwardRef((_, ref) => {
   }, [preferenceValue, dispatch]);
 
   // Group all errors and values for relocation
-  const relocationErrors = [interestedValue ? preferenceError : false];
-  const relocationValues = [interestedValue ? preferenceValue : true];
+  const relocationErrors = [
+    interestedValue ? preferenceError : false,
+    interestedValue ? howSoonError : false,
+  ];
+  const relocationValues = [
+    interestedValue ? preferenceValue : true,
+    interestedValue ? howSoonValue : true,
+  ];
 
   const isRelocationValid = determineSectionValidity(
     relocationErrors,
@@ -70,7 +86,10 @@ const Relocation = forwardRef((_, ref) => {
 
   // Force Relocation validations
   const forceRelocationValidations = () => {
-    if (interestedValue) forcePreferenceValidations();
+    if (interestedValue) {
+      forcePreferenceValidations();
+      forceHowSoonValidations();
+    }
   };
 
   const submit = () => {
@@ -101,6 +120,13 @@ const Relocation = forwardRef((_, ref) => {
           section: SECTIONS.RELOCATION,
           field: FIELDS.RELOCATION.PREFERENCE,
           value: preferenceValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.RELOCATION,
+          field: FIELDS.RELOCATION.HOW_SOON,
+          value: howSoonValue,
         })
       );
     }
@@ -134,19 +160,34 @@ const Relocation = forwardRef((_, ref) => {
         isRequired
       />
       {interestedValue && (
-        <Select
-          id="relocationPreference"
-          label="Preference of stay"
-          options={OPTIONS.STAY_PREFERENCE}
-          value={preferenceValue}
-          changeHandler={preferenceChange}
-          blurHandler={preferenceBlur}
-          focusHandler={preferenceFocus}
-          error={preferenceError}
-          isFocused={isPreferenceFocused}
-          extraClass={classes.fullInputWidth}
-          isRequired
-        />
+        <>
+          <Select
+            id="howSoonRelocation"
+            label="How soon are you willing to relocate?"
+            options={OPTIONS.HOW_SOON_RELOCATION}
+            value={howSoonValue}
+            changeHandler={howSoonChange}
+            blurHandler={howSoonBlur}
+            focusHandler={howSoonFocus}
+            error={howSoonError}
+            isFocused={isHowSoonFocused}
+            extraClass={classes.fullInputWidth}
+            isRequired
+          />
+          <Select
+            id="relocationPreference"
+            label="Preference of stay"
+            options={OPTIONS.STAY_PREFERENCE}
+            value={preferenceValue}
+            changeHandler={preferenceChange}
+            blurHandler={preferenceBlur}
+            focusHandler={preferenceFocus}
+            error={preferenceError}
+            isFocused={isPreferenceFocused}
+            extraClass={classes.fullInputWidth}
+            isRequired
+          />
+        </>
       )}
       {preferenceValue === "other" && (
         <Address

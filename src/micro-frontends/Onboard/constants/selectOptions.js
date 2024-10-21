@@ -123,6 +123,11 @@ export const OPTIONS = {
     { value: "WI", label: "Wisconsin" },
     { value: "WY", label: "Wyoming" },
   ],
+  HOW_SOON_RELOCATION: [
+    { value: "", label: "Select duration" },
+    { value: "withinTwoWeeks", label: "Within 2 weeks" },
+    { value: "moreThanTwoWeeks", label: "More than 2 weeks" },
+  ],
   STAY_PREFERENCE: [
     { value: "", label: "Select stay preference" },
     { value: "guesthouse", label: "Opt for guest house" },

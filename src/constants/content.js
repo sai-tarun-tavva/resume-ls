@@ -90,6 +90,9 @@ export const CONTENT = {
         empty: "Zipcode is required.",
         invalid: "Please enter a valid Zipcode.",
       },
+      howSoon: {
+        empty: "Please select how soon you are willing to relocate.",
+      },
       stayPreference: {
         empty: "Preference of stay is required.",
       },

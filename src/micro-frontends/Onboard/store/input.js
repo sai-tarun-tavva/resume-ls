@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 1,
+  currentSectionIndex: 3,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -68,6 +68,7 @@ const initialState = {
     [SECTIONS.RELOCATION]: {
       [FIELDS.RELOCATION.INTERESTED.VALUE]:
         FIELDS.RELOCATION.INTERESTED.OPTIONS.YES,
+      [FIELDS.RELOCATION.HOW_SOON]: "",
       [FIELDS.RELOCATION.PREFERENCE]: "",
       [FIELDS.RELOCATION.ADDRESS]: defaultAddress,
     },

@@ -89,6 +89,7 @@ export const FIELDS = {
         NO: "No",
       },
     },
+    HOW_SOON: "howSoon",
     PREFERENCE: "preference",
     ADDRESS: "address",
   },
