@@ -71,7 +71,7 @@ const CandidateForm = () => {
     handleInputBlur: handlePhoneBlur,
     error: phoneError,
   } = useInput(
-    info?.phone_numbers,
+    transformPhoneNumber(info?.phone_numbers),
     (value) => candidateValidations.phone(info?.phone_numbers, value),
     transformPhoneNumber
   );
