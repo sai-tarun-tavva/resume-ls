@@ -24,6 +24,7 @@ const Personal = forwardRef((_, ref) => {
         lastName,
         emailId,
         phoneNumber,
+        secondaryPhoneNumber,
         gender,
         dob,
         maritalStatus,
@@ -78,6 +79,21 @@ const Personal = forwardRef((_, ref) => {
     isFocused: isPhoneNumberFocused,
     forceValidations: forcePhoneNumberValidations,
   } = useInput(phoneNumber, validations.phone, transformPhoneNumber, true);
+
+  const {
+    value: secondaryPhoneNumberValue,
+    handleInputChange: secondaryPhoneNumberChange,
+    handleInputBlur: secondaryPhoneNumberBlur,
+    handleInputFocus: secondaryPhoneNumberFocus,
+    error: secondaryPhoneNumberError,
+    isFocused: isSecondaryPhoneNumberFocused,
+    forceValidations: forceSecondaryPhoneNumberValidations,
+  } = useInput(
+    secondaryPhoneNumber,
+    validations.secondaryPhone,
+    transformPhoneNumber,
+    true
+  );
 
   const {
     value: genderValue,
@@ -200,6 +216,7 @@ const Personal = forwardRef((_, ref) => {
     lastNameError,
     emailIdError,
     phoneNumberError,
+    secondaryPhoneNumberError,
     genderError,
     dobError,
     passportNumberError,
@@ -231,6 +248,7 @@ const Personal = forwardRef((_, ref) => {
     forceLastNameValidations();
     forceEmailValidations();
     forcePhoneNumberValidations();
+    forceSecondaryPhoneNumberValidations();
     forceGenderValidations();
     forceDobValidations();
     forcePassportNumberValidations();
@@ -274,6 +292,13 @@ const Personal = forwardRef((_, ref) => {
         section: SECTIONS.PERSONAL,
         field: FIELDS.PERSONAL.PHONE_NUMBER,
         value: phoneNumberValue,
+      })
+    );
+    dispatch(
+      inputActions.updateField({
+        section: SECTIONS.PERSONAL,
+        field: FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER,
+        value: secondaryPhoneNumberValue,
       })
     );
     dispatch(
@@ -388,21 +413,22 @@ const Personal = forwardRef((_, ref) => {
           isRequired
         />
       </div>
-      <div className={classes.personalRow}>
-        <InputV2
-          id="emailId"
-          type="email"
-          label="Email ID"
-          value={emailIdValue}
-          changeHandler={emailIdChange}
-          blurHandler={emailIdBlur}
-          focusHandler={emailIdFocus}
-          error={emailIdError}
-          isFocused={isEmailIdFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
 
+      <InputV2
+        id="emailId"
+        type="email"
+        label="Email ID"
+        value={emailIdValue}
+        changeHandler={emailIdChange}
+        blurHandler={emailIdBlur}
+        focusHandler={emailIdFocus}
+        error={emailIdError}
+        isFocused={isEmailIdFocused}
+        extraClass={classes.fullInputWidth}
+        isRequired
+      />
+
+      <div className={classes.personalRow}>
         <InputV2
           id="phoneNumber"
           type="tel"
@@ -415,6 +441,19 @@ const Personal = forwardRef((_, ref) => {
           isFocused={isPhoneNumberFocused}
           extraClass={classes.halfInputWidth}
           isRequired
+        />
+
+        <InputV2
+          id="secondaryPhoneNumber"
+          type="tel"
+          label="Secondary or WhatsApp Number"
+          value={secondaryPhoneNumberValue}
+          changeHandler={secondaryPhoneNumberChange}
+          blurHandler={secondaryPhoneNumberBlur}
+          focusHandler={secondaryPhoneNumberFocus}
+          error={secondaryPhoneNumberError}
+          isFocused={isSecondaryPhoneNumberFocused}
+          extraClass={classes.halfInputWidth}
         />
       </div>
 

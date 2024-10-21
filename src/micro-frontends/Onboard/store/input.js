@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 9,
+  currentSectionIndex: 1,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -48,6 +48,7 @@ const initialState = {
       [FIELDS.PERSONAL.LAST_NAME]: "",
       [FIELDS.PERSONAL.EMAIL_ID]: "",
       [FIELDS.PERSONAL.PHONE_NUMBER]: "",
+      [FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER]: "",
       [FIELDS.PERSONAL.GENDER]: "",
       [FIELDS.PERSONAL.USA_LOCATION]: defaultAddress,
       [FIELDS.PERSONAL.INDIA_LOCATION]: defaultAddress,

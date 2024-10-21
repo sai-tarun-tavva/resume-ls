@@ -129,6 +129,16 @@ export const onboardingValidations = {
             validationMsgs.phone.invalid
           );
     },
+    secondaryPhone: (value) => {
+      const digitsOnly = value.replace(/[\s()-]+/g, "");
+      return isEmpty(value)
+        ? ""
+        : validateWithRegex(
+            digitsOnly,
+            REGEX.phoneRegex,
+            validationMsgs.phone.invalid
+          );
+    },
     dob: (value) => (isEmpty(value) ? validationMsgs.dob.empty : ""),
     gender: (value) => (isEmpty(value) ? validationMsgs.gender.empty : ""),
     passportNumber: (value) =>
