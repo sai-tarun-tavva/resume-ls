@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import Button from "../Button";
 import { handleLogout as logout } from "../../../../utilities";
 import classes from "./index.module.scss";
@@ -27,9 +26,4 @@ const Logout = () => {
 };
 
 Logout.displayName = "Logout";
-
-Logout.propTypes = {
-  onLogout: PropTypes.func.isRequired,
-};
-
 export default Logout;

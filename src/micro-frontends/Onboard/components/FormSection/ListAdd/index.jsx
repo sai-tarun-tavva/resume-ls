@@ -32,6 +32,13 @@ const ListAdd = forwardRef(
     const itemRefs = useRef(new Map());
 
     useEffect(() => {
+      // Initialize refs for existing items
+      items.forEach((item) => {
+        if (!itemRefs.current.has(item.id)) {
+          itemRefs.current.set(item.id, createRef());
+        }
+      });
+
       // Clean up refs for removed items
       itemRefs.current.forEach((_, key) => {
         if (!items.find((item) => item.id === key)) {
@@ -53,6 +60,7 @@ const ListAdd = forwardRef(
       setItems((prevItems) =>
         prevItems.filter((item) => item.id !== idToRemove)
       );
+      itemRefs.current.delete(idToRemove);
     };
 
     const forceValidations = () => {
@@ -62,9 +70,10 @@ const ListAdd = forwardRef(
     };
 
     const submit = () => {
-      const results = items.map((item) =>
-        itemRefs.current.get(item.id).current?.submit?.()
-      );
+      const results = items.map((item) => {
+        const itemRef = itemRefs.current.get(item.id);
+        return itemRef?.current?.submit?.();
+      });
       const allValid = results.every((result) => result?.isSectionValid);
       return {
         isSectionValid: allValid,
@@ -111,7 +120,7 @@ const ListAdd = forwardRef(
                 defaultValue: item.value,
                 labels: itemLabels,
                 validationFuncs,
-                ref: itemRefs.current.get(item.id) || createRef(),
+                ref: itemRefs.current.get(item.id),
               })}
             </div>
           </div>
