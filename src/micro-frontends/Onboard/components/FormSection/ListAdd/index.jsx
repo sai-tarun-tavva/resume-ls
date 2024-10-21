@@ -4,47 +4,73 @@ import {
   useRef,
   forwardRef,
   useImperativeHandle,
+  useEffect,
 } from "react";
 import Button from "../../../../Atoms/components/Button";
 import classes from "./index.module.scss";
 
 const ListAdd = forwardRef(
-  ({ label, itemLabel, element, savedListItems, helperText = "" }, ref) => {
-    const [items, setItems] = useState(savedListItems);
-    const itemRefs = useRef(items.map(() => createRef()));
+  (
+    {
+      label,
+      itemLabels,
+      element,
+      savedListItems,
+      validationFuncs,
+      helperText = "",
+      newValue,
+    },
+    ref
+  ) => {
+    const [items, setItems] = useState(
+      savedListItems.map((item, index) => ({
+        id: `${index}-${Date.now()}`,
+        value: item,
+      }))
+    );
+    const itemRefs = useRef(new Map());
+
+    useEffect(() => {
+      // Clean up refs for removed items
+      itemRefs.current.forEach((_, key) => {
+        if (!items.find((item) => item.id === key)) {
+          itemRefs.current.delete(key);
+        }
+      });
+    }, [items]);
 
     const addHandler = () => {
-      setItems((prevItems) => [...prevItems, ""]);
-      itemRefs.current.push(createRef());
+      const newItem = {
+        id: `${items.length}-${Date.now()}`,
+        value: newValue,
+      };
+      setItems((prevItems) => [...prevItems, newItem]);
+      itemRefs.current.set(newItem.id, createRef());
     };
 
-    const removeHandler = (indexToRemove) => {
+    const removeHandler = (idToRemove) => {
       setItems((prevItems) =>
-        prevItems.filter((_, index) => index !== indexToRemove)
+        prevItems.filter((item) => item.id !== idToRemove)
       );
-      itemRefs.current.splice(indexToRemove, 1);
     };
 
     const forceValidations = () => {
       itemRefs.current.forEach((itemRef) => {
-        itemRef.current?.forceValidations?.(); // Call forceValidations on each ref
+        itemRef.current?.forceValidations?.();
       });
     };
 
     const submit = () => {
-      const results = itemRefs.current.map((itemRef, index) => {
-        return itemRef.current?.submit?.(); // Call submit on each ref
-      });
-
+      const results = items.map((item) =>
+        itemRefs.current.get(item.id).current?.submit?.()
+      );
       const allValid = results.every((result) => result?.isSectionValid);
-
       return {
         isSectionValid: allValid,
         listItems: results.map((result) => result?.item),
       };
     };
 
-    // Expose submit function via ref
     useImperativeHandle(ref, () => ({
       submit,
       forceValidations,
@@ -68,20 +94,23 @@ const ListAdd = forwardRef(
           </Button>
         </div>
         {items.map((item, index) => (
-          <div className={classes.listItem}>
+          <div key={item.id} className={classes.listItem}>
             <Button
               type="button"
               className={classes.removeButton}
-              onClick={() => removeHandler(index)}
+              onClick={() => removeHandler(item.id)}
             >
               <i className="bi bi-dash-square" />
             </Button>
-            {element({
-              id: index + 1,
-              defaultValue: item,
-              label: itemLabel,
-              ref: itemRefs.current[index],
-            })}
+            <div>
+              {element({
+                id: index + 1,
+                defaultValue: item.value,
+                labels: itemLabels,
+                validationFuncs,
+                ref: itemRefs.current.get(item.id) || createRef(),
+              })}
+            </div>
           </div>
         ))}
       </div>

@@ -128,4 +128,11 @@ export const OPTIONS = {
     { value: "guesthouse", label: "Opt for guest house" },
     { value: "other", label: "Other" },
   ],
+  EXPERIENCE_MONTHS: [
+    { value: "", label: "Select months" },
+    ...Array.from({ length: 11 }, (_, i) => ({
+      value: `${i + 1}`,
+      label: `${i + 1}`,
+    })),
+  ],
 };

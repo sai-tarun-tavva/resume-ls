@@ -142,10 +142,8 @@ const Education = forwardRef((_, ref) => {
 
   const submit = () => {
     const { isAddressValid, address } = addressRef?.current?.submit?.(); // Check if Address is valid
-    const { isSectionValid: areCertificatesValid, listItems } =
+    const { isSectionValid: areCertificatesValid, listItems: certificates } =
       listRef?.current?.submit?.(); // ListAdd validation
-
-    console.log(areCertificatesValid);
 
     if (!isSectionValid || !isAddressValid || !areCertificatesValid) {
       forceValidations();
@@ -183,7 +181,7 @@ const Education = forwardRef((_, ref) => {
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
           [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
-            listItems,
+            certificates,
         },
       })
     );
@@ -305,9 +303,11 @@ const Education = forwardRef((_, ref) => {
       />
       <ListAdd
         label="Any certifications?"
-        itemLabel="Certificate"
+        itemLabels={{ input: "Certificate" }}
+        validationFuncs={{ input: validations.certificate }}
         element={(props) => <SingleInput {...props} />}
         savedListItems={additionalCertifications}
+        newValue={""}
         ref={listRef}
       />
     </>

@@ -108,8 +108,18 @@ export const FIELDS = {
     },
   },
   PROFESSION: {
-    TRAINING_ATTENDED: "trainingAttended",
-    EXPERIENCE: "experience",
+    TRAINING_ATTENDED: {
+      VALUE: "trainingAttended",
+      OPTIONS: {
+        YES: "Yes",
+        NO: "No",
+      },
+    },
+    EXPERIENCE: {
+      VALUE: "experience",
+      YEARS: "years",
+      MONTHS: "months",
+    },
     TECHNOLOGIES_KNOWN: "technologiesKnown",
     PREVIOUS_EXPERIENCE: "previousExperience",
     REFERENCES: "references",

@@ -35,7 +35,7 @@
   .listItem {
     margin-bottom: 1rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     .removeButton {
       background-color: transparent;
@@ -50,6 +50,10 @@
       &:hover {
         color: var(--primary-hover);
       }
+    }
+
+    & > div {
+      flex: 1;
     }
   }
 }

@@ -121,6 +121,27 @@ export const CONTENT = {
       certificate: {
         empty: "Certificate is required.",
       },
+      experienceInYears: {
+        empty: "Years is required.",
+        invalid: "Please enter a valid year.",
+      },
+      experienceInMonths: {
+        empty: "Months is required.",
+      },
+      technology: {
+        empty: "Technology is required.",
+      },
+      employerName: {
+        empty: "Company name is required.",
+      },
+      employerPhone: {
+        empty: "Company phone is required.",
+        invalid: "Company phone is invalid.",
+      },
+      employerEmail: {
+        empty: "Company email is required.",
+        invalid: "Company email is invalid.",
+      },
     },
     pageNotFound: {
       title: "404",

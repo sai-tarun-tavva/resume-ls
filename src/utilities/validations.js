@@ -230,7 +230,37 @@ export const onboardingValidations = {
       isEmpty(value) ? validationMsgs.passedMonthAndYear.empty : "",
     universityStream: (value) =>
       isEmpty(value) ? validationMsgs.stream.empty : "",
-    singleInput: (value) =>
+    certificate: (value) =>
       isEmpty(value) ? validationMsgs.certificate.empty : "",
+  },
+  profession: {
+    experienceInYears: (value) =>
+      isEmpty(value)
+        ? validationMsgs.experienceInYears.empty
+        : value < 0 || value > 100
+        ? validationMsgs.experience.invalid
+        : undefined,
+    experienceInMonths: (value) =>
+      isEmpty(value) ? validationMsgs.experienceInMonths.empty : "",
+    technology: (value) =>
+      isEmpty(value) ? validationMsgs.technology.empty : "",
+    employerName: (value) =>
+      isEmpty(value) ? validationMsgs.employerName.empty : "",
+    employerEmail: (value) =>
+      isEmpty(value)
+        ? validationMsgs.employerEmail.empty
+        : validateWithRegex(
+            value,
+            REGEX.emailRegex,
+            validationMsgs.email.invalid
+          ),
+    employerPhone: (value) =>
+      isEmpty(value)
+        ? validationMsgs.employerPhone.empty
+        : validateWithRegex(
+            value,
+            REGEX.phoneRegex,
+            validationMsgs.phone.invalid
+          ),
   },
 };

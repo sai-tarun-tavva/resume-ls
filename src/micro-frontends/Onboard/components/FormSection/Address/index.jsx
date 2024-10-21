@@ -23,6 +23,7 @@ const Address = forwardRef(
       heading = "",
       defaultValues: { address1, address2, city, state, country, zipcode },
       id = "",
+      extraClass = "",
     },
     ref
   ) => {
@@ -161,7 +162,7 @@ const Address = forwardRef(
     return (
       <>
         {heading && <h4 className={classes.heading}>{heading}</h4>}
-        <div className={classes.addressRow}>
+        <div className={`${classes.addressRow} ${extraClass}`}>
           <InputV2
             id={`${id}-address1`}
             type="text"
@@ -190,7 +191,7 @@ const Address = forwardRef(
           />
         </div>
 
-        <div className={classes.addressRow}>
+        <div className={`${classes.addressRow} ${extraClass}`}>
           <InputV2
             id={`${id}-city`}
             type="text"
@@ -220,7 +221,7 @@ const Address = forwardRef(
           />
         </div>
 
-        <div className={classes.addressRow}>
+        <div className={`${classes.addressRow} ${extraClass}`}>
           <Select
             id={`${id}-country`}
             label="Country"

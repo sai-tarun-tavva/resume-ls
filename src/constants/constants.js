@@ -18,7 +18,7 @@ export const STATUS_CODES = {
 
 export const REGEX = {
   usernameRegex: /^[a-zA-Z-]{3,20}$/, // Only letters (upper or lower case) and hyphens, length between 3 and 20 characters
-  phoneRegex: /^\d{10}$/, // Only allows up to 10 digits
+  phoneRegex: /^[\d\s()-]{10,}$/, // Only allows up to 10 digits
   emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // General email pattern: non-whitespace characters, followed by '@', a domain name, and a valid top-level domain
   passwordRegex: /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/, // Requires at least 8 characters, with at least one upper case, one lower case, one number, and one special character, no spaces allowed
   linkedInRegex: /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/, // Valid LinkedIn profile URL: must start with "https://www.linkedin.com/in/" followed by alphanumeric characters or hyphens

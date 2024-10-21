@@ -2,14 +2,15 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  display: flex;
 
   .shadows {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
     pointer-events: none;
+    z-index: 10;
 
     .topShadow,
     .bottomShadow {
@@ -17,16 +18,15 @@
       left: 0;
       width: 100%;
       height: 0.6rem;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
-      z-index: 10;
     }
 
     .topShadow {
       top: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
     }
 
     .bottomShadow {
-      bottom: -55vh;
+      bottom: 0;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
     }
   }
@@ -34,16 +34,16 @@
   .sectionsContent {
     display: flex;
     transition: transform 0.7s ease;
+    width: 100%;
 
     .section {
-      min-width: 100%;
-      height: 100%;
+      flex: 0 0 100%;
+      width: 100%;
+      height: 55vh;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 55vh;
-      overflow-y: auto;
-      position: relative;
     }
   }
 }
