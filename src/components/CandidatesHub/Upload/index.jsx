@@ -32,6 +32,7 @@ const Upload = () => {
   const { isButtonLoading: isLoading } = useSelector((state) => state.loading);
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
+  const [dummyProgress, setDummyProgress] = useState(0);
 
   /**
    * Toggles the upload modal visibility and manages body overflow style.
@@ -115,10 +116,6 @@ const Upload = () => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
   };
 
-  const buttonText = isLoading
-    ? `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`
-    : CONTENT.candidateHub.upload.button + (files.length > 1 ? "s" : "");
-
   /**
    * Handles file upload on button click.
    * @param {Event} event - The click event.
@@ -130,9 +127,20 @@ const Upload = () => {
 
     dispatch(loadingActions.enableButtonLoading());
 
-    // Prepare form data for upload
-    const formData = new FormData();
+    let intervalId;
+    setDummyProgress(1); // Start progress at 1
 
+    // Only set up interval for multiple files
+    if (files.length > 1) {
+      intervalId = setInterval(() => {
+        setDummyProgress((prev) => {
+          if (prev < files.length) return prev + 1;
+          return prev;
+        });
+      }, 1500); // Increment progress every second
+    }
+
+    const formData = new FormData();
     files.forEach((file) => {
       formData.append("file", file);
     });
@@ -161,14 +169,24 @@ const Upload = () => {
         })
       );
     }
+
+    if (intervalId) {
+      clearInterval(intervalId); // Stop dummy progress once the upload is complete
+    }
+    setDummyProgress(0); // Reset progress
     dispatch(loadingActions.disableButtonLoading());
   };
+
+  const buttonText = isLoading
+    ? files.length === 1
+      ? "Uploading 1 file..."
+      : `Uploading ${dummyProgress} of ${files.length} files...`
+    : CONTENT.candidateHub.upload.button + (files.length > 1 ? "s" : "");
 
   return (
     <>
       {allowUpload ? (
         <Modal handleClose={toggleAllowUpload}>
-          {/* Drag and Drop Area */}
           <HelperMessage />
           <form className={classes.uploadFormContainer}>
             <DropArea
