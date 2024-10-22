@@ -231,9 +231,9 @@ export const OPTIONS = {
   ],
   EXPERIENCE_MONTHS: [
     { value: "", label: "Select months" },
-    ...Array.from({ length: 11 }, (_, i) => ({
-      value: `${i + 1}`,
-      label: `${i + 1}`,
+    ...Array.from({ length: 12 }, (_, i) => ({
+      value: `${i}`,
+      label: `${i}`,
     })),
   ],
   OFFER_LETTER_STATUS: [

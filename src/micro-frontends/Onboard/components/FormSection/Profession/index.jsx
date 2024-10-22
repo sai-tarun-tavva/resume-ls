@@ -60,6 +60,10 @@ const Profession = forwardRef((_, ref) => {
     forceValidations: forceExperienceMonthsValidations,
   } = useInput(months, validations.experienceInMonths, undefined, true);
 
+  const isFresher =
+    (experienceYearsValue === "0" || experienceYearsValue === "") &&
+    (experienceMonthsValue === "0" || experienceMonthsValue === "");
+
   const technologiesRef = useRef();
   const prevExpRef = useRef();
   const referencesRef = useRef();
@@ -81,14 +85,16 @@ const Profession = forwardRef((_, ref) => {
     } = prevExpRef?.current?.submit?.();
     const { isSectionValid: areTechnologiesValid, listItems: technologies } =
       technologiesRef?.current?.submit?.();
-    const { isSectionValid: areReferencesValid, listItems: referencesList } =
-      referencesRef?.current?.submit?.();
+
+    const referenceSubmitResult = referencesRef.current?.submit?.();
+    const areReferencesValid = referenceSubmitResult?.isSectionValid;
+    const referencesList = referenceSubmitResult?.listItems;
 
     if (
       !isSectionValid ||
       !arePrevExperiencesValid ||
       !areTechnologiesValid ||
-      !areReferencesValid
+      (!isFresher && !areReferencesValid)
     ) {
       forceValidations();
       prevExpRef.current?.forceValidations?.();
@@ -111,8 +117,8 @@ const Profession = forwardRef((_, ref) => {
         section: SECTIONS.PROFESSION,
         field: FIELDS.PROFESSION.EXPERIENCE.VALUE,
         value: {
-          [FIELDS.PROFESSION.EXPERIENCE.YEARS]: experienceYearsValue,
-          [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: experienceMonthsValue,
+          [FIELDS.PROFESSION.EXPERIENCE.YEARS]: +experienceYearsValue,
+          [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: +experienceMonthsValue,
         },
       })
     );
@@ -134,7 +140,7 @@ const Profession = forwardRef((_, ref) => {
       inputActions.updateField({
         section: SECTIONS.PROFESSION,
         field: FIELDS.PROFESSION.REFERENCES,
-        value: referencesList,
+        value: isFresher ? [] : referencesList,
       })
     );
 
@@ -217,29 +223,31 @@ const Profession = forwardRef((_, ref) => {
         ref={technologiesRef}
       />
 
-      <ListAdd
-        label="Any references?"
-        itemLabels={{
-          name: "Reference Name",
-          phone: "Reference Phone",
-          email: "Reference Email",
-          designation: "Designation",
-          company: "Company",
-        }}
-        helperText="(two references are mandatory)"
-        mandatoryItems={2}
-        element={(props) => <Reference {...props} />}
-        savedListItems={references}
-        validationFuncs={{
-          name: validations.referenceName,
-          phone: validations.referencePhone,
-          email: validations.referenceEmail,
-          designation: validations.referenceDesignation,
-          company: validations.referenceCompany,
-        }}
-        newValue={defaultReference}
-        ref={referencesRef}
-      />
+      {!isFresher && (
+        <ListAdd
+          label="Any references?"
+          itemLabels={{
+            name: "Reference Name",
+            phone: "Reference Phone",
+            email: "Reference Email",
+            designation: "Designation",
+            company: "Company",
+          }}
+          helperText="(two references are mandatory)"
+          mandatoryItems={2}
+          element={(props) => <Reference {...props} />}
+          savedListItems={references}
+          validationFuncs={{
+            name: validations.referenceName,
+            phone: validations.referencePhone,
+            email: validations.referenceEmail,
+            designation: validations.referenceDesignation,
+            company: validations.referenceCompany,
+          }}
+          newValue={defaultReference}
+          ref={referencesRef}
+        />
+      )}
     </>
   );
 });
