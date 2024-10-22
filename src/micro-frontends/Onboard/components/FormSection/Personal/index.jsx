@@ -86,7 +86,12 @@ const Personal = forwardRef((_, ref) => {
     error: phoneNumberError,
     isFocused: isPhoneNumberFocused,
     forceValidations: forcePhoneNumberValidations,
-  } = useInput(phoneNumber, validations.phone, transformPhoneNumber, true);
+  } = useInput(
+    transformPhoneNumber(phoneNumber),
+    validations.phone,
+    transformPhoneNumber,
+    true
+  );
 
   const {
     value: secondaryPhoneNumberValue,
@@ -97,7 +102,7 @@ const Personal = forwardRef((_, ref) => {
     isFocused: isSecondaryPhoneNumberFocused,
     forceValidations: forceSecondaryPhoneNumberValidations,
   } = useInput(
-    secondaryPhoneNumber,
+    transformPhoneNumber(secondaryPhoneNumber),
     validations.secondaryPhone,
     transformPhoneNumber,
     true

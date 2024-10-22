@@ -49,7 +49,12 @@ const EmergencyContacts = forwardRef((_, ref) => {
     error: usaPhoneError,
     isFocused: isUsaPhoneFocused,
     forceValidations: forceUsaPhoneValidations,
-  } = useInput(usaPhone, phoneValidationFunc, transformPhoneNumber, true);
+  } = useInput(
+    transformPhoneNumber(usaPhone),
+    phoneValidationFunc,
+    transformPhoneNumber,
+    true
+  );
 
   const {
     value: homeCountryNameValue,
@@ -70,7 +75,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
     isFocused: isHomeCountryPhoneFocused,
     forceValidations: forceHomeCountryPhoneValidations,
   } = useInput(
-    homeCountryPhone,
+    transformPhoneNumber(homeCountryPhone),
     phoneValidationFunc,
     transformPhoneNumber,
     true

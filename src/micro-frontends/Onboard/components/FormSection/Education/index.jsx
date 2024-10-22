@@ -76,7 +76,12 @@ const Education = forwardRef((_, ref) => {
     error: dsoPhoneError,
     isFocused: isDSOPhoneFocused,
     forceValidations: forceDSOPhoneValidations,
-  } = useInput(dsoPhone, validations.dsoPhone, transformPhoneNumber, true);
+  } = useInput(
+    transformPhoneNumber(dsoPhone),
+    validations.dsoPhone,
+    transformPhoneNumber,
+    true
+  );
 
   const {
     value: universityNameValue,

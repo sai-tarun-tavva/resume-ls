@@ -52,7 +52,7 @@ const Reference = forwardRef(
       isFocused: isPhoneFocused,
       forceValidations: forcePhoneValidations,
     } = useInput(
-      phoneDefaultValue,
+      transformPhoneNumber(phoneDefaultValue),
       phoneValidationFunc,
       transformPhoneNumber,
       true

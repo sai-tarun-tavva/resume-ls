@@ -58,7 +58,7 @@ const PreviousExperience = forwardRef(
       isFocused: isPhoneNumberFocused,
       forceValidations: forcePhoneNumberValidations,
     } = useInput(
-      phoneNumberDefaultValue,
+      transformPhoneNumber(phoneNumberDefaultValue),
       phoneNumberValidationFunc,
       transformPhoneNumber,
       true
