@@ -6,7 +6,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
   FIELDS,
-  INDIAN_ADDRESS_VISA_STATUSES,
+  EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES,
   SECTIONS,
 } from "../../../constants";
 import classes from "./index.module.scss";
@@ -22,7 +22,7 @@ const Location = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
 
   const isIndianAddressRequired =
-    INDIAN_ADDRESS_VISA_STATUSES.includes(visaStatus);
+    !EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES.includes(visaStatus);
 
   const {
     value: haveIndianAddressValue,

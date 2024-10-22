@@ -8,13 +8,18 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
-import { SECTIONS, FIELDS } from "../../../constants";
+import {
+  SECTIONS,
+  FIELDS,
+  EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES,
+} from "../../../constants";
 import classes from "./index.module.scss";
 
 const EmergencyContacts = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
+      personal: { visaStatus },
       emergencyContacts: {
         usa: { name: usaName, phone: usaPhone },
         homeCountry: { name: homeCountryName, phone: homeCountryPhone },
@@ -70,6 +75,9 @@ const EmergencyContacts = forwardRef((_, ref) => {
     transformPhoneNumber,
     true
   );
+
+  const isHomeCountryContactRequired =
+    !EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES.includes(visaStatus);
 
   const allErrors = [
     usaNameError,
@@ -161,7 +169,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
       </div>
 
       <div className={classes.heading}>
-        <h3>Home Country (India)</h3>
+        <h3>Home Country (India, if applicable, or Other Countries)</h3>
       </div>
       <div className={classes.emergencyContactRow}>
         <InputV2
@@ -174,7 +182,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
           error={homeCountryNameError}
           isFocused={isHomeCountryNameFocused}
           extraClass={classes.halfInputWidth}
-          isRequired
+          isRequired={isHomeCountryContactRequired}
         />
 
         <InputV2
@@ -187,7 +195,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
           error={homeCountryPhoneError}
           isFocused={isHomeCountryPhoneFocused}
           extraClass={classes.halfInputWidth}
-          isRequired
+          isRequired={isHomeCountryContactRequired}
         />
       </div>
     </>
