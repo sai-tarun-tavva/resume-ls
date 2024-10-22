@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React from "react";
 import Onboarding from "./Onboarding";
 import Personal from "./Personal";
 import Location from "./Location";
@@ -26,33 +26,6 @@ const FormSection = ({
     miscellaneous,
   },
 }) => {
-  const onboardingRef = useRef();
-  const personalRef = useRef();
-  const locationRef = useRef();
-  const relocationRef = useRef();
-  const educationRef = useRef();
-  const professionRef = useRef();
-  const offerLetterRef = useRef();
-  const usTravelAndStayRef = useRef();
-  const emergencyContactsRef = useRef();
-  const miscellaneousRef = useRef();
-
-  const sectionRefs = useMemo(
-    () => ({
-      onboarding: onboardingRef,
-      personal: personalRef,
-      location: locationRef,
-      relocation: relocationRef,
-      education: educationRef,
-      profession: professionRef,
-      offerLetter: offerLetterRef,
-      usTravelAndStay: usTravelAndStayRef,
-      emergencyContacts: emergencyContactsRef,
-      miscellaneous: miscellaneousRef,
-    }),
-    []
-  );
-
   const sections = [
     { Component: Onboarding, ref: onboarding },
     { Component: Personal, ref: personal },
@@ -73,11 +46,7 @@ const FormSection = ({
         style={{ transform: `translateX(-${currentSectionIndex * 100}%)` }}
       >
         {sections.map(({ Component, ref }, index) => (
-          <div
-            key={index}
-            className={classes.section}
-            ref={sectionRefs[Object.keys(sectionRefs)[index]]}
-          >
+          <div key={index} className={classes.section} ref={ref}>
             <Component ref={ref} />
           </div>
         ))}
