@@ -83,7 +83,7 @@ const Location = forwardRef((_, ref) => {
       {!isIndianAddressRequired && (
         <Checkbox
           id="anyIndianAddress"
-          label="Have any address in India?"
+          label="Have any address in India (if applicable) or another country?"
           value={haveIndianAddressValue}
           changeHandler={haveIndianAddressChange}
           blurHandler={haveIndianAddressBlur}
@@ -94,7 +94,6 @@ const Location = forwardRef((_, ref) => {
       )}
       {(isIndianAddressRequired || haveIndianAddressValue) && (
         <Address
-          heading="Address in India"
           defaultValue={indiaLocation}
           id="current"
           ref={indiaLocRef}
