@@ -11,11 +11,7 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
-import {
-  SECTIONS,
-  FIELDS,
-  STUDENT_VISA_STATUS_VALUES,
-} from "../../../constants";
+import { SECTIONS, FIELDS, SEVIS_DSO_VISA_STATUSES } from "../../../constants";
 import classes from "./index.module.scss";
 
 const Education = forwardRef((_, ref) => {
@@ -38,7 +34,7 @@ const Education = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
   const addressRef = useRef();
   const listRef = useRef();
-  const isStudent = STUDENT_VISA_STATUS_VALUES.includes(visaStatus);
+  const isStudent = SEVIS_DSO_VISA_STATUSES.includes(visaStatus);
 
   const { education: validations } = onboardingValidations;
 

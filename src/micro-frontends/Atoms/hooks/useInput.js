@@ -42,6 +42,11 @@ export const useInput = (
     setDidEdit(false);
   }, [defaultValue]);
 
+  const clearValue = useCallback(() => {
+    setEnteredValue("");
+    setDidEdit(false);
+  }, []);
+
   const forceValidations = useCallback(() => {
     if (forceValidationsOnSubmit) {
       setDidEdit(true);
@@ -56,6 +61,7 @@ export const useInput = (
     handleInputBlur,
     handleInputFocus,
     resetValue,
+    clearValue,
     error: showError,
     isFocused,
     forceValidations,

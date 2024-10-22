@@ -9,13 +9,6 @@ export const VISA_STATUS_VALUES = {
   US_CITIZEN: "USCitizen",
 };
 
-export const STUDENT_VISA_STATUS_VALUES = [
-  VISA_STATUS_VALUES.F1,
-  VISA_STATUS_VALUES.F1CPT,
-  VISA_STATUS_VALUES.F1OPT,
-  VISA_STATUS_VALUES.F1STEMOPT,
-];
-
 export const OPTIONS = {
   ONBOARDING_STATUS: [
     { value: "", label: "" },

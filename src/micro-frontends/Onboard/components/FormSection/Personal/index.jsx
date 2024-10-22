@@ -16,7 +16,8 @@ import {
   SECTIONS,
   FIELDS,
   OPTIONS,
-  STUDENT_VISA_STATUS_VALUES,
+  EAD_VISA_STATUSES,
+  SEVIS_DSO_VISA_STATUSES,
 } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -147,6 +148,8 @@ const Personal = forwardRef((_, ref) => {
     forceValidations: forceVisaStatusValidations,
   } = useInput(visaStatus, validations.visaStatus, undefined, true);
 
+  const isStudent = EAD_VISA_STATUSES.includes(visaStatusValue);
+
   const {
     value: eadNumberValue,
     handleInputChange: eadNumberChange,
@@ -155,6 +158,7 @@ const Personal = forwardRef((_, ref) => {
     error: eadNumberError,
     isFocused: isEadNumberFocused,
     forceValidations: forceEadNumberValidations,
+    clearValue: clearEadNumber,
   } = useInput(eadNumber, validations.eadNumber, undefined, true);
 
   const {
@@ -183,7 +187,7 @@ const Personal = forwardRef((_, ref) => {
     handleInputFocus: photoIDNumberFocus,
     error: photoIDNumberError,
     isFocused: isPhotoIDNumberFocused,
-    resetValue: resetPhotoIDNumber,
+    clearValue: clearPhotoIDNumber,
     forceValidations: forcePhotoIDNumberValidations,
   } = useInput(
     photoIDNumber,
@@ -213,8 +217,12 @@ const Personal = forwardRef((_, ref) => {
   } = useInput(referenceName);
 
   useEffect(() => {
-    resetPhotoIDNumber();
-  }, [photoIDTypeValue, resetPhotoIDNumber]);
+    clearPhotoIDNumber();
+  }, [photoIDTypeValue, clearPhotoIDNumber]);
+
+  useEffect(() => {
+    clearEadNumber();
+  }, [visaStatusValue, clearEadNumber]);
 
   const allErrors = [
     firstNameError,
@@ -226,7 +234,7 @@ const Personal = forwardRef((_, ref) => {
     dobError,
     passportNumberError,
     visaStatusError,
-    eadNumberError,
+    isStudent ? eadNumberError : false,
     SSNError,
     photoIDTypeValue ? photoIDNumberError : false,
     skypeIdError,
@@ -241,7 +249,7 @@ const Personal = forwardRef((_, ref) => {
     dobValue,
     passportNumberValue,
     visaStatusValue,
-    eadNumberValue,
+    isStudent ? eadNumberValue : true,
     SSNValue,
     photoIDTypeValue ? photoIDNumberValue : true,
   ];
@@ -258,7 +266,9 @@ const Personal = forwardRef((_, ref) => {
     forceDobValidations();
     forcePassportNumberValidations();
     forceVisaStatusValidations();
-    forceEadNumberValidations();
+    if (isStudent) {
+      forceEadNumberValidations();
+    }
     forceSSNValidations();
     if (photoIDTypeValue) {
       forcePhotoIDNumberValidations();
@@ -273,7 +283,7 @@ const Personal = forwardRef((_, ref) => {
 
     // Resetting SevisID and DSO details if visa status is not one of F1, F1-OPT, F1-CPT, STEM-OPT
     // This case is required if user selects a student visa and enter sevis and dso details later, if he/she comes back to personal and updates visa not to student
-    if (!STUDENT_VISA_STATUS_VALUES.includes(visaStatusValue)) {
+    if (!SEVIS_DSO_VISA_STATUSES.includes(visaStatusValue)) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EDUCATION,
@@ -542,36 +552,6 @@ const Personal = forwardRef((_, ref) => {
           isRequired
         />
 
-        <Select
-          id="visaStatus"
-          type="text"
-          label="Visa Status"
-          options={OPTIONS.VISA_STATUS}
-          value={visaStatusValue}
-          changeHandler={visaStatusChange}
-          blurHandler={visaStatusBlur}
-          focusHandler={visaStatusFocus}
-          error={visaStatusError}
-          isFocused={isVisaStatusFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-      </div>
-      <div className={classes.personalRow}>
-        <InputV2
-          id="eadNumber"
-          type="text"
-          label="EAD Number"
-          value={eadNumberValue}
-          changeHandler={eadNumberChange}
-          blurHandler={eadNumberBlur}
-          focusHandler={eadNumberFocus}
-          error={eadNumberError}
-          isFocused={isEadNumberFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-
         <InputV2
           id="SSN"
           type="text"
@@ -586,6 +566,35 @@ const Personal = forwardRef((_, ref) => {
           isRequired
         />
       </div>
+      <Select
+        id="visaStatus"
+        type="text"
+        label="Visa Status"
+        options={OPTIONS.VISA_STATUS}
+        value={visaStatusValue}
+        changeHandler={visaStatusChange}
+        blurHandler={visaStatusBlur}
+        focusHandler={visaStatusFocus}
+        error={visaStatusError}
+        isFocused={isVisaStatusFocused}
+        extraClass={classes.fullInputWidth}
+        isRequired
+      />
+      {isStudent && (
+        <InputV2
+          id="eadNumber"
+          type="text"
+          label="EAD Number"
+          value={eadNumberValue}
+          changeHandler={eadNumberChange}
+          blurHandler={eadNumberBlur}
+          focusHandler={eadNumberFocus}
+          error={eadNumberError}
+          isFocused={isEadNumberFocused}
+          extraClass={classes.fullInputWidth}
+          isRequired
+        />
+      )}
 
       <Select
         id="photoIDType"
