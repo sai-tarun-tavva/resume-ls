@@ -1,11 +1,24 @@
 export const VISA_STATUS_VALUES = {
-  F1: "F1",
-  F1OPT: "F1-OPT",
-  F1CPT: "F1-CPT",
-  F1STEMOPT: "STEM-OPT",
-  H1B: "H1B",
-  J1: "J1",
-  GREEN_CARD_PENDING: "GreenCardPending",
+  ASYLUM_REFUGEE: "Asylum-Refugee",
+  E1: "E-1",
+  E2: "E-2",
+  E3: "E-3",
+  EAD: "EAD",
+  EB1: "EB-1",
+  EB2: "EB-2",
+  EB3: "EB-3",
+  F1CPT: "F-1-CPT",
+  F1OPT: "F-1-OPT",
+  F1STEMOPT: "F-1-STEM-OPT",
+  GREEN_CARD: "GreenCard",
+  H1B: "H-1B",
+  H4: "H-4",
+  J1: "J-1",
+  J2: "J-2",
+  L1: "L-1",
+  L2: "L-2",
+  OTHERS: "others",
+  TN: "TN",
   US_CITIZEN: "USCitizen",
 };
 
@@ -30,19 +43,87 @@ export const OPTIONS = {
   ],
   VISA_STATUS: [
     { value: "", label: "Select Visa Status" },
-    { value: [VISA_STATUS_VALUES.F1], label: "F1" },
-    { value: [VISA_STATUS_VALUES.F1OPT], label: "F1-OPT" },
-    { value: [VISA_STATUS_VALUES.F1], label: "F1-CPT" },
-    { value: [VISA_STATUS_VALUES.F1STEMOPT], label: "STEM-OPT" },
-    { value: [VISA_STATUS_VALUES.H1B], label: "H1B" },
     {
-      value: [VISA_STATUS_VALUES.GREEN_CARD_PENDING],
-      label: "Green Card Application Pending",
+      value: VISA_STATUS_VALUES.ASYLUM_REFUGEE,
+      label: "Asylum/Refugee (Granted Protection in the U.S.)",
     },
     {
-      value: [VISA_STATUS_VALUES.US_CITIZEN],
-      label: "US Citizen",
+      value: VISA_STATUS_VALUES.E1,
+      label: "E-1 (Treaty Trader)",
     },
+    {
+      value: VISA_STATUS_VALUES.E2,
+      label: "E-2 (Treaty Investor)",
+    },
+    {
+      value: VISA_STATUS_VALUES.E3,
+      label: "E-3 (Specialty Occupation Professionals from Australia)",
+    },
+    {
+      value: VISA_STATUS_VALUES.EAD,
+      label: "EAD (Employment Authorization Document)",
+    },
+    {
+      value: VISA_STATUS_VALUES.EB1,
+      label: "EB-1 (Employment-based Permanent Residency - Priority Workers)",
+    },
+    {
+      value: VISA_STATUS_VALUES.EB2,
+      label:
+        "EB-2 (Employment-based Permanent Residency - Advanced Degree Professionals)",
+    },
+    {
+      value: VISA_STATUS_VALUES.EB3,
+      label:
+        "EB-3 (Employment-based Permanent Residency - Skilled Workers, Professionals)",
+    },
+    {
+      value: VISA_STATUS_VALUES.F1CPT,
+      label: "F1-CPT (Curricular Practical Training for F-1 Students)",
+    },
+    {
+      value: VISA_STATUS_VALUES.F1OPT,
+      label: "F1-OPT (Optional Practical Training for F-1 Students)",
+    },
+    {
+      value: VISA_STATUS_VALUES.F1STEMOPT,
+      label:
+        "F1-STEM-OPT (Science, Technology, Engineering, and Math Extension)",
+    },
+    {
+      value: VISA_STATUS_VALUES.GREEN_CARD,
+      label: "Green Card (Lawful Permanent Resident)",
+    },
+    {
+      value: VISA_STATUS_VALUES.H1B,
+      label: "H-1B (Specialty Occupations - Engineers, IT Professionals, etc.)",
+    },
+    {
+      value: VISA_STATUS_VALUES.H4,
+      label: "H-4 (Dependent of H-1B Holder)",
+    },
+    {
+      value: VISA_STATUS_VALUES.J1,
+      label: "J-1 (Exchange Visitor - Interns, Trainees, Scholars, etc.)",
+    },
+    {
+      value: VISA_STATUS_VALUES.J2,
+      label: "J-2 (Dependent of J-1 Holder)",
+    },
+    {
+      value: VISA_STATUS_VALUES.L1,
+      label: "L-1 (Intracompany Transferee - Managers and Executives)",
+    },
+    {
+      value: VISA_STATUS_VALUES.L2,
+      label: "L-2 (Dependent of L-1 Holder)",
+    },
+    {
+      value: VISA_STATUS_VALUES.TN,
+      label: "TN (NAFTA Professionals - Canada & Mexico)",
+    },
+    { value: VISA_STATUS_VALUES.US_CITIZEN, label: "U.S. Citizen" },
+    { value: VISA_STATUS_VALUES.OTHERS, label: "Other Visa Types" },
   ],
   PHOTO_ID_TYPE: [
     { value: "", label: "Select Photo ID Type" },
@@ -158,6 +239,7 @@ export const OPTIONS = {
   OFFER_LETTER_STATUS: [
     { value: "", label: "" },
     { value: "inProgress", label: "In Progress" },
-    { value: "started", label: "Started" },
+    { value: "accepted", label: "Accepted" },
+    { value: "rejected", label: "Rejected" },
   ],
 };
