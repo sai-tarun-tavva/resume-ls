@@ -9,7 +9,6 @@ import OfferLetter from "./OfferLetter";
 import USTravelAndStay from "./USTravelAndStay";
 import EmergencyContacts from "./EmergencyContacts";
 import Miscellaneous from "./Miscellaneous";
-import { useScrollShadows } from "../../hooks";
 import classes from "./index.module.scss";
 
 const FormSection = ({
@@ -54,11 +53,6 @@ const FormSection = ({
     []
   );
 
-  const scrollShadows = useScrollShadows(
-    Object.values(sectionRefs)[currentSectionIndex],
-    currentSectionIndex
-  );
-
   const sections = [
     { Component: Onboarding, ref: onboarding },
     { Component: Personal, ref: personal },
@@ -74,10 +68,6 @@ const FormSection = ({
 
   return (
     <div className={classes.sectionsWrapper}>
-      <div className={classes.shadows}>
-        {scrollShadows.top && <div className={classes.topShadow} />}
-        {scrollShadows.bottom && <div className={classes.bottomShadow} />}
-      </div>
       <div
         className={classes.sectionsContent}
         style={{ transform: `translateX(-${currentSectionIndex * 100}%)` }}

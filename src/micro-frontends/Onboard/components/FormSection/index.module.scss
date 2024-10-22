@@ -3,34 +3,6 @@
   width: 100%;
   overflow: hidden;
 
-  .shadows {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
-
-    .topShadow,
-    .bottomShadow {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 0.6rem;
-    }
-
-    .topShadow {
-      top: 0;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
-    }
-
-    .bottomShadow {
-      bottom: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
-    }
-  }
-
   .sectionsContent {
     display: flex;
     transition: transform 0.7s ease;
