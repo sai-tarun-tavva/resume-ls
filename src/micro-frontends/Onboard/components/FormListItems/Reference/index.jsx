@@ -3,6 +3,7 @@ import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import { useInput } from "../../../../Atoms/hooks";
 import {
   determineSectionValidity,
+  extractOnlyDigits,
   transformPhoneNumber,
 } from "../../../../../utilities";
 import classes from "./index.module.scss";
@@ -119,7 +120,7 @@ const Reference = forwardRef(
     const submit = () => {
       const referenceData = {
         name: nameValue,
-        phone: phoneValue,
+        phone: extractOnlyDigits(phoneValue),
         email: emailValue,
         designation: designationValue,
         company: companyValue,

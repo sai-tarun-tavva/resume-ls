@@ -4,6 +4,7 @@ import Address from "../../FormSection/Address";
 import { useInput } from "../../../../Atoms/hooks";
 import {
   determineSectionValidity,
+  extractOnlyDigits,
   transformPhoneNumber,
 } from "../../../../../utilities";
 import classes from "./index.module.scss";
@@ -81,7 +82,7 @@ const PreviousExperience = forwardRef(
 
       const prevExp = {
         name: nameValue,
-        phone: phoneNumberValue,
+        phone: extractOnlyDigits(phoneNumberValue),
         email: emailIdValue,
         address,
       };

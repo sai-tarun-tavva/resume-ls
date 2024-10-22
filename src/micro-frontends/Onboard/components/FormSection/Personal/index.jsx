@@ -7,6 +7,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  extractOnlyDigits,
   getEighteenYearsAgoDate,
   onboardingValidations,
   transformPhoneNumber,
@@ -367,14 +368,14 @@ const Personal = forwardRef((_, ref) => {
       inputActions.updateField({
         section: SECTIONS.PERSONAL,
         field: FIELDS.PERSONAL.PHONE_NUMBER,
-        value: phoneNumberValue,
+        value: extractOnlyDigits(phoneNumberValue),
       })
     );
     dispatch(
       inputActions.updateField({
         section: SECTIONS.PERSONAL,
         field: FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER,
-        value: secondaryPhoneNumberValue,
+        value: extractOnlyDigits(secondaryPhoneNumberValue),
       })
     );
     dispatch(

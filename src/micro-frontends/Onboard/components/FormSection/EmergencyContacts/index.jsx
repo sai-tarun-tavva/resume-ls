@@ -5,6 +5,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  extractOnlyDigits,
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
@@ -118,7 +119,8 @@ const EmergencyContacts = forwardRef((_, ref) => {
         field: FIELDS.EMERGENCY_CONTACTS.USA.VALUE,
         value: {
           [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: usaNameValue,
-          [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]: usaPhoneValue,
+          [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]:
+            extractOnlyDigits(usaPhoneValue),
         },
       })
     );
@@ -128,7 +130,9 @@ const EmergencyContacts = forwardRef((_, ref) => {
         field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
         value: {
           [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: homeCountryNameValue,
-          [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: homeCountryPhoneValue,
+          [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: extractOnlyDigits(
+            homeCountryPhoneValue
+          ),
         },
       })
     );

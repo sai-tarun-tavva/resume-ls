@@ -263,6 +263,17 @@ export const transformPhoneNumber = (value, isCountryCode = false) => {
 };
 
 /**
+ * Extracts and returns only the numeric digits from a given string.
+ * Removes all non-digit characters, including spaces, and trims the result.
+ *
+ * @param {string} value - The input string from which digits are to be extracted.
+ * @returns {string} A string containing only the numeric digits from the input.
+ */
+export const extractOnlyDigits = (value) => {
+  return value.replace(/\D/g, "").trim();
+};
+
+/**
  * Validates an array of error states and value states.
  * @param {Array} errors - An array of error states to check if they are falsy.
  * @param {Array} values - An array of values to check if they are truthy (not empty).

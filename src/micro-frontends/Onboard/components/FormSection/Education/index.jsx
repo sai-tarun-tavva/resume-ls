@@ -8,6 +8,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  extractOnlyDigits,
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
@@ -165,7 +166,7 @@ const Education = forwardRef((_, ref) => {
         value: {
           [FIELDS.EDUCATION.DSO.NAME]: dsoNameValue,
           [FIELDS.EDUCATION.DSO.EMAIL]: dsoEmailValue,
-          [FIELDS.EDUCATION.DSO.PHONE]: dsoPhoneValue,
+          [FIELDS.EDUCATION.DSO.PHONE]: extractOnlyDigits(dsoPhoneValue),
         },
       })
     );
