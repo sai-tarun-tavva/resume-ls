@@ -1,8 +1,15 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Address from "../Address";
-import { inputActions } from "../../../store";
-import { FIELDS, SECTIONS } from "../../../constants";
+import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
+import { useInput } from "../../../../Atoms/hooks";
+import { defaultAddress, inputActions } from "../../../store";
+import {
+  FIELDS,
+  INDIAN_ADDRESS_VISA_STATUSES,
+  SECTIONS,
+} from "../../../constants";
+import classes from "./index.module.scss";
 
 const Location = forwardRef((_, ref) => {
   const usaLocRef = useRef();
@@ -10,19 +17,35 @@ const Location = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     data: {
-      personal: { usaLocation, indiaLocation },
+      personal: { usaLocation, indiaLocation, visaStatus },
     },
   } = useSelector((state) => state.input);
+
+  const isIndianAddressRequired =
+    INDIAN_ADDRESS_VISA_STATUSES.includes(visaStatus);
+
+  const {
+    value: haveIndianAddressValue,
+    handleInputChange: haveIndianAddressChange,
+    handleInputBlur: haveIndianAddressBlur,
+  } = useInput(false);
 
   const submit = () => {
     const { isSectionValid: isUSAAddressValid, item: usaAddress } =
       usaLocRef.current?.submit?.(); // Check if Address is valid
-    const { isSectionValid: isIndiaAddressValid, item: indiaAddress } =
-      indiaLocRef.current?.submit?.();
 
-    if (!isUSAAddressValid || !isIndiaAddressValid) {
-      usaLocRef.current?.forceValidations?.(); // Force Address validation
-      indiaLocRef.current?.forceValidations?.();
+    let indiaAddressSubmitResult,
+      isIndiaAddressValid,
+      indiaAddress = defaultAddress;
+
+    if (isIndianAddressRequired || haveIndianAddressValue) {
+      indiaAddressSubmitResult = indiaLocRef.current?.submit?.();
+      isIndiaAddressValid = indiaAddressSubmitResult?.isSectionValid;
+      indiaAddress = indiaAddressSubmitResult?.item;
+    }
+
+    if (!isUSAAddressValid || isIndiaAddressValid === false) {
+      // checks with false to tackle undefined response from address
       return false;
     }
 
@@ -57,12 +80,27 @@ const Location = forwardRef((_, ref) => {
         id="current"
         ref={usaLocRef}
       />
-      <Address
-        heading="Address in India"
-        defaultValue={indiaLocation}
-        id="current"
-        ref={indiaLocRef}
-      />
+      {!isIndianAddressRequired && (
+        <Checkbox
+          id="anyIndianAddress"
+          label="Have any address in India?"
+          value={haveIndianAddressValue}
+          changeHandler={haveIndianAddressChange}
+          blurHandler={haveIndianAddressBlur}
+          helperText="(Considered no by default)"
+          extraClass={classes.fullInputWidth}
+          isRequired
+        />
+      )}
+      {(isIndianAddressRequired || haveIndianAddressValue) && (
+        <Address
+          heading="Address in India"
+          defaultValue={indiaLocation}
+          id="current"
+          ref={indiaLocRef}
+          isRequired={isIndianAddressRequired}
+        />
+      )}
     </>
   );
 });

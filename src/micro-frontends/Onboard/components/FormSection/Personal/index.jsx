@@ -18,6 +18,8 @@ import {
   OPTIONS,
   EAD_VISA_STATUSES,
   SEVIS_DSO_VISA_STATUSES,
+  INDIAN_ADDRESS_VISA_STATUSES,
+  FIELDS_ADDRESS,
 } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -279,6 +281,25 @@ const Personal = forwardRef((_, ref) => {
     if (!isSectionValid) {
       forceValidations();
       return false;
+    }
+
+    // Resetting Indian address details if visa status is not one of F1, F1-OPT, F1-CPT, STEM-OPT, H1 (Indian address is optional for other visas)
+    // This case is required if user selects a student or H1 visa and enter indian address later, if he/she comes back to personal and updates visa not to student
+    if (!INDIAN_ADDRESS_VISA_STATUSES.includes(visaStatusValue)) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.INDIA_LOCATION,
+          value: {
+            [FIELDS_ADDRESS.ADDRESS1]: "",
+            [FIELDS_ADDRESS.ADDRESS2]: "",
+            [FIELDS_ADDRESS.CITY]: "",
+            [FIELDS_ADDRESS.STATE]: "",
+            [FIELDS_ADDRESS.COUNTRY]: "",
+            [FIELDS_ADDRESS.ZIPCODE]: "",
+          },
+        })
+      );
     }
 
     // Resetting SevisID and DSO details if visa status is not one of F1, F1-OPT, F1-CPT, STEM-OPT
