@@ -12,7 +12,7 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
-import { SECTIONS, FIELDS, SEVIS_DSO_VISA_STATUSES } from "../../../constants";
+import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
 import classes from "./index.module.scss";
 
 const Education = forwardRef((_, ref) => {
@@ -35,7 +35,7 @@ const Education = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
   const addressRef = useRef();
   const listRef = useRef();
-  const isStudent = SEVIS_DSO_VISA_STATUSES.includes(visaStatus);
+  const isEducationRequired = EDUCATION_REQUIRED_VISA.includes(visaStatus);
 
   const { education: validations } = onboardingValidations;
 
@@ -114,15 +114,24 @@ const Education = forwardRef((_, ref) => {
     forceValidations: forceStreamValidations,
   } = useInput(stream, validations.universityStream, undefined, true);
 
-  const allErrors = [universityNameError, passedMonthAndYearError, streamError];
-
-  const allValues = [universityNameValue, passedMonthAndYearValue, streamValue];
-
-  // Add SEVIS ID and DSO details errors/values only if the visa status requires them
-  if (isStudent) {
-    allErrors.push(sevisIDError, dsoNameError, dsoEmailError, dsoPhoneError);
-    allValues.push(sevisIDValue, dsoNameValue, dsoEmailValue, dsoPhoneValue);
-  }
+  const allErrors = [
+    sevisIDError,
+    dsoNameError,
+    dsoEmailError,
+    dsoPhoneError,
+    universityNameError,
+    passedMonthAndYearError,
+    streamError,
+  ];
+  const allValues = [
+    sevisIDValue,
+    dsoNameValue,
+    dsoEmailValue,
+    dsoPhoneValue,
+    universityNameValue,
+    passedMonthAndYearValue,
+    streamValue,
+  ];
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
@@ -130,13 +139,10 @@ const Education = forwardRef((_, ref) => {
     forceUniversityNameValidations();
     forcePassedMonthAndYearValidations();
     forceStreamValidations();
-
-    if (isStudent) {
-      forceSevisIDValidations();
-      forceDSONameValidations();
-      forceDSOEmailValidations();
-      forceDSOPhoneValidations();
-    }
+    forceSevisIDValidations();
+    forceDSONameValidations();
+    forceDSOEmailValidations();
+    forceDSOPhoneValidations();
   };
 
   const submit = () => {
@@ -145,7 +151,10 @@ const Education = forwardRef((_, ref) => {
     const { isSectionValid: areCertificatesValid, listItems: certificates } =
       listRef?.current?.submit?.(); // ListAdd validation
 
-    if (!isSectionValid || !isAddressValid || !areCertificatesValid) {
+    if (
+      (isEducationRequired && (!isSectionValid || !isAddressValid)) ||
+      !areCertificatesValid
+    ) {
       forceValidations();
       addressRef.current?.forceValidations?.(); // Force Address validation
       listRef?.current?.forceValidations?.();
@@ -196,7 +205,7 @@ const Education = forwardRef((_, ref) => {
 
   return (
     <>
-      {isStudent && (
+      {isEducationRequired && (
         <>
           <div className={classes.educationRow}>
             <InputV2
@@ -254,56 +263,56 @@ const Education = forwardRef((_, ref) => {
               isRequired
             />
           </div>
+
+          <div className={classes.educationRow}>
+            <InputV2
+              id="graduatedUniversityName"
+              label="Graduated University Name"
+              value={universityNameValue}
+              changeHandler={universityNameChange}
+              blurHandler={universityNameBlur}
+              focusHandler={universityNameFocus}
+              error={universityNameError}
+              isFocused={isUniversityNameFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired
+            />
+
+            <InputV2
+              id="graduatedUniversityPassedMonthAndYear"
+              label="Passed month and year"
+              type="month"
+              value={passedMonthAndYearValue}
+              changeHandler={passedMonthAndYearChange}
+              blurHandler={passedMonthAndYearBlur}
+              focusHandler={passedMonthAndYearFocus}
+              error={passedMonthAndYearError}
+              isFocused={isPassedMonthAndYearFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired
+            />
+          </div>
+
+          <InputV2
+            id="graduatedUniversityStream"
+            label="Stream"
+            value={streamValue}
+            changeHandler={streamChange}
+            blurHandler={streamBlur}
+            focusHandler={streamFocus}
+            error={streamError}
+            isFocused={isStreamFocused}
+            extraClass={classes.fullInputWidth}
+            isRequired
+          />
+          <Address
+            heading="University Address"
+            defaultValue={universityAddress}
+            id="university"
+            ref={addressRef}
+          />
         </>
       )}
-
-      <div className={classes.educationRow}>
-        <InputV2
-          id="graduatedUniversityName"
-          label="Graduated University Name"
-          value={universityNameValue}
-          changeHandler={universityNameChange}
-          blurHandler={universityNameBlur}
-          focusHandler={universityNameFocus}
-          error={universityNameError}
-          isFocused={isUniversityNameFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-
-        <InputV2
-          id="graduatedUniversityPassedMonthAndYear"
-          label="Passed month and year"
-          type="month"
-          value={passedMonthAndYearValue}
-          changeHandler={passedMonthAndYearChange}
-          blurHandler={passedMonthAndYearBlur}
-          focusHandler={passedMonthAndYearFocus}
-          error={passedMonthAndYearError}
-          isFocused={isPassedMonthAndYearFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired
-        />
-      </div>
-
-      <InputV2
-        id="graduatedUniversityStream"
-        label="Stream"
-        value={streamValue}
-        changeHandler={streamChange}
-        blurHandler={streamBlur}
-        focusHandler={streamFocus}
-        error={streamError}
-        isFocused={isStreamFocused}
-        extraClass={classes.fullInputWidth}
-        isRequired
-      />
-      <Address
-        heading="University Address"
-        defaultValue={universityAddress}
-        id="university"
-        ref={addressRef}
-      />
       <ListAdd
         label="Any certifications?"
         itemLabels={{ input: "Certificate" }}

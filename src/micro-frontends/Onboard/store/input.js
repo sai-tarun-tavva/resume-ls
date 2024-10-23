@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 3,
+  currentSectionIndex: 7,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -110,7 +110,7 @@ const initialState = {
     },
     [SECTIONS.US_TRAVEL_AND_STAY]: {
       [FIELDS.US_TRAVEL_AND_STAY.US_ENTRY]: "",
-      [FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES]: [defaultAddress],
+      [FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES]: [],
     },
     [SECTIONS.EMERGENCY_CONTACTS]: {
       [FIELDS.EMERGENCY_CONTACTS.USA.VALUE]: {

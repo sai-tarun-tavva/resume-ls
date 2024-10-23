@@ -9,7 +9,6 @@ export const VISA_STATUS_VALUES = {
   EB3: "EB-3",
   F1CPT: "F-1-CPT",
   F1OPT: "F-1-OPT",
-  F1STEMOPT: "F-1-STEM-OPT",
   GREEN_CARD: "GreenCard",
   H1B: "H-1B",
   H4: "H-4",
@@ -84,11 +83,6 @@ export const OPTIONS = {
     {
       value: VISA_STATUS_VALUES.F1OPT,
       label: "F1-OPT (Optional Practical Training for F-1 Students)",
-    },
-    {
-      value: VISA_STATUS_VALUES.F1STEMOPT,
-      label:
-        "F1-STEM-OPT (Science, Technology, Engineering, and Math Extension)",
     },
     {
       value: VISA_STATUS_VALUES.GREEN_CARD,

@@ -12,7 +12,8 @@ import {
 import {
   SECTIONS,
   FIELDS,
-  EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES,
+  HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
+  HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
 } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -31,6 +32,14 @@ const EmergencyContacts = forwardRef((_, ref) => {
   const {
     emergencyContacts: { name: nameValidationFunc, phone: phoneValidationFunc },
   } = onboardingValidations;
+
+  const isHomeCountryContactRequired = !(
+    HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatus) ||
+    HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatus)
+  );
+
+  const isHomeCountryContactOptional =
+    HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatus);
 
   const {
     value: usaNameValue,
@@ -65,7 +74,12 @@ const EmergencyContacts = forwardRef((_, ref) => {
     error: homeCountryNameError,
     isFocused: isHomeCountryNameFocused,
     forceValidations: forceHomeCountryNameValidations,
-  } = useInput(homeCountryName, nameValidationFunc, undefined, true);
+  } = useInput(
+    homeCountryName,
+    (value) => nameValidationFunc(value, isHomeCountryContactOptional),
+    undefined,
+    true
+  );
 
   const {
     value: homeCountryPhoneValue,
@@ -77,13 +91,10 @@ const EmergencyContacts = forwardRef((_, ref) => {
     forceValidations: forceHomeCountryPhoneValidations,
   } = useInput(
     transformPhoneNumber(homeCountryPhone),
-    phoneValidationFunc,
+    (value) => phoneValidationFunc(value, isHomeCountryContactOptional),
     transformPhoneNumber,
     true
   );
-
-  const isHomeCountryContactRequired =
-    !EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES.includes(visaStatus);
 
   const allErrors = [
     usaNameError,
@@ -94,8 +105,8 @@ const EmergencyContacts = forwardRef((_, ref) => {
   const allValues = [
     usaNameValue,
     usaPhoneValue,
-    homeCountryNameValue,
-    homeCountryPhoneValue,
+    isHomeCountryContactRequired ? homeCountryNameValue : true,
+    isHomeCountryContactRequired ? homeCountryPhoneValue : true,
   ];
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
@@ -103,8 +114,11 @@ const EmergencyContacts = forwardRef((_, ref) => {
   const forceValidations = () => {
     forceUsaNameValidations();
     forceUsaPhoneValidations();
-    forceHomeCountryNameValidations();
-    forceHomeCountryPhoneValidations();
+
+    if (isHomeCountryContactRequired) {
+      forceHomeCountryNameValidations();
+      forceHomeCountryPhoneValidations();
+    }
   };
 
   const submit = () => {
@@ -177,36 +191,40 @@ const EmergencyContacts = forwardRef((_, ref) => {
         />
       </div>
 
-      <div className={classes.heading}>
-        <h3>Home Country (India, if applicable, or Other Countries)</h3>
-      </div>
-      <div className={classes.emergencyContactRow}>
-        <InputV2
-          id="homeCountryName"
-          label="Full Name"
-          value={homeCountryNameValue}
-          changeHandler={homeCountryNameChange}
-          blurHandler={homeCountryNameBlur}
-          focusHandler={homeCountryNameFocus}
-          error={homeCountryNameError}
-          isFocused={isHomeCountryNameFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired={isHomeCountryContactRequired}
-        />
+      {(isHomeCountryContactRequired || isHomeCountryContactOptional) && (
+        <>
+          <div className={classes.heading}>
+            <h3>Home Country (India, if applicable, or Other Countries)</h3>
+          </div>
+          <div className={classes.emergencyContactRow}>
+            <InputV2
+              id="homeCountryName"
+              label="Full Name"
+              value={homeCountryNameValue}
+              changeHandler={homeCountryNameChange}
+              blurHandler={homeCountryNameBlur}
+              focusHandler={homeCountryNameFocus}
+              error={homeCountryNameError}
+              isFocused={isHomeCountryNameFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired={isHomeCountryContactRequired}
+            />
 
-        <InputV2
-          id="homeCountryPhone"
-          label="Phone"
-          value={homeCountryPhoneValue}
-          changeHandler={homeCountryPhoneChange}
-          blurHandler={homeCountryPhoneBlur}
-          focusHandler={homeCountryPhoneFocus}
-          error={homeCountryPhoneError}
-          isFocused={isHomeCountryPhoneFocused}
-          extraClass={classes.halfInputWidth}
-          isRequired={isHomeCountryContactRequired}
-        />
-      </div>
+            <InputV2
+              id="homeCountryPhone"
+              label="Phone"
+              value={homeCountryPhoneValue}
+              changeHandler={homeCountryPhoneChange}
+              blurHandler={homeCountryPhoneBlur}
+              focusHandler={homeCountryPhoneFocus}
+              error={homeCountryPhoneError}
+              isFocused={isHomeCountryPhoneFocused}
+              extraClass={classes.halfInputWidth}
+              isRequired={isHomeCountryContactRequired}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 });

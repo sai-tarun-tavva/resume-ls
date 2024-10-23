@@ -6,8 +6,9 @@ import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
   FIELDS,
-  EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES,
   SECTIONS,
+  HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
+  HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
 } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -15,40 +16,57 @@ const Location = forwardRef((_, ref) => {
   const usaLocRef = useRef();
   const indiaLocRef = useRef();
   const dispatch = useDispatch();
+
   const {
     data: {
       personal: { usaLocation, indiaLocation, visaStatus },
     },
   } = useSelector((state) => state.input);
 
-  const isIndianAddressRequired =
-    !EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES.includes(visaStatus);
+  // Determine if home address is not required based on visa status
+  const isExemptFromHomeAddress =
+    HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatus);
+
+  // Determine if home address is optional based on visa status
+  const isHomeAddressOptional =
+    HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatus);
+
+  // If not exempt and not optional, then it's required
+  const shouldShowHomeAddress = !isExemptFromHomeAddress;
 
   const {
-    value: haveIndianAddressValue,
-    handleInputChange: haveIndianAddressChange,
-    handleInputBlur: haveIndianAddressBlur,
+    value: hasHomeCountryAddress,
+    handleInputChange: handleHasHomeCountryChange,
+    handleInputBlur: handleHasHomeCountryBlur,
   } = useInput(false);
 
   const submit = () => {
-    const { isSectionValid: isUSAAddressValid, item: usaAddress } =
-      usaLocRef.current?.submit?.(); // Check if Address is valid
+    // Validate USA address (always required)
+    const usaAddressResult = usaLocRef.current?.submit?.();
+    const isUSAAddressValid = usaAddressResult?.isSectionValid;
+    const usaAddress = usaAddressResult?.item;
 
-    let indiaAddressSubmitResult,
-      isIndiaAddressValid,
-      indiaAddress = defaultAddress;
+    // Initialize India address validation results
+    let isIndiaAddressValid = true;
+    let indiaAddress = defaultAddress;
 
-    if (isIndianAddressRequired || haveIndianAddressValue) {
-      indiaAddressSubmitResult = indiaLocRef.current?.submit?.();
-      isIndiaAddressValid = indiaAddressSubmitResult?.isSectionValid;
-      indiaAddress = indiaAddressSubmitResult?.item;
+    // Validate India address if:
+    // 1. User is not exempt from providing home address AND
+    // 2. Either it's mandatory OR user opted to provide it when optional
+    if (
+      shouldShowHomeAddress &&
+      (!isHomeAddressOptional || hasHomeCountryAddress)
+    ) {
+      const indiaAddressResult = indiaLocRef.current?.submit?.();
+      isIndiaAddressValid = indiaAddressResult?.isSectionValid;
+      indiaAddress = indiaAddressResult?.item || defaultAddress;
     }
 
     if (!isUSAAddressValid || isIndiaAddressValid === false) {
-      // checks with false to tackle undefined response from address
       return false;
     }
 
+    // Update store with validated addresses
     dispatch(
       inputActions.updateField({
         section: SECTIONS.PERSONAL,
@@ -56,6 +74,7 @@ const Location = forwardRef((_, ref) => {
         value: usaAddress,
       })
     );
+
     dispatch(
       inputActions.updateField({
         section: SECTIONS.PERSONAL,
@@ -67,7 +86,6 @@ const Location = forwardRef((_, ref) => {
     return true;
   };
 
-  // Expose methods to parent using ref
   useImperativeHandle(ref, () => ({
     submit,
   }));
@@ -80,25 +98,32 @@ const Location = forwardRef((_, ref) => {
         id="current"
         ref={usaLocRef}
       />
-      {!isIndianAddressRequired && (
-        <Checkbox
-          id="anyIndianAddress"
-          label="Have any address in India (if applicable) or another country?"
-          value={haveIndianAddressValue}
-          changeHandler={haveIndianAddressChange}
-          blurHandler={haveIndianAddressBlur}
-          helperText="(Considered no by default)"
-          extraClass={classes.fullInputWidth}
-          isRequired
-        />
-      )}
-      {(isIndianAddressRequired || haveIndianAddressValue) && (
-        <Address
-          defaultValue={indiaLocation}
-          id="current"
-          ref={indiaLocRef}
-          isRequired={isIndianAddressRequired}
-        />
+
+      {shouldShowHomeAddress && (
+        <>
+          {isHomeAddressOptional && (
+            <Checkbox
+              id="hasIndianAddress"
+              label="Have any address in India (if applicable) or another country?"
+              value={hasHomeCountryAddress}
+              changeHandler={handleHasHomeCountryChange}
+              blurHandler={handleHasHomeCountryBlur}
+              helperText="(Considered no by default)"
+              extraClass={classes.fullInputWidth}
+              isRequired
+            />
+          )}
+
+          {(!isHomeAddressOptional || hasHomeCountryAddress) && (
+            <Address
+              heading={!isHomeAddressOptional ? "Address in India" : ""}
+              defaultValue={indiaLocation}
+              id="current"
+              ref={indiaLocRef}
+              isRequired
+            />
+          )}
+        </>
       )}
     </>
   );

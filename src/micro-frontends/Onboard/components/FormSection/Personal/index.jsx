@@ -4,7 +4,7 @@ import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
-import { inputActions } from "../../../store";
+import { defaultAddress, inputActions } from "../../../store";
 import {
   determineSectionValidity,
   extractOnlyDigits,
@@ -17,10 +17,12 @@ import {
   SECTIONS,
   FIELDS,
   OPTIONS,
-  EAD_VISA_STATUSES,
-  SEVIS_DSO_VISA_STATUSES,
-  EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES,
-  FIELDS_ADDRESS,
+  EDUCATION_REQUIRED_VISA,
+  EAD_NOT_REQUIRED_VISA,
+  EAD_OPTIONAL_VISA,
+  HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
+  HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
+  PORT_OF_ENTRY_NOT_REQUIRED_VISA,
 } from "../../../constants";
 import classes from "./index.module.scss";
 
@@ -44,6 +46,9 @@ const Personal = forwardRef((_, ref) => {
         photoID: { type: photoIDType, number: photoIDNumber },
         skypeId,
         referenceName,
+      },
+      education: {
+        graduatedUniversity: { additionalCertifications },
       },
     },
   } = useSelector((state) => state.input);
@@ -156,7 +161,10 @@ const Personal = forwardRef((_, ref) => {
     forceValidations: forceVisaStatusValidations,
   } = useInput(visaStatus, validations.visaStatus, undefined, true);
 
-  const isStudent = EAD_VISA_STATUSES.includes(visaStatusValue);
+  const isEADRequired = !(
+    EAD_NOT_REQUIRED_VISA.includes(visaStatusValue) || visaStatusValue === ""
+  );
+  const isEADOptional = EAD_OPTIONAL_VISA.includes(visaStatusValue);
 
   const {
     value: eadNumberValue,
@@ -167,7 +175,12 @@ const Personal = forwardRef((_, ref) => {
     isFocused: isEadNumberFocused,
     forceValidations: forceEadNumberValidations,
     clearValue: clearEadNumber,
-  } = useInput(eadNumber, validations.eadNumber, undefined, true);
+  } = useInput(
+    eadNumber,
+    (value) => validations.eadNumber(value, isEADOptional),
+    undefined,
+    true
+  );
 
   const {
     value: SSNValue,
@@ -242,7 +255,7 @@ const Personal = forwardRef((_, ref) => {
     dobError,
     passportNumberError,
     visaStatusError,
-    isStudent ? eadNumberError : false,
+    isEADRequired ? eadNumberError : false,
     SSNError,
     photoIDTypeValue ? photoIDNumberError : false,
     skypeIdError,
@@ -257,7 +270,7 @@ const Personal = forwardRef((_, ref) => {
     dobValue,
     passportNumberValue,
     visaStatusValue,
-    isStudent ? eadNumberValue : true,
+    isEADRequired ? (isEADOptional ? true : eadNumberValue) : true,
     SSNValue,
     photoIDTypeValue ? photoIDNumberValue : true,
   ];
@@ -274,7 +287,7 @@ const Personal = forwardRef((_, ref) => {
     forceDobValidations();
     forcePassportNumberValidations();
     forceVisaStatusValidations();
-    if (isStudent) {
+    if (isEADRequired) {
       forceEadNumberValidations();
     }
     forceSSNValidations();
@@ -289,26 +302,20 @@ const Personal = forwardRef((_, ref) => {
       return false;
     }
 
-    // Below resetting with empty values is required if user selects a student or H1 visa and enter indian address later, if he/she comes back to personal and updates visa not to student
+    // Below resetting with empty values is required if user selects a student or H1 visa and enter home address later, if user comes back to personal and updates visa not to student
 
-    // Resetting Indian address details if visa status is not one of Green card, Asylum/Refugee, U.S. Citizen (Indian address is optional for other visas)
-    if (EXCLUDE_HOME_ADDRESS_CONTACT_VISA_STATUSES.includes(visaStatusValue)) {
+    // Resetting Home address and emergency contact details if visa status is not one of Green card, U.S. Citizen, EB-1, EB-2, EB-3, Others
+    if (
+      HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatusValue) ||
+      HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatusValue)
+    ) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
           field: FIELDS.PERSONAL.INDIA_LOCATION,
-          value: {
-            [FIELDS_ADDRESS.ADDRESS1]: "",
-            [FIELDS_ADDRESS.ADDRESS2]: "",
-            [FIELDS_ADDRESS.CITY]: "",
-            [FIELDS_ADDRESS.STATE]: "",
-            [FIELDS_ADDRESS.COUNTRY]: "",
-            [FIELDS_ADDRESS.ZIPCODE]: "",
-          },
+          value: defaultAddress,
         })
       );
-
-      // Resetting Home country emergency contact if visa status is not one of Green card, Asylum/Refugee, U.S. Citizen (Home country contact is optional for other visas)
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EMERGENCY_CONTACTS,
@@ -321,8 +328,8 @@ const Personal = forwardRef((_, ref) => {
       );
     }
 
-    // Resetting SevisID and DSO details if visa status is not one of F1, F1-OPT, F1-CPT, STEM-OPT
-    if (!SEVIS_DSO_VISA_STATUSES.includes(visaStatusValue)) {
+    // Resetting SevisID, DSO and university details if visa status is not one of F1-OPT, F1-CPT
+    if (!EDUCATION_REQUIRED_VISA.includes(visaStatusValue)) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EDUCATION,
@@ -339,6 +346,31 @@ const Personal = forwardRef((_, ref) => {
             [FIELDS.EDUCATION.DSO.EMAIL]: "",
             [FIELDS.EDUCATION.DSO.PHONE]: "",
           },
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
+          value: {
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
+              additionalCertifications,
+          },
+        })
+      );
+    }
+
+    // Resetting Port of entry if visa status is U.S. Citizen
+    if (PORT_OF_ENTRY_NOT_REQUIRED_VISA.includes(visaStatus)) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.US_TRAVEL_AND_STAY,
+          field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
+          value: "",
         })
       );
     }
@@ -619,7 +651,7 @@ const Personal = forwardRef((_, ref) => {
         extraClass={classes.fullInputWidth}
         isRequired
       />
-      {isStudent && (
+      {isEADRequired && (
         <InputV2
           id="eadNumber"
           type="text"
@@ -631,7 +663,7 @@ const Personal = forwardRef((_, ref) => {
           error={eadNumberError}
           isFocused={isEadNumberFocused}
           extraClass={classes.fullInputWidth}
-          isRequired
+          isRequired={!isEADOptional}
         />
       )}
 

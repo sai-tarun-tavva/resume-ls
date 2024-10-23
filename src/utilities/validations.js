@@ -151,9 +151,11 @@ export const onboardingValidations = {
           ),
     visaStatus: (value) =>
       isEmpty(value) ? validationMsgs.visaStatus.empty : "",
-    eadNumber: (value) =>
+    eadNumber: (value, isOptional) =>
       isEmpty(value)
-        ? validationMsgs.eadNumber.empty
+        ? isOptional
+          ? ""
+          : validationMsgs.eadNumber.empty
         : validateWithRegex(
             value,
             REGEX.eadNumberRegex,
@@ -330,14 +332,18 @@ export const onboardingValidations = {
     },
   },
   usTravelAndStay: {
-    usEntry: (value) => (isEmpty(value) ? validationMsgs.usEntry.empty : ""),
+    usEntry: (value, isOptional) =>
+      isOptional ? "" : isEmpty(value) ? validationMsgs.usEntry.empty : "",
   },
   emergencyContacts: {
-    name: (value) => (isEmpty(value) ? validationMsgs.name.empty : ""),
-    phone: (value) => {
+    name: (value, isOptional) =>
+      isOptional ? "" : isEmpty(value) ? validationMsgs.name.empty : "",
+    phone: (value, isOptional) => {
       const digitsOnly = value.replace(/[\s()-]+/g, "");
       return isEmpty(value)
-        ? validationMsgs.phone.empty
+        ? isOptional
+          ? ""
+          : validationMsgs.phone.empty
         : validateWithRegex(
             digitsOnly,
             REGEX.phoneRegex,
