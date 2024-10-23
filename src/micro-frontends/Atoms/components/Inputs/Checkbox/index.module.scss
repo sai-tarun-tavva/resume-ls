@@ -12,7 +12,15 @@
   }
 
   .checkboxInput {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    width: 2.5rem;
+    height: 1.25rem;
+    z-index: 1;
+
+    &:focus-visible + .checkboxSlider {
+      box-shadow: 0 0 0 0.2rem var(--primary-color);
+    }
 
     &:checked + .checkboxSlider {
       background-color: var(--primary-color);
