@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useEffect } from "react";
+import { useImperativeHandle, forwardRef, useEffect, useRef } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
@@ -33,6 +33,7 @@ const Address = forwardRef(
     ref
   ) => {
     const { address: validations } = onboardingValidations;
+    const firstInputRef = useRef();
 
     const {
       value: address1Value,
@@ -173,6 +174,9 @@ const Address = forwardRef(
       submit,
       forceValidations,
       resetValues,
+      focusFirstInput: () => {
+        firstInputRef.current?.focus();
+      },
     }));
 
     return (
@@ -180,6 +184,7 @@ const Address = forwardRef(
         {heading && <h4 className={classes.heading}>{heading}</h4>}
         <div className={`${classes.addressRow} ${extraClass}`}>
           <InputV2
+            ref={firstInputRef}
             id={`${id}-address1`}
             type="text"
             label="Address Line 1"

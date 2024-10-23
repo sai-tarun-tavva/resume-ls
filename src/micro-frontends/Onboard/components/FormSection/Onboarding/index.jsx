@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef } from "react";
+import { useImperativeHandle, forwardRef, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -13,11 +13,13 @@ import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 const Onboarding = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
+    currentSectionIndex,
     data: {
       onboarding: { date, status },
     },
   } = useSelector((state) => state.input);
   const { onboarding: validations } = onboardingValidations;
+  const firstInputRef = useRef();
 
   const {
     value: dateValue,
@@ -38,6 +40,14 @@ const Onboarding = forwardRef((_, ref) => {
     isFocused: isStatusFocused,
     forceValidations: forceStatusValidations,
   } = useInput(status, validations.status, undefined, true);
+
+  useEffect(() => {
+    if (currentSectionIndex === 0) {
+      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex]);
 
   const allErrors = [dateError, statusError];
   const allValues = [dateValue, statusValue];
@@ -78,6 +88,7 @@ const Onboarding = forwardRef((_, ref) => {
   return (
     <>
       <InputV2
+        ref={firstInputRef}
         id="onboardingDate"
         type="date"
         label="Onboarding Date"

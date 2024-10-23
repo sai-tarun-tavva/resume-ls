@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
@@ -28,7 +28,9 @@ import classes from "./index.module.scss";
 
 const Personal = forwardRef((_, ref) => {
   const dispatch = useDispatch();
+  const firstInputRef = useRef();
   const {
+    currentSectionIndex,
     data: {
       personal: {
         firstName,
@@ -244,6 +246,14 @@ const Personal = forwardRef((_, ref) => {
   useEffect(() => {
     clearEadNumber();
   }, [visaStatusValue, clearEadNumber]);
+
+  useEffect(() => {
+    if (currentSectionIndex === 1) {
+      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex]);
 
   const allErrors = [
     firstNameError,
@@ -495,6 +505,7 @@ const Personal = forwardRef((_, ref) => {
     <>
       <div className={classes.personalRow}>
         <InputV2
+          ref={firstInputRef}
           id="firstName"
           type="text"
           label="First Name"

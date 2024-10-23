@@ -33,6 +33,7 @@ const ListAdd = forwardRef(
       }))
     );
     const itemRefs = useRef(new Map());
+    const firstInputRef = useRef();
 
     useEffect(() => {
       // Initialize refs for existing items
@@ -88,6 +89,9 @@ const ListAdd = forwardRef(
     useImperativeHandle(ref, () => ({
       submit,
       forceValidations,
+      focusFirstInput: () => {
+        firstInputRef.current.focus();
+      },
     }));
 
     return (
@@ -104,6 +108,7 @@ const ListAdd = forwardRef(
             className={classes.addButton}
             onClick={addHandler}
             disabled={maxItems && items.length >= maxItems} // Disable button if maxItems reached
+            ref={firstInputRef}
           >
             <i className="bi bi-plus-square-fill" />
           </Button>

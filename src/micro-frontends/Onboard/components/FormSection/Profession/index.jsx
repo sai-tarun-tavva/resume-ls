@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useRef } from "react";
+import { useImperativeHandle, forwardRef, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -19,6 +19,7 @@ import classes from "./index.module.scss";
 const Profession = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
+    currentSectionIndex,
     data: {
       profession: {
         trainingAttended,
@@ -29,6 +30,7 @@ const Profession = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
+  const firstInputRef = useRef();
 
   const { profession: validations } = onboardingValidations;
 
@@ -151,9 +153,18 @@ const Profession = forwardRef((_, ref) => {
     submit,
   }));
 
+  useEffect(() => {
+    if (currentSectionIndex === 5) {
+      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex]);
+
   return (
     <>
       <Checkbox
+        ref={firstInputRef}
         id="trainingAttended"
         label="Training Attended?"
         value={trainingAttendedValue}

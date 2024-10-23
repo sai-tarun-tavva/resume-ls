@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ListAdd from "../ListAdd";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
@@ -18,6 +18,7 @@ import classes from "./index.module.scss";
 const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
+    currentSectionIndex,
     data: {
       personal: { visaStatus },
       education: {
@@ -36,6 +37,7 @@ const Education = forwardRef((_, ref) => {
   const addressRef = useRef();
   const listRef = useRef();
   const isEducationRequired = EDUCATION_REQUIRED_VISA.includes(visaStatus);
+  const firstInputRef = useRef();
 
   const { education: validations } = onboardingValidations;
 
@@ -146,13 +148,15 @@ const Education = forwardRef((_, ref) => {
   };
 
   const submit = () => {
-    const { isSectionValid: isAddressValid, item: address } =
-      addressRef?.current?.submit?.(); // Check if Address is valid
+    const addressSubmitResult = addressRef.current?.submit?.();
+    const isAddressValid = addressSubmitResult?.isSectionValid;
+    const address = addressSubmitResult?.item;
+
     const { isSectionValid: areCertificatesValid, listItems: certificates } =
       listRef?.current?.submit?.(); // ListAdd validation
 
     if (
-      (isEducationRequired && (!isSectionValid || !isAddressValid)) ||
+      (isEducationRequired && (!isSectionValid || isAddressValid === false)) ||
       !areCertificatesValid
     ) {
       forceValidations();
@@ -203,12 +207,27 @@ const Education = forwardRef((_, ref) => {
     submit,
   }));
 
+  useEffect(() => {
+    if (currentSectionIndex === 4) {
+      const timer = setTimeout(
+        () =>
+          isEducationRequired
+            ? firstInputRef.current.focus()
+            : listRef?.current?.focusFirstInput?.(),
+        500
+      );
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex, isEducationRequired]);
+
   return (
     <>
       {isEducationRequired && (
         <>
           <div className={classes.educationRow}>
             <InputV2
+              ref={firstInputRef}
               id="sevisID"
               label="SEVIS ID"
               value={sevisIDValue}

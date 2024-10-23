@@ -15,11 +15,13 @@ import classes from "./index.module.scss";
 const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
+    currentSectionIndex,
     data: {
       relocation: { interested, preference, howSoon, address },
     },
   } = useSelector((state) => state.input);
   const addressRef = useRef(); // Create a ref to call Address validation
+  const firstInputRef = useRef();
 
   const { relocation: validations } = onboardingValidations;
 
@@ -68,6 +70,14 @@ const Relocation = forwardRef((_, ref) => {
         })
       );
   }, [preferenceValue, dispatch]);
+
+  useEffect(() => {
+    if (currentSectionIndex === 3) {
+      const timer = setTimeout(() => firstInputRef.current?.focus(), 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex]);
 
   // Group all errors and values for relocation
   const relocationErrors = [
@@ -150,6 +160,7 @@ const Relocation = forwardRef((_, ref) => {
   return (
     <>
       <Checkbox
+        ref={firstInputRef}
         id="relocationInterested"
         label="Interested in Relocation?"
         value={interestedValue}

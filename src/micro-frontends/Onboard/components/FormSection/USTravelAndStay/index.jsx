@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import ListAdd from "../ListAdd";
@@ -21,11 +21,13 @@ import classes from "./index.module.scss";
 const USTravelAndStay = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
+    currentSectionIndex,
     data: {
       personal: { visaStatus },
       usTravelAndStay: { usEntry, stayAddresses },
     },
   } = useSelector((state) => state.input);
+  const firstInputRef = useRef();
 
   const { usTravelAndStay: validations } = onboardingValidations;
 
@@ -100,10 +102,25 @@ const USTravelAndStay = forwardRef((_, ref) => {
     submit,
   }));
 
+  useEffect(() => {
+    if (currentSectionIndex === 7) {
+      const timer = setTimeout(
+        () =>
+          !isPortOfEntryNotRequired
+            ? firstInputRef.current.focus()
+            : stayAddressesRef?.current?.focusFirstInput?.(),
+        500
+      );
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex, isPortOfEntryNotRequired]);
+
   return (
     <>
       {!isPortOfEntryNotRequired && (
         <InputV2
+          ref={firstInputRef}
           id="usEntry"
           label="Month and Year of US Entry"
           type="month"

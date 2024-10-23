@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -15,6 +15,7 @@ import classes from "./index.module.scss";
 const OfferLetter = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
+    currentSectionIndex,
     data: {
       offerLetter: {
         status,
@@ -26,6 +27,7 @@ const OfferLetter = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
+  const firstInputRef = useRef();
 
   const {
     offerLetter: {
@@ -187,9 +189,18 @@ const OfferLetter = forwardRef((_, ref) => {
     submit,
   }));
 
+  useEffect(() => {
+    if (currentSectionIndex === 6) {
+      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex]);
+
   return (
     <>
       <Select
+        ref={firstInputRef}
         id="status"
         label="Offer Letter Status"
         value={statusValue}

@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import { useInput } from "../../../../Atoms/hooks";
@@ -20,6 +20,7 @@ import classes from "./index.module.scss";
 const EmergencyContacts = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
+    currentSectionIndex,
     data: {
       personal: { visaStatus },
       emergencyContacts: {
@@ -28,6 +29,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
+  const firstInputRef = useRef();
 
   const {
     emergencyContacts: { name: nameValidationFunc, phone: phoneValidationFunc },
@@ -158,6 +160,14 @@ const EmergencyContacts = forwardRef((_, ref) => {
     submit,
   }));
 
+  useEffect(() => {
+    if (currentSectionIndex === 8) {
+      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex]);
+
   return (
     <>
       <div className={classes.heading}>
@@ -165,6 +175,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
       </div>
       <div className={classes.emergencyContactRow}>
         <InputV2
+          ref={firstInputRef}
           id="usaName"
           label="Full Name"
           value={usaNameValue}

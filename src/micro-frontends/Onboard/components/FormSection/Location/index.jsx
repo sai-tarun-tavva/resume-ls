@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Address from "../Address";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
@@ -18,6 +18,7 @@ const Location = forwardRef((_, ref) => {
   const dispatch = useDispatch();
 
   const {
+    currentSectionIndex,
     data: {
       personal: { usaLocation, indiaLocation, visaStatus },
     },
@@ -89,6 +90,14 @@ const Location = forwardRef((_, ref) => {
   useImperativeHandle(ref, () => ({
     submit,
   }));
+
+  useEffect(() => {
+    if (currentSectionIndex === 2) {
+      const timer = setTimeout(() => usaLocRef.current.focusFirstInput(), 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentSectionIndex]);
 
   return (
     <>
