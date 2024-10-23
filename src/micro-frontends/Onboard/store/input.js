@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 7,
+  currentSectionIndex: 5,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -97,7 +97,7 @@ const initialState = {
       },
       [FIELDS.PROFESSION.TECHNOLOGIES_KNOWN]: [],
       [FIELDS.PROFESSION.PREVIOUS_EXPERIENCE]: [],
-      [FIELDS.PROFESSION.REFERENCES]: [defaultReference, defaultReference], // two references are mandatory
+      [FIELDS.PROFESSION.REFERENCES]: [],
     },
     [SECTIONS.OFFER_LETTER]: {
       [FIELDS.OFFER_LETTER.STATUS]: "",

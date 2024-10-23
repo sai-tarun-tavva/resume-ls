@@ -62,10 +62,6 @@ const Profession = forwardRef((_, ref) => {
     forceValidations: forceExperienceMonthsValidations,
   } = useInput(months, validations.experienceInMonths, undefined, true);
 
-  const isFresher =
-    (experienceYearsValue === "0" || experienceYearsValue === "") &&
-    (experienceMonthsValue === "0" || experienceMonthsValue === "");
-
   const technologiesRef = useRef();
   const prevExpRef = useRef();
   const referencesRef = useRef();
@@ -96,7 +92,7 @@ const Profession = forwardRef((_, ref) => {
       !isSectionValid ||
       !arePrevExperiencesValid ||
       !areTechnologiesValid ||
-      (!isFresher && !areReferencesValid)
+      !areReferencesValid
     ) {
       forceValidations();
       prevExpRef.current?.forceValidations?.();
@@ -142,7 +138,7 @@ const Profession = forwardRef((_, ref) => {
       inputActions.updateField({
         section: SECTIONS.PROFESSION,
         field: FIELDS.PROFESSION.REFERENCES,
-        value: isFresher ? [] : referencesList,
+        value: referencesList,
       })
     );
 
@@ -234,31 +230,28 @@ const Profession = forwardRef((_, ref) => {
         ref={technologiesRef}
       />
 
-      {!isFresher && (
-        <ListAdd
-          label="Any references?"
-          itemLabels={{
-            name: "Reference Name",
-            phone: "Reference Phone",
-            email: "Reference Email",
-            designation: "Designation",
-            company: "Company",
-          }}
-          helperText="(two references are mandatory)"
-          mandatoryItems={2}
-          element={(props) => <Reference {...props} />}
-          savedListItems={references}
-          validationFuncs={{
-            name: validations.referenceName,
-            phone: validations.referencePhone,
-            email: validations.referenceEmail,
-            designation: validations.referenceDesignation,
-            company: validations.referenceCompany,
-          }}
-          newValue={defaultReference}
-          ref={referencesRef}
-        />
-      )}
+      <ListAdd
+        label="Any references?"
+        itemLabels={{
+          name: "Reference Name",
+          phone: "Reference Phone",
+          email: "Reference Email",
+          designation: "Designation",
+          company: "Company",
+        }}
+        helperText="(atleast two references are preferred)"
+        element={(props) => <Reference {...props} />}
+        savedListItems={references}
+        validationFuncs={{
+          name: validations.referenceName,
+          phone: validations.referencePhone,
+          email: validations.referenceEmail,
+          designation: validations.referenceDesignation,
+          company: validations.referenceCompany,
+        }}
+        newValue={defaultReference}
+        ref={referencesRef}
+      />
     </>
   );
 });
