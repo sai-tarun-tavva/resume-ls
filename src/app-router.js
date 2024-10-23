@@ -1,14 +1,29 @@
+import React, { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import Welcome from "./pages/Welcome";
-import Insight from "./pages/Insight";
-import Onboard from "./pages/Onboard";
-import InsightCandidates from "./micro-frontends/Insight/components/Candidates";
-// import OnboardCandidates from "./micro-frontends/Onboard/components/Candidates";
-import Form from "./micro-frontends/Onboard/components/Form";
-import CandidateForm from "./micro-frontends/Insight/components/CandidateForm";
-import PageNotFound from "./micro-frontends/Atoms/components/PageNotFound";
 import { ROUTES } from "./constants";
+
+const Welcome = React.lazy(() => import("./pages/Welcome"));
+
+const Insight = React.lazy(() => import("./pages/Insight"));
+const InsightCandidates = React.lazy(() =>
+  import("./micro-frontends/Insight/components/Candidates")
+);
+const InsightForm = React.lazy(() =>
+  import("./micro-frontends/Insight/components/CandidateForm")
+);
+
+const Onboard = React.lazy(() => import("./pages/Onboard"));
+// const OnboardCandidates = React.lazy(() =>
+//   import("./micro-frontends/Onboard/components/Candidates")
+// );
+const OnboardForm = React.lazy(() =>
+  import("./micro-frontends/Onboard/components/Form")
+);
+
+const PageNotFound = React.lazy(() =>
+  import("./micro-frontends/Atoms/components/PageNotFound")
+);
 
 const { INSIGHT, ONBOARD, SPARK } = ROUTES;
 
@@ -19,29 +34,78 @@ const { INSIGHT, ONBOARD, SPARK } = ROUTES;
  */
 const appRouter = createBrowserRouter([
   // Default Welcome page
-  { path: "", element: <Welcome /> },
+  {
+    path: "",
+    element: (
+      <Suspense>
+        <Welcome />
+      </Suspense>
+    ),
+  },
   // Insight Home Page
   {
     path: INSIGHT.HOME,
-    element: <ProtectedRoute element={<Insight />} />,
+    element: (
+      <ProtectedRoute
+        element={
+          <Suspense>
+            <Insight />
+          </Suspense>
+        }
+      />
+    ),
     children: [
       {
         index: true,
-        element: <ProtectedRoute element={<InsightCandidates />} />,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <InsightCandidates />
+              </Suspense>
+            }
+          />
+        ),
       },
       {
         path: INSIGHT.CANDIDATE_FORM,
-        element: <ProtectedRoute element={<CandidateForm />} />,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <InsightForm />
+              </Suspense>
+            }
+          />
+        ),
       },
     ],
   },
   // Onboard Home Page
   {
     path: ONBOARD.HOME,
-    element: <ProtectedRoute element={<Onboard />} />,
+    element: (
+      <ProtectedRoute
+        element={
+          <Suspense>
+            <Onboard />
+          </Suspense>
+        }
+      />
+    ),
     children: [
-      { index: true, element: <ProtectedRoute element={<Form />} /> },
-      // { path: INSIGHT.CANDIDATE_FORM, element: <CandidateForm /> },
+      {
+        index: true,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <OnboardForm />
+              </Suspense>
+            }
+          />
+        ),
+      },
     ],
   },
   // Spark Home Page
@@ -50,7 +114,14 @@ const appRouter = createBrowserRouter([
     element: <ProtectedRoute element={<></>} />,
   },
   // Not Found Page
-  { path: "*", element: <PageNotFound /> },
+  {
+    path: "*",
+    element: (
+      <Suspense>
+        <PageNotFound />
+      </Suspense>
+    ),
+  },
 ]);
 
 export default appRouter;

@@ -19,7 +19,7 @@ const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
           disabled={isNextDisabled}
           onClick={nextHandler}
         >
-          <i className="bi bi-caret-right-fill" />
+          {index === 9 ? "Save" : <i className="bi bi-caret-right-fill" />}
         </Button>
       </div>
     </div>
