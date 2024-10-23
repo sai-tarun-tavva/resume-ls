@@ -14,9 +14,9 @@ const InsightForm = React.lazy(() =>
 );
 
 const Onboard = React.lazy(() => import("./pages/Onboard"));
-// const OnboardCandidates = React.lazy(() =>
-//   import("./micro-frontends/Onboard/components/Candidates")
-// );
+const OnboardCandidates = React.lazy(() =>
+  import("./micro-frontends/Onboard/components/Candidates")
+);
 const OnboardForm = React.lazy(() =>
   import("./micro-frontends/Onboard/components/Form")
 );
@@ -96,6 +96,18 @@ const appRouter = createBrowserRouter([
     children: [
       {
         index: true,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <OnboardCandidates />
+              </Suspense>
+            }
+          />
+        ),
+      },
+      {
+        path: ONBOARD.CANDIDATE_FORM.NEW,
         element: (
           <ProtectedRoute
             element={
