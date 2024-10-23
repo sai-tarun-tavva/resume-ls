@@ -46,7 +46,13 @@ const FormSection = ({
         style={{ transform: `translateX(-${currentSectionIndex * 100}%)` }}
       >
         {sections.map(({ Component, ref }, index) => (
-          <div key={index} className={classes.section} ref={ref}>
+          <div
+            key={index}
+            className={`${classes.section} ${
+              currentSectionIndex === index ? classes.current : ""
+            }`}
+            ref={ref}
+          >
             <Component ref={ref} />
           </div>
         ))}
