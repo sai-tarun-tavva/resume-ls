@@ -1,3 +1,4 @@
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import PropTypes from "prop-types";
 import classes from "./index.module.scss";
 
@@ -13,24 +14,36 @@ import classes from "./index.module.scss";
  * @param {Object} props - Additional props to pass to the button element.
  * @returns {JSX.Element} The rendered Button component.
  */
-const Button = ({
-  children,
-  onClick = () => {},
-  disabled = false,
-  className = "",
-  ...props
-}) => {
-  return (
-    <button
-      className={`${classes.button} ${className || ""}`}
-      onClick={onClick}
-      disabled={disabled}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
+const Button = forwardRef(
+  (
+    {
+      children,
+      onClick = () => {},
+      disabled = false,
+      className = "",
+      ...props
+    },
+    ref
+  ) => {
+    const buttonRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+      focus: () => buttonRef.current.focus(),
+    }));
+
+    return (
+      <button
+        ref={buttonRef}
+        className={`${classes.button} ${className || ""}`}
+        onClick={onClick}
+        disabled={disabled}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
 
 Button.displayName = "Button";
 

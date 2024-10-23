@@ -1,3 +1,4 @@
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import PropTypes from "prop-types";
 import classes from "./index.module.scss";
 
@@ -19,51 +20,65 @@ import classes from "./index.module.scss";
  * @param {boolean} props.isRequired - Whether the radio group is required.
  * @returns {JSX.Element} The RadioGroup component.
  */
-const RadioGroup = ({
-  id,
-  label,
-  options,
-  value,
-  changeHandler,
-  blurHandler,
-  focusHandler,
-  error,
-  extraClass = "",
-  isRequired = false,
-}) => {
-  return (
-    <div className={`${classes.radioGroup} ${extraClass}`}>
-      <div>
-        <span className={classes.radioLabel}>
-          {label} {isRequired && <span className={classes.required}>*</span>}
-        </span>
-        {options.map((option) => (
-          <label
-            key={option.value}
-            htmlFor={`${id}-${option.value}`}
-            className={classes.radioControl}
-          >
-            <input
-              id={`${id}-${option.value}`}
-              type="radio"
-              name={id}
-              value={option.value}
-              checked={value === option.value}
-              onChange={changeHandler}
-              onBlur={blurHandler}
-              onFocus={focusHandler}
-              className={`${classes.radioInput} ${error ? classes.error : ""}`}
-            />
-            <label htmlFor={`${id}-${option.value}`}>
-              <span className={classes.radioOptionLabel}>{option.label}</span>
+const RadioGroup = forwardRef(
+  (
+    {
+      id,
+      label,
+      options,
+      value,
+      changeHandler,
+      blurHandler,
+      focusHandler,
+      error,
+      extraClass = "",
+      isRequired = false,
+    },
+    ref
+  ) => {
+    const inputRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+      focus: () => inputRef.current.focus(),
+    }));
+
+    return (
+      <div className={`${classes.radioGroup} ${extraClass}`}>
+        <div>
+          <span className={classes.radioLabel}>
+            {label} {isRequired && <span className={classes.required}>*</span>}
+          </span>
+          {options.map((option, index) => (
+            <label
+              key={option.value}
+              htmlFor={`${id}-${option.value}`}
+              className={classes.radioControl}
+            >
+              <input
+                ref={index === 0 ? inputRef : null}
+                id={`${id}-${option.value}`}
+                type="radio"
+                name={id}
+                value={option.value}
+                checked={value === option.value}
+                onChange={changeHandler}
+                onBlur={blurHandler}
+                onFocus={focusHandler}
+                className={`${classes.radioInput} ${
+                  error ? classes.error : ""
+                }`}
+              />
+              <label htmlFor={`${id}-${option.value}`}>
+                <span className={classes.radioOptionLabel}>{option.label}</span>
+              </label>
             </label>
-          </label>
-        ))}
+          ))}
+        </div>
+        <small className={classes.errorText}>{error || ""}</small>
       </div>
-      <small className={classes.errorText}>{error || ""}</small>
-    </div>
-  );
-};
+    );
+  }
+);
 
 RadioGroup.propTypes = {
   id: PropTypes.string.isRequired,

@@ -1,3 +1,4 @@
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import PropTypes from "prop-types";
 import classes from "./index.module.scss";
 
@@ -19,47 +20,59 @@ import classes from "./index.module.scss";
  * @param {boolean} props.isRequired - Whether the checkbox is required.
  * @returns {JSX.Element} The CheckboxV2 component.
  */
-const Checkbox = ({
-  id,
-  label,
-  value,
-  changeHandler,
-  blurHandler,
-  focusHandler,
-  error,
-  helperText,
-  extraClass = "",
-  isRequired = false,
-}) => {
-  return (
-    <>
-      <label
-        htmlFor={id}
-        className={`${classes.checkboxControl} ${extraClass}`}
-      >
-        <span className={classes.checkboxLabel}>
-          {label} {isRequired && <span className={classes.required}>*</span>}{" "}
-          {helperText && (
-            <small className={classes.helperText}>{helperText}</small>
-          )}
-        </span>
-        <input
-          id={id}
-          type="checkbox"
-          className={`${classes.checkboxInput} ${error ? classes.error : ""}`}
-          checked={value}
-          onChange={(event) => changeHandler(event, true)}
-          onBlur={blurHandler}
-          onFocus={focusHandler}
-          aria-required={isRequired}
-        />
-        <span className={classes.checkboxSlider}></span>
-      </label>
+const Checkbox = forwardRef(
+  (
+    {
+      id,
+      label,
+      value,
+      changeHandler,
+      blurHandler,
+      focusHandler,
+      error,
+      helperText,
+      extraClass = "",
+      isRequired = false,
+    },
+    ref
+  ) => {
+    const inputRef = useRef();
 
-      {error && <small className={classes.errorText}>{error}</small>}
-    </>
-  );
-};
+    useImperativeHandle(ref, () => ({
+      focus: () => inputRef.current.focus(),
+    }));
+
+    return (
+      <>
+        <label
+          htmlFor={id}
+          className={`${classes.checkboxControl} ${extraClass}`}
+        >
+          <span className={classes.checkboxLabel}>
+            {label} {isRequired && <span className={classes.required}>*</span>}{" "}
+            {helperText && (
+              <small className={classes.helperText}>{helperText}</small>
+            )}
+          </span>
+          <input
+            ref={inputRef}
+            id={id}
+            type="checkbox"
+            className={`${classes.checkboxInput} ${error ? classes.error : ""}`}
+            checked={value}
+            onChange={(event) => changeHandler(event, true)}
+            onBlur={blurHandler}
+            onFocus={focusHandler}
+            aria-required={isRequired}
+          />
+          <span className={classes.checkboxSlider}></span>
+        </label>
+
+        {error && <small className={classes.errorText}>{error}</small>}
+      </>
+    );
+  }
+);
 
 Checkbox.propTypes = {
   id: PropTypes.string.isRequired,

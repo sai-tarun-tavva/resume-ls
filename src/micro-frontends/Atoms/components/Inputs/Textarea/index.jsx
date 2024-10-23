@@ -1,3 +1,4 @@
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import PropTypes from "prop-types";
 import classes from "./index.module.scss";
 
@@ -19,40 +20,52 @@ import classes from "./index.module.scss";
  * @param {string} extraClass - Additional CSS classes for customization.
  * @returns {JSX.Element} The textarea component.
  */
-const Textarea = ({
-  id,
-  label,
-  isRequired = false,
-  error,
-  value,
-  changeHandler,
-  focusHandler,
-  blurHandler,
-  isFocused,
-  extraClass = "",
-}) => {
-  return (
-    <div className={`${classes.control} ${extraClass}`}>
-      <label htmlFor={id}>
-        {label} {isRequired && <span className={classes.required}>*</span>}
-      </label>
-      <textarea
-        id={id}
-        className={`${isFocused ? classes.focused : ""} ${
-          error ? classes.error : ""
-        }`}
-        value={value}
-        onChange={changeHandler}
-        onFocus={focusHandler}
-        onBlur={blurHandler}
-        aria-required={isRequired}
-        rows={5} // Default height
-        style={{ resize: "vertical" }} // Allow vertical resizing only
-      />
-      <small className={classes.errorText}>{error || ""}</small>
-    </div>
-  );
-};
+const Textarea = forwardRef(
+  (
+    {
+      id,
+      label,
+      isRequired = false,
+      error,
+      value,
+      changeHandler,
+      focusHandler,
+      blurHandler,
+      isFocused,
+      extraClass = "",
+    },
+    ref
+  ) => {
+    const inputRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+      focus: () => inputRef.current.focus(),
+    }));
+
+    return (
+      <div className={`${classes.control} ${extraClass}`}>
+        <label htmlFor={id}>
+          {label} {isRequired && <span className={classes.required}>*</span>}
+        </label>
+        <textarea
+          ref={inputRef}
+          id={id}
+          className={`${isFocused ? classes.focused : ""} ${
+            error ? classes.error : ""
+          }`}
+          value={value}
+          onChange={changeHandler}
+          onFocus={focusHandler}
+          onBlur={blurHandler}
+          aria-required={isRequired}
+          rows={5} // Default height
+          style={{ resize: "vertical" }} // Allow vertical resizing only
+        />
+        <small className={classes.errorText}>{error || ""}</small>
+      </div>
+    );
+  }
+);
 
 Textarea.propTypes = {
   id: PropTypes.string.isRequired,
