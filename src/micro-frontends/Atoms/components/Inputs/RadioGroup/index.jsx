@@ -54,8 +54,9 @@ const RadioGroup = ({
               onFocus={focusHandler}
               className={`${classes.radioInput} ${error ? classes.error : ""}`}
             />
-            <span className={classes.radioSlider}></span>
-            <span className={classes.radioOptionLabel}>{option.label}</span>
+            <label htmlFor={`${id}-${option.value}`}>
+              <span className={classes.radioOptionLabel}>{option.label}</span>
+            </label>
           </label>
         ))}
       </div>
