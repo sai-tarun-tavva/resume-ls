@@ -32,7 +32,7 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 5,
+  currentSectionIndex: 0,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,

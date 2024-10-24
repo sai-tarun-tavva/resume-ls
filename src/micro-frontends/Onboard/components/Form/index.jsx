@@ -74,7 +74,7 @@ const Form = () => {
   return (
     <div className={classes.formContainer}>
       <FormProgress currentSectionIndex={current} />
-      <form className={classes.form}>
+      <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
         <div className={classes.carouselContainer}>
           <FormSection currentSectionIndex={current} refs={refs} />
         </div>

@@ -37,7 +37,8 @@ const Select = forwardRef(
             error ? classes.error : ""
           }`}
           value={value}
-          aria-required="true"
+          aria-required={isRequired}
+          data-error={error ? "true" : undefined}
           onChange={changeHandler}
           onBlur={blurHandler}
           onFocus={focusHandler}

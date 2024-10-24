@@ -39,7 +39,8 @@ const InputV2 = forwardRef(
           onChange={changeHandler}
           onBlur={blurHandler}
           onFocus={focusHandler}
-          aria-required="true"
+          aria-required={isRequired}
+          data-error={error ? "true" : undefined}
           {...props}
         />
         <small className={classes.errorText}>{error || ""}</small>
