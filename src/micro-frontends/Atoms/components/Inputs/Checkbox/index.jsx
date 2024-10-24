@@ -65,6 +65,7 @@ const Checkbox = forwardRef(
             onFocus={focusHandler}
             aria-required={isRequired}
             data-error={error ? "true" : undefined}
+            data-focusable="true"
           />
           <span className={classes.checkboxSlider}></span>
         </label>

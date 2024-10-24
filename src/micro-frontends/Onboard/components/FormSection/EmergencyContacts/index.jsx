@@ -1,6 +1,7 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
@@ -29,7 +30,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
-  const firstInputRef = useRef();
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   const {
     emergencyContacts: { name: nameValidationFunc, phone: phoneValidationFunc },
@@ -160,22 +161,13 @@ const EmergencyContacts = forwardRef((_, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (currentSectionIndex === 8) {
-      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex]);
-
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <div className={sectionClasses.heading}>
         <h3>USA</h3>
       </div>
       <div className={sectionClasses.formRow}>
         <InputV2
-          ref={firstInputRef}
           id="usaName"
           label="Full Name"
           value={usaNameValue}

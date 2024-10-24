@@ -37,6 +37,7 @@ const Button = forwardRef(
         className={`${classes.button} ${className || ""}`}
         onClick={onClick}
         disabled={disabled}
+        data-focusable="true"
         {...props}
       >
         {children}

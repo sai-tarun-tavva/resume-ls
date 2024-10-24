@@ -64,7 +64,10 @@ const RadioGroup = forwardRef(
                 onChange={changeHandler}
                 onBlur={blurHandler}
                 onFocus={focusHandler}
-                data-error={error ? "true" : undefined}
+                data-error={
+                  index === 0 ? (error ? "true" : undefined) : undefined
+                }
+                data-focusable={index === 0 ? "true" : undefined}
                 className={`${classes.radioInput} ${
                   error ? classes.error : ""
                 }`}

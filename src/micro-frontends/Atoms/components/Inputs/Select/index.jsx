@@ -39,6 +39,7 @@ const Select = forwardRef(
           value={value}
           aria-required={isRequired}
           data-error={error ? "true" : undefined}
+          data-focusable="true"
           onChange={changeHandler}
           onBlur={blurHandler}
           onFocus={focusHandler}

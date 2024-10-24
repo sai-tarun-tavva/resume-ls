@@ -1,6 +1,7 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Textarea from "../../../../Atoms/components/Inputs/Textarea";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import { SECTIONS, FIELDS } from "../../../constants";
@@ -14,7 +15,7 @@ const Miscellaneous = forwardRef((_, ref) => {
       miscellaneous: { remarks, notes },
     },
   } = useSelector((state) => state.input);
-  const firstInputRef = useRef();
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   const {
     value: remarksValue,
@@ -57,18 +58,9 @@ const Miscellaneous = forwardRef((_, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (currentSectionIndex === 9) {
-      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex]);
-
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Textarea
-        ref={firstInputRef}
         id="remarks"
         label="Remarks"
         value={remarksValue}

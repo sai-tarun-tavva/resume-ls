@@ -59,6 +59,7 @@ const Textarea = forwardRef(
           onBlur={blurHandler}
           aria-required={isRequired}
           data-error={error ? "true" : undefined}
+          data-focusable="true"
           rows={5} // Default height
           style={{ resize: "vertical" }} // Allow vertical resizing only
         />

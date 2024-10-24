@@ -1,8 +1,9 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Textarea from "../../../../Atoms/components/Inputs/Textarea";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
@@ -27,7 +28,7 @@ const OfferLetter = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
-  const firstInputRef = useRef();
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   const {
     offerLetter: {
@@ -189,18 +190,9 @@ const OfferLetter = forwardRef((_, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (currentSectionIndex === 6) {
-      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex]);
-
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Select
-        ref={firstInputRef}
         id="status"
         label="Offer Letter Status"
         value={statusValue}

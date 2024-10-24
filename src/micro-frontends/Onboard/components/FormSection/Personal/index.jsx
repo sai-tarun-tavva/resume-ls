@@ -1,8 +1,9 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
 import Select from "../../../../Atoms/components/Inputs/Select";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
@@ -28,7 +29,6 @@ import sectionClasses from "../sections.module.scss";
 
 const Personal = forwardRef((_, ref) => {
   const dispatch = useDispatch();
-  const firstInputRef = useRef();
   const {
     currentSectionIndex,
     data: {
@@ -54,6 +54,7 @@ const Personal = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { personal: validations } = onboardingValidations;
 
   const {
@@ -246,14 +247,6 @@ const Personal = forwardRef((_, ref) => {
   useEffect(() => {
     clearEadNumber();
   }, [visaStatusValue, clearEadNumber]);
-
-  useEffect(() => {
-    if (currentSectionIndex === 1) {
-      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex]);
 
   const allErrors = [
     firstNameError,
@@ -502,10 +495,9 @@ const Personal = forwardRef((_, ref) => {
   }));
 
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <div className={sectionClasses.formRow}>
         <InputV2
-          ref={firstInputRef}
           id="firstName"
           type="text"
           label="First Name"

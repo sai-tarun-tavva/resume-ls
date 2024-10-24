@@ -41,6 +41,7 @@ const InputV2 = forwardRef(
           onFocus={focusHandler}
           aria-required={isRequired}
           data-error={error ? "true" : undefined}
+          data-focusable="true"
           {...props}
         />
         <small className={classes.errorText}>{error || ""}</small>

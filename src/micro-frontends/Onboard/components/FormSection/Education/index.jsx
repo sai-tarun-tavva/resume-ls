@@ -1,9 +1,10 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ListAdd from "../ListAdd";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Address from "../Address";
 import SingleInput from "../../FormListItems/SingleInput";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
@@ -37,7 +38,7 @@ const Education = forwardRef((_, ref) => {
   const addressRef = useRef();
   const listRef = useRef();
   const isEducationRequired = EDUCATION_REQUIRED_VISA.includes(visaStatus);
-  const firstInputRef = useRef();
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   const { education: validations } = onboardingValidations;
 
@@ -207,27 +208,12 @@ const Education = forwardRef((_, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (currentSectionIndex === 4) {
-      const timer = setTimeout(
-        () =>
-          isEducationRequired
-            ? firstInputRef.current.focus()
-            : listRef?.current?.focusFirstInput?.(),
-        500
-      );
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex, isEducationRequired]);
-
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       {isEducationRequired && (
         <>
           <div className={sectionClasses.formRow}>
             <InputV2
-              ref={firstInputRef}
               id="sevisID"
               label="SEVIS ID"
               value={sevisIDValue}

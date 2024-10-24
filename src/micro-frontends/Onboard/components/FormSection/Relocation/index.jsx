@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Address from "../Address";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
@@ -21,7 +22,7 @@ const Relocation = forwardRef((_, ref) => {
     },
   } = useSelector((state) => state.input);
   const addressRef = useRef(); // Create a ref to call Address validation
-  const firstInputRef = useRef();
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   const { relocation: validations } = onboardingValidations;
 
@@ -70,14 +71,6 @@ const Relocation = forwardRef((_, ref) => {
         })
       );
   }, [preferenceValue, dispatch]);
-
-  useEffect(() => {
-    if (currentSectionIndex === 3) {
-      const timer = setTimeout(() => firstInputRef.current?.focus(), 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex]);
 
   // Group all errors and values for relocation
   const relocationErrors = [
@@ -158,9 +151,8 @@ const Relocation = forwardRef((_, ref) => {
   }));
 
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Checkbox
-        ref={firstInputRef}
         id="relocationInterested"
         label="Interested in Relocation?"
         value={interestedValue}

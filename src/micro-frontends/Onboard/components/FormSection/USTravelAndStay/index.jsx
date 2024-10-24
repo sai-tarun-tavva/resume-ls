@@ -1,8 +1,9 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import ListAdd from "../ListAdd";
 import Address from "../Address";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
@@ -27,7 +28,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
       usTravelAndStay: { usEntry, stayAddresses },
     },
   } = useSelector((state) => state.input);
-  const firstInputRef = useRef();
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   const { usTravelAndStay: validations } = onboardingValidations;
 
@@ -102,25 +103,10 @@ const USTravelAndStay = forwardRef((_, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (currentSectionIndex === 7) {
-      const timer = setTimeout(
-        () =>
-          !isPortOfEntryNotRequired
-            ? firstInputRef.current.focus()
-            : stayAddressesRef?.current?.focusFirstInput?.(),
-        500
-      );
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex, isPortOfEntryNotRequired]);
-
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       {!isPortOfEntryNotRequired && (
         <InputV2
-          ref={firstInputRef}
           id="usEntry"
           label="Month and Year of US Entry"
           type="month"

@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useRef, useEffect } from "react";
+import { useImperativeHandle, forwardRef, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -7,6 +7,7 @@ import ListAdd from "../ListAdd";
 import SingleInput from "../../FormListItems/SingleInput";
 import PreviousExperience from "../../FormListItems/PreviousExperience";
 import Reference from "../../FormListItems/Reference";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
 import {
@@ -30,7 +31,7 @@ const Profession = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
-  const firstInputRef = useRef();
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   const { profession: validations } = onboardingValidations;
 
@@ -149,18 +150,9 @@ const Profession = forwardRef((_, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (currentSectionIndex === 5) {
-      const timer = setTimeout(() => firstInputRef.current.focus(), 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex]);
-
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Checkbox
-        ref={firstInputRef}
         id="trainingAttended"
         label="Training Attended?"
         value={trainingAttendedValue}

@@ -1,7 +1,8 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Address from "../Address";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
@@ -23,6 +24,7 @@ const Location = forwardRef((_, ref) => {
       personal: { usaLocation, indiaLocation, visaStatus },
     },
   } = useSelector((state) => state.input);
+  const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
   // Determine if home address is not required based on visa status
   const isExemptFromHomeAddress =
@@ -91,16 +93,8 @@ const Location = forwardRef((_, ref) => {
     submit,
   }));
 
-  useEffect(() => {
-    if (currentSectionIndex === 2) {
-      const timer = setTimeout(() => usaLocRef.current.focusFirstInput(), 500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [currentSectionIndex]);
-
   return (
-    <div className={sectionClasses.onboardFormSection}>
+    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Address
         heading="Address in USA"
         defaultValue={usaLocation}
