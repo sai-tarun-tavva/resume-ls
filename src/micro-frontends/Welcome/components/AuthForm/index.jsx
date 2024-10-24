@@ -136,7 +136,7 @@ const AuthForm = ({ haveAccount }) => {
         navigate(`/${ROUTES.INSIGHT.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
         updateStatus({
-          message: CONTENT.WELCOME.authPanel.errors.server.login,
+          message: CONTENT.WELCOME.statusMessages.login,
           type: "failure",
           darkMode: true,
         });
@@ -159,7 +159,7 @@ const AuthForm = ({ haveAccount }) => {
         navigate(`/${ROUTES.INSIGHT.HOME}`, { replace: true });
       } else if (status === STATUS_CODES.INVALID) {
         updateStatus({
-          message: CONTENT.WELCOME.authPanel.errors.server.signUp,
+          message: CONTENT.WELCOME.statusMessages.signUp,
           type: "failure",
           darkMode: true,
         });

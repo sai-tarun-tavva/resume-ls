@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import InsightHub from "../../micro-frontends/Insight/components/InsightHub";
 
 /**
