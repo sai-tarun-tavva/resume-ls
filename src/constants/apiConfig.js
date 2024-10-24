@@ -1,26 +1,31 @@
-const apiUrl = process.env.REACT_APP_BACKEND_URL;
+const INSIGHT_IP_PORT = "http://10.0.12.114:8000/";
+// const ONBOARD_IP_PORT = 'http://10.0.12.114:8200/'; // pending
 
 export const END_POINTS = {
   WELCOME: {
-    FETCH_RESUME_COUNT: `${apiUrl}resume_count/`,
-    LOGIN: `${apiUrl}login/`,
-    LOGOUT: `${apiUrl}logout/`,
-    SIGN_UP: `${apiUrl}signup/`,
-    REFRESH_TOKEN: `${apiUrl}api/token/refresh/`,
+    FETCH_RESUME_COUNT: `${INSIGHT_IP_PORT}resume_count/`,
+    LOGIN: `${INSIGHT_IP_PORT}login/`,
+    LOGOUT: `${INSIGHT_IP_PORT}logout/`,
+    SIGN_UP: `${INSIGHT_IP_PORT}signup/`,
+    REFRESH_TOKEN: `${INSIGHT_IP_PORT}api/token/refresh/`,
   },
   INSIGHT: {
     FETCH_CANDIDATES: {
-      url: `${apiUrl}resume_list/`,
+      url: `${INSIGHT_IP_PORT}resume_list/`,
       params: { limit: "limit", page: "page", query: "query" },
     },
-    EDIT_CANDIDATE: `${apiUrl}resume/{{id}}/edit/`,
-    VIEW_RESUME: `${apiUrl}view-file/`,
-    DOWNLOAD_RESUME: `${apiUrl}home/resume/download/`,
-    UPLOAD_RESUME: `${apiUrl}upload-file/`,
-    BATCH_PROCESS: `${apiUrl}/dummy`, // pending
-    FETCH_SUGGESTED_SKILLS: `${apiUrl}search-skills?query=`,
-    CREATE_NEW_SKILL: `${apiUrl}add-skills`,
+    EDIT_CANDIDATE: `${INSIGHT_IP_PORT}resume/{{id}}/edit/`,
+    VIEW_RESUME: `${INSIGHT_IP_PORT}view-file/`,
+    DOWNLOAD_RESUME: `${INSIGHT_IP_PORT}home/resume/download/`,
+    UPLOAD_RESUME: `${INSIGHT_IP_PORT}upload-file/`,
+    BATCH_PROCESS: `${INSIGHT_IP_PORT}/dummy`, // pending
+    FETCH_SUGGESTED_SKILLS: `${INSIGHT_IP_PORT}search-skills?query=`,
+    CREATE_NEW_SKILL: `${INSIGHT_IP_PORT}add-skills`,
   },
-  ONBOARD: {},
+  ONBOARD: {
+    FETCH_CANDIDATES: {
+      url: "https://run.mocky.io/v3/f0146370-fffe-490c-90d6-b40595eaf0ee",
+    },
+  },
   SPARK: {},
 };

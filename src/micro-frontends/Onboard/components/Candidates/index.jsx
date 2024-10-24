@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import classes from "./index.module.scss";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
+import { fetchOnboardCandidates } from "../../../../utilities/api";
 
 const OnboardCandidates = () => {
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
     const fetchCandidates = async () => {
-      const response = await fetch(
-        "https://run.mocky.io/v3/f0146370-fffe-490c-90d6-b40595eaf0ee"
-      );
-      const resData = await response.json();
-      setCandidates(resData.results);
+      const { data } = await fetchOnboardCandidates();
+
+      setCandidates(data);
     };
 
     fetchCandidates();

@@ -365,3 +365,26 @@ export const createNewSkill = async (body) => {
     return { status: 500 };
   }
 };
+
+/**
+ * Fetches the list of onboarding candidates from the API.
+ *
+ * @async
+ * @function
+ * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
+ */
+export const fetchOnboardCandidates = async () => {
+  try {
+    const response = await fetch(END_POINTS.ONBOARD.FETCH_CANDIDATES.url, {
+      method: "GET",
+    });
+    const resData = await response.json();
+
+    // Return the response data and status
+    return { status: response.status, data: resData.results };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500, data: null };
+  }
+};
