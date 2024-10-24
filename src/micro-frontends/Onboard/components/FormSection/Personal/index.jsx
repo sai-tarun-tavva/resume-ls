@@ -24,7 +24,7 @@ import {
   HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
   PORT_OF_ENTRY_NOT_REQUIRED_VISA,
 } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const Personal = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -502,8 +502,8 @@ const Personal = forwardRef((_, ref) => {
   }));
 
   return (
-    <>
-      <div className={classes.personalRow}>
+    <div className={sectionClasses.onboardFormSection}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           ref={firstInputRef}
           id="firstName"
@@ -515,7 +515,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={firstNameFocus}
           error={firstNameError}
           isFocused={isFirstNameFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
 
@@ -529,7 +529,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={lastNameFocus}
           error={lastNameError}
           isFocused={isLastNameFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
       </div>
@@ -544,11 +544,11 @@ const Personal = forwardRef((_, ref) => {
         focusHandler={emailIdFocus}
         error={emailIdError}
         isFocused={isEmailIdFocused}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
 
-      <div className={classes.personalRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           id="phoneNumber"
           type="tel"
@@ -559,7 +559,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={phoneNumberFocus}
           error={phoneNumberError}
           isFocused={isPhoneNumberFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
 
@@ -573,7 +573,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={secondaryPhoneNumberFocus}
           error={secondaryPhoneNumberError}
           isFocused={isSecondaryPhoneNumberFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
         />
       </div>
 
@@ -585,11 +585,11 @@ const Personal = forwardRef((_, ref) => {
         changeHandler={genderChange}
         blurHandler={genderBlur}
         error={genderError}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
 
-      <div className={classes.personalRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           id="dob"
           type="date"
@@ -600,7 +600,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={dobFocus}
           error={dobError}
           isFocused={isDobFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           max={getEighteenYearsAgoDate()}
           isRequired
         />
@@ -616,10 +616,10 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={maritalStatusFocus}
           error={maritalStatusError}
           isFocused={isMaritalStatusFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
         />
       </div>
-      <div className={classes.personalRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           id="passportNumber"
           type="text"
@@ -630,7 +630,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={passportNumberFocus}
           error={passportNumberError}
           isFocused={isPassportNumberFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
 
@@ -644,7 +644,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={SSNFocus}
           error={SSNError}
           isFocused={isSSNFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
       </div>
@@ -659,7 +659,7 @@ const Personal = forwardRef((_, ref) => {
         focusHandler={visaStatusFocus}
         error={visaStatusError}
         isFocused={isVisaStatusFocused}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
       {isEADRequired && (
@@ -673,7 +673,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={eadNumberFocus}
           error={eadNumberError}
           isFocused={isEadNumberFocused}
-          extraClass={classes.fullInputWidth}
+          extraClass={sectionClasses.fullInputWidth}
           isRequired={!isEADOptional}
         />
       )}
@@ -689,7 +689,7 @@ const Personal = forwardRef((_, ref) => {
         focusHandler={photoIDTypeFocus}
         error={photoIDTypeError}
         isFocused={isPhotoIDTypeFocused}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
       />
 
       {photoIDTypeValue && (
@@ -705,12 +705,12 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={photoIDNumberFocus}
           error={photoIDNumberError}
           isFocused={isPhotoIDNumberFocused}
-          extraClass={classes.fullInputWidth}
+          extraClass={sectionClasses.fullInputWidth}
           isRequired
         />
       )}
 
-      <div className={classes.personalRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           id="skypeId"
           type="text"
@@ -721,7 +721,7 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={skypeIdFocus}
           error={skypeIdError}
           isFocused={isSkypeIdFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
         />
 
         <InputV2
@@ -734,10 +734,10 @@ const Personal = forwardRef((_, ref) => {
           focusHandler={referenceNameFocus}
           error={referenceNameError}
           isFocused={isReferenceNameFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
         />
       </div>
-    </>
+    </div>
   );
 });
 

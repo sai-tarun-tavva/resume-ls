@@ -13,7 +13,7 @@ import {
   transformPhoneNumber,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -222,10 +222,10 @@ const Education = forwardRef((_, ref) => {
   }, [currentSectionIndex, isEducationRequired]);
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       {isEducationRequired && (
         <>
-          <div className={classes.educationRow}>
+          <div className={sectionClasses.formRow}>
             <InputV2
               ref={firstInputRef}
               id="sevisID"
@@ -236,7 +236,7 @@ const Education = forwardRef((_, ref) => {
               focusHandler={sevisIDFocus}
               error={sevisIDError}
               isFocused={isSevisIDFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired
             />
 
@@ -249,11 +249,11 @@ const Education = forwardRef((_, ref) => {
               focusHandler={dsoNameFocus}
               error={dsoNameError}
               isFocused={isDSONameFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired
             />
           </div>
-          <div className={classes.educationRow}>
+          <div className={sectionClasses.formRow}>
             <InputV2
               id="dsoEmail"
               label="DSO Email"
@@ -264,7 +264,7 @@ const Education = forwardRef((_, ref) => {
               focusHandler={dsoEmailFocus}
               error={dsoEmailError}
               isFocused={isDSOEmailFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired
             />
 
@@ -278,12 +278,12 @@ const Education = forwardRef((_, ref) => {
               focusHandler={dsoPhoneFocus}
               error={dsoPhoneError}
               isFocused={isDSOPhoneFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired
             />
           </div>
 
-          <div className={classes.educationRow}>
+          <div className={sectionClasses.formRow}>
             <InputV2
               id="graduatedUniversityName"
               label="Graduated University Name"
@@ -293,7 +293,7 @@ const Education = forwardRef((_, ref) => {
               focusHandler={universityNameFocus}
               error={universityNameError}
               isFocused={isUniversityNameFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired
             />
 
@@ -307,7 +307,7 @@ const Education = forwardRef((_, ref) => {
               focusHandler={passedMonthAndYearFocus}
               error={passedMonthAndYearError}
               isFocused={isPassedMonthAndYearFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired
             />
           </div>
@@ -321,7 +321,7 @@ const Education = forwardRef((_, ref) => {
             focusHandler={streamFocus}
             error={streamError}
             isFocused={isStreamFocused}
-            extraClass={classes.fullInputWidth}
+            extraClass={sectionClasses.fullInputWidth}
             isRequired
           />
           <Address
@@ -341,7 +341,7 @@ const Education = forwardRef((_, ref) => {
         newValue={""}
         ref={listRef}
       />
-    </>
+    </div>
   );
 });
 

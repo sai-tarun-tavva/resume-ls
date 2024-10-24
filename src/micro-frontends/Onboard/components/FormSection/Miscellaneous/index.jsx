@@ -4,7 +4,7 @@ import Textarea from "../../../../Atoms/components/Inputs/Textarea";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import { SECTIONS, FIELDS } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const Miscellaneous = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -66,7 +66,7 @@ const Miscellaneous = forwardRef((_, ref) => {
   }, [currentSectionIndex]);
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       <Textarea
         ref={firstInputRef}
         id="remarks"
@@ -77,7 +77,7 @@ const Miscellaneous = forwardRef((_, ref) => {
         focusHandler={remarksFocus}
         error={remarksError}
         isFocused={isRemarksFocused}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
       />
 
       <Textarea
@@ -89,9 +89,9 @@ const Miscellaneous = forwardRef((_, ref) => {
         focusHandler={notesFocus}
         error={notesError}
         isFocused={isNotesFocused}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
       />
-    </>
+    </div>
   );
 });
 

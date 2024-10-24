@@ -14,7 +14,7 @@ import {
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const Profession = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -158,7 +158,7 @@ const Profession = forwardRef((_, ref) => {
   }, [currentSectionIndex]);
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       <Checkbox
         ref={firstInputRef}
         id="trainingAttended"
@@ -167,11 +167,11 @@ const Profession = forwardRef((_, ref) => {
         changeHandler={trainingAttendedChange}
         blurHandler={trainingAttendedBlur}
         helperText="(Considered no by default)"
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
 
-      <div className={classes.professionRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           id="experienceYears"
           label="Experience in Years"
@@ -182,7 +182,7 @@ const Profession = forwardRef((_, ref) => {
           focusHandler={experienceYearsFocus}
           error={experienceYearsError}
           isFocused={isExperienceYearsFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
 
@@ -196,7 +196,7 @@ const Profession = forwardRef((_, ref) => {
           focusHandler={experienceMonthsFocus}
           error={experienceMonthsError}
           isFocused={isExperienceMonthsFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
       </div>
@@ -252,7 +252,7 @@ const Profession = forwardRef((_, ref) => {
         newValue={defaultReference}
         ref={referencesRef}
       />
-    </>
+    </div>
   );
 });
 

@@ -15,7 +15,7 @@ import {
   HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
   HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
 } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const EmergencyContacts = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -169,11 +169,11 @@ const EmergencyContacts = forwardRef((_, ref) => {
   }, [currentSectionIndex]);
 
   return (
-    <>
-      <div className={classes.heading}>
+    <div className={sectionClasses.onboardFormSection}>
+      <div className={sectionClasses.heading}>
         <h3>USA</h3>
       </div>
-      <div className={classes.emergencyContactRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           ref={firstInputRef}
           id="usaName"
@@ -184,7 +184,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
           focusHandler={usaNameFocus}
           error={usaNameError}
           isFocused={isUsaNameFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
 
@@ -197,17 +197,17 @@ const EmergencyContacts = forwardRef((_, ref) => {
           focusHandler={usaPhoneFocus}
           error={usaPhoneError}
           isFocused={isUsaPhoneFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
       </div>
 
       {(isHomeCountryContactRequired || isHomeCountryContactOptional) && (
         <>
-          <div className={classes.heading}>
+          <div className={sectionClasses.heading}>
             <h3>Home Country (India, if applicable, or Other Countries)</h3>
           </div>
-          <div className={classes.emergencyContactRow}>
+          <div className={sectionClasses.formRow}>
             <InputV2
               id="homeCountryName"
               label="Full Name"
@@ -217,7 +217,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
               focusHandler={homeCountryNameFocus}
               error={homeCountryNameError}
               isFocused={isHomeCountryNameFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired={isHomeCountryContactRequired}
             />
 
@@ -230,13 +230,13 @@ const EmergencyContacts = forwardRef((_, ref) => {
               focusHandler={homeCountryPhoneFocus}
               error={homeCountryPhoneError}
               isFocused={isHomeCountryPhoneFocused}
-              extraClass={classes.halfInputWidth}
+              extraClass={sectionClasses.halfInputWidth}
               isRequired={isHomeCountryContactRequired}
             />
           </div>
         </>
       )}
-    </>
+    </div>
   );
 });
 

@@ -10,7 +10,7 @@ import {
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const OfferLetter = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -198,7 +198,7 @@ const OfferLetter = forwardRef((_, ref) => {
   }, [currentSectionIndex]);
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       <Select
         ref={firstInputRef}
         id="status"
@@ -210,10 +210,10 @@ const OfferLetter = forwardRef((_, ref) => {
         focusHandler={statusFocus}
         error={statusError}
         isFocused={isStatusFocused}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
-      <div className={classes.offerLetterRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           id="marketingName"
           label="Marketing Name"
@@ -223,7 +223,7 @@ const OfferLetter = forwardRef((_, ref) => {
           focusHandler={marketingNameFocus}
           error={marketingNameError}
           isFocused={isMarketingNameFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
 
@@ -236,12 +236,12 @@ const OfferLetter = forwardRef((_, ref) => {
           focusHandler={designationFocus}
           error={designationError}
           isFocused={isDesignationFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
       </div>
 
-      <div className={classes.offerLetterRow}>
+      <div className={sectionClasses.formRow}>
         <InputV2
           id="startDate"
           label="Start Date"
@@ -252,7 +252,7 @@ const OfferLetter = forwardRef((_, ref) => {
           focusHandler={startDateFocus}
           error={startDateError}
           isFocused={isStartDateFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
 
@@ -266,7 +266,7 @@ const OfferLetter = forwardRef((_, ref) => {
           focusHandler={endDateFocus}
           error={endDateError}
           isFocused={isEndDateFocused}
-          extraClass={classes.halfInputWidth}
+          extraClass={sectionClasses.halfInputWidth}
           isRequired
         />
       </div>
@@ -280,10 +280,10 @@ const OfferLetter = forwardRef((_, ref) => {
         focusHandler={rolesAndResponsibilitiesFocus}
         error={rolesAndResponsibilitiesError}
         isFocused={isrolesAndResponsibilitiesFocused}
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
-    </>
+    </div>
   );
 });
 

@@ -9,6 +9,7 @@ import {
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
+import sectionClasses from "../sections.module.scss";
 
 const Onboarding = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -86,7 +87,7 @@ const Onboarding = forwardRef((_, ref) => {
   }));
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       <InputV2
         ref={firstInputRef}
         id="onboardingDate"
@@ -112,7 +113,7 @@ const Onboarding = forwardRef((_, ref) => {
         isFocused={isStatusFocused}
         isRequired
       />
-    </>
+    </div>
   );
 });
 

@@ -16,7 +16,7 @@ import {
   PORT_OF_ENTRY_NOT_REQUIRED_VISA,
   PORT_OF_ENTRY_OPTIONAL_VISA,
 } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const USTravelAndStay = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -117,7 +117,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
   }, [currentSectionIndex, isPortOfEntryNotRequired]);
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       {!isPortOfEntryNotRequired && (
         <InputV2
           ref={firstInputRef}
@@ -130,7 +130,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
           focusHandler={usEntryFocus}
           error={usEntryError}
           isFocused={isUsEntryFocused}
-          extraClass={classes.fullInputWidth}
+          extraClass={sectionClasses.fullInputWidth}
           isRequired={!isPortOfEntryOptional}
         />
       )}
@@ -149,11 +149,11 @@ const USTravelAndStay = forwardRef((_, ref) => {
         }
         newValue={defaultAddress}
         ref={stayAddressesRef}
-        extraClass={classes.addressFullInputWidth}
+        extraClass={sectionClasses.addressFullInputWidth}
         mandatoryItems={isUSStayAddressesOptional ? 0 : 1}
         maxItems={3}
       />
-    </>
+    </div>
   );
 });
 

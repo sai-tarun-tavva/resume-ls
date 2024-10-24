@@ -10,7 +10,7 @@ import {
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -158,7 +158,7 @@ const Relocation = forwardRef((_, ref) => {
   }));
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       <Checkbox
         ref={firstInputRef}
         id="relocationInterested"
@@ -167,7 +167,7 @@ const Relocation = forwardRef((_, ref) => {
         changeHandler={interestedChange}
         blurHandler={interestedBlur}
         helperText="(Considered yes by default)"
-        extraClass={classes.fullInputWidth}
+        extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
       {interestedValue && (
@@ -182,7 +182,7 @@ const Relocation = forwardRef((_, ref) => {
             focusHandler={howSoonFocus}
             error={howSoonError}
             isFocused={isHowSoonFocused}
-            extraClass={classes.fullInputWidth}
+            extraClass={sectionClasses.fullInputWidth}
             isRequired
           />
           <Select
@@ -195,7 +195,7 @@ const Relocation = forwardRef((_, ref) => {
             focusHandler={preferenceFocus}
             error={preferenceError}
             isFocused={isPreferenceFocused}
-            extraClass={classes.fullInputWidth}
+            extraClass={sectionClasses.fullInputWidth}
             isRequired
           />
         </>
@@ -208,7 +208,7 @@ const Relocation = forwardRef((_, ref) => {
           ref={addressRef}
         />
       )}
-    </>
+    </div>
   );
 });
 

@@ -10,7 +10,7 @@ import {
   HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
   HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
 } from "../../../constants";
-import classes from "./index.module.scss";
+import sectionClasses from "../sections.module.scss";
 
 const Location = forwardRef((_, ref) => {
   const usaLocRef = useRef();
@@ -100,7 +100,7 @@ const Location = forwardRef((_, ref) => {
   }, [currentSectionIndex]);
 
   return (
-    <>
+    <div className={sectionClasses.onboardFormSection}>
       <Address
         heading="Address in USA"
         defaultValue={usaLocation}
@@ -118,7 +118,7 @@ const Location = forwardRef((_, ref) => {
               changeHandler={handleHasHomeCountryChange}
               blurHandler={handleHasHomeCountryBlur}
               helperText="(Considered no by default)"
-              extraClass={classes.fullInputWidth}
+              extraClass={sectionClasses.fullInputWidth}
               isRequired
             />
           )}
@@ -134,7 +134,7 @@ const Location = forwardRef((_, ref) => {
           )}
         </>
       )}
-    </>
+    </div>
   );
 });
 
