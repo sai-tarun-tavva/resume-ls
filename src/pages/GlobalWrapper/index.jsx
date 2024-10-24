@@ -1,11 +1,14 @@
 import { HelmetProvider } from "react-helmet-async";
-import MainNavigation from "../../micro-frontends/Atoms/components/MainNavigation";
+import StatusMessage from "../../micro-frontends/Atoms/components/StatusMessage";
+import ContextProvider from "../../store/ContextProvider";
 
 const GlobalWrapper = ({ children }) => {
   return (
     <HelmetProvider>
-      <MainNavigation />
-      {children}
+      <ContextProvider>
+        <StatusMessage />
+        {children}
+      </ContextProvider>
     </HelmetProvider>
   );
 };

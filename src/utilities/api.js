@@ -149,7 +149,7 @@ export const handleLogout = async () => {
         console.error("Failed to logout", response.statusText);
       }
     } else {
-      console.error("No refresh token found in localStorage");
+      console.error("Error logging out");
     }
   } catch (error) {
     console.error("Error logging out:", error);
