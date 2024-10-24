@@ -73,6 +73,7 @@
     box-shadow: unset;
 
     i::before {
+      border-radius: 0.1rem;
       outline: 0.1rem solid var(--primary-color) !important;
       outline-offset: 0.2rem !important;
     }
