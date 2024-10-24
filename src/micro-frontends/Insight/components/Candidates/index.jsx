@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Candidate from "./Candidate";
+import NoRecords from "../../../Atoms/components/NoRecords";
 import Loader from "../../../Atoms/components/Loader";
 import ResumeViewer from "../ResumeViewer";
 import { dataActions, uiActions, viewResumeActions } from "../../store";
@@ -167,12 +168,7 @@ const InsightCandidates = () => {
       {isLoading.app ? (
         <Loader />
       ) : candidates.length === 0 ? (
-        <p>
-          <i
-            className={`bi bi-exclamation-circle ${classes.noRecordsIcon}`}
-          ></i>
-          {CONTENT.INSIGHT.candidate.noRecord}
-        </p>
+        <NoRecords />
       ) : (
         <Fragment>
           {candidates.map((candidate) => (

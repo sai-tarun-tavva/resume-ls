@@ -1,6 +1,7 @@
 export const CONTENT = {
   COMMON: {
     serverError: "Server error, please try again later.",
+    noCandidateRecord: "No candidates found.",
     errors: {
       username: {
         empty: "Username is required.",
@@ -279,7 +280,6 @@ export const CONTENT = {
         region: "State",
         experience: "{{EXP}} Year",
       },
-      noRecord: "No candidates found.",
     },
     candidateForm: {
       placeholders: {
