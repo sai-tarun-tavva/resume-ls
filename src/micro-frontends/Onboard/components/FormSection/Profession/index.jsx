@@ -12,6 +12,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
@@ -99,6 +100,8 @@ const Profession = forwardRef((_, ref) => {
       prevExpRef.current?.forceValidations?.();
       technologiesRef.current?.forceValidations?.();
       referencesRef.current?.forceValidations?.();
+      console.log(sectionRef);
+      focusErrorsIfAny(sectionRef);
       return false;
     }
 

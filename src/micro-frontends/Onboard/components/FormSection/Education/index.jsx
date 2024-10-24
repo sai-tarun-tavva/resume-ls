@@ -10,6 +10,7 @@ import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
   extractOnlyDigits,
+  focusErrorsIfAny,
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
@@ -163,6 +164,7 @@ const Education = forwardRef((_, ref) => {
       forceValidations();
       addressRef.current?.forceValidations?.(); // Force Address validation
       listRef?.current?.forceValidations?.();
+      focusErrorsIfAny(sectionRef);
       return false;
     }
 

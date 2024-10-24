@@ -8,6 +8,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
@@ -104,6 +105,7 @@ const Relocation = forwardRef((_, ref) => {
       // isAddressValid is undefined when unmounted or not rendered
       forceRelocationValidations();
       addressRef.current?.forceValidations(); // Force Address validation
+      focusErrorsIfAny(sectionRef);
       return false;
     }
 

@@ -8,6 +8,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
@@ -137,6 +138,7 @@ const OfferLetter = forwardRef((_, ref) => {
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();
+      focusErrorsIfAny(sectionRef);
       return false;
     }
 

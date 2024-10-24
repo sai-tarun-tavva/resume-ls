@@ -4,6 +4,7 @@ import Textarea from "../../../../Atoms/components/Inputs/Textarea";
 import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
+import { focusErrorsIfAny } from "../../../../../utilities";
 import { SECTIONS, FIELDS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
@@ -36,6 +37,7 @@ const Miscellaneous = forwardRef((_, ref) => {
   } = useInput(notes);
 
   const submit = () => {
+    focusErrorsIfAny(sectionRef);
     dispatch(
       inputActions.updateField({
         section: SECTIONS.MISCELLANEOUS,

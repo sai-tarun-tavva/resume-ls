@@ -8,6 +8,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
 import {
@@ -75,8 +76,8 @@ const USTravelAndStay = forwardRef((_, ref) => {
 
     if (!isSectionValid || !areAddressesValid) {
       if (!isPortOfEntryNotRequired) forceValidations();
-
       stayAddressesRef.current?.forceValidations?.();
+      focusErrorsIfAny(sectionRef);
       return false;
     }
 

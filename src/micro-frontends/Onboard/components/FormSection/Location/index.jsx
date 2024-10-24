@@ -5,6 +5,7 @@ import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
+import { focusErrorsIfAny } from "../../../../../utilities";
 import {
   FIELDS,
   SECTIONS,
@@ -66,6 +67,7 @@ const Location = forwardRef((_, ref) => {
     }
 
     if (!isUSAAddressValid || isIndiaAddressValid === false) {
+      focusErrorsIfAny(sectionRef);
       return false;
     }
 

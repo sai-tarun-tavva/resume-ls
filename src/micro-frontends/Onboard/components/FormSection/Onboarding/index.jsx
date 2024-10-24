@@ -7,6 +7,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
+  focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
@@ -54,6 +55,7 @@ const Onboarding = forwardRef((_, ref) => {
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();
+      focusErrorsIfAny(sectionRef);
       return false; // return false to indicate the submission was invalid
     }
 

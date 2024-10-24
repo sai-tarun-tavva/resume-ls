@@ -263,6 +263,21 @@ export const transformPhoneNumber = (value, isCountryCode = false) => {
 };
 
 /**
+ * Focuses on the first element in the provided section reference that has an error.
+ * If no element with an error is found, no action is taken.
+ *
+ * @param {Object} sectionRef - A reference object pointing to the section DOM element.
+ * @returns {void} This function does not return a value.
+ */
+export const focusErrorsIfAny = (sectionRef) => {
+  const firstErrorElement = sectionRef.current.querySelector(
+    "[data-error='true']"
+  );
+  console.log(firstErrorElement);
+  firstErrorElement?.focus();
+};
+
+/**
  * Extracts and returns only the numeric digits from a given string.
  * Removes all non-digit characters, including spaces, and trims the result.
  *

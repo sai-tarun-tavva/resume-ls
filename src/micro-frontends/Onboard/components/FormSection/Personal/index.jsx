@@ -9,6 +9,7 @@ import { defaultAddress, inputActions } from "../../../store";
 import {
   determineSectionValidity,
   extractOnlyDigits,
+  focusErrorsIfAny,
   getEighteenYearsAgoDate,
   onboardingValidations,
   transformPhoneNumber,
@@ -301,6 +302,7 @@ const Personal = forwardRef((_, ref) => {
 
   const submit = () => {
     if (!isSectionValid) {
+      focusErrorsIfAny(sectionRef);
       forceValidations();
       return false;
     }

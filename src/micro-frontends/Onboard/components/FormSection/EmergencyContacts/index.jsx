@@ -7,6 +7,7 @@ import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
   extractOnlyDigits,
+  focusErrorsIfAny,
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
@@ -127,6 +128,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();
+      focusErrorsIfAny(sectionRef);
       return false;
     }
 
