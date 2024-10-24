@@ -6,6 +6,7 @@ import DropArea from "./DropArea";
 import FileList from "./FileList";
 import Button from "../../../Atoms/components/Button";
 import Modal from "../../../Atoms/components/Modal";
+import FloatingButton from "../../../Atoms/components/FloatingButton";
 import { uiActions } from "../../store";
 import { useLoading, useStatus } from "../../../../store";
 import { isValidFile, uploadFiles } from "../../../../utilities";
@@ -184,13 +185,11 @@ const Upload = () => {
           </form>
         </Modal>
       ) : (
-        <Button
-          className={`${classes.upload} upload-global`}
+        <FloatingButton
           title="Upload New Resume"
-          onClick={toggleAllowUpload}
-        >
-          <i className="bi bi-upload"></i>
-        </Button>
+          clickHandler={toggleAllowUpload}
+          icon={<i className="bi bi-upload" />}
+        />
       )}
     </>
   );
