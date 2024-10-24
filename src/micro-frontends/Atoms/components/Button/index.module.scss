@@ -19,4 +19,10 @@
     color: #6c757d;
     cursor: not-allowed;
   }
+
+  &:focus-visible {
+    outline: 0.1rem solid var(--primary-color);
+    outline-offset: 0.2rem;
+    box-shadow: 0 0 0 0.25rem var(--primary-shadow);
+  }
 }

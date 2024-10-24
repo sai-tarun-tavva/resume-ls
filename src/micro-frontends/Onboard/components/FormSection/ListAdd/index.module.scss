@@ -69,9 +69,12 @@
 .removeButton {
   &:focus-visible {
     outline: none;
+    outline-offset: unset;
+    box-shadow: unset;
 
     i::before {
-      box-shadow: 0 0 0.1rem 0.3rem rgba(0, 0, 0, 0.1) !important;
+      outline: 0.1rem solid var(--primary-color) !important;
+      outline-offset: 0.2rem !important;
     }
   }
 }
