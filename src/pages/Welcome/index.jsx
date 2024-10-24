@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import LoginHub from "../../micro-frontends/Welcome/components/LoginHub";
 
 /**
@@ -9,7 +10,14 @@ import LoginHub from "../../micro-frontends/Welcome/components/LoginHub";
  * @returns {JSX.Element} The rendered Welcome component.
  */
 const Welcome = () => {
-  return <LoginHub />;
+  return (
+    <>
+      <Helmet>
+        <title>Resume Suite</title>
+      </Helmet>
+      <LoginHub />
+    </>
+  );
 };
 
 Welcome.displayName = "Welcome";

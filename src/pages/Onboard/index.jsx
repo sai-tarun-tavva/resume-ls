@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import OnboardHub from "../../micro-frontends/Onboard/components/OnboardHub";
 
 /**
@@ -9,7 +10,14 @@ import OnboardHub from "../../micro-frontends/Onboard/components/OnboardHub";
  * @returns {JSX.Element} The rendered Insight component.
  */
 const Onboard = () => {
-  return <OnboardHub />;
+  return (
+    <>
+      <Helmet>
+        <title>Resume Onboard</title>
+      </Helmet>
+      <OnboardHub />
+    </>
+  );
 };
 
 Onboard.displayName = "Onboard";

@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import InsightHub from "../../micro-frontends/Insight/components/InsightHub";
 
 /**
@@ -9,7 +10,14 @@ import InsightHub from "../../micro-frontends/Insight/components/InsightHub";
  * @returns {JSX.Element} The rendered Insight component.
  */
 const Insight = () => {
-  return <InsightHub />;
+  return (
+    <>
+      <Helmet>
+        <title>Resume Insight</title>
+      </Helmet>
+      <InsightHub />
+    </>
+  );
 };
 
 Insight.displayName = "Insight";
