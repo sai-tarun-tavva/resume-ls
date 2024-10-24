@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useLoading } from "../../../../store";
 import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
 import { dataActions } from "../../store";
 import { fetchOnboardCandidates } from "../../../../utilities";
+import { ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 const OnboardCandidates = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { candidates } = useSelector((state) => state.data);
   const { isLoading, enableAppLoading, disableAppLoading } = useLoading();
 
@@ -136,7 +139,9 @@ const OnboardCandidates = () => {
         )}
       </div>
       <FloatingButton
-        clickHandler={() => {}}
+        clickHandler={() => {
+          navigate(ROUTES.ONBOARD.CANDIDATE_FORM.NEW);
+        }}
         title={"Onboard new candidate"}
         icon={<i className="bi bi-person-plus" />}
       />

@@ -1,13 +1,22 @@
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../Atoms/components/Button";
 import classes from "./index.module.scss";
 
 const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
+  const navigate = useNavigate();
   const { currentSectionIndex: index } = useSelector((state) => state.input);
 
   return (
     <div className={classes.actions}>
-      <Button className={classes.closeButton}>Close</Button>
+      <Button
+        className={classes.closeButton}
+        onClick={() => {
+          navigate("..");
+        }}
+      >
+        Close
+      </Button>
       <div className={classes.navActions}>
         {index !== 0 && (
           <Button className={classes.button} onClick={previousHandler}>
