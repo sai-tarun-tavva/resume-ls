@@ -34,14 +34,14 @@ export const OPTIONS = {
     { value: "other", label: "Other" },
   ],
   MARITAL_STATUS: [
-    { value: "", label: "Select marital status" },
+    { value: "", label: "" },
     { value: "single", label: "Single" },
     { value: "married", label: "Married" },
     { value: "divorced", label: "Divorced" },
     { value: "widowed", label: "Widowed" },
   ],
   VISA_STATUS: [
-    { value: "", label: "Select Visa Status" },
+    { value: "", label: "" },
     {
       value: VISA_STATUS_VALUES.ASYLUM_REFUGEE,
       label: "Asylum/Refugee (Granted Protection in the U.S.)",
@@ -120,17 +120,17 @@ export const OPTIONS = {
     { value: VISA_STATUS_VALUES.OTHERS, label: "Other Visa Types" },
   ],
   PHOTO_ID_TYPE: [
-    { value: "", label: "Select Photo ID Type" },
+    { value: "", label: "" },
     { value: "DL", label: "Driver's License" },
     { value: "StateID", label: "State ID" },
   ],
   COUNTRY: [
-    { value: "", label: "Select country" },
+    { value: "", label: "" },
     { value: "india", label: "India" },
     { value: "usa", label: "USA" },
   ],
   STATE_INDIA: [
-    { value: "", label: "Select state" },
+    { value: "", label: "" },
     { value: "AP", label: "Andhra Pradesh" },
     { value: "AR", label: "Arunachal Pradesh" },
     { value: "AS", label: "Assam" },
@@ -161,7 +161,7 @@ export const OPTIONS = {
     { value: "WB", label: "West Bengal" },
   ],
   STATE_USA: [
-    { value: "", label: "Select state" },
+    { value: "", label: "" },
     { value: "AL", label: "Alabama" },
     { value: "AK", label: "Alaska" },
     { value: "AZ", label: "Arizona" },
@@ -214,17 +214,17 @@ export const OPTIONS = {
     { value: "WY", label: "Wyoming" },
   ],
   HOW_SOON_RELOCATION: [
-    { value: "", label: "Select duration" },
+    { value: "", label: "" },
     { value: "withinTwoWeeks", label: "Within 2 weeks" },
     { value: "moreThanTwoWeeks", label: "More than 2 weeks" },
   ],
   STAY_PREFERENCE: [
-    { value: "", label: "Select stay preference" },
+    { value: "", label: "" },
     { value: "guesthouse", label: "Opt for guest house" },
     { value: "other", label: "Other" },
   ],
   EXPERIENCE_MONTHS: [
-    { value: "", label: "Select months" },
+    { value: "", label: "" },
     ...Array.from({ length: 12 }, (_, i) => ({
       value: `${i}`,
       label: `${i}`,
