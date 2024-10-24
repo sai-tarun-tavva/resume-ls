@@ -24,6 +24,7 @@ export const VISA_STATUS_VALUES = {
 export const OPTIONS = {
   ONBOARDING_STATUS: [
     { value: "", label: "" },
+    { value: "applied", label: "Applied" },
     { value: "yetToStart", label: "Yet To Start" },
     { value: "inProgress", label: "In Progress" },
     { value: "completed", label: "Completed" },
