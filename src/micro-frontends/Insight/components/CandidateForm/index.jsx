@@ -6,7 +6,6 @@ import AutoSuggestion from "./AutoSuggestion";
 import Skills from "../../../Atoms/components/Skills";
 import Button from "../../../Atoms/components/Button";
 import InputV1 from "../../../Atoms/components/Inputs/InputV1";
-import StatusMessage from "../../../Atoms/components/StatusMessage";
 import { uiActions } from "../../store";
 import { useLoading, useStatus } from "../../../../store";
 import {
@@ -382,7 +381,6 @@ const CandidateForm = () => {
       onSubmit={handleFormSubmit}
       className={classes.candidateFormContainer}
     >
-      <StatusMessage />
       <div className={classes.candidateForm}>
         <div className={classes.inputColumns}>
           <div>
