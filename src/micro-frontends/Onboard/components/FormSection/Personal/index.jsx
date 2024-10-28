@@ -300,6 +300,24 @@ const Personal = forwardRef((_, ref) => {
     }
   };
 
+  const hasFormChanged =
+    firstNameValue !== firstName ||
+    lastNameValue !== lastName ||
+    emailIdValue !== emailId ||
+    extractOnlyDigits(phoneNumberValue) !== transformPhoneNumber(phoneNumber) ||
+    extractOnlyDigits(secondaryPhoneNumberValue) !==
+      transformPhoneNumber(secondaryPhoneNumber) ||
+    genderValue !== gender ||
+    dobValue !== dob ||
+    maritalStatusValue !== maritalStatus ||
+    passportNumberValue !== passportNumber ||
+    visaStatusValue !== visaStatus ||
+    (isEADRequired && eadNumberValue !== eadNumber) ||
+    SSNValue !== SSN ||
+    (photoIDTypeValue && photoIDNumberValue !== photoIDNumber) ||
+    skypeIdValue !== skypeId ||
+    referenceNameValue !== referenceName;
+
   const submit = () => {
     if (!isSectionValid) {
       focusErrorsIfAny(sectionRef);
@@ -307,187 +325,189 @@ const Personal = forwardRef((_, ref) => {
       return false;
     }
 
-    // Below resetting with empty values is required if user selects a student or H1 visa and enter home address later, if user comes back to personal and updates visa not to student
+    if (hasFormChanged) {
+      // Below resetting with empty values is required if user selects a student or H1 visa and enter home address later, if user comes back to personal and updates visa not to student
 
-    // Resetting Home address and emergency contact details if visa status is not one of Green card, U.S. Citizen, EB-1, EB-2, EB-3, Others
-    if (
-      HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatusValue) ||
-      HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatusValue)
-    ) {
+      // Resetting Home address and emergency contact details if visa status is not one of Green card, U.S. Citizen, EB-1, EB-2, EB-3, Others
+      if (
+        HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatusValue) ||
+        HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatusValue)
+      ) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.INDIA_LOCATION,
+            value: defaultAddress,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.EMERGENCY_CONTACTS,
+            field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
+            value: {
+              [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: "",
+              [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: "",
+            },
+          })
+        );
+      }
+
+      // Resetting SevisID, DSO and university details if visa status is not one of F1-OPT, F1-CPT
+      if (!EDUCATION_REQUIRED_VISA.includes(visaStatusValue)) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.EDUCATION,
+            field: FIELDS.EDUCATION.SEVIS_ID,
+            value: "",
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.EDUCATION,
+            field: FIELDS.EDUCATION.DSO.VALUE,
+            value: {
+              [FIELDS.EDUCATION.DSO.NAME]: "",
+              [FIELDS.EDUCATION.DSO.EMAIL]: "",
+              [FIELDS.EDUCATION.DSO.PHONE]: "",
+            },
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.EDUCATION,
+            field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
+            value: {
+              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
+              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
+              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
+              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
+              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
+                additionalCertifications,
+            },
+          })
+        );
+      }
+
+      // Resetting Port of entry if visa status is U.S. Citizen
+      if (PORT_OF_ENTRY_NOT_REQUIRED_VISA.includes(visaStatus)) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.US_TRAVEL_AND_STAY,
+            field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
+            value: "",
+          })
+        );
+      }
+
       dispatch(
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.INDIA_LOCATION,
-          value: defaultAddress,
+          field: FIELDS.PERSONAL.FIRST_NAME,
+          value: firstNameValue,
         })
       );
       dispatch(
         inputActions.updateField({
-          section: SECTIONS.EMERGENCY_CONTACTS,
-          field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.LAST_NAME,
+          value: lastNameValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.EMAIL_ID,
+          value: emailIdValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.PHONE_NUMBER,
+          value: extractOnlyDigits(phoneNumberValue),
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER,
+          value: extractOnlyDigits(secondaryPhoneNumberValue),
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.GENDER,
+          value: genderValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.DOB,
+          value: dobValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.MARITAL_STATUS,
+          value: maritalStatusValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.PASSPORT_NUMBER,
+          value: passportNumberValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.VISA_STATUS,
+          value: visaStatusValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.EAD_NUMBER,
+          value: eadNumberValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.SSN,
+          value: SSNValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.PHOTO_ID.VALUE,
           value: {
-            [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: "",
-            [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: "",
+            [FIELDS.PERSONAL.PHOTO_ID.TYPE]: photoIDTypeValue,
+            [FIELDS.PERSONAL.PHOTO_ID.NUMBER]: photoIDNumberValue,
           },
         })
       );
-    }
-
-    // Resetting SevisID, DSO and university details if visa status is not one of F1-OPT, F1-CPT
-    if (!EDUCATION_REQUIRED_VISA.includes(visaStatusValue)) {
       dispatch(
         inputActions.updateField({
-          section: SECTIONS.EDUCATION,
-          field: FIELDS.EDUCATION.SEVIS_ID,
-          value: "",
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.SKYPE_ID,
+          value: skypeIdValue,
         })
       );
       dispatch(
         inputActions.updateField({
-          section: SECTIONS.EDUCATION,
-          field: FIELDS.EDUCATION.DSO.VALUE,
-          value: {
-            [FIELDS.EDUCATION.DSO.NAME]: "",
-            [FIELDS.EDUCATION.DSO.EMAIL]: "",
-            [FIELDS.EDUCATION.DSO.PHONE]: "",
-          },
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.EDUCATION,
-          field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
-          value: {
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
-              additionalCertifications,
-          },
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.REFERENCE_NAME,
+          value: referenceNameValue,
         })
       );
     }
-
-    // Resetting Port of entry if visa status is U.S. Citizen
-    if (PORT_OF_ENTRY_NOT_REQUIRED_VISA.includes(visaStatus)) {
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.US_TRAVEL_AND_STAY,
-          field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
-          value: "",
-        })
-      );
-    }
-
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.FIRST_NAME,
-        value: firstNameValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.LAST_NAME,
-        value: lastNameValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.EMAIL_ID,
-        value: emailIdValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.PHONE_NUMBER,
-        value: extractOnlyDigits(phoneNumberValue),
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER,
-        value: extractOnlyDigits(secondaryPhoneNumberValue),
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.GENDER,
-        value: genderValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.DOB,
-        value: dobValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.MARITAL_STATUS,
-        value: maritalStatusValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.PASSPORT_NUMBER,
-        value: passportNumberValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.VISA_STATUS,
-        value: visaStatusValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.EAD_NUMBER,
-        value: eadNumberValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.SSN,
-        value: SSNValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.PHOTO_ID.VALUE,
-        value: {
-          [FIELDS.PERSONAL.PHOTO_ID.TYPE]: photoIDTypeValue,
-          [FIELDS.PERSONAL.PHOTO_ID.NUMBER]: photoIDNumberValue,
-        },
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.SKYPE_ID,
-        value: skypeIdValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.REFERENCE_NAME,
-        value: referenceNameValue,
-      })
-    );
     return true;
   };
 

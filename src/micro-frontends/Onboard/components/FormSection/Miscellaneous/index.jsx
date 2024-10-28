@@ -36,23 +36,29 @@ const Miscellaneous = forwardRef((_, ref) => {
     isFocused: isNotesFocused,
   } = useInput(notes);
 
+  const hasFormChanged = () => {
+    return remarksValue !== remarks || notesValue !== notes;
+  };
+
   const submit = () => {
     focusErrorsIfAny(sectionRef);
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.MISCELLANEOUS,
-        field: FIELDS.MISCELLANEOUS.REMARKS,
-        value: remarksValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.MISCELLANEOUS,
-        field: FIELDS.MISCELLANEOUS.NOTES,
-        value: notesValue,
-      })
-    );
 
+    if (hasFormChanged()) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.MISCELLANEOUS,
+          field: FIELDS.MISCELLANEOUS.REMARKS,
+          value: remarksValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.MISCELLANEOUS,
+          field: FIELDS.MISCELLANEOUS.NOTES,
+          value: notesValue,
+        })
+      );
+    }
     return true;
   };
 

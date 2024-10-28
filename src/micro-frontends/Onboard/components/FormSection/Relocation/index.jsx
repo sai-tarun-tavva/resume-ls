@@ -7,6 +7,7 @@ import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
+  areObjectsEqual,
   determineSectionValidity,
   focusErrorsIfAny,
   onboardingValidations,
@@ -27,14 +28,15 @@ const Relocation = forwardRef((_, ref) => {
 
   const { relocation: validations } = onboardingValidations;
 
+  const interestedAsBoolean =
+    interested === FIELDS.RELOCATION.INTERESTED.OPTIONS.YES ? true : false;
+
   // Relocation validation and input handling
   const {
     value: interestedValue,
     handleInputChange: interestedChange,
     handleInputBlur: interestedBlur,
-  } = useInput(
-    interested === FIELDS.RELOCATION.INTERESTED.OPTIONS.YES ? true : false
-  );
+  } = useInput(interestedAsBoolean);
 
   const {
     value: preferenceValue,
@@ -96,10 +98,19 @@ const Relocation = forwardRef((_, ref) => {
     }
   };
 
+  const hasFormChanged = (relocationAddress) => {
+    return (
+      interestedValue !== interestedAsBoolean ||
+      preferenceValue !== preference ||
+      howSoonValue !== howSoon ||
+      !areObjectsEqual(address, relocationAddress)
+    );
+  };
+
   const submit = () => {
     const addressSubmitResult = addressRef.current?.submit?.();
     const isAddressValid = addressSubmitResult?.isSectionValid;
-    const address = addressSubmitResult?.item;
+    const relocationAddress = addressSubmitResult?.item;
 
     if (!isRelocationValid || isAddressValid === false) {
       // isAddressValid is undefined when unmounted or not rendered
@@ -109,40 +120,42 @@ const Relocation = forwardRef((_, ref) => {
       return false;
     }
 
-    // Dispatch actions for Relocation data
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.RELOCATION,
-        field: FIELDS.RELOCATION.INTERESTED.VALUE,
-        value: interestedValue
-          ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
-          : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
-      })
-    );
-    if (interestedValue) {
+    if (hasFormChanged(relocationAddress)) {
+      // Dispatch actions for Relocation data
       dispatch(
         inputActions.updateField({
           section: SECTIONS.RELOCATION,
-          field: FIELDS.RELOCATION.PREFERENCE,
-          value: preferenceValue,
+          field: FIELDS.RELOCATION.INTERESTED.VALUE,
+          value: interestedValue
+            ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
+            : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
         })
       );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.RELOCATION,
-          field: FIELDS.RELOCATION.HOW_SOON,
-          value: howSoonValue,
-        })
-      );
-    }
-    if (address) {
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.RELOCATION,
-          field: FIELDS.RELOCATION.ADDRESS,
-          value: address,
-        })
-      );
+      if (interestedValue) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.RELOCATION,
+            field: FIELDS.RELOCATION.PREFERENCE,
+            value: preferenceValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.RELOCATION,
+            field: FIELDS.RELOCATION.HOW_SOON,
+            value: howSoonValue,
+          })
+        );
+      }
+      if (address) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.RELOCATION,
+            field: FIELDS.RELOCATION.ADDRESS,
+            value: relocationAddress,
+          })
+        );
+      }
     }
     return true;
   };

@@ -7,6 +7,7 @@ import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
+  arraysEqual,
   determineSectionValidity,
   focusErrorsIfAny,
   onboardingValidations,
@@ -70,6 +71,12 @@ const USTravelAndStay = forwardRef((_, ref) => {
     forceUsEntryValidations();
   };
 
+  const hasFormChanged = (addressesCurrent) => {
+    return (
+      usEntryValue !== usEntry || !arraysEqual(stayAddresses, addressesCurrent)
+    );
+  };
+
   const submit = () => {
     const { isSectionValid: areAddressesValid, listItems: addresses } =
       stayAddressesRef?.current?.submit?.();
@@ -81,22 +88,23 @@ const USTravelAndStay = forwardRef((_, ref) => {
       return false;
     }
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.US_TRAVEL_AND_STAY,
-        field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
-        value: usEntryValue,
-      })
-    );
+    if (hasFormChanged(addresses)) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.US_TRAVEL_AND_STAY,
+          field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
+          value: usEntryValue,
+        })
+      );
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.US_TRAVEL_AND_STAY,
-        field: FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES,
-        value: addresses,
-      })
-    );
-
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.US_TRAVEL_AND_STAY,
+          field: FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES,
+          value: addresses,
+        })
+      );
+    }
     return true;
   };
 

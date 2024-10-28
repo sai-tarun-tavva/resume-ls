@@ -48,10 +48,14 @@ const Onboarding = forwardRef((_, ref) => {
   const allValues = [dateValue, statusValue];
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
+
   const forceValidations = () => {
     forceDateValidations();
     forceStatusValidations();
   };
+
+  const hasFormChanged = dateValue !== date || statusValue !== status;
+
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();
@@ -59,21 +63,24 @@ const Onboarding = forwardRef((_, ref) => {
       return false; // return false to indicate the submission was invalid
     }
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.ONBOARDING,
-        field: FIELDS.ONBOARDING.DATE,
-        value: dateValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.ONBOARDING,
-        field: FIELDS.ONBOARDING.STATUS,
-        value: statusValue,
-      })
-    );
-    return true; // return true to indicate successful submission
+    if (hasFormChanged) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.ONBOARDING,
+          field: FIELDS.ONBOARDING.DATE,
+          value: dateValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.ONBOARDING,
+          field: FIELDS.ONBOARDING.STATUS,
+          value: statusValue,
+        })
+      );
+    }
+
+    return true;
   };
 
   // Expose submit method to parent via ref

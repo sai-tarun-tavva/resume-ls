@@ -5,7 +5,7 @@ import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
-import { focusErrorsIfAny } from "../../../../../utilities";
+import { areObjectsEqual, focusErrorsIfAny } from "../../../../../utilities";
 import {
   FIELDS,
   SECTIONS,
@@ -44,6 +44,13 @@ const Location = forwardRef((_, ref) => {
     handleInputBlur: handleHasHomeCountryBlur,
   } = useInput(false);
 
+  const hasFormChanged = (usaAddress, indiaAddress) => {
+    return (
+      !areObjectsEqual(usaAddress, usaLocation) ||
+      !areObjectsEqual(indiaAddress, indiaLocation)
+    );
+  };
+
   const submit = () => {
     // Validate USA address (always required)
     const usaAddressResult = usaLocRef.current?.submit?.();
@@ -71,23 +78,24 @@ const Location = forwardRef((_, ref) => {
       return false;
     }
 
-    // Update store with validated addresses
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.USA_LOCATION,
-        value: usaAddress,
-      })
-    );
+    if (hasFormChanged(usaAddress, indiaAddress)) {
+      // Update store with validated addresses
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.USA_LOCATION,
+          value: usaAddress,
+        })
+      );
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PERSONAL,
-        field: FIELDS.PERSONAL.INDIA_LOCATION,
-        value: indiaAddress,
-      })
-    );
-
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.INDIA_LOCATION,
+          value: indiaAddress,
+        })
+      );
+    }
     return true;
   };
 

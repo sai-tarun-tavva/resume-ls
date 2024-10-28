@@ -8,6 +8,8 @@ import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
+  areObjectsEqual,
+  arraysEqual,
   determineSectionValidity,
   extractOnlyDigits,
   focusErrorsIfAny,
@@ -149,6 +151,35 @@ const Education = forwardRef((_, ref) => {
     forceDSOPhoneValidations();
   };
 
+  const hasFormChanged = (addressValue, certificationsValue) => {
+    const initialValues = {
+      sevisID: sevisID,
+      dsoName: dsoName,
+      dsoEmail: dsoEmail,
+      dsoPhone: dsoPhone,
+      universityName: universityName,
+      passedMonthAndYear: passedMonthAndYear,
+      stream: stream,
+      address: universityAddress,
+    };
+
+    const currentValues = {
+      sevisID: sevisIDValue,
+      dsoName: dsoNameValue,
+      dsoEmail: dsoEmailValue,
+      dsoPhone: extractOnlyDigits(dsoPhoneValue),
+      universityName: universityNameValue,
+      passedMonthAndYear: passedMonthAndYearValue,
+      stream: streamValue,
+      address: addressValue,
+    };
+
+    return (
+      !areObjectsEqual(initialValues, currentValues) ||
+      !arraysEqual(additionalCertifications, certificationsValue)
+    );
+  };
+
   const submit = () => {
     const addressSubmitResult = addressRef.current?.submit?.();
     const isAddressValid = addressSubmitResult?.isSectionValid;
@@ -168,40 +199,41 @@ const Education = forwardRef((_, ref) => {
       return false;
     }
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.EDUCATION,
-        field: FIELDS.EDUCATION.SEVIS_ID,
-        value: sevisIDValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.EDUCATION,
-        field: FIELDS.EDUCATION.DSO.VALUE,
-        value: {
-          [FIELDS.EDUCATION.DSO.NAME]: dsoNameValue,
-          [FIELDS.EDUCATION.DSO.EMAIL]: dsoEmailValue,
-          [FIELDS.EDUCATION.DSO.PHONE]: extractOnlyDigits(dsoPhoneValue),
-        },
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.EDUCATION,
-        field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
-        value: {
-          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: universityNameValue,
-          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]:
-            passedMonthAndYearValue,
-          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
-          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
-          [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
-            certificates,
-        },
-      })
-    );
-
+    if (hasFormChanged(address, certificates)) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.SEVIS_ID,
+          value: sevisIDValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.DSO.VALUE,
+          value: {
+            [FIELDS.EDUCATION.DSO.NAME]: dsoNameValue,
+            [FIELDS.EDUCATION.DSO.EMAIL]: dsoEmailValue,
+            [FIELDS.EDUCATION.DSO.PHONE]: extractOnlyDigits(dsoPhoneValue),
+          },
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
+          value: {
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: universityNameValue,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]:
+              passedMonthAndYearValue,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
+              certificates,
+          },
+        })
+      );
+    }
     return true;
   };
 

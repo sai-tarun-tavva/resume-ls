@@ -224,12 +224,75 @@ export const arraysEqual = (arr1, arr2) => {
   if (
     !Array.isArray(arr1) ||
     !Array.isArray(arr2) ||
-    arr1?.length !== arr2?.length
+    arr1.length !== arr2.length
   )
     return false;
-  const sortedArr1 = [...arr1].sort();
-  const sortedArr2 = [...arr2].sort();
-  return sortedArr1.every((value, index) => value === sortedArr2[index]);
+
+  // Sort the arrays to ensure the order does not affect equality
+  const sortedArr1 = [...arr1].sort((a, b) => {
+    // Use JSON.stringify for object comparison, fallback to string comparison
+    return typeof a === "object" && typeof b === "object"
+      ? JSON.stringify(a).localeCompare(JSON.stringify(b))
+      : a.localeCompare(b);
+  });
+
+  const sortedArr2 = [...arr2].sort((a, b) => {
+    return typeof a === "object" && typeof b === "object"
+      ? JSON.stringify(a).localeCompare(JSON.stringify(b))
+      : a.localeCompare(b);
+  });
+
+  // Use areObjectsEqual for comparing objects or primitive values
+  return sortedArr1.every((value, index) => {
+    return typeof value === "object"
+      ? areObjectsEqual(value, sortedArr2[index])
+      : value === sortedArr2[index]; // For primitive values
+  });
+};
+
+/**
+ * Checks if two objects are equal.
+ * @param {Object} obj1 - The first object to compare.
+ * @param {Object} obj2 - The second object to compare.
+ * @returns {boolean} True if objects are equal, false otherwise.
+ */
+export const areObjectsEqual = (obj1, obj2) => {
+  // Check if both are objects (and not null)
+  if (obj1 === obj2) return true; // Check for reference equality
+  if (
+    typeof obj1 !== "object" ||
+    typeof obj2 !== "object" ||
+    obj1 === null ||
+    obj2 === null
+  ) {
+    return false; // One is not an object
+  }
+
+  // Get the keys of both objects
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  // Check if the number of keys is the same
+  if (keys1.length !== keys2.length) return false;
+
+  // Check if values are equal for each key
+  for (let key of keys1) {
+    // Check if the key exists in both objects
+    if (!keys2.includes(key)) return false;
+
+    // Recursively check for deep equality
+    const value1 = obj1[key];
+    const value2 = obj2[key];
+
+    // If the value is an object or an array, perform a deep comparison
+    if (typeof value1 === "object" && typeof value2 === "object") {
+      if (!areObjectsEqual(value1, value2)) return false; // Deep comparison
+    } else if (value1 !== value2) {
+      return false; // Primitive value comparison
+    }
+  }
+
+  return true; // Objects are equal
 };
 
 /**
@@ -273,7 +336,6 @@ export const focusErrorsIfAny = (sectionRef) => {
   const firstErrorElement = sectionRef.current.querySelector(
     "[data-error='true']"
   );
-  console.log(firstErrorElement);
   firstErrorElement?.focus();
 };
 

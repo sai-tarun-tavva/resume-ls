@@ -135,6 +135,17 @@ const OfferLetter = forwardRef((_, ref) => {
     forceRolesValidations();
   };
 
+  const hasFormChanged = () => {
+    return (
+      statusValue !== status ||
+      marketingNameValue !== marketingName ||
+      designationValue !== designation ||
+      startDateValue !== startDate ||
+      endDateValue !== endDate ||
+      rolesAndResponsibilitiesValue !== rolesAndResponsibilities
+    );
+  };
+
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();
@@ -142,49 +153,50 @@ const OfferLetter = forwardRef((_, ref) => {
       return false;
     }
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.OFFER_LETTER,
-        field: FIELDS.OFFER_LETTER.STATUS,
-        value: statusValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.OFFER_LETTER,
-        field: FIELDS.OFFER_LETTER.MARKETING_NAME,
-        value: marketingNameValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.OFFER_LETTER,
-        field: FIELDS.OFFER_LETTER.DESIGNATION,
-        value: designationValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.OFFER_LETTER,
-        field: FIELDS.OFFER_LETTER.START_DATE,
-        value: startDateValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.OFFER_LETTER,
-        field: FIELDS.OFFER_LETTER.END_DATE,
-        value: endDateValue,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.OFFER_LETTER,
-        field: FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES,
-        value: rolesAndResponsibilitiesValue,
-      })
-    );
-
+    if (hasFormChanged()) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.STATUS,
+          value: statusValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.MARKETING_NAME,
+          value: marketingNameValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.DESIGNATION,
+          value: designationValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.START_DATE,
+          value: startDateValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.END_DATE,
+          value: endDateValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES,
+          value: rolesAndResponsibilitiesValue,
+        })
+      );
+    }
     return true;
   };
 

@@ -1,14 +1,17 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FormProgress from "../FormProgress";
 import FormSection from "../FormSection";
 import FormActions from "../FormActions";
 import { inputActions } from "../../store";
 import classes from "./index.module.scss";
+import { addOnboardCandidate } from "../../../../utilities";
 
 const Form = () => {
   const dispatch = useDispatch();
-  const { currentSectionIndex: current } = useSelector((state) => state.input);
+  const { currentSectionIndex: current, data } = useSelector(
+    (state) => state.input
+  );
 
   const onboardingRef = useRef();
   const personalRef = useRef();
@@ -33,6 +36,34 @@ const Form = () => {
     emergencyContacts: emergencyContactsRef,
     miscellaneous: miscellaneousRef,
   };
+
+  const isInitialRender = useRef(true); // Use ref to track initial render
+
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
+    const addNewCandidate = async () => {
+      const newCandidate = {
+        firstName: data.personal.firstName,
+        lastName: data.personal.lastName,
+        emailId: data.personal.emailId,
+        phoneNumber: data.personal.phoneNumber,
+        status: data.onboarding.status,
+        review: data.miscellaneous.remarks,
+        visaStatus: data.personal.visaStatus,
+        additional_info: {
+          other_info: data,
+        },
+      };
+
+      await addOnboardCandidate(newCandidate);
+    };
+
+    addNewCandidate();
+  }, [data]);
 
   const previousClickHandler = (event) => {
     event.preventDefault();
@@ -67,7 +98,7 @@ const Form = () => {
     }
 
     if (hasSectionNoErrors) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+      if (current < 9) dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
 

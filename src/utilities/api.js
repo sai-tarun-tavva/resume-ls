@@ -388,3 +388,34 @@ export const fetchOnboardCandidates = async () => {
     return { status: 500, data: null };
   }
 };
+
+/**
+ * Onboards the new candidate by adding him.
+ *
+ * @async
+ * @function
+ * @param {Object} body - The request body containing new candidate to be added.
+ * @returns {Promise<Object>} An object containing the response status.
+ */
+export const addOnboardCandidate = async (body) => {
+  try {
+    const response = await fetchWithToken(END_POINTS.ONBOARD.ADD_CANDIDATE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    // Return status
+    if (!response.ok) {
+      return { status: 500 };
+    }
+
+    return { status: response.status };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};

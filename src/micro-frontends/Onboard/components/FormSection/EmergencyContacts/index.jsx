@@ -125,6 +125,15 @@ const EmergencyContacts = forwardRef((_, ref) => {
     }
   };
 
+  const hasFormChanged = () => {
+    return (
+      usaNameValue !== usaName ||
+      extractOnlyDigits(usaPhoneValue) !== usaPhone ||
+      homeCountryNameValue !== homeCountryName ||
+      extractOnlyDigits(homeCountryPhoneValue) !== homeCountryPhone
+    );
+  };
+
   const submit = () => {
     if (!isSectionValid) {
       forceValidations();
@@ -132,30 +141,31 @@ const EmergencyContacts = forwardRef((_, ref) => {
       return false;
     }
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.EMERGENCY_CONTACTS,
-        field: FIELDS.EMERGENCY_CONTACTS.USA.VALUE,
-        value: {
-          [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: usaNameValue,
-          [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]:
-            extractOnlyDigits(usaPhoneValue),
-        },
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.EMERGENCY_CONTACTS,
-        field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
-        value: {
-          [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: homeCountryNameValue,
-          [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: extractOnlyDigits(
-            homeCountryPhoneValue
-          ),
-        },
-      })
-    );
-
+    if (hasFormChanged()) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EMERGENCY_CONTACTS,
+          field: FIELDS.EMERGENCY_CONTACTS.USA.VALUE,
+          value: {
+            [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: usaNameValue,
+            [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]:
+              extractOnlyDigits(usaPhoneValue),
+          },
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EMERGENCY_CONTACTS,
+          field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
+          value: {
+            [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: homeCountryNameValue,
+            [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: extractOnlyDigits(
+              homeCountryPhoneValue
+            ),
+          },
+        })
+      );
+    }
     return true;
   };
 

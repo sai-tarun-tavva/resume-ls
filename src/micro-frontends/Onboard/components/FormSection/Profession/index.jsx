@@ -11,6 +11,7 @@ import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
 import {
+  arraysEqual,
   determineSectionValidity,
   focusErrorsIfAny,
   onboardingValidations,
@@ -36,13 +37,16 @@ const Profession = forwardRef((_, ref) => {
 
   const { profession: validations } = onboardingValidations;
 
+  const trainingAttendedAsBoolean =
+    trainingAttended === FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
+      ? true
+      : false;
+
   const {
     value: trainingAttendedValue,
     handleInputChange: trainingAttendedChange,
     handleInputBlur: trainingAttendedBlur,
-  } = useInput(
-    trainingAttended === FIELDS.RELOCATION.INTERESTED.OPTIONS.YES ? true : false
-  );
+  } = useInput(trainingAttendedAsBoolean);
 
   const {
     value: experienceYearsValue,
@@ -78,6 +82,21 @@ const Profession = forwardRef((_, ref) => {
     forceExperienceMonthsValidations();
   };
 
+  const hasFormChanged = (
+    technologiesKnownCurrent,
+    previousExperienceCurrent,
+    referencesCurrent
+  ) => {
+    return (
+      trainingAttendedAsBoolean !== trainingAttendedValue ||
+      years !== experienceYearsValue ||
+      months !== experienceMonthsValue ||
+      !arraysEqual(technologiesKnown, technologiesKnownCurrent) ||
+      !arraysEqual(previousExperience, previousExperienceCurrent) ||
+      !arraysEqual(references, referencesCurrent)
+    );
+  };
+
   const submit = () => {
     const {
       isSectionValid: arePrevExperiencesValid,
@@ -100,52 +119,52 @@ const Profession = forwardRef((_, ref) => {
       prevExpRef.current?.forceValidations?.();
       technologiesRef.current?.forceValidations?.();
       referencesRef.current?.forceValidations?.();
-      console.log(sectionRef);
       focusErrorsIfAny(sectionRef);
       return false;
     }
 
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PROFESSION,
-        field: FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE,
-        value: trainingAttendedValue
-          ? FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.YES
-          : FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PROFESSION,
-        field: FIELDS.PROFESSION.EXPERIENCE.VALUE,
-        value: {
-          [FIELDS.PROFESSION.EXPERIENCE.YEARS]: +experienceYearsValue,
-          [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: +experienceMonthsValue,
-        },
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PROFESSION,
-        field: FIELDS.PROFESSION.TECHNOLOGIES_KNOWN,
-        value: technologies,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PROFESSION,
-        field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
-        value: prevExperiences,
-      })
-    );
-    dispatch(
-      inputActions.updateField({
-        section: SECTIONS.PROFESSION,
-        field: FIELDS.PROFESSION.REFERENCES,
-        value: referencesList,
-      })
-    );
-
+    if (hasFormChanged(technologies, prevExperiences, referencesList)) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE,
+          value: trainingAttendedValue
+            ? FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.YES
+            : FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.EXPERIENCE.VALUE,
+          value: {
+            [FIELDS.PROFESSION.EXPERIENCE.YEARS]: +experienceYearsValue,
+            [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: +experienceMonthsValue,
+          },
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.TECHNOLOGIES_KNOWN,
+          value: technologies,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
+          value: prevExperiences,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.REFERENCES,
+          value: referencesList,
+        })
+      );
+    }
     return true;
   };
 

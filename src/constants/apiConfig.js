@@ -1,5 +1,5 @@
 const INSIGHT_IP_PORT = "http://10.0.12.114:8000/";
-// const ONBOARD_IP_PORT = 'http://10.0.12.114:8200/'; // pending
+const ONBOARD_IP_PORT = "http://10.0.12.114:8000/";
 
 export const END_POINTS = {
   WELCOME: {
@@ -26,6 +26,7 @@ export const END_POINTS = {
     FETCH_CANDIDATES: {
       url: "https://run.mocky.io/v3/f0146370-fffe-490c-90d6-b40595eaf0ee",
     },
+    ADD_CANDIDATE: `${ONBOARD_IP_PORT}candidates/`,
   },
   SPARK: {},
 };
