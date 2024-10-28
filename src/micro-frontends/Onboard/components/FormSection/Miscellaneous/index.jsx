@@ -10,7 +10,7 @@ import { focusErrorsIfAny } from "../../../../../utilities";
 import { SECTIONS, FIELDS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Miscellaneous = forwardRef((_, ref) => {
+const Miscellaneous = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -72,7 +72,7 @@ const Miscellaneous = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       updateStatus({
         message: "Successfully added new candidate details!",
         type: "success",
@@ -86,7 +86,7 @@ const Miscellaneous = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Textarea
         id="remarks"
         label="Remarks"
@@ -110,7 +110,7 @@ const Miscellaneous = forwardRef((_, ref) => {
         isFocused={isNotesFocused}
         extraClass={sectionClasses.fullInputWidth}
       />
-    </div>
+    </fieldset>
   );
 });
 

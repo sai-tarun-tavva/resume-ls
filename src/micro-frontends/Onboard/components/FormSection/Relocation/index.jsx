@@ -15,7 +15,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Relocation = forwardRef((_, ref) => {
+const Relocation = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -163,7 +163,7 @@ const Relocation = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -174,7 +174,7 @@ const Relocation = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Checkbox
         id="relocationInterested"
         label="Interested in Relocation?"
@@ -223,7 +223,7 @@ const Relocation = forwardRef((_, ref) => {
           ref={addressRef}
         />
       )}
-    </div>
+    </fieldset>
   );
 });
 

@@ -19,7 +19,7 @@ import {
 import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Education = forwardRef((_, ref) => {
+const Education = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -240,7 +240,7 @@ const Education = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -251,7 +251,7 @@ const Education = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       {isEducationRequired && (
         <>
           <div className={sectionClasses.formRow}>
@@ -369,7 +369,7 @@ const Education = forwardRef((_, ref) => {
         newValue={""}
         ref={listRef}
       />
-    </div>
+    </fieldset>
   );
 });
 

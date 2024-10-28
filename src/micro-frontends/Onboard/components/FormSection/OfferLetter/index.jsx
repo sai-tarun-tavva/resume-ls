@@ -14,7 +14,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const OfferLetter = forwardRef((_, ref) => {
+const OfferLetter = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -204,7 +204,7 @@ const OfferLetter = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -214,7 +214,7 @@ const OfferLetter = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Select
         id="status"
         label="Offer Letter Status"
@@ -298,7 +298,7 @@ const OfferLetter = forwardRef((_, ref) => {
         extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
-    </div>
+    </fieldset>
   );
 });
 

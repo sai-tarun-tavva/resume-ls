@@ -28,7 +28,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Personal = forwardRef((_, ref) => {
+const Personal = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -515,7 +515,7 @@ const Personal = forwardRef((_, ref) => {
         moveForward = true;
       }
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -526,7 +526,7 @@ const Personal = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <div className={sectionClasses.formRow}>
         <InputV2
           id="firstName"
@@ -760,7 +760,7 @@ const Personal = forwardRef((_, ref) => {
           extraClass={sectionClasses.halfInputWidth}
         />
       </div>
-    </div>
+    </fieldset>
   );
 });
 

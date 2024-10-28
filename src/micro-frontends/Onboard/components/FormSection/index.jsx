@@ -1,4 +1,4 @@
-import React from "react";
+import { useLocation } from "react-router-dom";
 import Onboarding from "./Onboarding";
 import Personal from "./Personal";
 import Location from "./Location";
@@ -9,6 +9,7 @@ import OfferLetter from "./OfferLetter";
 import USTravelAndStay from "./USTravelAndStay";
 import EmergencyContacts from "./EmergencyContacts";
 import Miscellaneous from "./Miscellaneous";
+import { ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 const FormSection = ({
@@ -26,6 +27,11 @@ const FormSection = ({
     miscellaneous,
   },
 }) => {
+  const routeLocation = useLocation();
+  const isInNewRoute = routeLocation.pathname.endsWith(
+    ROUTES.ONBOARD.CANDIDATE_FORM.NEW
+  );
+
   const sections = [
     { Component: Onboarding, ref: onboarding },
     { Component: Personal, ref: personal },
@@ -53,7 +59,7 @@ const FormSection = ({
             }`}
             ref={ref}
           >
-            <Component ref={ref} />
+            <Component ref={ref} isInNewRoute={isInNewRoute} />
           </div>
         ))}
       </div>

@@ -19,7 +19,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Profession = forwardRef((_, ref) => {
+const Profession = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -171,7 +171,7 @@ const Profession = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -181,7 +181,7 @@ const Profession = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Checkbox
         id="trainingAttended"
         label="Training Attended?"
@@ -274,7 +274,7 @@ const Profession = forwardRef((_, ref) => {
         newValue={defaultReference}
         ref={referencesRef}
       />
-    </div>
+    </fieldset>
   );
 });
 

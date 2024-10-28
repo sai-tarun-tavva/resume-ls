@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef } from "react";
+import { useImperativeHandle, forwardRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -13,7 +13,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Onboarding = forwardRef((_, ref) => {
+const Onboarding = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -86,7 +86,7 @@ const Onboarding = forwardRef((_, ref) => {
       moveForward = true;
     }
 
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -97,7 +97,7 @@ const Onboarding = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <InputV2
         id="onboardingDate"
         type="date"
@@ -122,7 +122,7 @@ const Onboarding = forwardRef((_, ref) => {
         isFocused={isStatusFocused}
         isRequired
       />
-    </div>
+    </fieldset>
   );
 });
 

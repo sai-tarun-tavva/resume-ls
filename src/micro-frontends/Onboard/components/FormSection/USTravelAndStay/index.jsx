@@ -21,7 +21,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const USTravelAndStay = forwardRef((_, ref) => {
+const USTravelAndStay = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -111,7 +111,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -121,7 +121,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       {!isPortOfEntryNotRequired && (
         <InputV2
           id="usEntry"
@@ -156,7 +156,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
         mandatoryItems={isUSStayAddressesOptional ? 0 : 1}
         maxItems={3}
       />
-    </div>
+    </fieldset>
   );
 });
 

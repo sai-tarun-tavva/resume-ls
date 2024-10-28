@@ -14,7 +14,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Location = forwardRef((_, ref) => {
+const Location = forwardRef((isInNewRoute, ref) => {
   const usaLocRef = useRef();
   const indiaLocRef = useRef();
   const dispatch = useDispatch();
@@ -102,7 +102,7 @@ const Location = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -112,7 +112,7 @@ const Location = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <Address
         heading="Address in USA"
         defaultValue={usaLocation}
@@ -146,7 +146,7 @@ const Location = forwardRef((_, ref) => {
           )}
         </>
       )}
-    </div>
+    </fieldset>
   );
 });
 

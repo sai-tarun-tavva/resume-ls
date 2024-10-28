@@ -19,7 +19,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const EmergencyContacts = forwardRef((_, ref) => {
+const EmergencyContacts = forwardRef((isInNewRoute, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -173,7 +173,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
     } else {
       moveForward = true;
     }
-    if (moveForward) {
+    if (moveForward && isInNewRoute) {
       dispatch(inputActions.incrementCurrentSectionIndex());
     }
   };
@@ -183,7 +183,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
   }));
 
   return (
-    <div ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
       <div className={sectionClasses.heading}>
         <h3>USA</h3>
       </div>
@@ -249,7 +249,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
           </div>
         </>
       )}
-    </div>
+    </fieldset>
   );
 });
 
