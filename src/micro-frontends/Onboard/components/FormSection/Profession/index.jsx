@@ -7,7 +7,7 @@ import ListAdd from "../ListAdd";
 import SingleInput from "../../FormListItems/SingleInput";
 import PreviousExperience from "../../FormListItems/PreviousExperience";
 import Reference from "../../FormListItems/Reference";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
 import {
@@ -34,6 +34,7 @@ const Profession = forwardRef((_, ref) => {
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
+  const { updateCandidate } = useUpdateCandidate();
 
   const { profession: validations } = onboardingValidations;
 
@@ -97,7 +98,8 @@ const Profession = forwardRef((_, ref) => {
     );
   };
 
-  const submit = () => {
+  const submit = async () => {
+    let moveForward = false;
     const {
       isSectionValid: arePrevExperiencesValid,
       listItems: prevExperiences,
@@ -120,52 +122,58 @@ const Profession = forwardRef((_, ref) => {
       technologiesRef.current?.forceValidations?.();
       referencesRef.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
-      return false;
-    }
+    } else if (hasFormChanged(technologies, prevExperiences, referencesList)) {
+      const isAPICallSuccessful = await updateCandidate();
 
-    if (hasFormChanged(technologies, prevExperiences, referencesList)) {
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PROFESSION,
-          field: FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE,
-          value: trainingAttendedValue
-            ? FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.YES
-            : FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PROFESSION,
-          field: FIELDS.PROFESSION.EXPERIENCE.VALUE,
-          value: {
-            [FIELDS.PROFESSION.EXPERIENCE.YEARS]: +experienceYearsValue,
-            [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: +experienceMonthsValue,
-          },
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PROFESSION,
-          field: FIELDS.PROFESSION.TECHNOLOGIES_KNOWN,
-          value: technologies,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PROFESSION,
-          field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
-          value: prevExperiences,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PROFESSION,
-          field: FIELDS.PROFESSION.REFERENCES,
-          value: referencesList,
-        })
-      );
+      if (isAPICallSuccessful) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PROFESSION,
+            field: FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE,
+            value: trainingAttendedValue
+              ? FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.YES
+              : FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PROFESSION,
+            field: FIELDS.PROFESSION.EXPERIENCE.VALUE,
+            value: {
+              [FIELDS.PROFESSION.EXPERIENCE.YEARS]: +experienceYearsValue,
+              [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: +experienceMonthsValue,
+            },
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PROFESSION,
+            field: FIELDS.PROFESSION.TECHNOLOGIES_KNOWN,
+            value: technologies,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PROFESSION,
+            field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
+            value: prevExperiences,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PROFESSION,
+            field: FIELDS.PROFESSION.REFERENCES,
+            value: referencesList,
+          })
+        );
+        moveForward = true;
+      }
+    } else {
+      moveForward = true;
     }
-    return true;
+    if (moveForward) {
+      dispatch(inputActions.incrementCurrentSectionIndex());
+    }
   };
 
   useImperativeHandle(ref, () => ({

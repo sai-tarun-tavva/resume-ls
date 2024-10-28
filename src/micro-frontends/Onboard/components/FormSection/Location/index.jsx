@@ -2,7 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Address from "../Address";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import { areObjectsEqual, focusErrorsIfAny } from "../../../../../utilities";
@@ -18,6 +18,7 @@ const Location = forwardRef((_, ref) => {
   const usaLocRef = useRef();
   const indiaLocRef = useRef();
   const dispatch = useDispatch();
+  const { updateCandidate } = useUpdateCandidate();
 
   const {
     currentSectionIndex,
@@ -51,7 +52,8 @@ const Location = forwardRef((_, ref) => {
     );
   };
 
-  const submit = () => {
+  const submit = async () => {
+    let moveForward = false;
     // Validate USA address (always required)
     const usaAddressResult = usaLocRef.current?.submit?.();
     const isUSAAddressValid = usaAddressResult?.isSectionValid;
@@ -75,28 +77,34 @@ const Location = forwardRef((_, ref) => {
 
     if (!isUSAAddressValid || isIndiaAddressValid === false) {
       focusErrorsIfAny(sectionRef);
-      return false;
-    }
+    } else if (hasFormChanged(usaAddress, indiaAddress)) {
+      const isAPICallSuccessful = await updateCandidate();
 
-    if (hasFormChanged(usaAddress, indiaAddress)) {
-      // Update store with validated addresses
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.USA_LOCATION,
-          value: usaAddress,
-        })
-      );
+      if (isAPICallSuccessful) {
+        // Update store with validated addresses
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.USA_LOCATION,
+            value: usaAddress,
+          })
+        );
 
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.INDIA_LOCATION,
-          value: indiaAddress,
-        })
-      );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.INDIA_LOCATION,
+            value: indiaAddress,
+          })
+        );
+        moveForward = true;
+      }
+    } else {
+      moveForward = true;
     }
-    return true;
+    if (moveForward) {
+      dispatch(inputActions.incrementCurrentSectionIndex());
+    }
   };
 
   useImperativeHandle(ref, () => ({

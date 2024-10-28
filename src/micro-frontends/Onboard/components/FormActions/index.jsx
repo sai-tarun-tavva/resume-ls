@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../Atoms/components/Button";
+import { useLoading } from "../../../../store";
 import classes from "./index.module.scss";
 
 const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
   const navigate = useNavigate();
+  const { isLoading } = useLoading();
   const { currentSectionIndex: index } = useSelector((state) => state.input);
 
   return (
@@ -24,11 +26,11 @@ const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
           </Button>
         )}
         <Button
-          className={classes.button}
+          className={`${classes.button} ${isLoading.fetch ? "loading" : ""}`}
           disabled={isNextDisabled}
           onClick={nextHandler}
         >
-          {index === 9 ? "Save" : <i className="bi bi-caret-right-fill" />}
+          {isLoading.fetch ? "Saving..." : index === 9 ? "Save" : "Save & Next"}
         </Button>
       </div>
     </div>

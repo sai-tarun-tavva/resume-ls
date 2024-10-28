@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Address from "../Address";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
@@ -25,6 +25,7 @@ const Relocation = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
   const addressRef = useRef(); // Create a ref to call Address validation
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
+  const { updateCandidate } = useUpdateCandidate();
 
   const { relocation: validations } = onboardingValidations;
 
@@ -107,7 +108,8 @@ const Relocation = forwardRef((_, ref) => {
     );
   };
 
-  const submit = () => {
+  const submit = async () => {
+    let moveForward = false;
     const addressSubmitResult = addressRef.current?.submit?.();
     const isAddressValid = addressSubmitResult?.isSectionValid;
     const relocationAddress = addressSubmitResult?.item;
@@ -117,47 +119,53 @@ const Relocation = forwardRef((_, ref) => {
       forceRelocationValidations();
       addressRef.current?.forceValidations(); // Force Address validation
       focusErrorsIfAny(sectionRef);
-      return false;
-    }
+    } else if (hasFormChanged(relocationAddress)) {
+      const isAPICallSuccessful = await updateCandidate();
 
-    if (hasFormChanged(relocationAddress)) {
-      // Dispatch actions for Relocation data
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.RELOCATION,
-          field: FIELDS.RELOCATION.INTERESTED.VALUE,
-          value: interestedValue
-            ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
-            : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
-        })
-      );
-      if (interestedValue) {
+      if (isAPICallSuccessful) {
+        // Dispatch actions for Relocation data
         dispatch(
           inputActions.updateField({
             section: SECTIONS.RELOCATION,
-            field: FIELDS.RELOCATION.PREFERENCE,
-            value: preferenceValue,
+            field: FIELDS.RELOCATION.INTERESTED.VALUE,
+            value: interestedValue
+              ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
+              : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
           })
         );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.RELOCATION,
-            field: FIELDS.RELOCATION.HOW_SOON,
-            value: howSoonValue,
-          })
-        );
+        if (interestedValue) {
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.RELOCATION,
+              field: FIELDS.RELOCATION.PREFERENCE,
+              value: preferenceValue,
+            })
+          );
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.RELOCATION,
+              field: FIELDS.RELOCATION.HOW_SOON,
+              value: howSoonValue,
+            })
+          );
+        }
+        if (address) {
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.RELOCATION,
+              field: FIELDS.RELOCATION.ADDRESS,
+              value: relocationAddress,
+            })
+          );
+        }
+        moveForward = true;
       }
-      if (address) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.RELOCATION,
-            field: FIELDS.RELOCATION.ADDRESS,
-            value: relocationAddress,
-          })
-        );
-      }
+    } else {
+      moveForward = true;
     }
-    return true;
+    if (moveForward) {
+      dispatch(inputActions.incrementCurrentSectionIndex());
+    }
   };
 
   // Expose methods to parent using ref

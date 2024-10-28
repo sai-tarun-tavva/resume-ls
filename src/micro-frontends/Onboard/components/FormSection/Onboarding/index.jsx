@@ -2,7 +2,7 @@ import { useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
@@ -23,6 +23,7 @@ const Onboarding = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
   const { onboarding: validations } = onboardingValidations;
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
+  const { updateCandidate } = useUpdateCandidate();
 
   const {
     value: dateValue,
@@ -54,33 +55,40 @@ const Onboarding = forwardRef((_, ref) => {
     forceStatusValidations();
   };
 
-  const hasFormChanged = dateValue !== date || statusValue !== status;
+  const hasFormChanged = () => dateValue !== date || statusValue !== status;
 
-  const submit = () => {
+  const submit = async () => {
+    let moveForward = false;
+
     if (!isSectionValid) {
       forceValidations();
       focusErrorsIfAny(sectionRef);
-      return false; // return false to indicate the submission was invalid
+    } else if (hasFormChanged()) {
+      const isAPICallSuccessful = await updateCandidate();
+      if (isAPICallSuccessful) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.ONBOARDING,
+            field: FIELDS.ONBOARDING.DATE,
+            value: dateValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.ONBOARDING,
+            field: FIELDS.ONBOARDING.STATUS,
+            value: statusValue,
+          })
+        );
+        moveForward = true;
+      }
+    } else {
+      moveForward = true;
     }
 
-    if (hasFormChanged) {
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.ONBOARDING,
-          field: FIELDS.ONBOARDING.DATE,
-          value: dateValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.ONBOARDING,
-          field: FIELDS.ONBOARDING.STATUS,
-          value: statusValue,
-        })
-      );
+    if (moveForward) {
+      dispatch(inputActions.incrementCurrentSectionIndex());
     }
-
-    return true;
   };
 
   // Expose submit method to parent via ref

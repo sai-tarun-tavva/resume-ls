@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
 import Select from "../../../../Atoms/components/Inputs/Select";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
@@ -56,6 +56,7 @@ const Personal = forwardRef((_, ref) => {
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
+  const { updateCandidate } = useUpdateCandidate();
   const { personal: validations } = onboardingValidations;
 
   const {
@@ -300,7 +301,7 @@ const Personal = forwardRef((_, ref) => {
     }
   };
 
-  const hasFormChanged =
+  const hasFormChanged = () =>
     firstNameValue !== firstName ||
     lastNameValue !== lastName ||
     emailIdValue !== emailId ||
@@ -318,14 +319,13 @@ const Personal = forwardRef((_, ref) => {
     skypeIdValue !== skypeId ||
     referenceNameValue !== referenceName;
 
-  const submit = () => {
+  const submit = async () => {
+    let moveForward = false;
+
     if (!isSectionValid) {
       focusErrorsIfAny(sectionRef);
       forceValidations();
-      return false;
-    }
-
-    if (hasFormChanged) {
+    } else if (hasFormChanged()) {
       // Below resetting with empty values is required if user selects a student or H1 visa and enter home address later, if user comes back to personal and updates visa not to student
 
       // Resetting Home address and emergency contact details if visa status is not one of Green card, U.S. Citizen, EB-1, EB-2, EB-3, Others
@@ -399,116 +399,125 @@ const Personal = forwardRef((_, ref) => {
         );
       }
 
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.FIRST_NAME,
-          value: firstNameValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.LAST_NAME,
-          value: lastNameValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.EMAIL_ID,
-          value: emailIdValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.PHONE_NUMBER,
-          value: extractOnlyDigits(phoneNumberValue),
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER,
-          value: extractOnlyDigits(secondaryPhoneNumberValue),
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.GENDER,
-          value: genderValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.DOB,
-          value: dobValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.MARITAL_STATUS,
-          value: maritalStatusValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.PASSPORT_NUMBER,
-          value: passportNumberValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.VISA_STATUS,
-          value: visaStatusValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.EAD_NUMBER,
-          value: eadNumberValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.SSN,
-          value: SSNValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.PHOTO_ID.VALUE,
-          value: {
-            [FIELDS.PERSONAL.PHOTO_ID.TYPE]: photoIDTypeValue,
-            [FIELDS.PERSONAL.PHOTO_ID.NUMBER]: photoIDNumberValue,
-          },
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.SKYPE_ID,
-          value: skypeIdValue,
-        })
-      );
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.REFERENCE_NAME,
-          value: referenceNameValue,
-        })
-      );
+      const isAPICallSuccessful = await updateCandidate();
+
+      if (isAPICallSuccessful) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.FIRST_NAME,
+            value: firstNameValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.LAST_NAME,
+            value: lastNameValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.EMAIL_ID,
+            value: emailIdValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.PHONE_NUMBER,
+            value: extractOnlyDigits(phoneNumberValue),
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER,
+            value: extractOnlyDigits(secondaryPhoneNumberValue),
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.GENDER,
+            value: genderValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.DOB,
+            value: dobValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.MARITAL_STATUS,
+            value: maritalStatusValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.PASSPORT_NUMBER,
+            value: passportNumberValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.VISA_STATUS,
+            value: visaStatusValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.EAD_NUMBER,
+            value: eadNumberValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.SSN,
+            value: SSNValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.PHOTO_ID.VALUE,
+            value: {
+              [FIELDS.PERSONAL.PHOTO_ID.TYPE]: photoIDTypeValue,
+              [FIELDS.PERSONAL.PHOTO_ID.NUMBER]: photoIDNumberValue,
+            },
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.SKYPE_ID,
+            value: skypeIdValue,
+          })
+        );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.PERSONAL,
+            field: FIELDS.PERSONAL.REFERENCE_NAME,
+            value: referenceNameValue,
+          })
+        );
+        moveForward = true;
+      } else {
+        moveForward = true;
+      }
     }
-    return true;
+    if (moveForward) {
+      dispatch(inputActions.incrementCurrentSectionIndex());
+    }
   };
 
   // Expose methods to parent using ref

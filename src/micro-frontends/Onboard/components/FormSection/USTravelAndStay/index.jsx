@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import ListAdd from "../ListAdd";
 import Address from "../Address";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultAddress, inputActions } from "../../../store";
 import {
@@ -31,6 +31,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
+  const { updateCandidate } = useUpdateCandidate();
 
   const { usTravelAndStay: validations } = onboardingValidations;
 
@@ -77,7 +78,8 @@ const USTravelAndStay = forwardRef((_, ref) => {
     );
   };
 
-  const submit = () => {
+  const submit = async () => {
+    let moveForward = false;
     const { isSectionValid: areAddressesValid, listItems: addresses } =
       stayAddressesRef?.current?.submit?.();
 
@@ -85,27 +87,33 @@ const USTravelAndStay = forwardRef((_, ref) => {
       if (!isPortOfEntryNotRequired) forceValidations();
       stayAddressesRef.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
-      return false;
-    }
+    } else if (hasFormChanged(addresses)) {
+      const isAPICallSuccessful = await updateCandidate();
 
-    if (hasFormChanged(addresses)) {
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.US_TRAVEL_AND_STAY,
-          field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
-          value: usEntryValue,
-        })
-      );
+      if (isAPICallSuccessful) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.US_TRAVEL_AND_STAY,
+            field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
+            value: usEntryValue,
+          })
+        );
 
-      dispatch(
-        inputActions.updateField({
-          section: SECTIONS.US_TRAVEL_AND_STAY,
-          field: FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES,
-          value: addresses,
-        })
-      );
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.US_TRAVEL_AND_STAY,
+            field: FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES,
+            value: addresses,
+          })
+        );
+        moveForward = true;
+      }
+    } else {
+      moveForward = true;
     }
-    return true;
+    if (moveForward) {
+      dispatch(inputActions.incrementCurrentSectionIndex());
+    }
   };
 
   useImperativeHandle(ref, () => ({
