@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useEffect } from "react";
+import { useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -13,7 +13,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Onboarding = forwardRef((isInNewRoute, ref) => {
+const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,

@@ -19,7 +19,7 @@ import {
 import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Education = forwardRef((isInNewRoute, ref) => {
+const Education = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,

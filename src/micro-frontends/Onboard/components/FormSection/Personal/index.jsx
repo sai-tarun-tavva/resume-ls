@@ -28,7 +28,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Personal = forwardRef((isInNewRoute, ref) => {
+const Personal = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -326,77 +326,80 @@ const Personal = forwardRef((isInNewRoute, ref) => {
       focusErrorsIfAny(sectionRef);
       forceValidations();
     } else if (hasFormChanged()) {
-      // Below resetting with empty values is required if user selects a student or H1 visa and enter home address later, if user comes back to personal and updates visa not to student
+      // Only enable resetting values for new candidates
+      if (isInNewRoute) {
+        // Below resetting with empty values is required if user selects a student or H1 visa and enter home address later, if user comes back to personal and updates visa not to student
 
-      // Resetting Home address and emergency contact details if visa status is not one of Green card, U.S. Citizen, EB-1, EB-2, EB-3, Others
-      if (
-        HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatusValue) ||
-        HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatusValue)
-      ) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PERSONAL,
-            field: FIELDS.PERSONAL.INDIA_LOCATION,
-            value: defaultAddress,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EMERGENCY_CONTACTS,
-            field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
-            value: {
-              [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: "",
-              [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: "",
-            },
-          })
-        );
-      }
+        // Resetting Home address and emergency contact details if visa status is not one of Green card, U.S. Citizen, EB-1, EB-2, EB-3, Others
+        if (
+          HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatusValue) ||
+          HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatusValue)
+        ) {
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.PERSONAL,
+              field: FIELDS.PERSONAL.INDIA_LOCATION,
+              value: defaultAddress,
+            })
+          );
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.EMERGENCY_CONTACTS,
+              field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
+              value: {
+                [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: "",
+                [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: "",
+              },
+            })
+          );
+        }
 
-      // Resetting SevisID, DSO and university details if visa status is not one of F1-OPT, F1-CPT
-      if (!EDUCATION_REQUIRED_VISA.includes(visaStatusValue)) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EDUCATION,
-            field: FIELDS.EDUCATION.SEVIS_ID,
-            value: "",
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EDUCATION,
-            field: FIELDS.EDUCATION.DSO.VALUE,
-            value: {
-              [FIELDS.EDUCATION.DSO.NAME]: "",
-              [FIELDS.EDUCATION.DSO.EMAIL]: "",
-              [FIELDS.EDUCATION.DSO.PHONE]: "",
-            },
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EDUCATION,
-            field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
-            value: {
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
-                additionalCertifications,
-            },
-          })
-        );
-      }
+        // Resetting SevisID, DSO and university details if visa status is not one of F1-OPT, F1-CPT
+        if (!EDUCATION_REQUIRED_VISA.includes(visaStatusValue)) {
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.EDUCATION,
+              field: FIELDS.EDUCATION.SEVIS_ID,
+              value: "",
+            })
+          );
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.EDUCATION,
+              field: FIELDS.EDUCATION.DSO.VALUE,
+              value: {
+                [FIELDS.EDUCATION.DSO.NAME]: "",
+                [FIELDS.EDUCATION.DSO.EMAIL]: "",
+                [FIELDS.EDUCATION.DSO.PHONE]: "",
+              },
+            })
+          );
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.EDUCATION,
+              field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
+              value: {
+                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
+                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
+                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
+                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
+                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY
+                  .ADDITIONAL_CERTIFICATIONS]: additionalCertifications,
+              },
+            })
+          );
+        }
 
-      // Resetting Port of entry if visa status is U.S. Citizen
-      if (PORT_OF_ENTRY_NOT_REQUIRED_VISA.includes(visaStatus)) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.US_TRAVEL_AND_STAY,
-            field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
-            value: "",
-          })
-        );
+        // Resetting Port of entry if visa status is U.S. Citizen
+        if (PORT_OF_ENTRY_NOT_REQUIRED_VISA.includes(visaStatus)) {
+          dispatch(
+            inputActions.updateField({
+              section: SECTIONS.US_TRAVEL_AND_STAY,
+              field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
+              value: "",
+            })
+          );
+        }
       }
 
       const isAPICallSuccessful = await updateCandidate();

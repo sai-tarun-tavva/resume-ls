@@ -19,7 +19,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Profession = forwardRef((isInNewRoute, ref) => {
+const Profession = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,

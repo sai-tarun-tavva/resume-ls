@@ -21,7 +21,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const USTravelAndStay = forwardRef((isInNewRoute, ref) => {
+const USTravelAndStay = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,

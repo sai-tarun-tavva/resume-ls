@@ -15,7 +15,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Relocation = forwardRef((isInNewRoute, ref) => {
+const Relocation = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,

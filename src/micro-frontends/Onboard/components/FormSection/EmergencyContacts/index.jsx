@@ -19,7 +19,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const EmergencyContacts = forwardRef((isInNewRoute, ref) => {
+const EmergencyContacts = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,

@@ -14,7 +14,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Location = forwardRef((isInNewRoute, ref) => {
+const Location = forwardRef(({ isInNewRoute }, ref) => {
   const usaLocRef = useRef();
   const indiaLocRef = useRef();
   const dispatch = useDispatch();

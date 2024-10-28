@@ -10,7 +10,7 @@ import { focusErrorsIfAny } from "../../../../../utilities";
 import { SECTIONS, FIELDS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Miscellaneous = forwardRef((isInNewRoute, ref) => {
+const Miscellaneous = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {

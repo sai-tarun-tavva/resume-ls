@@ -14,7 +14,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const OfferLetter = forwardRef((isInNewRoute, ref) => {
+const OfferLetter = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
