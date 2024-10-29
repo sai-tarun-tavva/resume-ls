@@ -23,6 +23,7 @@ const Education = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       personal: { visaStatus },
       education: {
@@ -251,7 +252,11 @@ const Education = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       {isEducationRequired && (
         <>
           <div className={sectionClasses.formRow}>

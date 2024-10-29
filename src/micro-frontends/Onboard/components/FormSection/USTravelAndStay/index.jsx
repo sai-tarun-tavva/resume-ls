@@ -25,6 +25,7 @@ const USTravelAndStay = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       personal: { visaStatus },
       usTravelAndStay: { usEntry, stayAddresses },
@@ -121,7 +122,11 @@ const USTravelAndStay = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       {!isPortOfEntryNotRequired && (
         <InputV2
           id="usEntry"

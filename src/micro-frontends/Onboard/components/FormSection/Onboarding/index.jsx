@@ -17,6 +17,7 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       onboarding: { date, status },
     },
@@ -97,7 +98,11 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       <InputV2
         id="onboardingDate"
         type="date"

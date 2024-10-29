@@ -18,6 +18,7 @@ const OfferLetter = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       offerLetter: {
         status,
@@ -214,7 +215,11 @@ const OfferLetter = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       <Select
         id="status"
         label="Offer Letter Status"

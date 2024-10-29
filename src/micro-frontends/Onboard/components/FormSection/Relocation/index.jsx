@@ -19,6 +19,7 @@ const Relocation = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       relocation: { interested, preference, howSoon, address },
     },
@@ -174,7 +175,11 @@ const Relocation = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       <Checkbox
         id="relocationInterested"
         label="Interested in Relocation?"

@@ -23,6 +23,7 @@ const EmergencyContacts = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       personal: { visaStatus },
       emergencyContacts: {
@@ -183,7 +184,11 @@ const EmergencyContacts = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       <div className={sectionClasses.heading}>
         <h3>USA</h3>
       </div>

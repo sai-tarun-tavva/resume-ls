@@ -33,6 +33,7 @@ export const defaultReference = {
 
 const initialState = {
   currentSectionIndex: 0,
+  isEditMode: false,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: null,
@@ -149,6 +150,14 @@ const InputSlice = createSlice({
     // Update current section index with payload
     updateCurrentSectionIndex(state, { payload }) {
       state.currentSectionIndex = payload;
+    },
+    // Enables edit mode
+    enableEditMode(state) {
+      state.isEditMode = true;
+    },
+    // Enables view mode
+    enableViewMode(state) {
+      state.isEditMode = false;
     },
     // Resets the form
     resetForm: () => initialState,

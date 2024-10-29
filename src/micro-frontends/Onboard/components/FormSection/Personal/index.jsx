@@ -32,6 +32,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       personal: {
         firstName,
@@ -529,7 +530,11 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       <div className={sectionClasses.formRow}>
         <InputV2
           id="firstName"

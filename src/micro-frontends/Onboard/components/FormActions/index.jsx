@@ -9,7 +9,9 @@ const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
   const navigate = useNavigate();
   const routeLocation = useLocation();
   const { isLoading } = useLoading();
-  const { currentSectionIndex: index } = useSelector((state) => state.input);
+  const { currentSectionIndex: index, isEditMode } = useSelector(
+    (state) => state.input
+  );
 
   const isInNewRoute = routeLocation.pathname.endsWith(
     ROUTES.ONBOARD.CANDIDATE_FORM.NEW
@@ -27,13 +29,17 @@ const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
       </Button>
       <div className={classes.navActions}>
         {index !== 0 && (
-          <Button className={classes.button} onClick={previousHandler}>
+          <Button
+            className={classes.button}
+            disabled={!isEditMode}
+            onClick={previousHandler}
+          >
             <i className="bi bi-caret-left-fill" />
           </Button>
         )}
         <Button
           className={`${classes.button} ${isLoading.fetch ? "loading" : ""}`}
-          disabled={isNextDisabled}
+          disabled={isNextDisabled || !isEditMode}
           onClick={nextHandler}
         >
           {isLoading.fetch

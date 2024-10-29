@@ -15,6 +15,7 @@ const Miscellaneous = forwardRef(({ isInNewRoute }, ref) => {
   const navigate = useNavigate();
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       miscellaneous: { remarks, notes },
     },
@@ -86,7 +87,11 @@ const Miscellaneous = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       <Textarea
         id="remarks"
         label="Remarks"

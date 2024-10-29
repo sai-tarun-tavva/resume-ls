@@ -22,6 +22,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
 
   const {
     currentSectionIndex,
+    isEditMode,
     data: {
       personal: { usaLocation, indiaLocation, visaStatus },
     },
@@ -112,7 +113,11 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
   }));
 
   return (
-    <fieldset ref={sectionRef} className={sectionClasses.onboardFormSection}>
+    <fieldset
+      ref={sectionRef}
+      disabled={!isEditMode}
+      className={sectionClasses.onboardFormSection}
+    >
       <Address
         heading="Address in USA"
         defaultValue={usaLocation}
