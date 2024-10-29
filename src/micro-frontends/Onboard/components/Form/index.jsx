@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FormProgress from "../FormProgress";
 import FormSection from "../FormSection";
 import FormActions from "../FormActions";
@@ -12,16 +12,25 @@ import classes from "./index.module.scss";
 const Form = () => {
   const dispatch = useDispatch();
   const routeLocation = useLocation();
+  const navigate = useNavigate();
   const isInNewRoute = routeLocation.pathname.endsWith(
     ROUTES.ONBOARD.CANDIDATE_FORM.NEW
   );
-  const { currentSectionIndex: current, isEditMode } = useSelector(
-    (state) => state.input
-  );
+  const {
+    currentSectionIndex: current,
+    isEditMode,
+    data,
+  } = useSelector((state) => state.input);
 
   useEffect(() => {
     if (isInNewRoute) dispatch(inputActions.enableEditMode());
+    else dispatch(inputActions.enableViewMode());
   }, [isInNewRoute, dispatch]);
+
+  // Redirect to the candidates list if the view route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the view route directly.
+  useEffect(() => {
+    if (!data.record.id) navigate(ROUTES.ONBOARD.HOME);
+  }, [data.record.id, navigate]);
 
   const onboardingRef = useRef();
   const personalRef = useRef();
