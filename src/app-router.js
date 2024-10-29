@@ -107,7 +107,7 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: ONBOARD.CANDIDATE_FORM.NEW,
+        path: [ONBOARD.CANDIDATE_FORM.NEW, ONBOARD.CANDIDATE_FORM.VIEW],
         element: (
           <ProtectedRoute
             element={

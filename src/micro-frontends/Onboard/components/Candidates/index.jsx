@@ -6,7 +6,10 @@ import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
 import { dataActions } from "../../store";
-import { fetchOnboardCandidates } from "../../../../utilities";
+import {
+  fetchOnboardCandidates,
+  replaceRouteParam,
+} from "../../../../utilities";
 import { ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
@@ -106,7 +109,16 @@ const OnboardCandidates = () => {
             <tbody>
               {candidates && candidates.length > 0 ? (
                 candidates.map((candidate, index) => (
-                  <tr key={index}>
+                  <tr
+                    key={index}
+                    onClick={() =>
+                      navigate(
+                        replaceRouteParam(ROUTES.ONBOARD.CANDIDATE_FORM.VIEW, {
+                          id: candidate.id,
+                        })
+                      )
+                    }
+                  >
                     <td>{candidate.status}</td>
                     <td>{candidate.companyName}</td>
                     <td>{candidate.guestHouseMember}</td>
