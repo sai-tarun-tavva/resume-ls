@@ -1,4 +1,4 @@
-import { formatFileSize } from "./utilities";
+import { formatFileSize, replaceRouteParam } from "./utilities";
 import { END_POINTS } from "../constants";
 
 /**
@@ -406,13 +406,50 @@ export const addOnboardCandidate = async (body) => {
       },
       body: JSON.stringify(body),
     });
+    const resData = await response.json();
 
     // Return status
     if (!response.ok) {
-      return { status: 500 };
+      return { status: 500, apiData: null };
     }
 
-    return { status: response.status };
+    return { status: response.status, apiData: resData.data };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};
+
+/**
+ * Updates the existing candidate.
+ *
+ * @async
+ * @function
+ * @param {Object} body - The request body containing whole candidate with new details to be updated.
+ * @param {Object} id - The id of the candidate to be updated.
+ * @returns {Promise<Object>} An object containing the response status.
+ */
+export const updateOnboardCandidate = async (body, id) => {
+  try {
+    const response = await fetchWithToken(
+      replaceRouteParam(END_POINTS.ONBOARD.UPDATE_CANDIDATE, { id }),
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    const resData = await response.json();
+
+    // Return status
+    if (!response.ok) {
+      return { status: 500, apiData: null };
+    }
+
+    return { status: response.status, apiData: resData.data };
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);

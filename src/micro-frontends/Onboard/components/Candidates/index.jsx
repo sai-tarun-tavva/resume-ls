@@ -152,7 +152,7 @@ const OnboardCandidates = () => {
       </div>
       <FloatingButton
         clickHandler={() => {
-          navigate(ROUTES.ONBOARD.CANDIDATE_FORM.NEW);
+          navigate(`${ROUTES.ONBOARD.CANDIDATE_FORM.NEW}`);
         }}
         title={"Onboard new candidate"}
         icon={<i className="bi bi-person-plus" />}

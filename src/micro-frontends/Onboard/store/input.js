@@ -32,11 +32,11 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 0,
+  currentSectionIndex: 4,
   isEditMode: false,
   data: {
     [SECTIONS.RECORD]: {
-      [FIELDS.RECORD.ID]: null,
+      [FIELDS.RECORD.ID]: "",
       [FIELDS.RECORD.CREATED_DATE]: "",
       [FIELDS.RECORD.UPDATED_DATE]: "",
     },
@@ -89,9 +89,9 @@ const initialState = {
       },
     },
     [SECTIONS.PROFESSION]: {
-      [FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE]: [
+      [FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE]:
         FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
-      ],
+
       [FIELDS.PROFESSION.EXPERIENCE.VALUE]: {
         [FIELDS.PROFESSION.EXPERIENCE.YEARS]: "",
         [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: "",

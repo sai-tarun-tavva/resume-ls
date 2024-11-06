@@ -8,7 +8,7 @@ import { useLoading, useStatus } from "../../../../store";
 import {
   authenticateUser,
   authValidations,
-  resetStatusAsync,
+  dispatchAsync,
 } from "../../../../utilities";
 import {
   CONTENT,
@@ -106,7 +106,7 @@ const AuthForm = ({ haveAccount }) => {
   const handleAuth = async (event) => {
     event.preventDefault();
     if (isLoading.button) return;
-    await resetStatusAsync(resetStatus);
+    await dispatchAsync(resetStatus);
 
     if (!enableAuth) {
       forceUserNameValidations();

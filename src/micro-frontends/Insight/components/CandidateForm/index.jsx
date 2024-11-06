@@ -14,7 +14,7 @@ import {
   createNewSkill,
   editCandidate,
   fetchSuggestedSkills,
-  resetStatusAsync,
+  dispatchAsync,
   transformExperience,
   transformPhoneNumber,
 } from "../../../../utilities";
@@ -90,7 +90,7 @@ const CandidateForm = () => {
    * @param {string} newSkill - The skill to be added.
    */
   const handleAddSkill = async (newSkill) => {
-    await resetStatusAsync(resetStatus());
+    await dispatchAsync(resetStatus);
 
     let skillError = "";
 

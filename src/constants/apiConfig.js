@@ -27,6 +27,7 @@ export const END_POINTS = {
       url: "https://run.mocky.io/v3/f0146370-fffe-490c-90d6-b40595eaf0ee",
     },
     ADD_CANDIDATE: `${ONBOARD_IP_PORT}candidates/`,
+    UPDATE_CANDIDATE: `${ONBOARD_IP_PORT}candidates/:id/`,
   },
   SPARK: {},
 };

@@ -1,20 +1,14 @@
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../Atoms/components/Button";
 import { useLoading } from "../../../../store";
-import { ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
-const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
+const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
   const navigate = useNavigate();
-  const routeLocation = useLocation();
   const { isLoading } = useLoading();
   const { currentSectionIndex: index, isEditMode } = useSelector(
     (state) => state.input
-  );
-
-  const isInNewRoute = routeLocation.pathname.endsWith(
-    ROUTES.ONBOARD.CANDIDATE_FORM.NEW
   );
 
   return (
@@ -39,7 +33,7 @@ const FormActions = ({ isNextDisabled, previousHandler, nextHandler }) => {
         )}
         <Button
           className={`${classes.button} ${isLoading.fetch ? "loading" : ""}`}
-          disabled={isNextDisabled || !isEditMode}
+          disabled={!isEditMode}
           onClick={nextHandler}
         >
           {isLoading.fetch

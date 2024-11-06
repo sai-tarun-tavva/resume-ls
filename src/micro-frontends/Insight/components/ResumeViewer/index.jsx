@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Header from "./Header";
 import Loader from "../../../Atoms/components/Loader";
+import { useLoading } from "../../../../store";
 import { viewResumeActions } from "../../store";
 import { LOADER_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
@@ -20,9 +21,9 @@ import classes from "./index.module.scss";
 const ResumeViewer = ({ details: { name, size, url } }) => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.viewResume);
-  const { isFetchLoading: isFetchingFile } = useSelector(
-    (state) => state.loading
-  );
+  const {
+    isLoading: { fetch: isFetchingFile },
+  } = useLoading();
 
   /**
    * Handles the action to hide the resume viewer.

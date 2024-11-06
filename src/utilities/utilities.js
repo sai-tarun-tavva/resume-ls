@@ -117,15 +117,15 @@ export const isCandidateNew = (dateCreated) => {
 };
 
 /**
- * Resets the status asynchronously.
+ * Dispatches the action synchronously.
  * @param {function} action - The action to dispatch.
- * @returns {Promise<void>} A promise that resolves after the status is reset.
+ * @returns {Promise<void>} A promise that resolves after the action is dispatched.
  */
-export const resetStatusAsync = (resetAction) => {
+export const dispatchAsync = (action) => {
   return new Promise((resolve) => {
-    // Dispatching the reset action
-    resetAction();
-    resolve(); // Resolve after resetting the status
+    // Dispatching the action
+    action();
+    resolve(); // Resolve after dispatching the action
   });
 };
 

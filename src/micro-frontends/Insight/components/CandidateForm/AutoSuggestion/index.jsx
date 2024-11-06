@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Skills from "../../../../Atoms/components/Skills";
 import Button from "../../../../Atoms/components/Button";
+import { useLoading } from "../../../../../store";
 import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
@@ -24,9 +24,9 @@ const AutoSuggestion = ({
   disableCreate,
   suggestions,
 }) => {
-  const { isFetchLoading: fetchingSkills } = useSelector(
-    (state) => state.loading
-  );
+  const {
+    isLoading: { fetch: fetchingSkills },
+  } = useLoading();
   const { helper, button } = CONTENT.INSIGHT.candidateForm.suggestions;
 
   return (

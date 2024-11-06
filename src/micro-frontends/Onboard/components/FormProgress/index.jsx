@@ -3,11 +3,11 @@ import { inputActions } from "../../store";
 import { SECTION_TITLES } from "../../constants";
 import classes from "./index.module.scss";
 
-const FormProgress = ({ currentSectionIndex }) => {
+const FormProgress = ({ isInNewRoute, currentSectionIndex }) => {
   const dispatch = useDispatch();
 
   const titleClickHandler = (index) => {
-    if (index < currentSectionIndex)
+    if (index < currentSectionIndex || !isInNewRoute)
       dispatch(inputActions.updateCurrentSectionIndex(index));
   };
 
@@ -17,6 +17,7 @@ const FormProgress = ({ currentSectionIndex }) => {
         {SECTION_TITLES.map((title, index) => (
           <li
             key={index}
+            style={!isInNewRoute ? { cursor: "pointer" } : {}}
             className={`
               ${classes.section}
               ${

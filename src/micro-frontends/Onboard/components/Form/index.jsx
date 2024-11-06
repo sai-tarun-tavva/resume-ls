@@ -29,8 +29,10 @@ const Form = () => {
 
   // Redirect to the candidates list if the view route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the view route directly.
   useEffect(() => {
-    if (!data.record.id) navigate(ROUTES.ONBOARD.HOME);
-  }, [data.record.id, navigate]);
+    if (!data.record.id && !isInNewRoute) navigate(ROUTES.ONBOARD.HOME);
+  }, [data.record.id, navigate, isInNewRoute]);
+
+  useEffect(() => {}, [data]);
 
   const onboardingRef = useRef();
   const personalRef = useRef();
@@ -96,7 +98,7 @@ const Form = () => {
 
   return (
     <div className={classes.formContainer}>
-      <FormProgress currentSectionIndex={current} />
+      <FormProgress currentSectionIndex={current} isInNewRoute={isInNewRoute} />
       {!isInNewRoute && (
         <IconToggler
           toggleMode={isEditMode}
@@ -110,6 +112,7 @@ const Form = () => {
           <FormSection currentSectionIndex={current} refs={refs} />
         </div>
         <FormActions
+          isInNewRoute={isInNewRoute}
           previousHandler={previousClickHandler}
           nextHandler={nextClickHandler}
         />
