@@ -14,6 +14,18 @@ import {
 import { ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
+const getExperienceDisplayText = (years, months) => {
+  if (years && months) {
+    return `${years} years and ${months} months`;
+  } else if (years) {
+    return `${years} years`;
+  } else if (months) {
+    return `${months} months`;
+  } else {
+    return "";
+  }
+};
+
 const OnboardCandidates = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -142,8 +154,17 @@ const OnboardCandidates = () => {
                       </td>
                       <td>{candidateInfo.offerLetter.marketingName}</td>
                       <td>{candidateInfo.offerLetter.designation}</td>
-                      <td>{`${candidateInfo.profession.experience.years} years and ${candidateInfo.profession.experience.months} months`}</td>
-                      <td>{`${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`}</td>
+                      <td>
+                        {getExperienceDisplayText(
+                          candidateInfo.profession.experience.years,
+                          candidateInfo.profession.experience.months
+                        )}
+                      </td>
+                      <td>
+                        {candidateInfo.personal.usaLocation.city
+                          ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
+                          : ""}
+                      </td>
                       <td>{candidateInfo.relocation.interested}</td>
                       <td>{candidateInfo.personal.firstName}</td>
                       <td>{candidateInfo.personal.lastName}</td>
