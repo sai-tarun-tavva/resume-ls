@@ -4,7 +4,7 @@ import Select from "../../../Atoms/components/Inputs/Select";
 import Upload from "../../../Atoms/components/Inputs/Upload";
 import Button from "../../../Atoms/components/Button";
 import Actions from "./Actions";
-import { useInput } from "../../../Atoms/hooks";
+import { useFileInput, useInput } from "../../../Atoms/hooks";
 import { useLoading, useStatus } from "../../../../store";
 import { resultActions } from "../../store";
 import {
@@ -49,15 +49,14 @@ const Operations = () => {
   } = useInput("", sparkValidations.jobDescription, undefined, true);
 
   const {
-    value: chooseResumeValue,
-    handleInputChange: chooseResumeChange,
-    handleInputBlur: chooseResumeBlur,
-    handleInputFocus: chooseResumeFocus,
+    file: chooseResumeFile,
+    handleFileChange: chooseResumeChange,
+    handleDrop: chooseResumeDrop,
+    handleDragOver: chooseResumeDragOver,
+    resetFile: chooseResumeReset,
     error: chooseResumeError,
-    isFocused: isChooseResumeFocused,
     forceValidations: forceChooseResumeValidations,
-    clearValue: chooseClearFile,
-  } = useInput(null, sparkValidations.uploadResume, undefined, true);
+  } = useFileInput(undefined, sparkValidations.uploadResume, true);
 
   const {
     value: serviceTypeValue,
@@ -70,7 +69,7 @@ const Operations = () => {
   } = useInput("", sparkValidations.chooseService, undefined, true);
 
   const allErrors = [jobDescriptionError, chooseResumeError, serviceTypeError];
-  const allValues = [jobDescriptionValue, chooseResumeValue, serviceTypeValue];
+  const allValues = [jobDescriptionValue, chooseResumeFile, serviceTypeValue];
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
@@ -89,7 +88,7 @@ const Operations = () => {
     } else {
       const formData = new FormData();
       formData.append("description", jobDescriptionValue);
-      formData.append("file", chooseResumeValue);
+      formData.append("file", chooseResumeFile);
 
       selectedActions.forEach((action) => {
         formData.append("selectedActions[]", action);
@@ -142,13 +141,12 @@ const Operations = () => {
         <Upload
           id="chooseResume"
           label="Choose a resume"
-          value={chooseResumeValue}
+          file={chooseResumeFile}
           changeHandler={chooseResumeChange}
-          blurHandler={chooseResumeBlur}
-          focusHandler={chooseResumeFocus}
+          dropHandler={chooseResumeDrop}
+          dragOverHandler={chooseResumeDragOver}
+          resetFile={chooseResumeReset}
           error={chooseResumeError}
-          clearFile={chooseClearFile}
-          isFocused={isChooseResumeFocused}
           isRequired
         />
         <Select

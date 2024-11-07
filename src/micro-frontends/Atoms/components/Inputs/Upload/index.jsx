@@ -5,60 +5,56 @@ import classes from "./index.module.scss";
 /**
  * Upload Component
  *
- * Handles file uploads with drag-and-drop functionality.
+ * Provides a file upload interface with drag-and-drop functionality,
+ * displaying an error message if necessary and allowing file reset.
  *
  * @param {Object} props - The component props.
- * @param {File} props.file - The selected file.
- * @param {function} props.setFile - Function to set the file.
- * @param {string} props.error - Error message related to file upload.
- * @param {function} props.setError - Function to set the error message.
+ * @param {string} props.id - The unique identifier for the file input.
+ * @param {string} props.label - The label displayed above the upload area.
+ * @param {File} props.file - The currently selected file.
+ * @param {function} props.changeHandler - Function to handle file input change.
+ * @param {function} props.dropHandler - Function to handle file drop event.
+ * @param {function} props.dragOverHandler - Function to handle drag-over event.
+ * @param {function} props.resetFile - Function to reset or clear the selected file.
+ * @param {string} props.error - Error message to display when upload fails or is invalid.
+ * @param {boolean} [props.isRequired=false] - Specifies if the file upload is required.
  * @returns {JSX.Element} The upload component.
  */
 const Upload = ({
-  file,
-  setError,
   id,
   label,
-  isRequired = false,
-  error,
+  file,
   changeHandler,
-  focusHandler,
-  blurHandler,
-  clearFile,
-  extraClass = "",
+  dropHandler,
+  dragOverHandler,
+  resetFile,
+  error,
+  isRequired = false,
 }) => {
   const { drag, browse } = CONTENT.SPARK.operations.upload;
 
-  // const handleDrop = (event) => {
-  //   event.preventDefault();
-  //   const droppedFile = event.dataTransfer.files[0];
-  //   if (droppedFile) {
-  //     setFile(droppedFile);
-  //     setError("");
-  //   }
-  // };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-
   return (
     <div className={classes.upload}>
+      <label htmlFor={id}>
+        {label} {isRequired && <span className={classes.required}>*</span>}
+      </label>
       <div
-        className={`${classes.dropzone} ${file ? classes.active : ""}`}
-        // onDrop={handleDrop}
-        onDragOver={handleDragOver}
+        className={`${classes.dropzone} ${file ? classes.active : ""} ${
+          error ? classes.error : ""
+        }`}
+        onDrop={dropHandler}
+        onDragOver={dragOverHandler}
       >
         <input
           type="file"
-          id="file-upload"
+          id={id}
           onChange={changeHandler}
           style={{ display: "none" }}
         />
         <i className={`bi bi-cloud-upload ${classes.icon}`}></i>
         <p className={classes.text}>
           {drag}
-          <label htmlFor="file-upload" className={classes.browse}>
+          <label htmlFor={id} className={classes.browse}>
             {browse}
           </label>
         </p>
@@ -69,7 +65,7 @@ const Upload = ({
           <span className={classes.fileName}>{file.name}</span>
           <i
             className={`bi bi-x ${classes.removeIcon}`}
-            onClick={clearFile}
+            onClick={resetFile}
           ></i>
         </div>
       )}
@@ -79,10 +75,16 @@ const Upload = ({
 };
 
 Upload.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   file: PropTypes.instanceOf(File),
-  setFile: PropTypes.func.isRequired,
+  changeHandler: PropTypes.func.isRequired,
+  dropHandler: PropTypes.func.isRequired,
+  dragOverHandler: PropTypes.func.isRequired,
+  resetFile: PropTypes.func.isRequired,
   error: PropTypes.string,
-  setError: PropTypes.func.isRequired,
+  isRequired: PropTypes.bool,
 };
 
 export default Upload;
+Upload.displayName = "Upload";

@@ -28,9 +28,6 @@ export const useInput = (
       case INPUT_TYPES.CHECKBOX:
         setEnteredValue(event.target.checked);
         break;
-      case INPUT_TYPES.FILE:
-        setEnteredValue(event.target.files[0]);
-        break;
       default:
         setEnteredValue(event.target.value);
     }
@@ -44,8 +41,7 @@ export const useInput = (
   const handleInputBlur = () => {
     setDidEdit(true);
     setIsFocused(false);
-    if (inputType !== INPUT_TYPES.FILE)
-      setEnteredValue(transform(enteredValue));
+    setEnteredValue(transform(enteredValue));
   };
 
   const resetValue = useCallback(() => {
