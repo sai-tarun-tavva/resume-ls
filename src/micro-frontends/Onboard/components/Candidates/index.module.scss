@@ -24,41 +24,16 @@
     background-color: #ffffff;
   }
 
-  tbody tr {
-    border-bottom: 0.06rem solid #edf2f7;
-    transition: all 0.2s ease;
-    cursor: pointer;
-
-    &:nth-child(even) {
-      background-color: #f8fafc;
-    }
-
-    &:hover {
-      background-color: #edf2f7;
-      transform: translateY(-0.06rem);
-      box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.05);
-    }
-
-    &:last-child {
-      border-bottom: none;
-
-      td:first-child {
-        border-bottom-left-radius: 0.5rem;
-      }
-
-      td:last-child {
-        border-bottom-right-radius: 0.5rem;
-      }
-    }
-  }
-
-  th,
-  td {
+  th {
+    background: linear-gradient(135deg, var(--primary-color), #1e88e5);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.03rem;
     padding: 1rem;
     text-align: left;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     border: none;
 
     &:first-child {
@@ -70,32 +45,74 @@
     }
   }
 
-  th {
-    background: linear-gradient(135deg, var(--primary-color), #1e88e5);
-    color: white;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.03rem;
-  }
-
-  tbody td {
-    color: #4a5568;
-    font-size: 0.95rem;
+  td {
+    padding: 1rem;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    // This ensures the TD inherits its column width from TH
+    width: inherit;
+    max-width: 0; // Forces text-overflow to work
+    min-width: 0; // Ensures the cell can shrink to its parent's width
 
     &:first-child {
-      font-weight: 600;
+      border-left: none;
+    }
 
-      &[title="Active"] {
-        color: #2f855a;
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 0.06rem solid #edf2f7;
+      transition: all 0.2s ease;
+      cursor: pointer;
+
+      &:nth-child(even) {
+        background-color: #f8fafc;
       }
 
-      &[title="Pending"] {
-        color: #c05621;
+      &:hover {
+        background-color: #edf2f7;
+        transform: translateY(-0.06rem);
+        box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.05);
       }
 
-      &[title="Rejected"] {
-        color: #c53030;
+      &:last-child {
+        border-bottom: none;
+
+        td:first-child {
+          border-bottom-left-radius: 0.5rem;
+        }
+
+        td:last-child {
+          border-bottom-right-radius: 0.5rem;
+        }
+      }
+    }
+
+    td {
+      color: #4a5568;
+      font-size: 0.95rem;
+
+      &:first-child {
+        font-weight: 600;
+
+        &[title="Active"] {
+          color: #2f855a;
+        }
+
+        &[title="Pending"] {
+          color: #c05621;
+        }
+
+        &[title="Rejected"] {
+          color: #c53030;
+        }
       }
     }
   }
@@ -103,9 +120,11 @@
 
 // For smaller screens
 @media (max-width: 1024px) {
-  th,
-  td {
-    padding: 0.75rem;
-    font-size: 0.9rem;
+  .table {
+    th,
+    td {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
   }
 }

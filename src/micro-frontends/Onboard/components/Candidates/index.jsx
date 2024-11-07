@@ -62,7 +62,7 @@ const OnboardCandidates = () => {
                 <th title="Status" style={{ width: "10rem" }}>
                   Status
                 </th>
-                <th title="Last Updated" style={{ width: "10rem" }}>
+                <th title="Last Updated" style={{ width: "15rem" }}>
                   Last Updated
                 </th>
                 <th title="Company Name" style={{ width: "15rem" }}>
@@ -80,7 +80,7 @@ const OnboardCandidates = () => {
                 <th title="Position" style={{ width: "12rem" }}>
                   Position
                 </th>
-                <th title="Experience" style={{ width: "7rem" }}>
+                <th title="Experience" style={{ width: "14rem" }}>
                   Experience
                 </th>
                 <th title="Location" style={{ width: "10rem" }}>
@@ -110,7 +110,7 @@ const OnboardCandidates = () => {
                 <th title="Offer" style={{ width: "8rem" }}>
                   Offer Letter Status
                 </th>
-                <th title="Date of Birth" style={{ width: "12rem" }}>
+                <th title="Date of Birth" style={{ width: "8rem" }}>
                   Date of Birth
                 </th>
                 <th title="University" style={{ width: "15rem" }}>
