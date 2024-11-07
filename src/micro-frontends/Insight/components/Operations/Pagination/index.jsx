@@ -4,7 +4,7 @@ import Button from "../../../../Atoms/components/Button";
 import { useLoading } from "../../../../../store";
 import { uiActions } from "../../../store";
 import { buildFetchCandidatesUrl } from "../../../../../utilities";
-import { INSIGHT } from "../../../../../constants";
+import { END_POINTS, INSIGHT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -39,7 +39,12 @@ const Pagination = () => {
    * @param {string} page - The page number to be used for refetching data.
    */
   const handlePageClick = async (page) => {
-    const url = buildFetchCandidatesUrl(CANDIDATES_PER_PAGE, page, searchTerm);
+    const url = buildFetchCandidatesUrl(
+      END_POINTS.INSIGHT.FETCH_CANDIDATES,
+      CANDIDATES_PER_PAGE,
+      page,
+      searchTerm
+    );
 
     dispatch(uiActions.enableRefetch());
     dispatch(uiActions.updateRefetchURL(url));

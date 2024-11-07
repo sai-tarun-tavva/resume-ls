@@ -6,7 +6,7 @@ import FormSection from "../FormSection";
 import FormActions from "../FormActions";
 import IconToggler from "../../../Atoms/components/IconToggler";
 import { useLoading, useStatus } from "../../../../store";
-import { inputActions } from "../../store";
+import { inputActions, uiActions } from "../../store";
 import {
   addOnboardCandidate,
   dispatchAsync,
@@ -81,6 +81,7 @@ const Form = () => {
           message: "Successfully added new candidate details!",
           type: "success",
         });
+        dispatch(uiActions.enableRefetch());
         navigate("..");
       }
     };

@@ -5,14 +5,15 @@ import { useLoading } from "../../../../store";
 import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
-import { dataActions, inputActions } from "../../store";
+import { dataActions, inputActions, uiActions } from "../../store";
 import {
+  buildFetchCandidatesUrl,
   convertDate,
   fetchOnboardCandidates,
   replaceRouteParam,
   transformPhoneNumber,
 } from "../../../../utilities";
-import { ROUTES } from "../../../../constants";
+import { ONBOARD, END_POINTS, ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 const getExperienceDisplayText = (years, months) => {
@@ -27,17 +28,27 @@ const getExperienceDisplayText = (years, months) => {
   }
 };
 
+let isInitial = true;
+
 const OnboardCandidates = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { candidates } = useSelector((state) => state.data);
+  const { refetch, refetchURL } = useSelector((state) => state.ui);
   const { isLoading, enableAppLoading, disableAppLoading } = useLoading();
 
   useEffect(() => {
+    const url =
+      refetchURL ||
+      buildFetchCandidatesUrl(
+        END_POINTS.ONBOARD.FETCH_CANDIDATES,
+        ONBOARD.CANDIDATES_PER_PAGE
+      );
+
     const fetchCandidates = async () => {
       enableAppLoading();
 
-      const { data } = await fetchOnboardCandidates();
+      const { data } = await fetchOnboardCandidates(url);
 
       dispatch(inputActions.resetForm());
       dispatch(dataActions.replaceCandidates({ candidates: data }));
@@ -45,8 +56,12 @@ const OnboardCandidates = () => {
       disableAppLoading();
     };
 
-    fetchCandidates();
-  }, [dispatch, enableAppLoading, disableAppLoading]);
+    if (isInitial || refetch) {
+      isInitial = false;
+      fetchCandidates();
+      dispatch(uiActions.disableRefetch());
+    }
+  }, [dispatch, enableAppLoading, disableAppLoading, refetch, refetchURL]);
 
   return (
     <>

@@ -371,11 +371,12 @@ export const createNewSkill = async (body) => {
  *
  * @async
  * @function
+ * @param {string} url - The URL to which the request is sent.
  * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
  */
-export const fetchOnboardCandidates = async () => {
+export const fetchOnboardCandidates = async (url) => {
   try {
-    const response = await fetch(END_POINTS.ONBOARD.FETCH_CANDIDATES.url, {
+    const response = await fetch(url, {
       method: "GET",
     });
     const resData = await response.json();

@@ -1,4 +1,4 @@
-import { END_POINTS, INSIGHT } from "../constants";
+import { INSIGHT } from "../constants";
 
 /**
  * Builds the URL for fetching candidates based on the query, limit, and page parameters.
@@ -7,13 +7,18 @@ import { END_POINTS, INSIGHT } from "../constants";
  * @param {string} [page=""] - The page number for pagination (optional).
  * @returns {string} The dynamically built URL with encoded query parameters.
  */
-export const buildFetchCandidatesUrl = (limit = "", page = "", query = "") => {
+export const buildFetchCandidatesUrl = (
+  endPoint = "",
+  limit = "",
+  page = "",
+  query = ""
+) => {
   // Encode query params to ensure special characters are handled
   const encodedLimit = encodeURIComponent(limit);
   const encodedPage = encodeURIComponent(page);
   const encodedQuery = encodeURIComponent(query);
 
-  const { url, params } = END_POINTS.INSIGHT.FETCH_CANDIDATES; // Destructure to get the base URL and parameters
+  const { url, params } = endPoint; // Destructure to get the base URL and parameters
 
   // Create a new URL object for constructing the complete URL
   const fetchUrl = new URL(url);

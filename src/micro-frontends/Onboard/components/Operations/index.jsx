@@ -1,9 +1,12 @@
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Header from "../../../Atoms/components/Header";
 import Logo from "../../../Atoms/components/Logo";
 import Search from "../../../Atoms/components/Search";
 import Logout from "../../../Atoms/components/LogOut";
-import { CONTENT, ROUTES } from "../../../../constants";
+import { uiActions } from "../../store";
+import { buildFetchCandidatesUrl } from "../../../../utilities";
+import { ONBOARD, CONTENT, END_POINTS, ROUTES } from "../../../../constants";
 
 /**
  * Operations Component
@@ -14,6 +17,7 @@ import { CONTENT, ROUTES } from "../../../../constants";
  */
 const Operations = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const {
     logoSuffix,
     logo,
@@ -26,7 +30,18 @@ const Operations = () => {
    * Update refetch and search term redux state.
    */
   const handleSearch = (searchText) => {
-    console.log(searchText);
+    dispatch(uiActions.enableRefetch());
+    dispatch(
+      uiActions.updateRefetchURL(
+        buildFetchCandidatesUrl(
+          END_POINTS.ONBOARD.FETCH_CANDIDATES,
+          ONBOARD.CANDIDATES_PER_PAGE,
+          "",
+          searchText
+        )
+      )
+    );
+    dispatch(uiActions.updateSearchTerm(searchText));
   };
 
   return (

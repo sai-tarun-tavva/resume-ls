@@ -11,7 +11,12 @@ import {
   fetchCandidates,
   fetchPdf,
 } from "../../../../utilities";
-import { CONTENT, INSIGHT, STATUS_CODES } from "../../../../constants";
+import {
+  CONTENT,
+  END_POINTS,
+  INSIGHT,
+  STATUS_CODES,
+} from "../../../../constants";
 import classes from "./index.module.scss";
 
 let isInitial = true;
@@ -61,7 +66,12 @@ const InsightCandidates = () => {
     /**
      * Fetch candidates and update redux state.
      */
-    const url = refetchURL || buildFetchCandidatesUrl(CANDIDATES_PER_PAGE);
+    const url =
+      refetchURL ||
+      buildFetchCandidatesUrl(
+        END_POINTS.INSIGHT.FETCH_CANDIDATES,
+        CANDIDATES_PER_PAGE
+      );
 
     const getData = async () => {
       enableAppLoading();

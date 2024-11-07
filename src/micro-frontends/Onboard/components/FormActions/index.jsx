@@ -1,18 +1,26 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../Atoms/components/Button";
 import { useLoading } from "../../../../store";
+import { uiActions } from "../../store";
 import classes from "./index.module.scss";
 
 const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
   const { isLoading } = useLoading();
+  const dispatch = useDispatch();
   const { currentSectionIndex: index, isEditMode } = useSelector(
     (state) => state.input
   );
 
+  const handleClose = () => {
+    dispatch(uiActions.enableRefetch());
+  };
+
   return (
     <div className={classes.actions}>
-      <Link to="..">Close</Link>
+      <Link to=".." onClick={handleClose}>
+        Close
+      </Link>
       <div className={classes.navActions}>
         {index !== 0 && (
           <Button

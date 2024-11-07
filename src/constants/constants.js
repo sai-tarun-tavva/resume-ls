@@ -5,6 +5,10 @@ export const INSIGHT = {
   RESUME_VIEWER_WIDTH_START: 414,
 };
 
+export const ONBOARD = {
+  CANDIDATES_PER_PAGE: 20,
+};
+
 export const LOADER_TYPES = {
   BAR: "bar",
   SPIN: "spin",
