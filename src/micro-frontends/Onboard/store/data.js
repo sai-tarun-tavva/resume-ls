@@ -12,7 +12,11 @@ const DataSlice = createSlice({
     // Update fields
     replaceCandidates(state, { payload: { count = "", candidates } }) {
       //   state.count = count;
-      state.candidates = candidates;
+      state.candidates = candidates.map((candidate) => {
+        const newCandidate = { ...candidate };
+        newCandidate.additional_info.record.id = candidate.id;
+        return newCandidate;
+      });
     },
   },
 });

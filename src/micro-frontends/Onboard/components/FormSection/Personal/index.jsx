@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
@@ -244,11 +244,26 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     isFocused: isReferenceNameFocused,
   } = useInput(referenceName);
 
+  const isFirstRenderForPhotoID = useRef(true);
+  const isFirstRenderForEadNumber = useRef(true);
+
   useEffect(() => {
+    // Skip clearing on the first render for photo ID
+    if (isFirstRenderForPhotoID.current) {
+      isFirstRenderForPhotoID.current = false;
+      return;
+    }
+
     clearPhotoIDNumber();
   }, [photoIDTypeValue, clearPhotoIDNumber]);
 
   useEffect(() => {
+    // Skip clearing on the first render for EAD number
+    if (isFirstRenderForEadNumber.current) {
+      isFirstRenderForEadNumber.current = false;
+      return;
+    }
+
     clearEadNumber();
   }, [visaStatusValue, clearEadNumber]);
 

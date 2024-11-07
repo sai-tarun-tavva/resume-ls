@@ -5,10 +5,11 @@ import { useLoading } from "../../../../store";
 import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
-import { dataActions } from "../../store";
+import { dataActions, inputActions } from "../../store";
 import {
   fetchOnboardCandidates,
   replaceRouteParam,
+  transformPhoneNumber,
 } from "../../../../utilities";
 import { ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
@@ -25,6 +26,7 @@ const OnboardCandidates = () => {
 
       const { data } = await fetchOnboardCandidates();
 
+      dispatch(inputActions.resetForm());
       dispatch(dataActions.replaceCandidates({ candidates: data }));
 
       disableAppLoading();
@@ -105,59 +107,64 @@ const OnboardCandidates = () => {
             </thead>
             <tbody>
               {candidates && candidates.length > 0 ? (
-                candidates
-                  .slice(0, 3)
-                  .map(
-                    (
-                      { id: candidateId, additional_info: candidate },
-                      index
-                    ) => (
-                      <tr
-                        key={index}
-                        onClick={() =>
-                          navigate(
-                            replaceRouteParam(
-                              ROUTES.ONBOARD.CANDIDATE_FORM.VIEW,
-                              {
-                                id: candidateId,
-                              }
-                            )
+                candidates.map((candidate, index) => {
+                  const { id: candidateId, additional_info: candidateInfo } =
+                    candidate;
+                  return (
+                    <tr
+                      key={index}
+                      onClick={() => {
+                        dispatch(inputActions.replaceCandidate(candidateInfo));
+                        navigate(
+                          replaceRouteParam(
+                            ROUTES.ONBOARD.CANDIDATE_FORM.VIEW,
+                            {
+                              id: candidateId,
+                            }
                           )
+                        );
+                      }}
+                    >
+                      <td>{candidateInfo.onboarding.status}</td>
+                      <td>
+                        {
+                          candidateInfo.profession.previousExperience?.[0]
+                            ?.employerName
                         }
-                      >
-                        <td>{candidate.onboarding.status}</td>
-                        <td>
-                          {
-                            candidate.profession.previousExperience?.[0]
-                              ?.employerName
-                          }
-                        </td>
-                        <td>
-                          {candidate.relocation.preference === "guestHouse"
-                            ? "Yes"
-                            : "No"}
-                        </td>
-                        <td>
-                          {candidate.profession.technologiesKnown.join(", ")}
-                        </td>
-                        <td>{candidate.offerLetter.marketingName}</td>
-                        <td>{candidate.offerLetter.designation}</td>
-                        <td>{`${candidate.profession.experience.years} years and ${candidate.profession.experience.months} months`}</td>
-                        <td>{`${candidate.personal.usaLocation.city}, ${candidate.personal.usaLocation.state}`}</td>
-                        <td>{candidate.relocation.interested}</td>
-                        <td>{candidate.personal.firstName}</td>
-                        <td>{candidate.personal.lastName}</td>
-                        <td>{candidate.personal.referenceName}</td>
-                        <td>{candidate.miscellaneous.remarks}</td>
-                        <td>{candidate.personal.phoneNumber}</td>
-                        <td>{candidate.personal.emailId}</td>
-                        <td>{candidate.offerLetter.status}</td>
-                        <td>{candidate.personal.dob}</td>
-                        <td>{candidate.education.graduatedUniversity.name}</td>
-                        <td>{candidate.miscellaneous.notes}</td>
-                      </tr>
-                    )
-                  )
+                      </td>
+                      <td>
+                        {candidateInfo.relocation.preference === "guestHouse"
+                          ? "Yes"
+                          : "No"}
+                      </td>
+                      <td>
+                        {candidateInfo.profession.technologiesKnown.join(", ")}
+                      </td>
+                      <td>{candidateInfo.offerLetter.marketingName}</td>
+                      <td>{candidateInfo.offerLetter.designation}</td>
+                      <td>{`${candidateInfo.profession.experience.years} years and ${candidateInfo.profession.experience.months} months`}</td>
+                      <td>{`${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`}</td>
+                      <td>{candidateInfo.relocation.interested}</td>
+                      <td>{candidateInfo.personal.firstName}</td>
+                      <td>{candidateInfo.personal.lastName}</td>
+                      <td>{candidateInfo.personal.referenceName}</td>
+                      <td>{candidateInfo.miscellaneous.remarks}</td>
+                      <td>
+                        {transformPhoneNumber(
+                          candidateInfo.personal.phoneNumber,
+                          true
+                        )}
+                      </td>
+                      <td>{candidateInfo.personal.emailId}</td>
+                      <td>{candidateInfo.offerLetter.status}</td>
+                      <td>{candidateInfo.personal.dob}</td>
+                      <td>
+                        {candidateInfo.education.graduatedUniversity.name}
+                      </td>
+                      <td>{candidateInfo.miscellaneous.notes}</td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan="21">No candidates available</td>

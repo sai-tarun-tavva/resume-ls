@@ -30,7 +30,7 @@ const Form = () => {
     shouldSubmitFormSection,
     data,
   } = useSelector((state) => state.input);
-  const idRef = useRef(null);
+  const idRef = useRef(data.record.id || null);
 
   useEffect(() => {
     if (isInNewRoute) dispatch(inputActions.enableEditMode());
@@ -62,12 +62,21 @@ const Form = () => {
         });
       } else {
         if (isInNewRoute) dispatch(inputActions.incrementCurrentSectionIndex());
+        else
+          updateStatus({
+            message: "Successfully updated candidate details!",
+            type: "success",
+          });
       }
 
       dispatch(inputActions.disableFormSectionSubmission());
       disableButtonLoading();
 
-      if (data.miscellaneous.remarks && data.miscellaneous.notes) {
+      if (
+        isInNewRoute &&
+        data.miscellaneous.remarks &&
+        data.miscellaneous.notes
+      ) {
         updateStatus({
           message: "Successfully added new candidate details!",
           type: "success",

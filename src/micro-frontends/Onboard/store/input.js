@@ -140,6 +140,10 @@ const InputSlice = createSlice({
       const { section, field, value } = action.payload;
       state.data[section][field] = value;
     },
+    // Replace candidate data
+    replaceCandidate(state, { payload }) {
+      state.data = payload;
+    },
     // Increment current section index by 1
     incrementCurrentSectionIndex(state) {
       state.currentSectionIndex += 1;

@@ -137,15 +137,15 @@ const Relocation = forwardRef((_, ref) => {
           })
         );
       }
-      if (address) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.RELOCATION,
-            field: FIELDS.RELOCATION.ADDRESS,
-            value: relocationAddress,
-          })
-        );
-      }
+
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.RELOCATION,
+          field: FIELDS.RELOCATION.ADDRESS,
+          value: relocationAddress || defaultAddress,
+        })
+      );
+
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

@@ -81,7 +81,7 @@ const PreviousExperience = forwardRef(
       const address = addressSubmitResult?.item;
 
       const prevExp = {
-        name: nameValue,
+        employerName: nameValue,
         phone: extractOnlyDigits(phoneNumberValue),
         email: emailIdValue,
         address,
