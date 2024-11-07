@@ -7,6 +7,7 @@ import NoRecords from "../../../Atoms/components/NoRecords";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
 import { dataActions, inputActions } from "../../store";
 import {
+  convertDate,
   fetchOnboardCandidates,
   replaceRouteParam,
   transformPhoneNumber,
@@ -60,6 +61,9 @@ const OnboardCandidates = () => {
               <tr>
                 <th title="Status" style={{ width: "10rem" }}>
                   Status
+                </th>
+                <th title="Last Updated" style={{ width: "10rem" }}>
+                  Last Updated
                 </th>
                 <th title="Company Name" style={{ width: "15rem" }}>
                   Company Name
@@ -120,8 +124,11 @@ const OnboardCandidates = () => {
             <tbody>
               {candidates && candidates.length > 0 ? (
                 candidates.map((candidate, index) => {
-                  const { id: candidateId, additional_info: candidateInfo } =
-                    candidate;
+                  const {
+                    id: candidateId,
+                    updated_at: updatedTime,
+                    additional_info: candidateInfo,
+                  } = candidate;
                   return (
                     <tr
                       key={index}
@@ -138,6 +145,7 @@ const OnboardCandidates = () => {
                       }}
                     >
                       <td>{candidateInfo.onboarding.status}</td>
+                      <td>{convertDate(updatedTime)}</td>
                       <td>
                         {
                           candidateInfo.profession.previousExperience?.[0]

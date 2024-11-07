@@ -157,6 +157,25 @@ export const calculateTimeAgo = (date) => {
 };
 
 /**
+ * Converts an ISO date string to a human-readable formatted date.
+ * @param {string} dateStr - The ISO date string to be formatted.
+ * @returns {string} A formatted date string in the "MMM DD, YYYY hh:mm:ss AM/PM" format.
+ */
+export const convertDate = (dateStr) => {
+  const date = new Date(dateStr);
+  const options = {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  };
+  return date.toLocaleString("en-US", options);
+};
+
+/**
  * Returns the appropriate file icon based on the file extension.
  * @param {string} fileName - The name of the file.
  * @returns {JSX.Element} The icon for the file type.
