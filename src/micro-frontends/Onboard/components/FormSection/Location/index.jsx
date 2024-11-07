@@ -2,10 +2,11 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Address from "../Address";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
+import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
-import { areObjectsEqual, focusErrorsIfAny } from "../../../../../utilities";
+import { focusErrorsIfAny } from "../../../../../utilities";
 import {
   FIELDS,
   SECTIONS,
@@ -14,11 +15,11 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Location = forwardRef(({ isInNewRoute }, ref) => {
+const Location = forwardRef((_, ref) => {
   const usaLocRef = useRef();
   const indiaLocRef = useRef();
   const dispatch = useDispatch();
-  const { updateCandidate } = useUpdateCandidate();
+  const { isLoading } = useLoading();
 
   const {
     currentSectionIndex,
@@ -46,15 +47,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
     handleInputBlur: handleHasHomeCountryBlur,
   } = useInput(false);
 
-  const hasFormChanged = (usaAddress, indiaAddress) => {
-    return (
-      !areObjectsEqual(usaAddress, usaLocation) ||
-      !areObjectsEqual(indiaAddress, indiaLocation)
-    );
-  };
-
   const submit = async () => {
-    let moveForward = false;
     // Validate USA address (always required)
     const usaAddressResult = usaLocRef.current?.submit?.();
     const isUSAAddressValid = usaAddressResult?.isSectionValid;
@@ -78,33 +71,24 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
 
     if (!isUSAAddressValid || isIndiaAddressValid === false) {
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged(usaAddress, indiaAddress)) {
-      const isAPICallSuccessful = await updateCandidate();
+    } else if (!isLoading.button) {
+      // Update store with validated addresses
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.USA_LOCATION,
+          value: usaAddress,
+        })
+      );
 
-      if (isAPICallSuccessful) {
-        // Update store with validated addresses
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PERSONAL,
-            field: FIELDS.PERSONAL.USA_LOCATION,
-            value: usaAddress,
-          })
-        );
-
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PERSONAL,
-            field: FIELDS.PERSONAL.INDIA_LOCATION,
-            value: indiaAddress,
-          })
-        );
-        moveForward = true;
-      }
-    } else {
-      moveForward = true;
-    }
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.PERSONAL.INDIA_LOCATION,
+          value: indiaAddress,
+        })
+      );
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 

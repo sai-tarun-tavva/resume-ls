@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Textarea from "../../../../Atoms/components/Inputs/Textarea";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
+import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
@@ -14,7 +15,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const OfferLetter = forwardRef(({ isInNewRoute }, ref) => {
+const OfferLetter = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -31,7 +32,7 @@ const OfferLetter = forwardRef(({ isInNewRoute }, ref) => {
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
-  const { updateCandidate } = useUpdateCandidate();
+  const { isLoading } = useLoading();
 
   const {
     offerLetter: {
@@ -137,76 +138,54 @@ const OfferLetter = forwardRef(({ isInNewRoute }, ref) => {
     forceRolesValidations();
   };
 
-  const hasFormChanged = () => {
-    return (
-      statusValue !== status ||
-      marketingNameValue !== marketingName ||
-      designationValue !== designation ||
-      startDateValue !== startDate ||
-      endDateValue !== endDate ||
-      rolesAndResponsibilitiesValue !== rolesAndResponsibilities
-    );
-  };
-
   const submit = async () => {
-    let moveForward = false;
-
     if (!isSectionValid) {
       forceValidations();
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged()) {
-      const isAPICallSuccessful = await updateCandidate();
-
-      if (isAPICallSuccessful) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.OFFER_LETTER,
-            field: FIELDS.OFFER_LETTER.STATUS,
-            value: statusValue,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.OFFER_LETTER,
-            field: FIELDS.OFFER_LETTER.MARKETING_NAME,
-            value: marketingNameValue,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.OFFER_LETTER,
-            field: FIELDS.OFFER_LETTER.DESIGNATION,
-            value: designationValue,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.OFFER_LETTER,
-            field: FIELDS.OFFER_LETTER.START_DATE,
-            value: startDateValue,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.OFFER_LETTER,
-            field: FIELDS.OFFER_LETTER.END_DATE,
-            value: endDateValue,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.OFFER_LETTER,
-            field: FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES,
-            value: rolesAndResponsibilitiesValue,
-          })
-        );
-        moveForward = true;
-      }
-    } else {
-      moveForward = true;
-    }
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+    } else if (!isLoading.button) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.STATUS,
+          value: statusValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.MARKETING_NAME,
+          value: marketingNameValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.DESIGNATION,
+          value: designationValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.START_DATE,
+          value: startDateValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.END_DATE,
+          value: endDateValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES,
+          value: rolesAndResponsibilitiesValue,
+        })
+      );
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 

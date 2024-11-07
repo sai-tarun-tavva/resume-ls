@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import ListAdd from "../ListAdd";
 import Address from "../Address";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
+import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
 import {
-  arraysEqual,
   determineSectionValidity,
   focusErrorsIfAny,
   onboardingValidations,
@@ -21,7 +21,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const USTravelAndStay = forwardRef(({ isInNewRoute }, ref) => {
+const USTravelAndStay = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -32,7 +32,7 @@ const USTravelAndStay = forwardRef(({ isInNewRoute }, ref) => {
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
-  const { updateCandidate } = useUpdateCandidate();
+  const { isLoading } = useLoading();
 
   const { usTravelAndStay: validations } = onboardingValidations;
 
@@ -73,14 +73,7 @@ const USTravelAndStay = forwardRef(({ isInNewRoute }, ref) => {
     forceUsEntryValidations();
   };
 
-  const hasFormChanged = (addressesCurrent) => {
-    return (
-      usEntryValue !== usEntry || !arraysEqual(stayAddresses, addressesCurrent)
-    );
-  };
-
   const submit = async () => {
-    let moveForward = false;
     const { isSectionValid: areAddressesValid, listItems: addresses } =
       stayAddressesRef?.current?.submit?.();
 
@@ -88,32 +81,23 @@ const USTravelAndStay = forwardRef(({ isInNewRoute }, ref) => {
       if (!isPortOfEntryNotRequired) forceValidations();
       stayAddressesRef.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged(addresses)) {
-      const isAPICallSuccessful = await updateCandidate();
+    } else if (!isLoading.button) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.US_TRAVEL_AND_STAY,
+          field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
+          value: usEntryValue,
+        })
+      );
 
-      if (isAPICallSuccessful) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.US_TRAVEL_AND_STAY,
-            field: FIELDS.US_TRAVEL_AND_STAY.US_ENTRY,
-            value: usEntryValue,
-          })
-        );
-
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.US_TRAVEL_AND_STAY,
-            field: FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES,
-            value: addresses,
-          })
-        );
-        moveForward = true;
-      }
-    } else {
-      moveForward = true;
-    }
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.US_TRAVEL_AND_STAY,
+          field: FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES,
+          value: addresses,
+        })
+      );
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 

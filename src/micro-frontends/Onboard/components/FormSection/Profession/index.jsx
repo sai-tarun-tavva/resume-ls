@@ -7,11 +7,11 @@ import ListAdd from "../ListAdd";
 import SingleInput from "../../FormListItems/SingleInput";
 import PreviousExperience from "../../FormListItems/PreviousExperience";
 import Reference from "../../FormListItems/Reference";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
+import { useLoading } from "../../../../../store";
 import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
 import {
-  arraysEqual,
   determineSectionValidity,
   focusErrorsIfAny,
   onboardingValidations,
@@ -19,7 +19,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Profession = forwardRef(({ isInNewRoute }, ref) => {
+const Profession = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -35,7 +35,7 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
-  const { updateCandidate } = useUpdateCandidate();
+  const { isLoading } = useLoading();
 
   const { profession: validations } = onboardingValidations;
 
@@ -84,23 +84,7 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
     forceExperienceMonthsValidations();
   };
 
-  const hasFormChanged = (
-    technologiesKnownCurrent,
-    previousExperienceCurrent,
-    referencesCurrent
-  ) => {
-    return (
-      trainingAttendedAsBoolean !== trainingAttendedValue ||
-      years !== experienceYearsValue ||
-      months !== experienceMonthsValue ||
-      !arraysEqual(technologiesKnown, technologiesKnownCurrent) ||
-      !arraysEqual(previousExperience, previousExperienceCurrent) ||
-      !arraysEqual(references, referencesCurrent)
-    );
-  };
-
   const submit = async () => {
-    let moveForward = false;
     const {
       isSectionValid: arePrevExperiencesValid,
       listItems: prevExperiences,
@@ -123,57 +107,48 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
       technologiesRef.current?.forceValidations?.();
       referencesRef.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged(technologies, prevExperiences, referencesList)) {
-      const isAPICallSuccessful = await updateCandidate();
-
-      if (isAPICallSuccessful) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PROFESSION,
-            field: FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE,
-            value: trainingAttendedValue
-              ? FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.YES
-              : FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PROFESSION,
-            field: FIELDS.PROFESSION.EXPERIENCE.VALUE,
-            value: {
-              [FIELDS.PROFESSION.EXPERIENCE.YEARS]: +experienceYearsValue,
-              [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: +experienceMonthsValue,
-            },
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PROFESSION,
-            field: FIELDS.PROFESSION.TECHNOLOGIES_KNOWN,
-            value: technologies,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PROFESSION,
-            field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
-            value: prevExperiences,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.PROFESSION,
-            field: FIELDS.PROFESSION.REFERENCES,
-            value: referencesList,
-          })
-        );
-        moveForward = true;
-      }
-    } else {
-      moveForward = true;
-    }
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+    } else if (!isLoading.button) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE,
+          value: trainingAttendedValue
+            ? FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.YES
+            : FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.EXPERIENCE.VALUE,
+          value: {
+            [FIELDS.PROFESSION.EXPERIENCE.YEARS]: +experienceYearsValue,
+            [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: +experienceMonthsValue,
+          },
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.TECHNOLOGIES_KNOWN,
+          value: technologies,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
+          value: prevExperiences,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.REFERENCES,
+          value: referencesList,
+        })
+      );
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 

@@ -32,8 +32,9 @@ export const defaultReference = {
 };
 
 const initialState = {
-  currentSectionIndex: 4,
+  currentSectionIndex: 0,
   isEditMode: false,
+  shouldSubmitFormSection: false,
   data: {
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: "",
@@ -158,6 +159,14 @@ const InputSlice = createSlice({
     // Enables view mode
     enableViewMode(state) {
       state.isEditMode = false;
+    },
+    // Enable form section submission
+    enableFormSectionSubmission(state) {
+      state.shouldSubmitFormSection = true;
+    },
+    // Disable form section submission
+    disableFormSectionSubmission(state) {
+      state.shouldSubmitFormSection = false;
     },
     // Resets the form
     resetForm: () => initialState,

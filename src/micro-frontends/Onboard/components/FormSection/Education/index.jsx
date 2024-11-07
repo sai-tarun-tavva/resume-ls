@@ -4,12 +4,10 @@ import ListAdd from "../ListAdd";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Address from "../Address";
 import SingleInput from "../../FormListItems/SingleInput";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { inputActions } from "../../../store";
 import {
-  areObjectsEqual,
-  arraysEqual,
   determineSectionValidity,
   extractOnlyDigits,
   focusErrorsIfAny,
@@ -18,8 +16,9 @@ import {
 } from "../../../../../utilities";
 import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+import { useLoading } from "../../../../../store";
 
-const Education = forwardRef(({ isInNewRoute }, ref) => {
+const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -43,8 +42,7 @@ const Education = forwardRef(({ isInNewRoute }, ref) => {
   const listRef = useRef();
   const isEducationRequired = EDUCATION_REQUIRED_VISA.includes(visaStatus);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
-  const { updateCandidate } = useUpdateCandidate;
-
+  const { isLoading } = useLoading();
   const { education: validations } = onboardingValidations;
 
   const {
@@ -153,37 +151,7 @@ const Education = forwardRef(({ isInNewRoute }, ref) => {
     forceDSOPhoneValidations();
   };
 
-  const hasFormChanged = (addressValue, certificationsValue) => {
-    const initialValues = {
-      sevisID: sevisID,
-      dsoName: dsoName,
-      dsoEmail: dsoEmail,
-      dsoPhone: dsoPhone,
-      universityName: universityName,
-      passedMonthAndYear: passedMonthAndYear,
-      stream: stream,
-      address: universityAddress,
-    };
-
-    const currentValues = {
-      sevisID: sevisIDValue,
-      dsoName: dsoNameValue,
-      dsoEmail: dsoEmailValue,
-      dsoPhone: extractOnlyDigits(dsoPhoneValue),
-      universityName: universityNameValue,
-      passedMonthAndYear: passedMonthAndYearValue,
-      stream: streamValue,
-      address: addressValue,
-    };
-
-    return (
-      !areObjectsEqual(initialValues, currentValues) ||
-      !arraysEqual(additionalCertifications, certificationsValue)
-    );
-  };
-
   const submit = async () => {
-    let moveForward = false;
     const addressSubmitResult = addressRef.current?.submit?.();
     const isAddressValid = addressSubmitResult?.isSectionValid;
     const address = addressSubmitResult?.item;
@@ -199,50 +167,41 @@ const Education = forwardRef(({ isInNewRoute }, ref) => {
       addressRef.current?.forceValidations?.(); // Force Address validation
       listRef?.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged(address, certificates)) {
-      const isAPICallSuccessful = await updateCandidate();
-
-      if (isAPICallSuccessful) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EDUCATION,
-            field: FIELDS.EDUCATION.SEVIS_ID,
-            value: sevisIDValue,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EDUCATION,
-            field: FIELDS.EDUCATION.DSO.VALUE,
-            value: {
-              [FIELDS.EDUCATION.DSO.NAME]: dsoNameValue,
-              [FIELDS.EDUCATION.DSO.EMAIL]: dsoEmailValue,
-              [FIELDS.EDUCATION.DSO.PHONE]: extractOnlyDigits(dsoPhoneValue),
-            },
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EDUCATION,
-            field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
-            value: {
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: universityNameValue,
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]:
-                passedMonthAndYearValue,
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
-              [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
-                certificates,
-            },
-          })
-        );
-        moveForward = true;
-      }
-    } else {
-      moveForward = true;
-    }
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+    } else if (!isLoading.button) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.SEVIS_ID,
+          value: sevisIDValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.DSO.VALUE,
+          value: {
+            [FIELDS.EDUCATION.DSO.NAME]: dsoNameValue,
+            [FIELDS.EDUCATION.DSO.EMAIL]: dsoEmailValue,
+            [FIELDS.EDUCATION.DSO.PHONE]: extractOnlyDigits(dsoPhoneValue),
+          },
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
+          value: {
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: universityNameValue,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]:
+              passedMonthAndYearValue,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
+            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
+              certificates,
+          },
+        })
+      );
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 

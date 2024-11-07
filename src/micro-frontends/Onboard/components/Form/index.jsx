@@ -5,22 +5,32 @@ import FormProgress from "../FormProgress";
 import FormSection from "../FormSection";
 import FormActions from "../FormActions";
 import IconToggler from "../../../Atoms/components/IconToggler";
+import { useLoading, useStatus } from "../../../../store";
 import { inputActions } from "../../store";
-import { ROUTES } from "../../../../constants";
+import {
+  addOnboardCandidate,
+  dispatchAsync,
+  updateOnboardCandidate,
+} from "../../../../utilities";
+import { CONTENT, ROUTES, STATUS_CODES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 const Form = () => {
   const dispatch = useDispatch();
   const routeLocation = useLocation();
   const navigate = useNavigate();
+  const { updateStatus, resetStatus } = useStatus();
+  const { enableButtonLoading, disableButtonLoading } = useLoading();
   const isInNewRoute = routeLocation.pathname.endsWith(
     ROUTES.ONBOARD.CANDIDATE_FORM.NEW
   );
   const {
     currentSectionIndex: current,
     isEditMode,
+    shouldSubmitFormSection,
     data,
   } = useSelector((state) => state.input);
+  const idRef = useRef(null);
 
   useEffect(() => {
     if (isInNewRoute) dispatch(inputActions.enableEditMode());
@@ -32,7 +42,52 @@ const Form = () => {
     if (!data.record.id && !isInNewRoute) navigate(ROUTES.ONBOARD.HOME);
   }, [data.record.id, navigate, isInNewRoute]);
 
-  useEffect(() => {}, [data]);
+  useEffect(() => {
+    const updateCandidate = async () => {
+      if (!shouldSubmitFormSection) return;
+      enableButtonLoading();
+
+      await dispatchAsync(resetStatus);
+
+      const { status, apiData } = !idRef.current
+        ? await addOnboardCandidate(data)
+        : await updateOnboardCandidate(data, idRef.current);
+
+      if (!idRef.current) idRef.current = apiData.id;
+
+      if (status !== STATUS_CODES.SUCCESS) {
+        updateStatus({
+          message: CONTENT.COMMON.serverError,
+          type: "failure",
+        });
+      } else {
+        if (isInNewRoute) dispatch(inputActions.incrementCurrentSectionIndex());
+      }
+
+      dispatch(inputActions.disableFormSectionSubmission());
+      disableButtonLoading();
+
+      if (data.miscellaneous.remarks && data.miscellaneous.notes) {
+        updateStatus({
+          message: "Successfully added new candidate details!",
+          type: "success",
+        });
+        navigate("..");
+      }
+    };
+
+    updateCandidate();
+  }, [
+    shouldSubmitFormSection,
+    data,
+    enableButtonLoading,
+    disableButtonLoading,
+    dispatch,
+    navigate,
+    isInNewRoute,
+    resetStatus,
+    updateStatus,
+  ]);
 
   const onboardingRef = useRef();
   const personalRef = useRef();

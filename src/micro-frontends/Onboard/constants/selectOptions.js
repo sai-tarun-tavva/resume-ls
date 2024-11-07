@@ -221,7 +221,7 @@ export const OPTIONS = {
   ],
   STAY_PREFERENCE: [
     { value: "", label: "" },
-    { value: "guesthouse", label: "Opt for guest house" },
+    { value: "guestHouse", label: "Opt for guest house" },
     { value: "other", label: "Other" },
   ],
   EXPERIENCE_MONTHS: [

@@ -1,8 +1,9 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
+import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
@@ -19,7 +20,7 @@ import {
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const EmergencyContacts = forwardRef(({ isInNewRoute }, ref) => {
+const EmergencyContacts = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -33,7 +34,7 @@ const EmergencyContacts = forwardRef(({ isInNewRoute }, ref) => {
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
-  const { updateCandidate } = useUpdateCandidate();
+  const { isLoading } = useLoading();
 
   const {
     emergencyContacts: { name: nameValidationFunc, phone: phoneValidationFunc },
@@ -127,55 +128,35 @@ const EmergencyContacts = forwardRef(({ isInNewRoute }, ref) => {
     }
   };
 
-  const hasFormChanged = () => {
-    return (
-      usaNameValue !== usaName ||
-      extractOnlyDigits(usaPhoneValue) !== usaPhone ||
-      homeCountryNameValue !== homeCountryName ||
-      extractOnlyDigits(homeCountryPhoneValue) !== homeCountryPhone
-    );
-  };
-
   const submit = async () => {
-    let moveForward = false;
     if (!isSectionValid) {
       forceValidations();
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged()) {
-      const isAPICallSuccessful = await updateCandidate();
-
-      if (isAPICallSuccessful) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EMERGENCY_CONTACTS,
-            field: FIELDS.EMERGENCY_CONTACTS.USA.VALUE,
-            value: {
-              [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: usaNameValue,
-              [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]:
-                extractOnlyDigits(usaPhoneValue),
-            },
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.EMERGENCY_CONTACTS,
-            field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
-            value: {
-              [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]:
-                homeCountryNameValue,
-              [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: extractOnlyDigits(
-                homeCountryPhoneValue
-              ),
-            },
-          })
-        );
-        moveForward = true;
-      }
-    } else {
-      moveForward = true;
-    }
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+    } else if (!isLoading.button) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EMERGENCY_CONTACTS,
+          field: FIELDS.EMERGENCY_CONTACTS.USA.VALUE,
+          value: {
+            [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: usaNameValue,
+            [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]:
+              extractOnlyDigits(usaPhoneValue),
+          },
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EMERGENCY_CONTACTS,
+          field: FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.VALUE,
+          value: {
+            [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.NAME]: homeCountryNameValue,
+            [FIELDS.EMERGENCY_CONTACTS.HOME_COUNTRY.PHONE]: extractOnlyDigits(
+              homeCountryPhoneValue
+            ),
+          },
+        })
+      );
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 

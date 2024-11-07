@@ -32,11 +32,11 @@ const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
           </Button>
         )}
         <Button
-          className={`${classes.button} ${isLoading.fetch ? "loading" : ""}`}
+          className={`${classes.button} ${isLoading.button ? "loading" : ""}`}
           disabled={!isEditMode}
           onClick={nextHandler}
         >
-          {isLoading.fetch
+          {isLoading.button
             ? "Saving..."
             : index === 9 || !isInNewRoute
             ? "Save"

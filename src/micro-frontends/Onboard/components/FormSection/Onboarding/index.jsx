@@ -2,8 +2,9 @@ import { useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
+import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
@@ -13,7 +14,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
+const Onboarding = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -24,7 +25,7 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
   } = useSelector((state) => state.input);
   const { onboarding: validations } = onboardingValidations;
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
-  const { updateCandidate } = useUpdateCandidate();
+  const { isLoading } = useLoading();
 
   const {
     value: dateValue,
@@ -56,39 +57,26 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
     forceStatusValidations();
   };
 
-  const hasFormChanged = () => dateValue !== date || statusValue !== status;
-
   const submit = async () => {
-    let moveForward = false;
-
     if (!isSectionValid) {
       forceValidations();
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged()) {
-      const isAPICallSuccessful = await updateCandidate();
-      if (isAPICallSuccessful) {
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.ONBOARDING,
-            field: FIELDS.ONBOARDING.DATE,
-            value: dateValue,
-          })
-        );
-        dispatch(
-          inputActions.updateField({
-            section: SECTIONS.ONBOARDING,
-            field: FIELDS.ONBOARDING.STATUS,
-            value: statusValue,
-          })
-        );
-        moveForward = true;
-      }
-    } else {
-      moveForward = true;
-    }
-
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+    } else if (!isLoading.button) {
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.ONBOARDING,
+          field: FIELDS.ONBOARDING.DATE,
+          value: dateValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.ONBOARDING,
+          field: FIELDS.ONBOARDING.STATUS,
+          value: statusValue,
+        })
+      );
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 

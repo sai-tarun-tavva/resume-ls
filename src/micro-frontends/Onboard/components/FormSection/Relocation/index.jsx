@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Address from "../Address";
-import { useSectionInputsFocus, useUpdateCandidate } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
+import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
 import {
-  areObjectsEqual,
   determineSectionValidity,
   focusErrorsIfAny,
   onboardingValidations,
@@ -15,7 +15,7 @@ import {
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
-const Relocation = forwardRef(({ isInNewRoute }, ref) => {
+const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -26,7 +26,7 @@ const Relocation = forwardRef(({ isInNewRoute }, ref) => {
   } = useSelector((state) => state.input);
   const addressRef = useRef(); // Create a ref to call Address validation
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
-  const { updateCandidate } = useUpdateCandidate();
+  const { isLoading } = useLoading();
 
   const { relocation: validations } = onboardingValidations;
 
@@ -67,7 +67,7 @@ const Relocation = forwardRef(({ isInNewRoute }, ref) => {
 
   useEffect(() => {
     addressRef.current?.resetValues?.();
-    if (preferenceValue !== "other")
+    if (preferenceValue !== "other" && preference === "other")
       dispatch(
         inputActions.updateField({
           section: SECTIONS.RELOCATION,
@@ -75,7 +75,7 @@ const Relocation = forwardRef(({ isInNewRoute }, ref) => {
           value: defaultAddress,
         })
       );
-  }, [preferenceValue, dispatch]);
+  }, [preferenceValue, preference, dispatch]);
 
   // Group all errors and values for relocation
   const relocationErrors = [
@@ -100,17 +100,7 @@ const Relocation = forwardRef(({ isInNewRoute }, ref) => {
     }
   };
 
-  const hasFormChanged = (relocationAddress) => {
-    return (
-      interestedValue !== interestedAsBoolean ||
-      preferenceValue !== preference ||
-      howSoonValue !== howSoon ||
-      !areObjectsEqual(address, relocationAddress)
-    );
-  };
-
   const submit = async () => {
-    let moveForward = false;
     const addressSubmitResult = addressRef.current?.submit?.();
     const isAddressValid = addressSubmitResult?.isSectionValid;
     const relocationAddress = addressSubmitResult?.item;
@@ -120,52 +110,43 @@ const Relocation = forwardRef(({ isInNewRoute }, ref) => {
       forceRelocationValidations();
       addressRef.current?.forceValidations(); // Force Address validation
       focusErrorsIfAny(sectionRef);
-    } else if (hasFormChanged(relocationAddress)) {
-      const isAPICallSuccessful = await updateCandidate();
-
-      if (isAPICallSuccessful) {
-        // Dispatch actions for Relocation data
+    } else if (!isLoading.button) {
+      // Dispatch actions for Relocation data
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.RELOCATION,
+          field: FIELDS.RELOCATION.INTERESTED.VALUE,
+          value: interestedValue
+            ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
+            : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
+        })
+      );
+      if (interestedValue) {
         dispatch(
           inputActions.updateField({
             section: SECTIONS.RELOCATION,
-            field: FIELDS.RELOCATION.INTERESTED.VALUE,
-            value: interestedValue
-              ? FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
-              : FIELDS.RELOCATION.INTERESTED.OPTIONS.NO,
+            field: FIELDS.RELOCATION.PREFERENCE,
+            value: preferenceValue,
           })
         );
-        if (interestedValue) {
-          dispatch(
-            inputActions.updateField({
-              section: SECTIONS.RELOCATION,
-              field: FIELDS.RELOCATION.PREFERENCE,
-              value: preferenceValue,
-            })
-          );
-          dispatch(
-            inputActions.updateField({
-              section: SECTIONS.RELOCATION,
-              field: FIELDS.RELOCATION.HOW_SOON,
-              value: howSoonValue,
-            })
-          );
-        }
-        if (address) {
-          dispatch(
-            inputActions.updateField({
-              section: SECTIONS.RELOCATION,
-              field: FIELDS.RELOCATION.ADDRESS,
-              value: relocationAddress,
-            })
-          );
-        }
-        moveForward = true;
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.RELOCATION,
+            field: FIELDS.RELOCATION.HOW_SOON,
+            value: howSoonValue,
+          })
+        );
       }
-    } else {
-      moveForward = true;
-    }
-    if (moveForward && isInNewRoute) {
-      dispatch(inputActions.incrementCurrentSectionIndex());
+      if (address) {
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.RELOCATION,
+            field: FIELDS.RELOCATION.ADDRESS,
+            value: relocationAddress,
+          })
+        );
+      }
+      dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 
