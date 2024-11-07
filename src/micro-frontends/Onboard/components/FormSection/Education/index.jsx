@@ -14,9 +14,12 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 import { useLoading } from "../../../../../store";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -167,7 +170,7 @@ const Education = forwardRef((_, ref) => {
       addressRef.current?.forceValidations?.(); // Force Address validation
       listRef?.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
-    } else if (!isLoading.button) {
+    } else if (!isLoading[BUTTON]) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EDUCATION,

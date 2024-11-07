@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLoading } from "../../../store";
-import { END_POINTS } from "../../../constants";
+import { END_POINTS, LOADING_ACTION_TYPES } from "../../../constants";
+
+const { APP } = LOADING_ACTION_TYPES;
 
 /**
  * Custom hook to fetch and manage the target count.
@@ -36,5 +38,5 @@ export const useTargetCount = () => {
     fetchTargetCount();
   }, [enableAppLoading, disableAppLoading]);
 
-  return { targetCount, isLoading: isLoading.app };
+  return { targetCount, isLoading: isLoading[APP] };
 };

@@ -10,10 +10,17 @@ import FloatingButton from "../../../Atoms/components/FloatingButton";
 import { uiActions } from "../../store";
 import { useLoading, useStatus } from "../../../../store";
 import { isValidFile, uploadFiles } from "../../../../utilities";
-import { CONTENT, INSIGHT, ROUTES, STATUS_CODES } from "../../../../constants";
+import {
+  CONTENT,
+  INSIGHT,
+  LOADING_ACTION_TYPES,
+  ROUTES,
+  STATUS_CODES,
+} from "../../../../constants";
 import classes from "./index.module.scss";
 
 const { MAX_FILES, MAX_FILE_SIZE } = INSIGHT;
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 /**
  * Upload Component
@@ -112,7 +119,7 @@ const Upload = () => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
   };
 
-  const buttonText = isLoading.button
+  const buttonText = isLoading[BUTTON]
     ? `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`
     : CONTENT.INSIGHT.upload.button + (files.length > 1 ? "s" : "");
 
@@ -123,7 +130,7 @@ const Upload = () => {
   const handleUpload = async (event) => {
     event.preventDefault();
 
-    if (isLoading.button) return;
+    if (isLoading[BUTTON]) return;
 
     enableButtonLoading();
 
@@ -177,7 +184,7 @@ const Upload = () => {
               disabled={files.length === 0}
               onClick={handleUpload}
               className={`${classes.uploadButton} ${
-                isLoading.button ? "loading" : ""
+                isLoading[BUTTON] ? "loading" : ""
               }`}
             >
               {buttonText}

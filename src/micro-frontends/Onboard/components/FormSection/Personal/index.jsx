@@ -16,6 +16,7 @@ import {
   transformPhoneNumber,
   transformSSN,
 } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import {
   SECTIONS,
   FIELDS,
@@ -28,6 +29,8 @@ import {
   PORT_OF_ENTRY_NOT_REQUIRED_VISA,
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const Personal = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
@@ -322,7 +325,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     if (!isSectionValid) {
       focusErrorsIfAny(sectionRef);
       forceValidations();
-    } else if (!isLoading.button) {
+    } else if (!isLoading[BUTTON]) {
       // Only enable resetting values for new candidates
       if (isInNewRoute) {
         // Below resetting with empty values is required if user selects a student or H1 visa and enter home address later, if user comes back to personal and updates visa not to student

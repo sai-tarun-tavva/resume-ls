@@ -18,8 +18,15 @@ import {
   transformExperience,
   transformPhoneNumber,
 } from "../../../../utilities";
-import { CONTENT, ROUTES, STATUS_CODES } from "../../../../constants";
+import {
+  CONTENT,
+  LOADING_ACTION_TYPES,
+  ROUTES,
+  STATUS_CODES,
+} from "../../../../constants";
 import classes from "./index.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 /**
  * CandidateForm Component
@@ -290,7 +297,7 @@ const CandidateForm = () => {
    */
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    if (isLoading.button) return;
+    if (isLoading[BUTTON]) return;
 
     enableButtonLoading();
 
@@ -528,11 +535,11 @@ const CandidateForm = () => {
           <Button
             title="Save"
             className={`${classes.saveButton} ${
-              isLoading.button ? "loading" : ""
+              isLoading[BUTTON] ? "loading" : ""
             }`}
             disabled={!enableSave}
           >
-            {isLoading.button
+            {isLoading[BUTTON]
               ? CONTENT.INSIGHT.candidateForm.button.save.loading
               : CONTENT.INSIGHT.candidateForm.button.save.default}
           </Button>

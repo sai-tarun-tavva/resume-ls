@@ -11,8 +11,11 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const Onboarding = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -61,7 +64,7 @@ const Onboarding = forwardRef((_, ref) => {
     if (!isSectionValid) {
       forceValidations();
       focusErrorsIfAny(sectionRef);
-    } else if (!isLoading.button) {
+    } else if (!isLoading[BUTTON]) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.ONBOARDING,

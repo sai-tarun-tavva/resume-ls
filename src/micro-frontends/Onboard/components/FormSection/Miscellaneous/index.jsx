@@ -6,8 +6,11 @@ import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";
 import { focusErrorsIfAny } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const Miscellaneous = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -42,7 +45,7 @@ const Miscellaneous = forwardRef((_, ref) => {
   const submit = async () => {
     focusErrorsIfAny(sectionRef);
 
-    if (!isLoading.button) {
+    if (!isLoading[BUTTON]) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.MISCELLANEOUS,

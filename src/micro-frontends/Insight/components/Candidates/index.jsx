@@ -15,12 +15,14 @@ import {
   CONTENT,
   END_POINTS,
   INSIGHT,
+  LOADING_ACTION_TYPES,
   STATUS_CODES,
 } from "../../../../constants";
 import classes from "./index.module.scss";
 
 let isInitial = true;
 const { CANDIDATES_PER_PAGE, RESUME_VIEWER_WIDTH_START } = INSIGHT;
+const { APP } = LOADING_ACTION_TYPES;
 
 /**
  * InsightCandidates Component
@@ -175,7 +177,7 @@ const InsightCandidates = () => {
         showResume && !isSmallScreen && classes.smaller
       }`}
     >
-      {isLoading.app ? (
+      {isLoading[APP] ? (
         <Loader />
       ) : candidates.length === 0 ? (
         <NoRecords />

@@ -12,6 +12,7 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import {
   SECTIONS,
   FIELDS,
@@ -19,6 +20,8 @@ import {
   HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const EmergencyContacts = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -132,7 +135,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
     if (!isSectionValid) {
       forceValidations();
       focusErrorsIfAny(sectionRef);
-    } else if (!isLoading.button) {
+    } else if (!isLoading[BUTTON]) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EMERGENCY_CONTACTS,

@@ -16,8 +16,11 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const Profession = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -107,7 +110,7 @@ const Profession = forwardRef((_, ref) => {
       technologiesRef.current?.forceValidations?.();
       referencesRef.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
-    } else if (!isLoading.button) {
+    } else if (!isLoading[BUTTON]) {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.PROFESSION,

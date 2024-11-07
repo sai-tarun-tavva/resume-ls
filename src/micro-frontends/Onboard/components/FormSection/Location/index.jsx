@@ -7,6 +7,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
 import { focusErrorsIfAny } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import {
   FIELDS,
   SECTIONS,
@@ -14,6 +15,8 @@ import {
   HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const Location = forwardRef((_, ref) => {
   const usaLocRef = useRef();
@@ -71,7 +74,7 @@ const Location = forwardRef((_, ref) => {
 
     if (!isUSAAddressValid || isIndiaAddressValid === false) {
       focusErrorsIfAny(sectionRef);
-    } else if (!isLoading.button) {
+    } else if (!isLoading[BUTTON]) {
       // Update store with validated addresses
       dispatch(
         inputActions.updateField({

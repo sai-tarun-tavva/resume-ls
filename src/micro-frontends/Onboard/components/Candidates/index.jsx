@@ -13,7 +13,12 @@ import {
   replaceRouteParam,
   transformPhoneNumber,
 } from "../../../../utilities";
-import { ONBOARD, END_POINTS, ROUTES } from "../../../../constants";
+import {
+  ONBOARD,
+  END_POINTS,
+  ROUTES,
+  LOADING_ACTION_TYPES,
+} from "../../../../constants";
 import classes from "./index.module.scss";
 
 const getExperienceDisplayText = (years, months) => {
@@ -29,6 +34,7 @@ const getExperienceDisplayText = (years, months) => {
 };
 
 let isInitial = true;
+const { APP } = LOADING_ACTION_TYPES;
 
 const OnboardCandidates = () => {
   const dispatch = useDispatch();
@@ -66,7 +72,7 @@ const OnboardCandidates = () => {
   return (
     <>
       <div className={classes.tableContainer}>
-        {isLoading.app ? (
+        {isLoading[APP] ? (
           <Loader />
         ) : candidates.length === 0 ? (
           <NoRecords />

@@ -4,6 +4,9 @@ import Button from "../../../Atoms/components/Button";
 import { useLoading } from "../../../../store";
 import { uiActions } from "../../store";
 import classes from "./index.module.scss";
+import { LOADING_ACTION_TYPES } from "../../../../constants";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
   const { isLoading } = useLoading();
@@ -32,11 +35,11 @@ const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
           </Button>
         )}
         <Button
-          className={`${classes.button} ${isLoading.button ? "loading" : ""}`}
+          className={`${classes.button} ${isLoading[BUTTON] ? "loading" : ""}`}
           disabled={!isEditMode}
           onClick={nextHandler}
         >
-          {isLoading.button
+          {isLoading[BUTTON]
             ? "Saving..."
             : index === 9 || !isInNewRoute
             ? "Save"

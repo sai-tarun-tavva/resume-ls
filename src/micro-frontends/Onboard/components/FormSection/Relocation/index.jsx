@@ -12,8 +12,11 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
@@ -110,7 +113,7 @@ const Relocation = forwardRef((_, ref) => {
       forceRelocationValidations();
       addressRef.current?.forceValidations(); // Force Address validation
       focusErrorsIfAny(sectionRef);
-    } else if (!isLoading.button) {
+    } else if (!isLoading[BUTTON]) {
       // Dispatch actions for Relocation data
       dispatch(
         inputActions.updateField({

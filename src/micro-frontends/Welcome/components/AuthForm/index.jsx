@@ -13,10 +13,13 @@ import {
 import {
   CONTENT,
   END_POINTS,
+  LOADING_ACTION_TYPES,
   ROUTES,
   STATUS_CODES,
 } from "../../../../constants";
 import classes from "./index.module.scss";
+
+const { BUTTON } = LOADING_ACTION_TYPES;
 
 /**
  * AuthForm Component
@@ -61,7 +64,7 @@ const AuthForm = ({ haveAccount }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const buttonText = isLoading.button
+  const buttonText = isLoading[BUTTON]
     ? haveAccount
       ? CONTENT.WELCOME.authPanel.buttons.login.loading
       : CONTENT.WELCOME.authPanel.buttons.signUp.loading
@@ -105,7 +108,7 @@ const AuthForm = ({ haveAccount }) => {
    */
   const handleAuth = async (event) => {
     event.preventDefault();
-    if (isLoading.button) return;
+    if (isLoading[BUTTON]) return;
     await dispatchAsync(resetStatus);
 
     if (!enableAuth) {
@@ -234,7 +237,9 @@ const AuthForm = ({ haveAccount }) => {
 
       <Button
         title={buttonText}
-        className={`${classes.authButton} ${isLoading.button ? "loading" : ""}`}
+        className={`${classes.authButton} ${
+          isLoading[BUTTON] ? "loading" : ""
+        }`}
         onClick={handleAuth}
       >
         {buttonText}
