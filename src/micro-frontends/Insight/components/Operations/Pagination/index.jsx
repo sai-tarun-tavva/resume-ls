@@ -4,8 +4,14 @@ import Button from "../../../../Atoms/components/Button";
 import { useLoading } from "../../../../../store";
 import { uiActions } from "../../../store";
 import { buildFetchCandidatesUrl } from "../../../../../utilities";
-import { END_POINTS, INSIGHT } from "../../../../../constants";
+import {
+  END_POINTS,
+  INSIGHT,
+  LOADING_ACTION_TYPES,
+} from "../../../../../constants";
 import classes from "./index.module.scss";
+
+const { APP } = LOADING_ACTION_TYPES;
 
 /**
  * Pagination Component
@@ -54,7 +60,7 @@ const Pagination = () => {
     <nav className={classes.pagination}>
       <Button
         onClick={() => handlePageClick(previousPage)}
-        disabled={!previousPage || isLoading.app}
+        disabled={!previousPage || isLoading[APP]}
         title="Previous"
         className={classes.prevButton}
       >
@@ -71,7 +77,7 @@ const Pagination = () => {
       </span>
       <Button
         onClick={() => handlePageClick(nextPage)}
-        disabled={!nextPage || isLoading.app}
+        disabled={!nextPage || isLoading[APP]}
         title="Next"
         className={classes.nextButton}
       >

@@ -5,7 +5,10 @@ import Response from "./Response";
 import OverlayMessage from "../OverlayMessage";
 import { useLoading } from "../../../../store";
 import { resultActions } from "../../store";
+import { LOADING_ACTION_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
+
+const { FETCH } = LOADING_ACTION_TYPES;
 
 /**
  * Results Component
@@ -25,7 +28,7 @@ const Results = () => {
 
   return selectedKey ? (
     <>
-      {isLoading.fetch ? (
+      {isLoading[FETCH] ? (
         <div className={classes.loaderContainer}>
           <Loader />
         </div>

@@ -13,10 +13,16 @@ import {
   dispatchAsync,
   sparkValidations,
 } from "../../../../utilities";
-import { CONTENT, STATUS_CODES } from "../../../../constants";
+import {
+  CONTENT,
+  LOADING_ACTION_TYPES,
+  STATUS_CODES,
+} from "../../../../constants";
 import { OPERATION_API_UI_KEYS } from "../../constants";
 import classes from "./index.module.scss";
 import { OPTIONS } from "../../../Onboard/constants";
+
+const { FETCH } = LOADING_ACTION_TYPES;
 
 /**
  * Operations Component
@@ -159,8 +165,8 @@ const Operations = () => {
           isRequired
         />
         <Actions />
-        <Button className={isLoading.fetch ? "loading" : ""}>
-          {isLoading.fetch
+        <Button className={isLoading[FETCH] ? "loading" : ""}>
+          {isLoading[FETCH]
             ? CONTENT.SPARK.operations.button.loading
             : CONTENT.SPARK.operations.button.default}
           <i className="bi bi-rocket-takeoff"></i>

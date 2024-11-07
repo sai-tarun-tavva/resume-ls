@@ -1,7 +1,10 @@
 import Loader from "../../../Atoms/components/Loader";
 import { useLoading } from "../../../../store";
+import { LOADING_ACTION_TYPES } from "../../../../constants";
 import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
+
+const { FETCH } = LOADING_ACTION_TYPES;
 
 /**
  * OverlayMessage Component
@@ -16,7 +19,7 @@ const OverlayMessage = () => {
 
   return (
     <>
-      {isLoading.fetch ? (
+      {isLoading[FETCH] ? (
         <div className={classes.loaderContainer}>
           <Loader />
         </div>
