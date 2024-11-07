@@ -16,20 +16,24 @@ export const buildFetchCandidatesUrl = (
   // Encode query params to ensure special characters are handled
   const encodedLimit = encodeURIComponent(limit);
   const encodedPage = encodeURIComponent(page);
-  const encodedQuery = encodeURIComponent(query);
 
-  const { url, params } = endPoint; // Destructure to get the base URL and parameters
+  // Destructure to get the base URL and parameters
+  const { url, params } = endPoint;
 
   // Create a new URL object for constructing the complete URL
   const fetchUrl = new URL(url);
 
-  // Set query parameters using the defined params and the values for limit and page
+  // Set the limit and page parameters using the defined params and values for limit and page
   fetchUrl.searchParams.set(params.limit, encodedLimit);
   fetchUrl.searchParams.set(params.page, encodedPage);
-  fetchUrl.searchParams.set(params.query, encodedQuery);
 
-  // Convert URL object back to string
-  return fetchUrl.toString();
+  // Conditionally append the query parameter if it's provided
+  let finalUrl = fetchUrl.toString();
+  if (query) {
+    finalUrl += `&${params.query}=${query}`;
+  }
+
+  return finalUrl;
 };
 
 /**
@@ -98,6 +102,34 @@ export const highlightText = (text, highlight) => {
       })}
     </span>
   );
+};
+
+/**
+ * Filters an array of skills to return those that start with or contain the search key.
+ * Skills that start with the search key are prioritized over those that just contain it.
+ *
+ * @param {string} searchKey - The key to filter skills by.
+ * @param {Array<string>} skills - The list of skills to filter.
+ * @returns {Array<string>} - An array of filtered skills, starting with those that match the search key.
+ */
+export const filterSkills = (searchKey, skills) => {
+  // Convert searchKey to lowercase for case-insensitive comparison
+  const keyLower = searchKey.toLowerCase();
+
+  // Filter skills that start with the search key
+  const startsWithSearchKey = skills.filter((skill) =>
+    skill.toLowerCase().startsWith(keyLower)
+  );
+
+  // Filter skills that contain the search key but don't start with it
+  const containsSearchKey = skills.filter(
+    (skill) =>
+      skill.toLowerCase().includes(keyLower) &&
+      !skill.toLowerCase().startsWith(keyLower)
+  );
+
+  // Combine the two lists, starting with those that start with the search key
+  return [...startsWithSearchKey, ...containsSearchKey];
 };
 
 /**
@@ -328,10 +360,10 @@ export const areObjectsEqual = (obj1, obj2) => {
  */
 export const transformPhoneNumber = (value, isCountryCode = false) => {
   // Remove all spaces and hyphens from the input
-  const digitsOnly = value.replace(/[\s()-]+/g, "");
+  const digitsOnly = value?.replace(/[\s()-]+/g, "");
 
   // Ensure we only reformat if we have exactly 10 digits
-  if (digitsOnly.length !== 10) {
+  if (digitsOnly?.length !== 10) {
     return value; // Return the original input if it's not exactly 10 digits
   }
 

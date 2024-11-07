@@ -4,6 +4,7 @@ import { transformData } from "../../../utilities";
 // Initial state of the slice
 const initialState = {
   candidates: [], // candidates fetched from backend
+  skills: [], // skills fetched from backend
 };
 
 // Creating the data slice
@@ -15,6 +16,10 @@ const dataSlice = createSlice({
     replaceCandidates(state, { payload }) {
       // Transform and set the new candidates array
       state.candidates = transformData(payload);
+    },
+    // Replaces skills in the state
+    replaceSkills(state, { payload }) {
+      state.skills = payload;
     },
   },
 });

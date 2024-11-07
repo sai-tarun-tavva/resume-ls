@@ -34,10 +34,13 @@ const { BUTTON } = LOADING_ACTION_TYPES;
 const Upload = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [files, setFiles] = useState([]);
-  const [allowUpload, setAllowUpload] = useState(false);
   const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
   const { updateStatus } = useStatus();
+  const [files, setFiles] = useState([]);
+  const [allowUpload, setAllowUpload] = useState(false);
+  const [dummyProgress, setDummyProgress] = useState(0);
+  const [unparsedFiles, setUnparsedFiles] = useState([]);
+  const [parsedFilesCount, setParsedFilesCount] = useState(0);
 
   /**
    * Toggles the upload modal visibility and manages body overflow style.
@@ -48,6 +51,9 @@ const Upload = () => {
       else document.body.style.overflow = "";
       return !prevValue;
     });
+    setFiles([]); // Clear files after successful upload
+    setUnparsedFiles([]);
+    setParsedFilesCount(0);
   };
 
   /**
@@ -120,7 +126,9 @@ const Upload = () => {
   };
 
   const buttonText = isLoading[BUTTON]
-    ? `Uploading ${files.length} file${files.length > 1 ? "s" : ""}...`
+    ? files.length === 1
+      ? "Uploading 1 file..."
+      : `Uploading ${dummyProgress} of ${files.length} files...`
     : CONTENT.INSIGHT.upload.button + (files.length > 1 ? "s" : "");
 
   /**
@@ -134,24 +142,41 @@ const Upload = () => {
 
     enableButtonLoading();
 
-    // Prepare form data for upload
+    let intervalId;
+    setDummyProgress(1); // Start progress at 1
+
+    // Only set up interval for multiple files
+    if (files.length > 1) {
+      intervalId = setInterval(() => {
+        setDummyProgress((prev) => {
+          if (prev < files.length) return prev + 1;
+          return prev;
+        });
+      }, 1500); // Increment progress every second
+    }
+
     const formData = new FormData();
 
     files.forEach((file) => {
       formData.append("file", file);
     });
 
-    const { status } = await uploadFiles(formData);
+    const { status, unparsed, uploadedCount } = await uploadFiles(formData);
 
     if (status === STATUS_CODES.SUCCESS) {
-      updateStatus({
-        message: `${files.length} file${
-          files.length > 1 ? "s" : ""
-        } uploaded successfully!`,
-        type: "success",
-      });
-      setFiles([]); // Clear files after successful upload
-      toggleAllowUpload();
+      if (unparsed.length === 0) {
+        updateStatus({
+          message: `${uploadedCount} of ${files.length} file${
+            files.length > 1 ? "s" : ""
+          } uploaded successfully!`,
+          type: "success",
+        });
+        toggleAllowUpload();
+      } else {
+        setParsedFilesCount(uploadedCount);
+        setUnparsedFiles(unparsed);
+      }
+
       dispatch(uiActions.enableRefetch());
       navigate(`/${ROUTES.INSIGHT.HOME}`);
     } else {
@@ -161,6 +186,11 @@ const Upload = () => {
         darkMode: true,
       });
     }
+
+    if (intervalId) {
+      clearInterval(intervalId); // Stop dummy progress once the upload is complete
+    }
+    setDummyProgress(0); // Reset progress
     disableButtonLoading();
   };
 
@@ -168,28 +198,62 @@ const Upload = () => {
     <>
       {allowUpload ? (
         <Modal handleClose={toggleAllowUpload}>
-          {/* Drag and Drop Area */}
-          <HelperMessage />
-          <form className={classes.uploadFormContainer}>
-            <DropArea
-              handleDrop={handleDrop}
-              handleDragOver={handleDragOver}
-              handleFileChange={handleFileChange}
-            />
-            <FileList
-              files={files}
-              handleDeleteFile={(fileName) => removeFile(fileName)}
-            />
-            <Button
-              disabled={files.length === 0}
-              onClick={handleUpload}
-              className={`${classes.uploadButton} ${
-                isLoading[BUTTON] ? "loading" : ""
-              }`}
-            >
-              {buttonText}
-            </Button>
-          </form>
+          {unparsedFiles.length > 0 ? (
+            <div className={classes.uploadStatusContent}>
+              <div className={classes.uploadStatusHeader}>
+                <h5 className={classes.uploadStatusTitle}>
+                  {CONTENT.INSIGHT.upload.status.title}
+                </h5>
+              </div>
+              <div className={classes.uploadStatusBody}>
+                <p className={classes.uploadStatus}>
+                  <strong>{parsedFilesCount}</strong> of{" "}
+                  <strong>{files.length}</strong>
+                  {CONTENT.INSIGHT.upload.status.body}
+                </p>
+
+                <div className={classes.unparsedInfo}>
+                  <p>{CONTENT.INSIGHT.upload.status.unparsed}</p>
+                  <ul className={classes.unparsedFilesList}>
+                    {unparsedFiles.map((file, index) => (
+                      <li key={index} className={classes.fileItem}>
+                        <span className={classes.fileIcon}>
+                          <i className="bi bi-file-earmark" />
+                        </span>
+                        <span className={classes.fileName}>
+                          {file.file_name}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <HelperMessage />
+              <form className={classes.uploadFormContainer}>
+                <DropArea
+                  handleDrop={handleDrop}
+                  handleDragOver={handleDragOver}
+                  handleFileChange={handleFileChange}
+                />
+                <FileList
+                  files={files}
+                  handleDeleteFile={(fileName) => removeFile(fileName)}
+                />
+                <Button
+                  disabled={files.length === 0}
+                  onClick={handleUpload}
+                  className={`${classes.uploadButton} ${
+                    isLoading[BUTTON] ? "loading" : ""
+                  }`}
+                >
+                  {buttonText}
+                </Button>
+              </form>
+            </>
+          )}
         </Modal>
       ) : (
         <FloatingButton

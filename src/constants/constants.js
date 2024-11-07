@@ -21,8 +21,9 @@ export const STATUS_CODES = {
 };
 
 export const REGEX = {
-  usernameRegex: /^[a-zA-Z-]{3,20}$/, // Only letters (upper or lower case) and hyphens, length between 3 and 20 characters
-  phoneRegex: /^[\d\s()-]{10,}$/, // Only allows up to 10 digits
+  usernameRegex: /^[a-zA-Z0-9-\\]{3,20}$/, // Only letters (upper or lower case), numbers, hyphens and backslashes, length between 3 and 20 characters
+  phoneRegex:
+    /^[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*\d[-()\s]*$/, // Accepts exactly 10 digits with optional hyphens, spaces, and round brackets in any position between, before, or after digits
   emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // General email pattern: non-whitespace characters, followed by '@', a domain name, and a valid top-level domain
   passwordRegex: /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/, // Requires at least 8 characters, with at least one upper case, one lower case, one number, and one special character, no spaces allowed
   linkedInRegex: /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/, // Valid LinkedIn profile URL: must start with "https://www.linkedin.com/in/" followed by alphanumeric characters or hyphens
@@ -48,7 +49,7 @@ export const STATUS_ACTION_TYPES = {
   RESET: "RESET_STATUS",
 };
 
-const UI_ACTION_TYPES = {
+export const UI_ACTION_TYPES = {
   UPDATE_SEARCH_TERM: "UPDATE_SEARCH_TERM",
   UPDATE_PAGINATION: "UPDATE_PAGINATION",
   UPDATE_REFETCH_URL: "UPDATE_REFETCH_URL",

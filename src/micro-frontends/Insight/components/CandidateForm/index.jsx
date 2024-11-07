@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../../Atoms/hooks";
@@ -6,7 +6,7 @@ import AutoSuggestion from "./AutoSuggestion";
 import Skills from "../../../Atoms/components/Skills";
 import Button from "../../../Atoms/components/Button";
 import InputV1 from "../../../Atoms/components/Inputs/InputV1";
-import { uiActions } from "../../store";
+import { dataActions, uiActions } from "../../store";
 import { useLoading, useStatus } from "../../../../store";
 import {
   arraysEqual,
@@ -14,6 +14,7 @@ import {
   createNewSkill,
   editCandidate,
   fetchSuggestedSkills,
+  filterSkills,
   dispatchAsync,
   transformExperience,
   transformPhoneNumber,
@@ -43,14 +44,10 @@ const CandidateForm = () => {
   const { candidateId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { candidates } = useSelector((state) => state.data);
-  const {
-    isLoading,
-    enableFetchLoading,
-    disableFetchLoading,
-    enableButtonLoading,
-    disableButtonLoading,
-  } = useLoading();
+  const { candidates, skills: globalFetchedSkills } = useSelector(
+    (state) => state.data
+  );
+  const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
   const { updateStatus, resetStatus } = useStatus();
 
   // Fetch candidate information based on the candidateId
@@ -60,22 +57,6 @@ const CandidateForm = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const autoSuggestRef = useRef(null);
-
-  // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
-  useEffect(() => {
-    if (!info) navigate(ROUTES.INSIGHT.HOME);
-  }, [info, navigate]);
-
-  // Executes whenever user clicks on the screen
-  useEffect(() => {
-    // Add event listener for clicks
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   /**
    * Hide suggestions if user clicks outside of it.
@@ -102,7 +83,11 @@ const CandidateForm = () => {
     let skillError = "";
 
     // Validate skill input
-    if (localSkills.includes(newSkill.trim())) {
+    if (
+      localSkills
+        .map((skill) => skill.toLowerCase())
+        .includes(newSkill.trim().toLowerCase())
+    ) {
       skillError = CONTENT.INSIGHT.statusMessages.skill.existing;
     }
 
@@ -156,7 +141,7 @@ const CandidateForm = () => {
     handleInputBlur: handlePhoneBlur,
     error: phoneError,
   } = useInput(
-    info?.phone_numbers,
+    transformPhoneNumber(info?.phone_numbers),
     (value) => candidateValidations.phone(info?.phone_numbers, value),
     transformPhoneNumber
   );
@@ -216,42 +201,24 @@ const CandidateForm = () => {
   );
 
   /**
+   * Add a skill when Enter key is pressed in the skill input field.
+   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   */
+  const displayDynamicSuggestions = useCallback(() => {
+    setShowSuggestions(!!skillValue);
+
+    if (!!skillValue) {
+      setSuggestions(filterSkills(skillValue, globalFetchedSkills));
+    }
+  }, [skillValue, globalFetchedSkills]);
+
+  /**
    * Prevent form submission when Enter key is pressed.
    * @param {KeyboardEvent} event - The keyboard event triggered on key press.
    */
   const preventSubmitOnEnter = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-    }
-  };
-
-  /**
-   * Add a skill when Enter key is pressed in the skill input field.
-   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
-   */
-  const addSkillOnEnter = async (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-
-      setShowSuggestions(!!skillValue);
-
-      if (!!skillValue) {
-        enableFetchLoading();
-        const { status, data } = await fetchSuggestedSkills(skillValue);
-
-        if (status === STATUS_CODES.SUCCESS) {
-          setSuggestions(data);
-        } else {
-          setShowSuggestions(false);
-          resetSkillValue();
-          updateStatus({
-            message: CONTENT.COMMON.serverError,
-            type: "failure",
-          });
-        }
-      }
-
-      disableFetchLoading();
     }
   };
 
@@ -383,6 +350,44 @@ const CandidateForm = () => {
     }
   };
 
+  // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
+  useEffect(() => {
+    if (!info) navigate(ROUTES.INSIGHT.HOME);
+  }, [info, navigate]);
+
+  // Fetches the skills list on mount
+  useEffect(() => {
+    const fetchSkills = async () => {
+      const { status, data } = await fetchSuggestedSkills();
+
+      if (status === STATUS_CODES.SUCCESS) {
+        dispatch(dataActions.replaceSkills(data));
+      } else {
+        updateStatus({
+          message: CONTENT.INSIGHT.statusMessages.skill.fetchFail,
+          type: "failure",
+        });
+      }
+    };
+
+    fetchSkills();
+  }, [dispatch, updateStatus]);
+
+  // Executes whenever user clicks on the screen
+  useEffect(() => {
+    // Add event listener for clicks
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    displayDynamicSuggestions();
+  }, [skillValue, displayDynamicSuggestions]);
+
   return (
     <form
       onSubmit={handleFormSubmit}
@@ -441,7 +446,7 @@ const CandidateForm = () => {
               value={skillValue}
               onChange={handleSkillChange}
               onBlur={handleSkillBlur}
-              onKeyDown={addSkillOnEnter}
+              onKeyDown={preventSubmitOnEnter}
               leftIcon={<i className="bi bi-tools" />}
               extraClassControl={classes.candidateControl}
             />

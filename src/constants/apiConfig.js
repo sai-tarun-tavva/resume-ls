@@ -19,7 +19,7 @@ export const END_POINTS = {
     DOWNLOAD_RESUME: `${INSIGHT_IP_PORT}home/resume/download/`,
     UPLOAD_RESUME: `${INSIGHT_IP_PORT}upload-file/`,
     BATCH_PROCESS: `${INSIGHT_IP_PORT}/dummy`, // pending
-    FETCH_SUGGESTED_SKILLS: `${INSIGHT_IP_PORT}search-skills?query=`,
+    FETCH_SUGGESTED_SKILLS: `${INSIGHT_IP_PORT}search-skills/?query=`,
     CREATE_NEW_SKILL: `${INSIGHT_IP_PORT}add-skills`,
   },
   ONBOARD: {

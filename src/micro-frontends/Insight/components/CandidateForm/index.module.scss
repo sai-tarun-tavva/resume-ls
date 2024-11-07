@@ -29,6 +29,9 @@
       display: flex;
       justify-content: space-between;
       margin: 0rem 4rem 1rem 0;
+      position: absolute;
+      top: 8rem;
+      right: 0;
 
       .closeButton,
       .saveButton {
@@ -92,6 +95,18 @@
     .skillsSection {
       width: 90%;
       margin: 0 auto;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .candidateFormContainer {
+    .candidateForm {
+      .buttonGroup {
+        position: unset;
+        top: unset;
+        right: unset;
+      }
     }
   }
 }

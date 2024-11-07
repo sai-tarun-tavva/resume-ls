@@ -1,7 +1,7 @@
 .dropArea {
   border: 0.1rem dashed var(--primary-color);
   border-radius: 0.5rem;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
   position: relative;
   cursor: pointer;
@@ -18,6 +18,10 @@
     font-size: 1.75rem;
     font-weight: bold;
     margin: 1rem 0;
+  }
+
+  > p {
+    margin-bottom: 1rem;
   }
 
   .icon {

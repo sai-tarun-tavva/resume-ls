@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
+import Button from "../Button";
 import classes from "./index.module.scss";
 
 /**
@@ -14,8 +15,15 @@ import classes from "./index.module.scss";
 const Modal = ({ handleClose, children }) => {
   return createPortal(
     <div className={classes.modalContainer}>
-      <div className={classes.backdrop} onClick={handleClose} />
+      <div className={classes.backdrop} />
       <dialog open className={classes.modal}>
+        <Button
+          onClick={handleClose}
+          className={classes.closeButton}
+          aria-label="Close modal"
+        >
+          <i className="bi bi-x-lg" />
+        </Button>
         {children}
       </dialog>
     </div>,

@@ -299,12 +299,18 @@ export const uploadFiles = async (body) => {
       body,
     });
 
+    const { data, uploaded_count } = await response.json();
+
     // Return the response data and status
-    return { status: response.status };
+    return {
+      status: response.status,
+      unparsed: data,
+      uploadedCount: uploaded_count,
+    };
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);
-    return { status: 500 };
+    return { status: 500, unparsed: [], uploadedCount: 0 };
   }
 };
 
@@ -316,7 +322,7 @@ export const uploadFiles = async (body) => {
  * @param {String} param - The string to be searched for in skill set.
  * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
  */
-export const fetchSuggestedSkills = async (param) => {
+export const fetchSuggestedSkills = async (param = "") => {
   try {
     const response = await fetchWithToken(
       `${END_POINTS.INSIGHT.FETCH_SUGGESTED_SKILLS}${param}`,

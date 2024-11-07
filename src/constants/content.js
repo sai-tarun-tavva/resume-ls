@@ -6,7 +6,7 @@ export const CONTENT = {
       username: {
         empty: "Username is required.",
         invalid:
-          "Username must be 3-20 characters and can only include letters or hyphens.",
+          "Username must be 3-20 characters and can only include letters, digits, hyphens or backslashes.",
       },
       password: {
         empty: "Password is required.",
@@ -239,6 +239,8 @@ export const CONTENT = {
         empty: "Cannot add empty skill.",
         existing: "Skill already exists.",
         added: " added to skills.",
+        fetchFail:
+          "Failed to fetch skill set, auto skill suggestions does not work!",
       },
       upload: {
         maxFiles:
@@ -256,6 +258,13 @@ export const CONTENT = {
         paragraphFile: "to choose your files",
         info: "`Only the first {{MAX_FILES}} files in TXT, DOC, DOCX, and PDF formats, each under {{MAX_FILE_SIZE}}MB will be accepted.",
       },
+      status: {
+        title: "Upload Status",
+        body: " files uploaded successfully.",
+        unparsed:
+          "Some files couldn’t be uploaded. Try re-uploading these files:",
+      },
+
       button: "Upload file",
     },
     operations: {
