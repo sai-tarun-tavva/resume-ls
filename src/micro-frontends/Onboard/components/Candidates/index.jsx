@@ -144,53 +144,112 @@ const OnboardCandidates = () => {
                         );
                       }}
                     >
-                      <td>{candidateInfo.onboarding.status}</td>
-                      <td>{convertDate(updatedTime)}</td>
-                      <td>
+                      <td title={candidateInfo.onboarding.status}>
+                        {candidateInfo.onboarding.status}
+                      </td>
+                      <td title={convertDate(updatedTime)}>
+                        {convertDate(updatedTime)}
+                      </td>
+                      <td
+                        title={
+                          candidateInfo.profession.previousExperience?.[0]
+                            ?.employerName
+                        }
+                      >
                         {
                           candidateInfo.profession.previousExperience?.[0]
                             ?.employerName
                         }
                       </td>
-                      <td>
+                      <td
+                        title={
+                          candidateInfo.relocation.preference === "guestHouse"
+                            ? "Yes"
+                            : "No"
+                        }
+                      >
                         {candidateInfo.relocation.preference === "guestHouse"
                           ? "Yes"
                           : "No"}
                       </td>
-                      <td>
+                      <td
+                        title={candidateInfo.profession.technologiesKnown.join(
+                          ", "
+                        )}
+                      >
                         {candidateInfo.profession.technologiesKnown.join(", ")}
                       </td>
-                      <td>{candidateInfo.offerLetter.marketingName}</td>
-                      <td>{candidateInfo.offerLetter.designation}</td>
-                      <td>
+                      <td title={candidateInfo.offerLetter.marketingName}>
+                        {candidateInfo.offerLetter.marketingName}
+                      </td>
+                      <td title={candidateInfo.offerLetter.designation}>
+                        {candidateInfo.offerLetter.designation}
+                      </td>
+                      <td
+                        title={getExperienceDisplayText(
+                          candidateInfo.profession.experience.years,
+                          candidateInfo.profession.experience.months
+                        )}
+                      >
                         {getExperienceDisplayText(
                           candidateInfo.profession.experience.years,
                           candidateInfo.profession.experience.months
                         )}
                       </td>
-                      <td>
+                      <td
+                        title={
+                          candidateInfo.personal.usaLocation.city
+                            ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
+                            : ""
+                        }
+                      >
                         {candidateInfo.personal.usaLocation.city
                           ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
                           : ""}
                       </td>
-                      <td>{candidateInfo.relocation.interested}</td>
-                      <td>{candidateInfo.personal.firstName}</td>
-                      <td>{candidateInfo.personal.lastName}</td>
-                      <td>{candidateInfo.personal.referenceName}</td>
-                      <td>{candidateInfo.miscellaneous.remarks}</td>
-                      <td>
+                      <td title={candidateInfo.relocation.interested}>
+                        {candidateInfo.relocation.interested}
+                      </td>
+                      <td title={candidateInfo.personal.firstName}>
+                        {candidateInfo.personal.firstName}
+                      </td>
+                      <td title={candidateInfo.personal.lastName}>
+                        {candidateInfo.personal.lastName}
+                      </td>
+                      <td title={candidateInfo.personal.referenceName}>
+                        {candidateInfo.personal.referenceName}
+                      </td>
+                      <td title={candidateInfo.miscellaneous.remarks}>
+                        {candidateInfo.miscellaneous.remarks}
+                      </td>
+                      <td
+                        title={transformPhoneNumber(
+                          candidateInfo.personal.phoneNumber,
+                          true
+                        )}
+                      >
                         {transformPhoneNumber(
                           candidateInfo.personal.phoneNumber,
                           true
                         )}
                       </td>
-                      <td>{candidateInfo.personal.emailId}</td>
-                      <td>{candidateInfo.offerLetter.status}</td>
-                      <td>{candidateInfo.personal.dob}</td>
-                      <td>
+                      <td title={candidateInfo.personal.emailId}>
+                        {candidateInfo.personal.emailId}
+                      </td>
+                      <td title={candidateInfo.offerLetter.status}>
+                        {candidateInfo.offerLetter.status}
+                      </td>
+                      <td title={candidateInfo.personal.dob}>
+                        {candidateInfo.personal.dob}
+                      </td>
+                      <td
+                        title={candidateInfo.education.graduatedUniversity.name}
+                      >
                         {candidateInfo.education.graduatedUniversity.name}
                       </td>
-                      <td>{candidateInfo.miscellaneous.notes}</td>
+                      <td title={candidateInfo.miscellaneous.notes}>
+                        {candidateInfo.miscellaneous.notes}
+                      </td>
                     </tr>
                   );
                 })
