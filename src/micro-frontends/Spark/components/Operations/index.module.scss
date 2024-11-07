@@ -19,6 +19,15 @@
     .fullInputWidth {
       width: 100%;
     }
+
+    .button {
+      border-radius: 0.25rem;
+      font-weight: 700;
+
+      i {
+        margin-left: 1rem;
+      }
+    }
   }
 }
 

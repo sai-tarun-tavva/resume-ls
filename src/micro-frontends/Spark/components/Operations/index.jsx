@@ -165,7 +165,9 @@ const Operations = () => {
           isRequired
         />
         <Actions />
-        <Button className={isLoading[FETCH] ? "loading" : ""}>
+        <Button
+          className={`${classes.button} ${isLoading[FETCH] ? "loading" : ""}`}
+        >
           {isLoading[FETCH]
             ? CONTENT.SPARK.operations.button.loading
             : CONTENT.SPARK.operations.button.default}
