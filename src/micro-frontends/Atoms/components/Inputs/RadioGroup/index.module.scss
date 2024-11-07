@@ -41,7 +41,7 @@
         z-index: 1;
 
         &:focus-visible + label:before {
-          box-shadow: 0 0 0 2px var(--primary-color);
+          box-shadow: 0 0 0 0.1rem var(--primary-color);
         }
 
         &:checked + label:before {
@@ -51,6 +51,15 @@
 
         &:checked + label:after {
           transform: scale(1);
+        }
+
+        &.error + label:before {
+          border: 1px solid var(--error-color);
+          background-color: var(--error-light);
+        }
+
+        &.error[data-error="true"]:focus + label:before {
+          box-shadow: 0 0 0 0.1rem var(--error-color);
         }
       }
 
