@@ -90,10 +90,7 @@ const OnboardCandidates = () => {
                   Email
                 </th>
                 <th title="Offer" style={{ width: "8rem" }}>
-                  Offer
-                </th>
-                <th title="OfferDate" style={{ width: "10rem" }}>
-                  Offer Date
+                  Offer Letter Status
                 </th>
                 <th title="Date of Birth" style={{ width: "12rem" }}>
                   Date of Birth
@@ -108,39 +105,59 @@ const OnboardCandidates = () => {
             </thead>
             <tbody>
               {candidates && candidates.length > 0 ? (
-                candidates.map((candidate, index) => (
-                  <tr
-                    key={index}
-                    onClick={() =>
-                      navigate(
-                        replaceRouteParam(ROUTES.ONBOARD.CANDIDATE_FORM.VIEW, {
-                          id: candidate.id,
-                        })
-                      )
-                    }
-                  >
-                    <td>{candidate.status}</td>
-                    <td>{candidate.companyName}</td>
-                    <td>{candidate.guestHouseMember}</td>
-                    <td>{candidate.technology}</td>
-                    <td>{candidate.marketingName}</td>
-                    <td>{candidate.position}</td>
-                    <td>{candidate.experience}</td>
-                    <td>{candidate.location}</td>
-                    <td>{candidate.relocation}</td>
-                    <td>{candidate.firstName}</td>
-                    <td>{candidate.lastName}</td>
-                    <td>{candidate.referenceName}</td>
-                    <td>{candidate.remarks}</td>
-                    <td>{candidate.phone}</td>
-                    <td>{candidate.emailId}</td>
-                    <td>{candidate.offer}</td>
-                    <td>{candidate.offerDate}</td>
-                    <td>{candidate.dateOfBirth}</td>
-                    <td>{candidate.university}</td>
-                    <td>{candidate.notes}</td>
-                  </tr>
-                ))
+                candidates
+                  .slice(0, 3)
+                  .map(
+                    (
+                      { id: candidateId, additional_info: candidate },
+                      index
+                    ) => (
+                      <tr
+                        key={index}
+                        onClick={() =>
+                          navigate(
+                            replaceRouteParam(
+                              ROUTES.ONBOARD.CANDIDATE_FORM.VIEW,
+                              {
+                                id: candidateId,
+                              }
+                            )
+                          )
+                        }
+                      >
+                        <td>{candidate.onboarding.status}</td>
+                        <td>
+                          {
+                            candidate.profession.previousExperience?.[0]
+                              ?.employerName
+                          }
+                        </td>
+                        <td>
+                          {candidate.relocation.preference === "guestHouse"
+                            ? "Yes"
+                            : "No"}
+                        </td>
+                        <td>
+                          {candidate.profession.technologiesKnown.join(", ")}
+                        </td>
+                        <td>{candidate.offerLetter.marketingName}</td>
+                        <td>{candidate.offerLetter.designation}</td>
+                        <td>{`${candidate.profession.experience.years} years and ${candidate.profession.experience.months} months`}</td>
+                        <td>{`${candidate.personal.usaLocation.city}, ${candidate.personal.usaLocation.state}`}</td>
+                        <td>{candidate.relocation.interested}</td>
+                        <td>{candidate.personal.firstName}</td>
+                        <td>{candidate.personal.lastName}</td>
+                        <td>{candidate.personal.referenceName}</td>
+                        <td>{candidate.miscellaneous.remarks}</td>
+                        <td>{candidate.personal.phoneNumber}</td>
+                        <td>{candidate.personal.emailId}</td>
+                        <td>{candidate.offerLetter.status}</td>
+                        <td>{candidate.personal.dob}</td>
+                        <td>{candidate.education.graduatedUniversity.name}</td>
+                        <td>{candidate.miscellaneous.notes}</td>
+                      </tr>
+                    )
+                  )
               ) : (
                 <tr>
                   <td colSpan="21">No candidates available</td>

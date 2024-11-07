@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Operations from "../Operations";
-// import Add from "../Add";
 import store from "../../store/store";
 
 /**
@@ -17,7 +16,6 @@ const OnboardHub = () => {
     <Provider store={store}>
       <Operations />
       <Outlet />
-      {/* <Add /> */}
     </Provider>
   );
 };

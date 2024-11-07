@@ -1,11 +1,10 @@
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Button from "../../../Atoms/components/Button";
 import { useLoading } from "../../../../store";
 import classes from "./index.module.scss";
 
 const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
-  const navigate = useNavigate();
   const { isLoading } = useLoading();
   const { currentSectionIndex: index, isEditMode } = useSelector(
     (state) => state.input
@@ -13,14 +12,7 @@ const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
 
   return (
     <div className={classes.actions}>
-      <Button
-        className={classes.closeButton}
-        onClick={() => {
-          navigate("..");
-        }}
-      >
-        Close
-      </Button>
+      <Link to="..">Close</Link>
       <div className={classes.navActions}>
         {index !== 0 && (
           <Button
