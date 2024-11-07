@@ -1,12 +1,12 @@
 .operations {
   flex: 0 0 30%;
-  position: fixed;
   padding: 1.5rem;
-  height: 100vh;
   width: 30%;
   background-color: var(--card-bg);
   box-shadow: 0 0.6rem 1rem -0.2rem rgba(0, 0, 0, 0.1),
     0 0.25rem 0.4rem -0.1rem rgba(0, 0, 0, 0.05);
+  position: fixed;
+  height: 93vh;
   overflow-y: auto;
   border-right: 1px solid var(--border-color);
 
@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-    height: 86vh;
+    height: auto;
 
     .fullInputWidth {
       width: 100%;
@@ -23,6 +23,7 @@
     .button {
       border-radius: 0.25rem;
       font-weight: 700;
+      margin-bottom: 4rem;
 
       i {
         margin-left: 1rem;

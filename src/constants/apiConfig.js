@@ -32,6 +32,6 @@ export const END_POINTS = {
   },
   SPARK: {
     GET_SUGGESTIONS:
-      "https://run.mocky.io/v3/89654fad-620b-4474-a072-a6dd87a34c86",
+      "https://run.mocky.io/v3/1b434d26-42e5-4db0-9bdd-a351552e4ac5",
   },
 };

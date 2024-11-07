@@ -49,7 +49,6 @@ export const useFileInput = (
 
   const forceValidations = useCallback(() => {
     if (forceValidationsOnSubmit) {
-      console.log(file);
       setError(validateFile(file));
     }
   }, [forceValidationsOnSubmit, validateFile, file]);

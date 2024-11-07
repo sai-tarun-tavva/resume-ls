@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import PropTypes from "prop-types";
 import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
@@ -32,6 +33,21 @@ const Upload = ({
   isRequired = false,
 }) => {
   const { drag, browse } = CONTENT.SPARK.operations.upload;
+  const fileInputRef = useRef(null);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      fileInputRef.current.click();
+      event.preventDefault();
+    }
+  };
+
+  const handleRemoveKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      resetFile();
+      event.preventDefault();
+    }
+  };
 
   return (
     <div className={classes.upload}>
@@ -48,13 +64,19 @@ const Upload = ({
         <input
           type="file"
           id={id}
+          ref={fileInputRef}
           onChange={changeHandler}
           style={{ display: "none" }}
         />
         <i className={`bi bi-cloud-upload ${classes.icon}`}></i>
         <p className={classes.text}>
           {drag}
-          <label htmlFor={id} className={classes.browse}>
+          <label
+            tabIndex={0}
+            htmlFor={id}
+            className={classes.browse}
+            onKeyDown={handleKeyDown}
+          >
             {browse}
           </label>
         </p>
@@ -65,7 +87,9 @@ const Upload = ({
           <span className={classes.fileName}>{file.name}</span>
           <i
             className={`bi bi-x ${classes.removeIcon}`}
+            tabIndex={0}
             onClick={resetFile}
+            onKeyDown={handleRemoveKeyDown}
           ></i>
         </div>
       )}

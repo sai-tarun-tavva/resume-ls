@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import Textarea from "../../../Atoms/components/Inputs/Textarea";
 import Select from "../../../Atoms/components/Inputs/Select";
 import Upload from "../../../Atoms/components/Inputs/Upload";
@@ -33,7 +34,8 @@ const { FETCH } = LOADING_ACTION_TYPES;
  */
 const Operations = () => {
   const dispatch = useDispatch();
-  const { selectedActions } = useSelector((state) => state.data);
+  const [selectedActions, setSelectedActions] = useState([]);
+  const [actionsError, setActionsError] = useState();
 
   const { isLoading, enableFetchLoading, disableFetchLoading } = useLoading();
   const { updateStatus, resetStatus } = useStatus();
@@ -68,6 +70,12 @@ const Operations = () => {
     forceValidations: forceServiceTypeValidations,
   } = useInput("", sparkValidations.chooseService, undefined, true);
 
+  const forceActionsValidations = () => {
+    setActionsError(
+      selectedActions.length > 0 ? "" : CONTENT.COMMON.errors.actions.empty
+    );
+  };
+
   const allErrors = [jobDescriptionError, chooseResumeError, serviceTypeError];
   const allValues = [jobDescriptionValue, chooseResumeFile, serviceTypeValue];
 
@@ -77,6 +85,7 @@ const Operations = () => {
     forceJobDescriptionValidations();
     forceServiceTypeValidations();
     forceChooseResumeValidations();
+    forceActionsValidations();
   };
 
   const handleFormSubmit = async (event) => {
@@ -162,7 +171,13 @@ const Operations = () => {
           extraClass={classes.fullInputWidth}
           isRequired
         />
-        <Actions />
+        <Actions
+          selectedActions={selectedActions}
+          setSelectedActions={setSelectedActions}
+          actionsError={actionsError}
+          setActionsError={setActionsError}
+          isRequired
+        />
         <Button
           className={`${classes.button} ${isLoading[FETCH] ? "loading" : ""}`}
         >

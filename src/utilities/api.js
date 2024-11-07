@@ -474,7 +474,7 @@ export const updateOnboardCandidate = async (body, id) => {
  */
 export const makeSuggestions = async (body = null) => {
   try {
-    const response = await fetchWithToken(END_POINTS.GET_SUGGESTIONS, {
+    const response = await fetchWithToken(END_POINTS.SPARK.GET_SUGGESTIONS, {
       method: "GET",
       body,
     });

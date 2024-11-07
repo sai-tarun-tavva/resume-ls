@@ -1,7 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
-import { dataActions } from "../../../store";
 import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
@@ -12,54 +10,62 @@ import classes from "./index.module.scss";
  *
  * @param {Object} props - The component props.
  * @param {string} props.error - Error message related to actions.
- * @param {function} props.setError - Function to set the error message.
+ * @param {function} props.setActionsError - Function to set the error message.
  * @returns {JSX.Element} The actions component.
  */
-const Actions = ({ error, setError }) => {
-  const dispatch = useDispatch();
-  const { selectedActions } = useSelector((state) => state.data);
-  const {
-    error: errorMessage,
-    header,
-    items: actionItems,
-  } = CONTENT.SPARK.operations.actions;
+const Actions = ({
+  selectedActions,
+  setSelectedActions,
+  actionsError,
+  setActionsError,
+  isRequired,
+}) => {
+  const { header, items: actionItems } = CONTENT.SPARK.operations.actions;
+  const errorMessage = CONTENT.COMMON.errors.actions.empty;
 
-  const handleCheckboxChange = (key) => {
+  const handleCheckboxChange = (event) => {
+    const key = event.target.id;
+
     let updatedActions = [...selectedActions];
     if (updatedActions.includes(key)) {
       updatedActions = updatedActions.filter((action) => action !== key);
     } else {
       updatedActions.push(key);
     }
-    dispatch(dataActions.updateSelectedActions(updatedActions));
+    setSelectedActions(updatedActions);
     if (updatedActions.length > 0) {
-      setError("");
+      setActionsError("");
     } else {
-      setError(errorMessage);
+      setActionsError(errorMessage);
     }
   };
 
   return (
     <section className={classes.actionsContainer}>
-      <h3 className={classes.title}>{header}</h3>
+      <h3 className={classes.title}>
+        {header} {isRequired && <span className={classes.required}>*</span>}
+      </h3>
       <div className={classes.actions}>
         {Object.entries(actionItems).map(([apiKey, name], index) => (
           <Checkbox
             key={index}
             apiKey={apiKey}
-            name={name}
-            onChange={handleCheckboxChange}
+            id={apiKey}
+            label={name}
+            value={selectedActions.includes(apiKey)}
+            changeHandler={handleCheckboxChange}
+            extraClass={classes.extraCheckboxControl}
           />
         ))}
       </div>
-      <small className={classes.errorText}>{error || ""}</small>
+      <small className={classes.errorText}>{actionsError || ""}</small>
     </section>
   );
 };
 
 Actions.propTypes = {
   error: PropTypes.string,
-  setError: PropTypes.func.isRequired,
+  setActionsError: PropTypes.func.isRequired,
 };
 
 export default Actions;
