@@ -237,4 +237,9 @@ export const OPTIONS = {
     { value: "accepted", label: "Accepted" },
     { value: "rejected", label: "Rejected" },
   ],
+  SERVICE_TYPE: [
+    { value: "", label: "" },
+    { value: "geminiAI", label: "GeminiAI" },
+    { value: "openAI", label: "OpenAI" },
+  ],
 };

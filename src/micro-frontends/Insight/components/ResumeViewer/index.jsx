@@ -4,8 +4,10 @@ import Header from "./Header";
 import Loader from "../../../Atoms/components/Loader";
 import { useLoading } from "../../../../store";
 import { viewResumeActions } from "../../store";
-import { LOADER_TYPES } from "../../../../constants";
+import { LOADER_TYPES, LOADING_ACTION_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
+
+const { FETCH } = LOADING_ACTION_TYPES;
 
 /**
  * ResumeViewer Component
@@ -21,9 +23,7 @@ import classes from "./index.module.scss";
 const ResumeViewer = ({ details: { name, size, url } }) => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.viewResume);
-  const {
-    isLoading: { fetch: isFetchingFile },
-  } = useLoading();
+  const { isLoading } = useLoading();
 
   /**
    * Handles the action to hide the resume viewer.
@@ -40,7 +40,7 @@ const ResumeViewer = ({ details: { name, size, url } }) => {
       <Header id={id} name={name} size={size} onClose={handleHideResume} />
 
       <div className={classes.iframeContainer}>
-        {isFetchingFile ? (
+        {isLoading[FETCH] ? (
           <Loader type={LOADER_TYPES.BAR} />
         ) : (
           <iframe src={url} title="Resume" className={classes.iframe}></iframe>

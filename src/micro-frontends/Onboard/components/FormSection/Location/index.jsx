@@ -7,7 +7,7 @@ import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
 import { focusErrorsIfAny } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { LOADING_ACTION_TYPES, INPUT_TYPES } from "../../../../../constants";
 import {
   FIELDS,
   SECTIONS,
@@ -48,7 +48,7 @@ const Location = forwardRef((_, ref) => {
     value: hasHomeCountryAddress,
     handleInputChange: handleHasHomeCountryChange,
     handleInputBlur: handleHasHomeCountryBlur,
-  } = useInput(false);
+  } = useInput(false, undefined, undefined, undefined, INPUT_TYPES.CHECKBOX);
 
   const submit = async () => {
     // Validate USA address (always required)

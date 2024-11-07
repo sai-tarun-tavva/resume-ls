@@ -16,7 +16,7 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { LOADING_ACTION_TYPES, INPUT_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
@@ -51,7 +51,13 @@ const Profession = forwardRef((_, ref) => {
     value: trainingAttendedValue,
     handleInputChange: trainingAttendedChange,
     handleInputBlur: trainingAttendedBlur,
-  } = useInput(trainingAttendedAsBoolean);
+  } = useInput(
+    trainingAttendedAsBoolean,
+    undefined,
+    undefined,
+    undefined,
+    INPUT_TYPES.CHECKBOX
+  );
 
   const {
     value: experienceYearsValue,

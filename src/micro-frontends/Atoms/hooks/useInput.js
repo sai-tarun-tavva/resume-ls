@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { INPUT_TYPES } from "../../../constants";
 
 /**
  * Custom hook to manage input values and validations.
@@ -13,7 +14,8 @@ export const useInput = (
   defaultValue,
   checkForErrors = () => {},
   transform = (value) => value,
-  forceValidationsOnSubmit = false
+  forceValidationsOnSubmit = false,
+  inputType = ""
 ) => {
   const [enteredValue, setEnteredValue] = useState(defaultValue);
   const [didEdit, setDidEdit] = useState(false);
@@ -21,9 +23,17 @@ export const useInput = (
 
   const errorMessage = checkForErrors(String(enteredValue).trim());
 
-  const handleInputChange = (event, isCheckbox = false) => {
-    if (isCheckbox) setEnteredValue(event.target.checked);
-    else setEnteredValue(event.target.value);
+  const handleInputChange = (event) => {
+    switch (inputType) {
+      case INPUT_TYPES.CHECKBOX:
+        setEnteredValue(event.target.checked);
+        break;
+      case INPUT_TYPES.FILE:
+        setEnteredValue(event.target.files[0]);
+        break;
+      default:
+        setEnteredValue(event.target.value);
+    }
     setDidEdit(false);
   };
 
@@ -34,7 +44,8 @@ export const useInput = (
   const handleInputBlur = () => {
     setDidEdit(true);
     setIsFocused(false);
-    setEnteredValue(transform(enteredValue));
+    if (inputType !== INPUT_TYPES.FILE)
+      setEnteredValue(transform(enteredValue));
   };
 
   const resetValue = useCallback(() => {

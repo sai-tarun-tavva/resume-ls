@@ -14,6 +14,11 @@ export const LOADER_TYPES = {
   SPIN: "spin",
 };
 
+export const INPUT_TYPES = {
+  CHECKBOX: "checkbox",
+  FILE: "file",
+};
+
 export const STATUS_CODES = {
   SUCCESS: 200,
   CREATED: 201,

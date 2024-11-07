@@ -12,7 +12,7 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { LOADING_ACTION_TYPES, INPUT_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
@@ -41,7 +41,13 @@ const Relocation = forwardRef((_, ref) => {
     value: interestedValue,
     handleInputChange: interestedChange,
     handleInputBlur: interestedBlur,
-  } = useInput(interestedAsBoolean);
+  } = useInput(
+    interestedAsBoolean,
+    undefined,
+    undefined,
+    undefined,
+    INPUT_TYPES.CHECKBOX
+  );
 
   const {
     value: preferenceValue,

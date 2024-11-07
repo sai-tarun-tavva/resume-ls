@@ -352,3 +352,13 @@ export const onboardingValidations = {
     },
   },
 };
+
+export const sparkValidations = {
+  jobDescription: (value) =>
+    isEmpty(value) ? validationMsgs.jobDescription.empty : "",
+  uploadResume: (value) =>
+    isEmpty(value) ? validationMsgs.uploadResume.empty : "",
+  chooseService: (value) =>
+    isEmpty(value) ? validationMsgs.chooseService.empty : "",
+  actions: (value) => (isEmpty(value) ? validationMsgs.actions.empty : ""),
+};

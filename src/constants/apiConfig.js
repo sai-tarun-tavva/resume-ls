@@ -30,5 +30,8 @@ export const END_POINTS = {
     ADD_CANDIDATE: `${ONBOARD_IP_PORT}candidates/`,
     UPDATE_CANDIDATE: `${ONBOARD_IP_PORT}candidates/:id/`,
   },
-  SPARK: {},
+  SPARK: {
+    GET_SUGGESTIONS:
+      "https://run.mocky.io/v3/89654fad-620b-4474-a072-a6dd87a34c86",
+  },
 };

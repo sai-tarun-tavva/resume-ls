@@ -21,6 +21,8 @@ const OnboardForm = React.lazy(() =>
   import("./micro-frontends/Onboard/components/Form")
 );
 
+const Spark = React.lazy(() => import("./pages/Spark"));
+
 const PageNotFound = React.lazy(() =>
   import("./micro-frontends/Atoms/components/PageNotFound")
 );
@@ -135,7 +137,15 @@ const appRouter = createBrowserRouter([
   // Spark Home Page
   {
     path: SPARK.HOME,
-    element: <ProtectedRoute element={<></>} />,
+    element: (
+      <ProtectedRoute
+        element={
+          <Suspense>
+            <Spark />
+          </Suspense>
+        }
+      />
+    ),
   },
   // Not Found Page
   {

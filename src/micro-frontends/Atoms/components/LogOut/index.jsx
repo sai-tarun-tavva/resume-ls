@@ -9,9 +9,10 @@ import classes from "./index.module.scss";
  * Handles the logout action.
  * It will be executed when the button is clicked.
  *
+ * @param {String} - Extra className to be applied for button.
  * @returns {JSX.Element} - Rendered logout button component
  */
-const Logout = () => {
+const Logout = ({ className }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     logout();
@@ -19,7 +20,11 @@ const Logout = () => {
   };
 
   return (
-    <Button className={classes.logout} title="Log Out" onClick={handleLogout}>
+    <Button
+      className={`${classes.logout} ${className}`}
+      title="Log Out"
+      onClick={handleLogout}
+    >
       <i className="bi bi-box-arrow-left"></i>
     </Button>
   );

@@ -60,7 +60,7 @@ const Checkbox = forwardRef(
             type="checkbox"
             className={`${classes.checkboxInput} ${error ? classes.error : ""}`}
             checked={value}
-            onChange={(event) => changeHandler(event, true)}
+            onChange={changeHandler}
             onBlur={blurHandler}
             onFocus={focusHandler}
             aria-required={isRequired}

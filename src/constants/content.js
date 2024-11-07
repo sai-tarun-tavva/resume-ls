@@ -1,3 +1,16 @@
+import { OPERATION_UI_KEYS } from "../micro-frontends/Spark/constants";
+
+const {
+  REVIEW,
+  ABOUT,
+  PERCENTAGE,
+  IMPROVE,
+  KEYWORDS,
+  QUESTIONS,
+  EXPERIENCE,
+  SKILLS,
+} = OPERATION_UI_KEYS;
+
 export const CONTENT = {
   COMMON: {
     serverError: "Server error, please try again later.",
@@ -187,6 +200,18 @@ export const CONTENT = {
       usEntry: {
         empty: "US entry month and year is required.",
       },
+      jobDescription: {
+        empty: "Job description is required.",
+      },
+      uploadResume: {
+        empty: "Resume is required.",
+      },
+      chooseService: {
+        empty: "Please choose a service.",
+      },
+      actions: {
+        empty: "Please select at least one action.",
+      },
     },
     pageNotFound: {
       title: "404",
@@ -325,6 +350,58 @@ export const CONTENT = {
       search: {
         placeholder: "Search...",
       },
+    },
+  },
+  SPARK: {
+    operations: {
+      logoSuffix: "R",
+      logo: "Spark",
+      textarea: {
+        placeholder: "Enter job decsription",
+      },
+      upload: {
+        drag: "Drag & drop your resume here or ",
+        browse: "browse",
+      },
+      select: {
+        options: {
+          default: "Choose a service",
+          option1: "GeminiAI",
+          option2: "OpenAI",
+        },
+      },
+      actions: {
+        header: "Select Actions",
+        items: {
+          [REVIEW]: "Overall Assessment",
+          [ABOUT]: "About Resume",
+          [PERCENTAGE]: "Percentage Match",
+          [IMPROVE]: "Improve Resume",
+          [KEYWORDS]: "Missing Keywords",
+          [QUESTIONS]: "Interview Questions",
+          [EXPERIENCE]: "Domain Experience",
+          [SKILLS]: "Desired Skills",
+        },
+      },
+      button: {
+        default: "Ready to boost ?",
+        loading: "Boosting...!",
+      },
+      overlayMessage: {
+        title1: "Elevate Your ",
+        title2: "Career",
+        subTitle: "AI-powered resume analysis awaits",
+      },
+    },
+    results: {
+      [REVIEW]: "Assessment",
+      [ABOUT]: "About",
+      [PERCENTAGE]: "Percentage Match",
+      [IMPROVE]: "Improvements",
+      [KEYWORDS]: "Missing Keywords",
+      [QUESTIONS]: "Interview Questions",
+      [EXPERIENCE]: "Domain Experience",
+      [SKILLS]: "Desired Skills",
     },
   },
 };
