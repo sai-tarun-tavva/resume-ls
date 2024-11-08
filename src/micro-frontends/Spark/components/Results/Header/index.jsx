@@ -1,6 +1,7 @@
+import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { useRef, useState, useEffect } from "react";
+import Button from "../../../../Atoms/components/Button";
 import { CONTENT } from "../../../../../constants";
 import classes from "./index.module.scss";
 
@@ -54,7 +55,7 @@ const Header = ({ clickHandler }) => {
 
   return (
     <header className={classes.headerContainer}>
-      <button
+      <Button
         onClick={() => scroll("left")}
         className={`${classes.navArrow} ${classes.leftArrow} ${
           showLeftArrow ? classes.visible : ""
@@ -62,9 +63,9 @@ const Header = ({ clickHandler }) => {
         aria-label="Scroll left"
       >
         <i className="bi bi-arrow-left-circle-fill" />
-      </button>
+      </Button>
 
-      <button
+      <Button
         onClick={() => scroll("right")}
         className={`${classes.navArrow} ${classes.rightArrow} ${
           showRightArrow ? classes.visible : ""
@@ -72,7 +73,7 @@ const Header = ({ clickHandler }) => {
         aria-label="Scroll right"
       >
         <i className="bi bi-arrow-right-circle-fill" />
-      </button>
+      </Button>
 
       <nav ref={headerRef} className={classes.header}>
         {headerTabs.map(([key, value]) => (

@@ -40,6 +40,16 @@ const Actions = ({
     }
   };
 
+  /**
+   * Prevent form submission when Enter key is pressed.
+   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   */
+  const preventSubmitOnEnter = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   return (
     <section className={classes.actionsContainer}>
       <h3 className={classes.title}>
@@ -55,6 +65,7 @@ const Actions = ({
             value={selectedActions.includes(apiKey)}
             changeHandler={handleCheckboxChange}
             extraClass={classes.extraCheckboxControl}
+            onKeyDown={preventSubmitOnEnter}
           />
         ))}
       </div>
