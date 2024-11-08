@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoading } from "../../../../store";
+import { useLoading, useStatus, useUI } from "../../../../store";
 import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
-import { dataActions, inputActions, uiActions } from "../../store";
+import { dataActions, inputActions } from "../../store";
 import {
   buildFetchCandidatesUrl,
   convertDate,
@@ -18,6 +18,8 @@ import {
   END_POINTS,
   ROUTES,
   LOADING_ACTION_TYPES,
+  STATUS_CODES,
+  CONTENT,
 } from "../../../../constants";
 import classes from "./index.module.scss";
 
@@ -40,8 +42,13 @@ const OnboardCandidates = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { candidates } = useSelector((state) => state.data);
-  const { refetch, refetchURL } = useSelector((state) => state.ui);
+  const {
+    state: { refetch, refetchURL },
+    disableRefetch,
+    updatePagination,
+  } = useUI();
   const { isLoading, enableAppLoading, disableAppLoading } = useLoading();
+  const { updateStatus } = useStatus();
 
   useEffect(() => {
     const url =
@@ -54,20 +61,47 @@ const OnboardCandidates = () => {
     const fetchCandidates = async () => {
       enableAppLoading();
 
-      const { data } = await fetchOnboardCandidates(url);
+      const { status, data } = await fetchOnboardCandidates(url);
 
-      dispatch(inputActions.resetForm());
-      dispatch(dataActions.replaceCandidates({ candidates: data }));
+      if (status === STATUS_CODES.SUCCESS) {
+        const {
+          count: totalCount,
+          previous: previousPage,
+          next: nextPage,
+          results,
+        } = data;
 
+        dispatch(dataActions.replaceCandidates({ candidates: results }));
+        dispatch(inputActions.resetForm());
+        updatePagination({
+          previousPage,
+          nextPage,
+          totalCount,
+        });
+      } else {
+        updateStatus({
+          message: CONTENT.COMMON.serverError,
+          type: "failure",
+        });
+      }
       disableAppLoading();
     };
 
     if (isInitial || refetch) {
       isInitial = false;
       fetchCandidates();
-      dispatch(uiActions.disableRefetch());
+      disableRefetch();
     }
-  }, [dispatch, enableAppLoading, disableAppLoading, refetch, refetchURL]);
+  }, [
+    dispatch,
+    enableAppLoading,
+    disableAppLoading,
+    refetch,
+    refetchURL,
+    disableRefetch,
+    updatePagination,
+    updateStatus,
+  ]);
 
   return (
     <>

@@ -1,11 +1,10 @@
 import { Provider } from "react-redux";
-import Header from "../../../Atoms/components/Header";
-import Logo from "../../../Atoms/components/Logo";
-import Logout from "../../../Atoms/components/LogOut";
+import Header from "../../../Atoms/components/Operations";
 import Operations from "../Operations";
 import Results from "../Results";
 import store from "../../store/store";
 import classes from "./index.module.scss";
+import { PAGES } from "../../../../constants";
 
 /**
  * SparkHub Component
@@ -17,14 +16,11 @@ import classes from "./index.module.scss";
 const SparkHub = () => {
   return (
     <Provider store={store}>
-      <Header>
-        <Logo
-          logoIcon={"bi bi-lightning-charge-fill"}
-          logoSuffix={"R"}
-          logoText={"Spark"}
-        />
-        <Logout className={classes.logoutExtraClass} />
-      </Header>
+      <Header
+        currentPage={PAGES.SPARK}
+        includeSearch={false}
+        includePagination={false}
+      />
       <section className={classes.sparkHub}>
         <Operations />
         <Results />

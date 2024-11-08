@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import IconText from "../../../../../Atoms/components/IconText";
+import { useUI } from "../../../../../../store";
 import {
   capitalizeFirstLetter,
   highlightText,
@@ -41,7 +42,9 @@ const getLinkedIn = (url) => {
  * @returns {JSX.Element} The rendered main information of the candidate.
  */
 const MainInfo = ({ candidate }) => {
-  const { searchTerm } = useSelector((state) => state.ui);
+  const {
+    state: { searchTerm },
+  } = useUI();
   const { show: makeSmaller } = useSelector((state) => state.viewResume);
   const { name, phone_numbers, email, linkedin } = candidate;
   const {

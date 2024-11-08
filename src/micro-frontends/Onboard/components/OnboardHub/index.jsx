@@ -1,7 +1,8 @@
 import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
-import Operations from "../Operations";
+import Operations from "../../../Atoms/components/Operations";
 import store from "../../store/store";
+import { PAGES } from "../../../../constants";
 
 /**
  * OnboardHub Component
@@ -14,8 +15,7 @@ import store from "../../store/store";
 const OnboardHub = () => {
   return (
     <Provider store={store}>
-      <Operations />
-      <Outlet />
+      <Operations currentPage={PAGES.ONBOARD} /> <Outlet />
     </Provider>
   );
 };

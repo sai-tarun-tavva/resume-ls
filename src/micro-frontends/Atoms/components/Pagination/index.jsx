@@ -1,17 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import Button from "../../../../Atoms/components/Button";
-import { useLoading } from "../../../../../store";
-import { uiActions } from "../../../store";
-import { buildFetchCandidatesUrl } from "../../../../../utilities";
-import {
-  END_POINTS,
-  INSIGHT,
-  LOADING_ACTION_TYPES,
-} from "../../../../../constants";
+import Button from "../Button";
+import { useLoading, useUI } from "../../../../store";
+import { buildFetchCandidatesUrl } from "../../../../utilities";
+import { LOADING_ACTION_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
-
-const { APP } = LOADING_ACTION_TYPES;
 
 /**
  * Pagination Component
@@ -21,17 +13,21 @@ const { APP } = LOADING_ACTION_TYPES;
  * @param {Object} props - The component props.
  * @returns {JSX.Element} The rendered pagination component.
  */
-const Pagination = () => {
-  const dispatch = useDispatch();
-  const { previousPage, nextPage, totalCount, searchTerm } = useSelector(
-    (state) => state.ui
-  );
+const Pagination = ({
+  previousPage,
+  nextPage,
+  totalCount,
+  searchTerm,
+  countPerPage,
+  apiEndpoint,
+}) => {
   const { isLoading } = useLoading();
-  const { CANDIDATES_PER_PAGE } = INSIGHT;
+  const { enableRefetch, updateRefetchURL } = useUI();
 
-  const totalPages = Math.ceil(totalCount / CANDIDATES_PER_PAGE);
+  const totalPages = Math.ceil(totalCount / countPerPage);
 
   let currentPage = totalPages;
+  const { APP } = LOADING_ACTION_TYPES;
 
   if (nextPage) {
     currentPage = +nextPage - 1;
@@ -46,14 +42,13 @@ const Pagination = () => {
    */
   const handlePageClick = async (page) => {
     const url = buildFetchCandidatesUrl(
-      END_POINTS.INSIGHT.FETCH_CANDIDATES,
-      CANDIDATES_PER_PAGE,
+      apiEndpoint,
+      countPerPage,
       page,
       searchTerm
     );
-
-    dispatch(uiActions.enableRefetch());
-    dispatch(uiActions.updateRefetchURL(url));
+    enableRefetch();
+    updateRefetchURL(url);
   };
 
   return (

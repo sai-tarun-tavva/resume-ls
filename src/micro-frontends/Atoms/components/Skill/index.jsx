@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { useUI } from "../../../../store";
 import { highlightText } from "../../../../utilities";
 import classes from "./index.module.scss";
 
@@ -19,7 +19,9 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered Skill component.
  */
 const Skill = ({ name, id, isEditable, isSelectable, onRemove, onSelect }) => {
-  const { searchTerm } = useSelector((state) => state.ui);
+  const {
+    state: { searchTerm },
+  } = useUI();
 
   return (
     <span

@@ -1,3 +1,9 @@
+export const PAGES = {
+  INSIGHT: "INSIGHT",
+  ONBOARD: "ONBOARD",
+  SPARK: "SPARK",
+};
+
 export const INSIGHT = {
   CANDIDATES_PER_PAGE: 20,
   MAX_FILES: 30,

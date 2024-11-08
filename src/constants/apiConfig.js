@@ -24,7 +24,7 @@ export const END_POINTS = {
   },
   ONBOARD: {
     FETCH_CANDIDATES: {
-      url: `${ONBOARD_IP_PORT}candidates_get/`,
+      url: `${ONBOARD_IP_PORT}candidates_filter/`,
       params: { limit: "limit", page: "page", query: "query" },
     },
     ADD_CANDIDATE: `${ONBOARD_IP_PORT}candidates/`,

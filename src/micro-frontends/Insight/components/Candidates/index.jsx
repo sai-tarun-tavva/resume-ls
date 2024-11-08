@@ -4,8 +4,8 @@ import Candidate from "./Candidate";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import Loader from "../../../Atoms/components/Loader";
 import ResumeViewer from "../ResumeViewer";
-import { dataActions, uiActions, viewResumeActions } from "../../store";
-import { useLoading, useStatus } from "../../../../store";
+import { dataActions, viewResumeActions } from "../../store";
+import { useLoading, useStatus, useUI } from "../../../../store";
 import {
   buildFetchCandidatesUrl,
   fetchCandidates,
@@ -34,10 +34,14 @@ const { APP } = LOADING_ACTION_TYPES;
 const InsightCandidates = () => {
   const dispatch = useDispatch();
   const { candidates } = useSelector((state) => state.data);
-  const { refetch, refetchURL } = useSelector((state) => state.ui);
   const { show: showResume, id: displayResumeId } = useSelector(
     (state) => state.viewResume
   );
+  const {
+    state: { refetch, refetchURL },
+    updatePagination,
+    disableRefetch,
+  } = useUI();
   const {
     isLoading,
     enableAppLoading,
@@ -89,13 +93,11 @@ const InsightCandidates = () => {
         } = data;
 
         dispatch(dataActions.replaceCandidates(candidates));
-        dispatch(
-          uiActions.updatePagination({
-            previousPage,
-            nextPage,
-            totalCount,
-          })
-        );
+        updatePagination({
+          previousPage,
+          nextPage,
+          totalCount,
+        });
       } else {
         updateStatus({
           message: CONTENT.COMMON.serverError,
@@ -104,11 +106,10 @@ const InsightCandidates = () => {
       }
       disableAppLoading();
     };
-
     if (isInitial || refetch) {
       isInitial = false;
       getData();
-      dispatch(uiActions.disableRefetch());
+      disableRefetch();
     }
   }, [
     dispatch,
@@ -117,6 +118,8 @@ const InsightCandidates = () => {
     enableAppLoading,
     disableAppLoading,
     updateStatus,
+    updatePagination,
+    disableRefetch,
   ]);
 
   useEffect(() => {

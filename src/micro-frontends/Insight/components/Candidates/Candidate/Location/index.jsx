@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import IconText from "../../../../../Atoms/components/IconText";
+import { useUI } from "../../../../../../store";
 import { highlightText } from "../../../../../../utilities";
 import { CONTENT } from "../../../../../../constants";
 import classes from "./index.module.scss";
@@ -19,7 +19,9 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered location and experience information of the candidate.
  */
 const Location = ({ candidate }) => {
-  const { searchTerm } = useSelector((state) => state.ui);
+  const {
+    state: { searchTerm },
+  } = useUI();
   const { location, region, experience } =
     CONTENT.INSIGHT.candidate.defaultValues;
 
