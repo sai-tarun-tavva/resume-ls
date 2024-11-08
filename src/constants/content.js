@@ -297,7 +297,15 @@ export const CONTENT = {
       logo: "Insight",
       search: {
         placeholder: "Search...",
-        title: "Search",
+        searchFields: [
+          "Name",
+          "Email",
+          "Mobile",
+          "City",
+          "State",
+          "Experience",
+          "Skills",
+        ],
       },
     },
     fileViewer: {
@@ -349,6 +357,7 @@ export const CONTENT = {
       logo: "Onboard",
       search: {
         placeholder: "Search...",
+        searchFields: ["Status", "First name", "Last name", "Email", "Mobile"],
       },
     },
   },

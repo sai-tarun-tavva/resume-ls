@@ -66,6 +66,7 @@ const Operations = ({
 
   const { logoSuffix, logo } = displayContent;
   const searchPlaceholder = displayContent?.search?.placeholder;
+  const searchFields = displayContent?.search?.searchFields;
   const enableOperations = location.pathname === `/${enableOpsRoute}`;
 
   /**
@@ -88,6 +89,7 @@ const Operations = ({
           enableSearch={enableOperations}
           placeholder={searchPlaceholder}
           onSubmit={handleSearch}
+          searchFields={searchFields}
         />
       )}
       {includePagination && (
