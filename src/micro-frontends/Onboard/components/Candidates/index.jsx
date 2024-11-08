@@ -10,6 +10,7 @@ import {
   buildFetchCandidatesUrl,
   convertDate,
   fetchOnboardCandidates,
+  highlightText,
   replaceRouteParam,
   transformPhoneNumber,
 } from "../../../../utilities";
@@ -43,7 +44,7 @@ const OnboardCandidates = () => {
   const navigate = useNavigate();
   const { candidates } = useSelector((state) => state.data);
   const {
-    state: { refetch, refetchURL },
+    state: { refetch, refetchURL, searchTerm },
     disableRefetch,
     updatePagination,
   } = useUI();
@@ -200,7 +201,10 @@ const OnboardCandidates = () => {
                       }}
                     >
                       <td title={candidateInfo.onboarding.status}>
-                        {candidateInfo.onboarding.status}
+                        {highlightText(
+                          candidateInfo.onboarding.status,
+                          searchTerm
+                        )}
                       </td>
                       <td title={convertDate(updatedTime)}>
                         {convertDate(updatedTime)}
@@ -266,10 +270,16 @@ const OnboardCandidates = () => {
                         {candidateInfo.relocation.interested}
                       </td>
                       <td title={candidateInfo.personal.firstName}>
-                        {candidateInfo.personal.firstName}
+                        {highlightText(
+                          candidateInfo.personal.firstName,
+                          searchTerm
+                        )}
                       </td>
                       <td title={candidateInfo.personal.lastName}>
-                        {candidateInfo.personal.lastName}
+                        {highlightText(
+                          candidateInfo.personal.lastName,
+                          searchTerm
+                        )}
                       </td>
                       <td title={candidateInfo.personal.referenceName}>
                         {candidateInfo.personal.referenceName}
@@ -283,13 +293,19 @@ const OnboardCandidates = () => {
                           true
                         )}
                       >
-                        {transformPhoneNumber(
-                          candidateInfo.personal.phoneNumber,
-                          true
+                        {highlightText(
+                          transformPhoneNumber(
+                            candidateInfo.personal.phoneNumber,
+                            true
+                          ),
+                          searchTerm
                         )}
                       </td>
                       <td title={candidateInfo.personal.emailId}>
-                        {candidateInfo.personal.emailId}
+                        {highlightText(
+                          candidateInfo.personal.emailId,
+                          searchTerm
+                        )}
                       </td>
                       <td title={candidateInfo.offerLetter.status}>
                         {candidateInfo.offerLetter.status}

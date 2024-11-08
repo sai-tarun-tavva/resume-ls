@@ -59,7 +59,6 @@ const Actions = ({
         {Object.entries(actionItems).map(([apiKey, name], index) => (
           <Checkbox
             key={index}
-            apiKey={apiKey}
             id={apiKey}
             label={name}
             value={selectedActions.includes(apiKey)}
