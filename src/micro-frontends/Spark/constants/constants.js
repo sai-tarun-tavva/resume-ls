@@ -37,3 +37,9 @@ export const INPUT_ACTION_TYPES = {
   SELECT: "selectedAI",
   CHECKBOX: "actions",
 };
+
+export const SERVICE_TYPE_OPTIONS = [
+  { value: "", label: "" },
+  { value: "gemini", label: "GeminiAI" },
+  { value: "openai", label: "OpenAI" },
+];

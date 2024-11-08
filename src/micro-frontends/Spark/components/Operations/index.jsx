@@ -19,9 +19,8 @@ import {
   LOADING_ACTION_TYPES,
   STATUS_CODES,
 } from "../../../../constants";
-import { OPERATION_API_UI_KEYS } from "../../constants";
+import { OPERATION_API_UI_KEYS, SERVICE_TYPE_OPTIONS } from "../../constants";
 import classes from "./index.module.scss";
-import { OPTIONS } from "../../../Onboard/constants";
 
 const { FETCH } = LOADING_ACTION_TYPES;
 
@@ -161,7 +160,7 @@ const Operations = () => {
         <Select
           id="serviceType"
           label="Choose a service"
-          options={OPTIONS.SERVICE_TYPE}
+          options={SERVICE_TYPE_OPTIONS}
           value={serviceTypeValue}
           changeHandler={serviceTypeChange}
           blurHandler={serviceTypeBlur}
