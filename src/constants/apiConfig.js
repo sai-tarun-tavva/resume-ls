@@ -1,4 +1,4 @@
-const WELCOME_HOST_PORT = "http://10.0.12.114:8100/";
+const WELCOME_HOST_PORT = "http://10.0.12.114:8000/";
 const INSIGHT_HOST_PORT = "http://10.0.12.114:8000/";
 const ONBOARD_HOST_PORT = "http://10.0.12.114:8000/";
 const SPARK_HOST_PORT = "http://10.0.12.114:8100/";
@@ -33,6 +33,6 @@ export const END_POINTS = {
     UPDATE_CANDIDATE: `${ONBOARD_HOST_PORT}candidates/:id/`,
   },
   SPARK: {
-    GET_SUGGESTIONS: `${SPARK_HOST_PORT}uploads/`,
+    GET_SUGGESTIONS: `${SPARK_HOST_PORT}new_upload/`,
   },
 };
