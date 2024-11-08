@@ -30,7 +30,7 @@ const Results = () => {
     <>
       {isLoading[FETCH] ? (
         <div className={classes.loaderContainer}>
-          <Loader />
+          <Loader extraClass={classes.loaderContainer} />
         </div>
       ) : (
         <article className={classes.results}>

@@ -20,9 +20,7 @@ const OverlayMessage = () => {
   return (
     <>
       {isLoading[FETCH] ? (
-        <div className={classes.loaderContainer}>
-          <Loader />
-        </div>
+        <Loader extraClass={classes.loaderContainer} />
       ) : (
         <div className={classes.overlay}>
           <div className={classes.content}>

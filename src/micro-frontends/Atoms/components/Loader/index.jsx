@@ -8,12 +8,12 @@ import classes from "./index.module.scss";
  *
  * @returns {JSX.Element} The rendered Loader component.
  */
-const Loader = ({ type = LOADER_TYPES.SPIN }) => {
+const Loader = ({ type = LOADER_TYPES.SPIN, extraClass = "" }) => {
   return (
     <div
       className={`${classes.loaderContainer} ${
         type === LOADER_TYPES.BAR && classes.barContainer
-      }`}
+      } ${extraClass}`}
     >
       <div
         className={
