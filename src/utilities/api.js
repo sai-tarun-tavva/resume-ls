@@ -469,13 +469,13 @@ export const updateOnboardCandidate = async (body, id) => {
  *
  * @async
  * @function
- * @param {Object} [body=null] - Optional request body (not typically used for GET requests).
+ * @param {Object} body - The request body containing whole details get suggestion
  * @returns {Promise<{ status: number, data: Object|null }>} The status and data from the response.
  */
 export const makeSuggestions = async (body = null) => {
   try {
     const response = await fetchWithToken(END_POINTS.SPARK.GET_SUGGESTIONS, {
-      method: "GET",
+      method: "POST",
       body,
     });
 

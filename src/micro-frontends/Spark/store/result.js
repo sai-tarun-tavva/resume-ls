@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  OPERATION_API_UI_KEYS,
-  OPERATION_UI_KEYS,
-} from "../constants/constants";
+import { OPERATION_UI_KEYS } from "../constants/constants";
 
 // Destructuring operation keys for easier access
 const {
@@ -34,14 +31,9 @@ const resultSlice = createSlice({
   name: "results",
   initialState,
   reducers: {
-    // Updates state with new values based on the payload
-    updateState(state, { payload }) {
-      Object.entries(payload).forEach(([apiKey, value]) => {
-        const operationKey = OPERATION_API_UI_KEYS[apiKey];
-        if (operationKey) {
-          state[operationKey] = value;
-        }
-      });
+    // Updates state with new results
+    appendState(state, { payload: { action, value } }) {
+      state[action] = value;
     },
     // Updates the selected key in the state
     updateSelectedKey(state, { payload }) {

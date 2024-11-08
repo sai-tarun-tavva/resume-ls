@@ -19,7 +19,7 @@ import {
   LOADING_ACTION_TYPES,
   STATUS_CODES,
 } from "../../../../constants";
-import { OPERATION_API_UI_KEYS, SERVICE_TYPE_OPTIONS } from "../../constants";
+import { OPERATION_UI_API_KEYS, SERVICE_TYPE_OPTIONS } from "../../constants";
 import classes from "./index.module.scss";
 
 const { FETCH } = LOADING_ACTION_TYPES;
@@ -91,43 +91,50 @@ const Operations = () => {
     event.preventDefault();
     await dispatchAsync(resetStatus);
 
+    let succeededAction;
+
     if (!isSectionValid) {
       forceValidations();
     } else {
-      const formData = new FormData();
-      formData.append("description", jobDescriptionValue);
-      formData.append("file", chooseResumeFile);
-
-      selectedActions.forEach((action) => {
-        formData.append("selectedActions[]", action);
-      });
-
-      formData.append("serviceType", serviceTypeValue);
-
       enableFetchLoading();
 
-      const { status, data } = await makeSuggestions();
+      selectedActions.forEach(async (action) => {
+        const formData = new FormData();
+        formData.append("job_description", jobDescriptionValue);
+        formData.append("resume", chooseResumeFile);
+        formData.append("model", serviceTypeValue);
+        formData.append("search_type", OPERATION_UI_API_KEYS[action]);
+        const { status, data } = await makeSuggestions(formData);
 
-      disableFetchLoading();
+        if (status === STATUS_CODES.SUCCESS) {
+          const result = data?.comparison_result;
+          const success = data?.success;
+          const message = data?.message;
 
-      if (status === STATUS_CODES.SUCCESS) {
-        const { analysisResults } = data;
-        dispatch(resultActions.updateState(analysisResults));
-        dispatch(
-          resultActions.updateSelectedKey(
-            OPERATION_API_UI_KEYS[Object.keys(analysisResults)[0]]
-          )
-        );
-      } else {
-        dispatch(
+          if (!success)
+            updateStatus({
+              message: message,
+              type: "failure",
+              darkMode: true,
+            });
+          else {
+            succeededAction = action;
+            dispatch(resultActions.updateState({ action, value: result }));
+          }
+        } else {
+          await dispatchAsync(resetStatus);
           updateStatus({
-            message: CONTENT.COMMON.serverError,
+            message: `Suggestions for ${CONTENT.SPARK.operations.actions.items[action]} failed due to server error.`,
             type: "failure",
             darkMode: true,
-          })
-        );
-        dispatch(resultActions.resetState());
-      }
+          });
+        }
+      });
+
+      if (succeededAction)
+        dispatch(resultActions.updateSelectedKey(selectedActions[0]));
+
+      disableFetchLoading();
     }
   };
 

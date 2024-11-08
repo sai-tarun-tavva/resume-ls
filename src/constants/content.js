@@ -9,6 +9,7 @@ const {
   QUESTIONS,
   EXPERIENCE,
   SKILLS,
+  HASHTAGS,
 } = OPERATION_UI_KEYS;
 
 export const CONTENT = {
@@ -390,6 +391,7 @@ export const CONTENT = {
           [QUESTIONS]: "Interview Questions",
           [EXPERIENCE]: "Domain Experience",
           [SKILLS]: "Desired Skills",
+          [HASHTAGS]: "Hashtags",
         },
       },
       button: {
