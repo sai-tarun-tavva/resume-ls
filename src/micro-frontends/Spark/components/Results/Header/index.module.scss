@@ -5,6 +5,105 @@
   z-index: 10;
   background: var(--card-bg);
 
+  .navArrow {
+    position: fixed;
+    height: auto;
+    top: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 20;
+    padding: 0;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    i {
+      font-size: 1.5rem;
+      transition: all 0.2s ease;
+      color: var(--primary-color);
+
+      &.bi-arrow-left-circle-fill,
+      &.bi-arrow-right-circle-fill {
+        opacity: 0.7;
+        transform: scale(1);
+
+        &:hover {
+          opacity: 1;
+          transform: scale(1.1);
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    &.visible {
+      opacity: 1;
+    }
+  }
+
+  .leftArrow {
+    left: 0;
+    transform: translateX(-100%);
+    margin-left: 30%;
+
+    &.visible {
+      transform: translateX(0);
+
+      i {
+        animation: slideInLeft 0.3s ease forwards;
+      }
+    }
+  }
+
+  .rightArrow {
+    right: 0;
+    transform: translateX(100%);
+
+    &.visible {
+      transform: translateX(0);
+
+      i {
+        animation: slideInRight 0.3s ease forwards;
+      }
+    }
+  }
+
+  // Animations for arrows
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
   .header {
     display: flex;
     align-items: center;
@@ -12,6 +111,12 @@
     overflow-x: auto;
     white-space: nowrap;
     scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     box-shadow: 0 0.25rem 0.4rem -0.1rem rgba(0, 0, 0, 0.1),
       0 0.25rem 0.4rem -0.1rem rgba(0, 0, 0, 0.05);
 
