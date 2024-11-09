@@ -391,7 +391,7 @@ export const CONTENT = {
       columnHeaders: {
         status: "Status",
         onboardingDate: "Onboarding Date",
-        lastUpdated: "Last Updated",
+        lastUpdated: "Last Updated (EST)",
         position: "Position",
         experience: "Experience",
         companyName: "Company Name",

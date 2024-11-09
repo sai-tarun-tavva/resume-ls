@@ -237,7 +237,7 @@ const OnboardCandidates = () => {
                   return (
                     <tr
                       key={index}
-                      onClick={() => {
+                      onDoubleClick={() => {
                         dispatch(inputActions.replaceCandidate(candidateInfo));
                         navigate(
                           replaceRouteParam(

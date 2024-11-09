@@ -21,11 +21,14 @@ const TimestampDisplay = ({ timestamp }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
 
+    const timeZone = "America/New_York"; // Change this to "America/Los_Angeles" for Pacific Time
+
     const formattedDate = date.toLocaleDateString("en-US", {
       weekday: "short",
       month: "short",
       day: "2-digit",
       year: "numeric",
+      timeZone,
     });
 
     const formattedTime = date.toLocaleTimeString("en-US", {
