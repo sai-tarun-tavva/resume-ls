@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useCountAnimation } from "../../hooks";
 import Logo from "../../../../assets/logo.png";
-import { CONTENT } from "../../../../constants";
+import { CONTENT, SPARK } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -14,10 +14,13 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} Rendered WelcomePanel component
  */
 const WelcomePanel = ({ insightCount = 0, onboardCount = 0 }) => {
+  const sparkCount = SPARK.SUGGESTED_CHANGES;
+
   const iCount = useCountAnimation(insightCount);
   const oCount = useCountAnimation(onboardCount);
+  const sCount = useCountAnimation(sparkCount);
 
-  const { heading, insightParagraph, onboardParagraph } =
+  const { heading, insightParagraph, onboardParagraph, sparkParagraph } =
     CONTENT.WELCOME.welcomePanel;
 
   return (
@@ -40,6 +43,12 @@ const WelcomePanel = ({ insightCount = 0, onboardCount = 0 }) => {
           <div className={classes.counterWrapper}>
             <span className={classes.countUp}>{iCount}</span>
             <p>{insightParagraph}</p>
+          </div>
+        )}
+        {sparkCount >= 0 && (
+          <div className={classes.counterWrapper}>
+            <span className={classes.countUp}>{sCount}</span>
+            <p>{sparkParagraph}</p>
           </div>
         )}
       </div>

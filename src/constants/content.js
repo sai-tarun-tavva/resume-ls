@@ -252,6 +252,7 @@ export const CONTENT = {
       heading: "Empowering Resumes, Elevating Careers",
       insightParagraph: "Resumes parsed",
       onboardParagraph: "Candidates onboarded",
+      sparkParagraph: "Changes suggested",
     },
     authPanel: {
       placeholders: {

@@ -38,6 +38,17 @@ export const ONBOARD = {
 };
 
 /**
+ * SPARK Configuration
+ *
+ * Manages settings specific to the SPARK module.
+ *
+ * @property {number} SUGGESTED_CHANGES - Number of changes suggested to improve resumes.
+ */
+export const SPARK = {
+  SUGGESTED_CHANGES: 8751, // Dummy count for visual appearance on purpose
+};
+
+/**
  * Loader Types
  *
  * Defines loading spinner or bar types.
