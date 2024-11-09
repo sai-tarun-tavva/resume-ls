@@ -11,6 +11,7 @@ import {
   buildFetchCandidatesUrl,
   convertDate,
   fetchOnboardCandidates,
+  getExperienceDisplayText,
   highlightText,
   replaceRouteParam,
   transformPhoneNumber,
@@ -24,24 +25,6 @@ import {
   CONTENT,
 } from "../../../../constants";
 import classes from "./index.module.scss";
-
-/**
- * Function to get the experience display text for a candidate.
- * @param {number} years - Years of experience.
- * @param {number} months - Months of experience.
- * @returns {string} - Formatted experience text.
- */
-const getExperienceDisplayText = (years, months) => {
-  if (years && months) {
-    return `${years} years and ${months} months`;
-  } else if (years) {
-    return `${years} years`;
-  } else if (months) {
-    return `${months} months`;
-  } else {
-    return "";
-  }
-};
 
 // Variable to manage the initial fetch status
 let isInitial = true;

@@ -372,6 +372,24 @@ export const areObjectsEqual = (obj1, obj2) => {
 };
 
 /**
+ * Function to get the experience display text for a candidate.
+ * @param {number} years - Years of experience.
+ * @param {number} months - Months of experience.
+ * @returns {string} - Formatted experience text.
+ */
+export const getExperienceDisplayText = (years, months) => {
+  if (years && months) {
+    return `${years} years and ${months} months`;
+  } else if (years) {
+    return `${years} years`;
+  } else if (months) {
+    return `${months} months`;
+  } else {
+    return "";
+  }
+};
+
+/**
  * Transforms a phone number into a formatted string with either
  * +1 (xxx) xxx-xxxx or (xxx) xxx-xxxx format.
  * @param {string} value - The phone number as a string.
