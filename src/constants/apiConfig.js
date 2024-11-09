@@ -16,7 +16,8 @@ export const END_POINTS = {
    * Handles user authentication, login, logout, and token management.
    */
   WELCOME: {
-    FETCH_RESUME_COUNT: `${INSIGHT_HOST_PORT}resume_count/`,
+    FETCH_INSIGHT_COUNT: `${INSIGHT_HOST_PORT}resume_count/`,
+    FETCH_ONBOARD_COUNT: `${ONBOARD_HOST_PORT}candidates_count/`,
     LOGIN: `${WELCOME_HOST_PORT}login/`,
     LOGOUT: `${WELCOME_HOST_PORT}logout/`,
     SIGN_UP: `${WELCOME_HOST_PORT}signup/`,

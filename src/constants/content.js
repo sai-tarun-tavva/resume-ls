@@ -250,7 +250,8 @@ export const CONTENT = {
     welcomePanel: {
       logoAlt: "Logisoft logo",
       heading: "Empowering Resumes, Elevating Careers",
-      paragraph: "Resumes parsed",
+      insightParagraph: "Resumes parsed",
+      onboardParagraph: "Candidates onboarded",
     },
     authPanel: {
       placeholders: {

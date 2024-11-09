@@ -7,14 +7,18 @@ import classes from "./index.module.scss";
 /**
  * WelcomePanel Component
  *
- * Displays a welcome message along with a logo and an animated count.
+ * Displays a welcome message along with a logo and animated counts for insights and onboard users.
  *
- * @param {number} targetCount - The target count to animate towards.
+ * @param {number} insightCount - The target count to animate towards for parsed resumes.
+ * @param {number} onboardCount - The target count to animate towards for onboarded candidates.
  * @returns {JSX.Element} Rendered WelcomePanel component
  */
-const WelcomePanel = ({ targetCount }) => {
-  const count = useCountAnimation(targetCount);
-  const { heading, paragraph } = CONTENT.WELCOME.welcomePanel;
+const WelcomePanel = ({ insightCount = 0, onboardCount = 0 }) => {
+  const iCount = useCountAnimation(insightCount);
+  const oCount = useCountAnimation(onboardCount);
+
+  const { heading, insightParagraph, onboardParagraph } =
+    CONTENT.WELCOME.welcomePanel;
 
   return (
     <div className={classes.welcomePanel}>
@@ -25,18 +29,27 @@ const WelcomePanel = ({ targetCount }) => {
       />
       <h1>{heading}</h1>
 
-      {targetCount >= 0 && (
-        <div className={classes.counterWrapper}>
-          <span className={classes.countUp}>{count}</span>
-          <p>{paragraph}</p>
-        </div>
-      )}
+      <div>
+        {onboardCount >= 0 && (
+          <div className={classes.counterWrapper}>
+            <span className={classes.countUp}>{oCount}</span>
+            <p>{onboardParagraph}</p>
+          </div>
+        )}
+        {insightCount >= 0 && (
+          <div className={classes.counterWrapper}>
+            <span className={classes.countUp}>{iCount}</span>
+            <p>{insightParagraph}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 WelcomePanel.propTypes = {
-  targetCount: PropTypes.number.isRequired,
+  insightCount: PropTypes.number,
+  onboardCount: PropTypes.number,
 };
 
 WelcomePanel.displayName = "WelcomePanel";
