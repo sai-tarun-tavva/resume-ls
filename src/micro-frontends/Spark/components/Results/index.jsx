@@ -13,15 +13,22 @@ const { FETCH } = LOADING_ACTION_TYPES;
 /**
  * Results Component
  *
- * Displays the results of operations and handles loading state.
+ * Displays the results of various operations, including a loading state if data is being fetched.
+ * Renders the appropriate content based on the selected key in the state.
  *
- * @returns {JSX.Element} The results component.
+ * @component
+ * @returns {JSX.Element} The rendered Results component.
  */
 const Results = () => {
   const dispatch = useDispatch();
   const { isLoading } = useLoading();
   const { selectedKey } = useSelector((state) => state.result);
 
+  /**
+   * Updates the selected results key in the Redux store, which determines the displayed content.
+   *
+   * @param {string} key - The key representing the selected operation or result section.
+   */
   const handleSelectResults = (key) => {
     dispatch(resultActions.updateSelectedKey(key));
   };
@@ -45,3 +52,4 @@ const Results = () => {
 };
 
 export default Results;
+Results.displayName = "Results";

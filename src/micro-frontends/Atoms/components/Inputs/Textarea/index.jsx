@@ -5,20 +5,20 @@ import classes from "./index.module.scss";
 /**
  * Textarea Component
  *
- * Provides a controlled textarea for user input with validation and consistent styling with InputV2.
+ * Provides a controlled textarea for user input with validation and consistent styling.
  *
  * @param {Object} props - The component props.
  * @param {string} props.id - Unique identifier for the textarea.
  * @param {string} props.label - Label for the textarea.
- * @param {boolean} props.isRequired - If the textarea is required.
- * @param {string} props.error - Error message related to the textarea.
- * @param {function} props.setError - Function to set the error message.
- * @param {string} props.value - The value of the textarea.
- * @param {function} props.changeHandler - Function to handle textarea value change.
- * @param {function} props.blurHandler - Function to handle textarea blur event.
- * @param {function} props.focusHandler - Function to handle textarea focus event.
- * @param {string} extraClass - Additional CSS classes for customization.
- * @returns {JSX.Element} The textarea component.
+ * @param {boolean} [props.isRequired=false] - Whether the textarea is required.
+ * @param {string} [props.error] - Error message related to the textarea.
+ * @param {string} props.value - The current value of the textarea.
+ * @param {function} props.changeHandler - Function to handle textarea value changes.
+ * @param {function} props.blurHandler - Function to handle textarea blur events.
+ * @param {function} props.focusHandler - Function to handle textarea focus events.
+ * @param {boolean} [props.isFocused=false] - Whether the textarea should be focused initially.
+ * @param {string} [props.extraClass=""] - Additional CSS classes for customization.
+ * @returns {JSX.Element} The Textarea component.
  */
 const Textarea = forwardRef(
   (
@@ -31,13 +31,19 @@ const Textarea = forwardRef(
       changeHandler,
       focusHandler,
       blurHandler,
-      isFocused,
+      isFocused = false,
       extraClass = "",
     },
     ref
   ) => {
     const inputRef = useRef();
 
+    /**
+     * Exposes focus control to parent components.
+     *
+     * Sets up an imperative handle to allow parent components to trigger
+     * the focus event on the input element using the ref.
+     */
     useImperativeHandle(ref, () => ({
       focus: () => inputRef.current.focus(),
     }));
@@ -78,7 +84,7 @@ Textarea.propTypes = {
   changeHandler: PropTypes.func.isRequired,
   focusHandler: PropTypes.func.isRequired,
   blurHandler: PropTypes.func.isRequired,
-  isFocused: PropTypes.bool.isRequired,
+  isFocused: PropTypes.bool,
   extraClass: PropTypes.string,
 };
 

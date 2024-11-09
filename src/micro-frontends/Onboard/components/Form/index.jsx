@@ -5,8 +5,8 @@ import FormProgress from "../FormProgress";
 import FormSection from "../FormSection";
 import FormActions from "../FormActions";
 import IconToggler from "../../../Atoms/components/IconToggler";
-import { useLoading, useStatus } from "../../../../store";
-import { inputActions, uiActions } from "../../store";
+import { useLoading, useStatus, useUI } from "../../../../store";
+import { inputActions } from "../../store";
 import {
   addOnboardCandidate,
   dispatchAsync,
@@ -15,12 +15,23 @@ import {
 import { CONTENT, ROUTES, STATUS_CODES } from "../../../../constants";
 import classes from "./index.module.scss";
 
+/**
+ * Form Component
+ *
+ * This component represents the entire form for onboarding a candidate. It manages
+ * form sections, validates each section's input, handles submission, and navigates
+ * between sections while updating the Redux store accordingly.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Form component.
+ */
 const Form = () => {
   const dispatch = useDispatch();
   const routeLocation = useLocation();
   const navigate = useNavigate();
   const { updateStatus, resetStatus } = useStatus();
   const { enableButtonLoading, disableButtonLoading } = useLoading();
+  const { enableRefetch } = useUI();
   const isInNewRoute = routeLocation.pathname.endsWith(
     ROUTES.ONBOARD.CANDIDATE_FORM.NEW
   );
@@ -30,18 +41,27 @@ const Form = () => {
     shouldSubmitFormSection,
     data,
   } = useSelector((state) => state.input);
+
   const idRef = useRef(data.record.id || null);
 
+  /**
+   * Effect for handling the edit mode based on the route
+   */
   useEffect(() => {
     if (isInNewRoute) dispatch(inputActions.enableEditMode());
     else dispatch(inputActions.enableViewMode());
   }, [isInNewRoute, dispatch]);
 
-  // Redirect to the candidates list if the view route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the view route directly.
+  /**
+   * Redirect to the candidates list if the view route is accessed directly.
+   */
   useEffect(() => {
     if (!data.record.id && !isInNewRoute) navigate(ROUTES.ONBOARD.HOME);
   }, [data.record.id, navigate, isInNewRoute]);
 
+  /**
+   * Handle candidate update or addition
+   */
   useEffect(() => {
     const updateCandidate = async () => {
       if (!shouldSubmitFormSection) return;
@@ -72,6 +92,7 @@ const Form = () => {
       dispatch(inputActions.disableFormSectionSubmission());
       disableButtonLoading();
 
+      // Check for final section and refetch if applicable
       if (
         isInNewRoute &&
         data.miscellaneous.remarks &&
@@ -81,7 +102,7 @@ const Form = () => {
           message: "Successfully added new candidate details!",
           type: "success",
         });
-        dispatch(uiActions.enableRefetch());
+        enableRefetch();
         navigate("..");
       }
     };
@@ -97,8 +118,10 @@ const Form = () => {
     isInNewRoute,
     resetStatus,
     updateStatus,
+    enableRefetch,
   ]);
 
+  // Refs for each form section
   const onboardingRef = useRef();
   const personalRef = useRef();
   const locationRef = useRef();
@@ -123,11 +146,19 @@ const Form = () => {
     miscellaneous: miscellaneousRef,
   };
 
+  /**
+   * Previous button click handler
+   * Navigates to the previous section of the form
+   */
   const previousClickHandler = (event) => {
     event.preventDefault();
     dispatch(inputActions.decrementCurrentSectionIndex());
   };
 
+  /**
+   * Next button click handler
+   * Submits the current section and navigates to the next section
+   */
   const nextClickHandler = async (event) => {
     event.preventDefault();
 
@@ -154,6 +185,9 @@ const Form = () => {
     }
   };
 
+  /**
+   * Toggle between edit mode and view mode
+   */
   const toggleHandler = () => {
     const action = isEditMode
       ? inputActions.enableViewMode

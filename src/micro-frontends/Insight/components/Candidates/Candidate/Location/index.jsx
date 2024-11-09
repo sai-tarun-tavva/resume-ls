@@ -66,5 +66,4 @@ Location.propTypes = {
 };
 
 Location.displayName = "Location";
-
 export default Location;

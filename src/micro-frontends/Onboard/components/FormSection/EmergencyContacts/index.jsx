@@ -12,7 +12,7 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
 import {
   SECTIONS,
   FIELDS,
@@ -22,7 +22,19 @@ import {
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * EmergencyContacts Component
+ *
+ * Handles the collection of emergency contact details for both the USA and Home Country (e.g., India or Other Countries).
+ * Depending on the visa status, the form may show or hide the Home Country contact details.
+ * This component performs validation for both the USA and Home Country contact information.
+ *
+ * @param {Object} _ - The component props (forwarded ref).
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered EmergencyContacts component.
+ */
 const EmergencyContacts = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -39,18 +51,26 @@ const EmergencyContacts = forwardRef((_, ref) => {
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
 
+  /**
+   * Validation functions for emergency contact fields
+   */
   const {
     emergencyContacts: { name: nameValidationFunc, phone: phoneValidationFunc },
   } = onboardingValidations;
 
+  // Determine if the home country contact details are required based on the visa status
   const isHomeCountryContactRequired = !(
     HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatus) ||
     HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatus)
   );
 
+  // Determine if home country contact details are optional
   const isHomeCountryContactOptional =
     HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatus);
 
+  /**
+   * USA emergency contact name and phone handlers with validation
+   */
   const {
     value: usaNameValue,
     handleInputChange: usaNameChange,
@@ -76,6 +96,9 @@ const EmergencyContacts = forwardRef((_, ref) => {
     true
   );
 
+  /**
+   * Home country emergency contact name and phone handlers with validation
+   */
   const {
     value: homeCountryNameValue,
     handleInputChange: homeCountryNameChange,
@@ -106,6 +129,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
     true
   );
 
+  // Aggregate errors and values for validation
   const allErrors = [
     usaNameError,
     usaPhoneError,
@@ -119,8 +143,12 @@ const EmergencyContacts = forwardRef((_, ref) => {
     isHomeCountryContactRequired ? homeCountryPhoneValue : true,
   ];
 
+  // Check if the section is valid
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  /**
+   * Force validations on all fields in the section
+   */
   const forceValidations = () => {
     forceUsaNameValidations();
     forceUsaPhoneValidations();
@@ -131,11 +159,15 @@ const EmergencyContacts = forwardRef((_, ref) => {
     }
   };
 
+  /**
+   * Handles form submission, updates the store with the validated data
+   */
   const submit = async () => {
     if (!isSectionValid) {
       forceValidations();
       focusErrorsIfAny(sectionRef);
     } else if (!isLoading[BUTTON]) {
+      // Dispatch updates for USA emergency contact
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EMERGENCY_CONTACTS,
@@ -147,6 +179,8 @@ const EmergencyContacts = forwardRef((_, ref) => {
           },
         })
       );
+
+      // Dispatch updates for Home Country emergency contact
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EMERGENCY_CONTACTS,
@@ -159,10 +193,12 @@ const EmergencyContacts = forwardRef((_, ref) => {
           },
         })
       );
+
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };
 
+  // Expose methods to parent using ref
   useImperativeHandle(ref, () => ({
     submit,
   }));
@@ -174,12 +210,13 @@ const EmergencyContacts = forwardRef((_, ref) => {
       className={sectionClasses.onboardFormSection}
     >
       <div className={sectionClasses.heading}>
-        <h3>USA</h3>
+        <h3>{sections.emergencyContacts.usaHeading}</h3>
       </div>
       <div className={sectionClasses.formRow}>
+        {/* USA Emergency Contact */}
         <InputV2
           id="usaName"
-          label="Full Name"
+          label={sections.emergencyContacts.fullName}
           value={usaNameValue}
           changeHandler={usaNameChange}
           blurHandler={usaNameBlur}
@@ -192,7 +229,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
 
         <InputV2
           id="usaPhone"
-          label="Phone"
+          label={sections.emergencyContacts.phone}
           value={usaPhoneValue}
           changeHandler={usaPhoneChange}
           blurHandler={usaPhoneBlur}
@@ -204,15 +241,16 @@ const EmergencyContacts = forwardRef((_, ref) => {
         />
       </div>
 
+      {/* Conditional rendering for Home Country contact based on visa status */}
       {(isHomeCountryContactRequired || isHomeCountryContactOptional) && (
         <>
           <div className={sectionClasses.heading}>
-            <h3>Home Country (India, if applicable, or Other Countries)</h3>
+            <h3>{sections.emergencyContacts.homeHeading}</h3>
           </div>
           <div className={sectionClasses.formRow}>
             <InputV2
               id="homeCountryName"
-              label="Full Name"
+              label={sections.emergencyContacts.fullName}
               value={homeCountryNameValue}
               changeHandler={homeCountryNameChange}
               blurHandler={homeCountryNameBlur}
@@ -225,7 +263,7 @@ const EmergencyContacts = forwardRef((_, ref) => {
 
             <InputV2
               id="homeCountryPhone"
-              label="Phone"
+              label={sections.emergencyContacts.phone}
               value={homeCountryPhoneValue}
               changeHandler={homeCountryPhoneChange}
               blurHandler={homeCountryPhoneBlur}

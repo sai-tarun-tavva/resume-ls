@@ -27,6 +27,12 @@ const Button = forwardRef(
   ) => {
     const buttonRef = useRef();
 
+    /**
+     * Exposes focus control to parent components.
+     *
+     * Sets up an imperative handle to allow parent components to trigger
+     * the focus event on the button element using the ref.
+     */
     useImperativeHandle(ref, () => ({
       focus: () => buttonRef.current.focus(),
     }));
@@ -46,8 +52,6 @@ const Button = forwardRef(
   }
 );
 
-Button.displayName = "Button";
-
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
@@ -55,4 +59,5 @@ Button.propTypes = {
   className: PropTypes.string,
 };
 
+Button.displayName = "Button";
 export default Button;

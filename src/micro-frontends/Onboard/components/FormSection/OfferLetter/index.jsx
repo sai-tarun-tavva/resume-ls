@@ -12,12 +12,23 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * OfferLetter Component
+ *
+ * Handles the offer letter section of the onboarding process.
+ * It validates, submits, and manages the user input for offer letter status, marketing name, designation, start date, end date, and roles and responsibilities.
+ *
+ * @param {Object} _ - The component props (forwarded ref).
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered OfferLetter component.
+ */
 const OfferLetter = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -48,6 +59,9 @@ const OfferLetter = forwardRef((_, ref) => {
     },
   } = onboardingValidations;
 
+  /**
+   * Handle input for the "Status" field
+   */
   const {
     value: statusValue,
     handleInputChange: statusChange,
@@ -58,6 +72,9 @@ const OfferLetter = forwardRef((_, ref) => {
     forceValidations: forceStatusValidations,
   } = useInput(status, statusValidationFunc, undefined, true);
 
+  /**
+   * Handle input for the "Marketing Name" field
+   */
   const {
     value: marketingNameValue,
     handleInputChange: marketingNameChange,
@@ -68,6 +85,9 @@ const OfferLetter = forwardRef((_, ref) => {
     forceValidations: forceMarketingNameValidations,
   } = useInput(marketingName, marketingNameValidationFunc, undefined, true);
 
+  /**
+   * Handle input for the "Designation" field
+   */
   const {
     value: designationValue,
     handleInputChange: designationChange,
@@ -78,6 +98,9 @@ const OfferLetter = forwardRef((_, ref) => {
     forceValidations: forceDesignationValidations,
   } = useInput(designation, designationValidationFunc, undefined, true);
 
+  /**
+   * Handle input for the "Start Date" field
+   */
   const {
     value: startDateValue,
     handleInputChange: startDateChange,
@@ -88,6 +111,9 @@ const OfferLetter = forwardRef((_, ref) => {
     forceValidations: forceStartDateValidations,
   } = useInput(startDate, startDateValidationFunc, undefined, true);
 
+  /**
+   * Handle input for the "End Date" field
+   */
   const {
     value: endDateValue,
     handleInputChange: endDateChange,
@@ -98,13 +124,16 @@ const OfferLetter = forwardRef((_, ref) => {
     forceValidations: forceEndDateValidations,
   } = useInput(endDate, endDateValidationFunc, undefined, true);
 
+  /**
+   * Handle input for the "Roles and Responsibilities" field
+   */
   const {
     value: rolesAndResponsibilitiesValue,
     handleInputChange: rolesAndResponsibilitiesChange,
     handleInputBlur: rolesAndResponsibilitiesBlur,
     handleInputFocus: rolesAndResponsibilitiesFocus,
     error: rolesAndResponsibilitiesError,
-    isFocused: isrolesAndResponsibilitiesFocused,
+    isFocused: isRolesAndResponsibilitiesFocused,
     forceValidations: forceRolesValidations,
   } = useInput(
     rolesAndResponsibilities,
@@ -113,6 +142,7 @@ const OfferLetter = forwardRef((_, ref) => {
     true
   );
 
+  // Group all errors and values for validation
   const allErrors = [
     statusError,
     marketingNameError,
@@ -121,6 +151,7 @@ const OfferLetter = forwardRef((_, ref) => {
     endDateError,
     rolesAndResponsibilitiesError,
   ];
+
   const allValues = [
     statusValue,
     marketingNameValue,
@@ -130,8 +161,14 @@ const OfferLetter = forwardRef((_, ref) => {
     rolesAndResponsibilitiesValue,
   ];
 
+  /**
+   * Determines if the offer letter section is valid based on errors and values
+   */
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  /**
+   * Forces validation for all inputs
+   */
   const forceValidations = () => {
     forceStatusValidations();
     forceMarketingNameValidations();
@@ -141,6 +178,11 @@ const OfferLetter = forwardRef((_, ref) => {
     forceRolesValidations();
   };
 
+  /**
+   * Handles form submission.
+   * Validates the offer letter section and submits data to the Redux store.
+   * Focuses on errors if any validation fails.
+   */
   const submit = async () => {
     if (!isSectionValid) {
       forceValidations();
@@ -192,6 +234,7 @@ const OfferLetter = forwardRef((_, ref) => {
     }
   };
 
+  // Expose submit method to parent using ref
   useImperativeHandle(ref, () => ({
     submit,
   }));
@@ -204,7 +247,7 @@ const OfferLetter = forwardRef((_, ref) => {
     >
       <Select
         id="status"
-        label="Offer Letter Status"
+        label={sections.offerLetter.status}
         value={statusValue}
         options={OPTIONS.OFFER_LETTER_STATUS}
         changeHandler={statusChange}
@@ -218,7 +261,7 @@ const OfferLetter = forwardRef((_, ref) => {
       <div className={sectionClasses.formRow}>
         <InputV2
           id="marketingName"
-          label="Marketing Name"
+          label={sections.offerLetter.marketingName}
           value={marketingNameValue}
           changeHandler={marketingNameChange}
           blurHandler={marketingNameBlur}
@@ -231,7 +274,7 @@ const OfferLetter = forwardRef((_, ref) => {
 
         <InputV2
           id="designation"
-          label="Designation"
+          label={sections.offerLetter.designation}
           value={designationValue}
           changeHandler={designationChange}
           blurHandler={designationBlur}
@@ -246,7 +289,7 @@ const OfferLetter = forwardRef((_, ref) => {
       <div className={sectionClasses.formRow}>
         <InputV2
           id="startDate"
-          label="Start Date"
+          label={sections.offerLetter.startDate}
           type="date"
           value={startDateValue}
           changeHandler={startDateChange}
@@ -260,7 +303,7 @@ const OfferLetter = forwardRef((_, ref) => {
 
         <InputV2
           id="endDate"
-          label="End Date"
+          label={sections.offerLetter.endDate}
           type="date"
           value={endDateValue}
           changeHandler={endDateChange}
@@ -275,13 +318,13 @@ const OfferLetter = forwardRef((_, ref) => {
 
       <Textarea
         id="rolesAndResponsibilities"
-        label="Roles and Responsibilities"
+        label={sections.offerLetter.rolesAndResponsibilities}
         value={rolesAndResponsibilitiesValue}
         changeHandler={rolesAndResponsibilitiesChange}
         blurHandler={rolesAndResponsibilitiesBlur}
         focusHandler={rolesAndResponsibilitiesFocus}
         error={rolesAndResponsibilitiesError}
-        isFocused={isrolesAndResponsibilitiesFocused}
+        isFocused={isRolesAndResponsibilitiesFocused}
         extraClass={sectionClasses.fullInputWidth}
         isRequired
       />

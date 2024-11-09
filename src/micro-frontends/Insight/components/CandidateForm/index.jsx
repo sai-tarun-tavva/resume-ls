@@ -6,8 +6,8 @@ import AutoSuggestion from "./AutoSuggestion";
 import Skills from "../../../Atoms/components/Skills";
 import Button from "../../../Atoms/components/Button";
 import InputV1 from "../../../Atoms/components/Inputs/InputV1";
-import { dataActions, uiActions } from "../../store";
-import { useLoading, useStatus } from "../../../../store";
+import { dataActions } from "../../store";
+import { useLoading, useStatus, useUI } from "../../../../store";
 import {
   arraysEqual,
   candidateValidations,
@@ -32,11 +32,8 @@ const { BUTTON } = LOADING_ACTION_TYPES;
 /**
  * CandidateForm Component
  *
- * Allows users to view and edit candidate information,
- * including personal details and skills. It handles form validation,
- * manages the state of form fields, and submits updated candidate data
- * to the server. The component also provides feedback messages to the user
- * based on the success or failure of actions taken within the form.
+ * Allows users to view and edit candidate information, including personal details and skills.
+ * Handles form validation, manages state of form fields, and submits updates to the server.
  *
  * @returns {JSX.Element} - Rendered CandidateForm component.
  */
@@ -49,6 +46,7 @@ const CandidateForm = () => {
   );
   const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
   const { updateStatus, resetStatus } = useStatus();
+  const { enableRefetch } = useUI();
 
   // Fetch candidate information based on the candidateId
   const info = candidates.find((candidate) => candidate.id === +candidateId);
@@ -59,8 +57,9 @@ const CandidateForm = () => {
   const autoSuggestRef = useRef(null);
 
   /**
-   * Hide suggestions if user clicks outside of it.
-   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   * Hides skill suggestions when user clicks outside the suggestion box.
+   *
+   * @param {MouseEvent} event - The click event.
    */
   const handleClickOutside = (event) => {
     // Check if the click is outside the auto-suggestion
@@ -73,8 +72,8 @@ const CandidateForm = () => {
   };
 
   /**
-   * Handle adding a new skill to the localSkills state.
-   * Validates the skill and checks for duplicates before adding.
+   * Adds a new skill to the localSkills state after validation.
+   *
    * @param {string} newSkill - The skill to be added.
    */
   const handleAddSkill = async (newSkill) => {
@@ -106,8 +105,9 @@ const CandidateForm = () => {
   };
 
   /**
-   * Handle removing a skill from localSkills state.
-   * @param {number} skillIndex - The index of the skill to be removed.
+   * Removes a skill from the localSkills state by index.
+   *
+   * @param {number} skillIndex - Index of the skill to remove.
    */
   const handleRemoveSkill = (skillIndex) => {
     const updatedSkills = localSkills.filter(
@@ -119,7 +119,7 @@ const CandidateForm = () => {
   };
 
   /**
-   * Close the candidate form and navigate back to the previous route.
+   * Closes the candidate form and navigates to the previous route.
    */
   const handleClose = () => {
     navigate("..");
@@ -201,8 +201,7 @@ const CandidateForm = () => {
   );
 
   /**
-   * Add a skill when Enter key is pressed in the skill input field.
-   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   * Dynamically displays skill suggestions based on skill input value.
    */
   const displayDynamicSuggestions = useCallback(() => {
     setShowSuggestions(!!skillValue);
@@ -213,8 +212,9 @@ const CandidateForm = () => {
   }, [skillValue, globalFetchedSkills]);
 
   /**
-   * Prevent form submission when Enter key is pressed.
-   * @param {KeyboardEvent} event - The keyboard event triggered on key press.
+   * Prevents form submission on Enter key in input fields.
+   *
+   * @param {KeyboardEvent} event - The keydown event.
    */
   const preventSubmitOnEnter = (event) => {
     if (event.key === "Enter") {
@@ -223,8 +223,9 @@ const CandidateForm = () => {
   };
 
   /**
-   * Check if form values have changed compared to the original candidate info.
-   * @returns {boolean} - Returns true if any form value has changed.
+   * Checks if form values have changed from the original candidate information.
+   *
+   * @returns {boolean} - True if form values differ from original data.
    */
   const hasFormChanged = () => {
     return (
@@ -240,8 +241,9 @@ const CandidateForm = () => {
   };
 
   /**
-   * Check for validation errors across form fields.
-   * @returns {boolean} - Returns true if any validation error exists.
+   * Checks for validation errors across all form fields.
+   *
+   * @returns {boolean} - True if there are validation errors.
    */
   const hasValidationErrors = () => {
     return [
@@ -259,8 +261,9 @@ const CandidateForm = () => {
   const enableSave = hasFormChanged() && !hasValidationErrors();
 
   /**
-   * Handle form submission, performing necessary validations and sending data to the server.
-   * @param {Event} event - The form submission event.
+   * Submits updated candidate data to the server after validation.
+   *
+   * @param {Event} event - Form submission event.
    */
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -307,7 +310,7 @@ const CandidateForm = () => {
       const { status } = await editCandidate(info.id, formValues);
 
       if (status === STATUS_CODES.SUCCESS) {
-        dispatch(uiActions.enableRefetch());
+        enableRefetch();
         updateStatus({
           message: CONTENT.INSIGHT.statusMessages.form.success,
           type: "success",
@@ -324,12 +327,9 @@ const CandidateForm = () => {
   };
 
   /**
-   * Create a new skill when the create skill button is clicked.
+   * Creates a new skill and adds it to the skills list.
    *
-   * @param {MouseEvent} event - The mouse event triggered on button click.
-   *
-   * This function prevents the default form submission, logs the current skill value,
-   * Adds the skill using `handleAddSkill`, and then resets the input field.
+   * @param {MouseEvent} event - Click event on create skill button.
    */
   const handleCreateSkill = async (event) => {
     event.preventDefault();

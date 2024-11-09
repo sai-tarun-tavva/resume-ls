@@ -4,11 +4,10 @@ import classes from "./index.module.scss";
 /**
  * HelperMessage Component
  *
+ * Displays a helper message with a link to learn more about batch processing.
+ * The message content and link text are sourced from the content constants.
  *
- * Displays a helper message along with a link to batch processing.
- * The message and link text are sourced from the content object.
- *
- * @returns {JSX.Element} Rendered HelperMessage component
+ * @returns {JSX.Element} Rendered HelperMessage component.
  */
 const HelperMessage = () => {
   const { message, urlText } = CONTENT.INSIGHT.upload.helper;

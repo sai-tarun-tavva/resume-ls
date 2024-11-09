@@ -1,6 +1,13 @@
 import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
+/**
+ * NoRecords Component
+ *
+ * Displays a message indicating that no records are available.
+ *
+ * @returns {JSX.Element} The NoRecords component.
+ */
 const NoRecords = () => {
   return (
     <p className={classes.noRecordText}>

@@ -4,10 +4,12 @@ import classes from "./index.module.scss";
 /**
  * IconText Component
  *
- * Displays an icon alongside text.
+ * Displays an icon alongside text with an optional maximum width.
  *
- * @param {React.ReactNode} children - The content to be displayed next to the icon.
- * @param {string} iconName - The name of the icon to display (without the "bi-" prefix).
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be displayed next to the icon.
+ * @param {string} props.iconName - The name of the icon to display (without the "bi-" prefix).
+ * @param {string} props.maxWidth -  Maximum width for the component.
  * @returns {JSX.Element} The rendered IconText component.
  */
 const IconText = ({ maxWidth, children, iconName }) => {
@@ -21,11 +23,11 @@ const IconText = ({ maxWidth, children, iconName }) => {
   );
 };
 
-IconText.displayName = "IconText";
-
 IconText.propTypes = {
   children: PropTypes.node.isRequired,
   iconName: PropTypes.string.isRequired,
+  maxWidth: PropTypes.string,
 };
 
+IconText.displayName = "IconText";
 export default IconText;

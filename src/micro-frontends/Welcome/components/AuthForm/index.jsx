@@ -248,10 +248,9 @@ const AuthForm = ({ haveAccount }) => {
   );
 };
 
-AuthForm.displayName = "AuthForm";
-
 AuthForm.propTypes = {
   haveAccount: PropTypes.bool.isRequired,
 };
 
+AuthForm.displayName = "AuthForm";
 export default AuthForm;

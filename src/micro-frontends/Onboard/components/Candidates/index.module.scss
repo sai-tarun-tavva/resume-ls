@@ -1,12 +1,19 @@
 .tableContainer {
-  background: linear-gradient(to right, #ffffff, #f8f9fa);
+  background: #ffffff;
   margin: 7.5rem auto;
-  max-width: 100%;
   width: 100%;
   overflow-x: auto;
   position: fixed;
   overflow-y: auto;
-  height: 93vh;
+  height: 85vh;
+  cursor: pointer;
+
+  background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, 0) 2%),
+    linear-gradient(to left, #fff 0%, rgba(255, 255, 255, 0) 2%);
+  background-position: left center, right center;
+  background-repeat: no-repeat;
+  background-size: 40px 100%, 40px 100%;
+  background-attachment: local, local;
 }
 
 .table {
@@ -15,116 +22,198 @@
   border-collapse: separate;
   border-spacing: 0;
   background: #ffffff;
-  position: relative;
 
   thead {
     position: sticky;
     top: 0;
     z-index: 10;
-    background-color: #ffffff;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(203, 213, 225, 0) 0%,
+        rgba(203, 213, 225, 0.4) 50%,
+        rgba(203, 213, 225, 0) 100%
+      );
+    }
   }
 
   th {
     background: linear-gradient(135deg, var(--primary-color), #1e88e5);
     color: white;
+    backdrop-filter: blur(8px);
     font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 0.03rem;
-    padding: 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    padding: 1.25rem 1.5rem;
     text-align: left;
     white-space: nowrap;
-    border: none;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    position: relative;
 
-    &:first-child {
-      border-left: none;
-    }
+    &:hover {
+      color: #0f172a;
 
-    &:last-child {
-      border-right: none;
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0.75rem;
+        right: 0.75rem;
+        height: 2px;
+        background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+        border-radius: 2px;
+      }
     }
   }
 
   td {
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: none;
-    // This ensures the TD inherits its column width from TH
-    width: inherit;
-    max-width: 0; // Forces text-overflow to work
-    min-width: 0; // Ensures the cell can shrink to its parent's width
-
-    &:first-child {
-      border-left: none;
-    }
-
-    &:last-child {
-      border-right: none;
-    }
+    max-width: 0;
+    font-size: 0.875rem;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+    font-weight: 600;
   }
 
   tbody {
     tr {
-      border-bottom: 0.06rem solid #edf2f7;
-      transition: all 0.2s ease;
-      cursor: pointer;
-
-      &:nth-child(even) {
-        background-color: #f8fafc;
-      }
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
 
       &:hover {
-        background-color: #edf2f7;
-        transform: translateY(-0.06rem);
-        box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.05);
+        background: linear-gradient(
+          90deg,
+          rgba(249, 250, 251, 0.5) 0%,
+          rgba(249, 250, 251, 0.8) 50%,
+          rgba(249, 250, 251, 0.5) 100%
+        );
+        transform: translateY(-1px);
+
+        td {
+          color: #1e293b;
+          border-bottom-color: transparent;
+
+          &:first-child {
+            transform: translateX(4px);
+          }
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            rgba(59, 130, 246, 0) 0%,
+            rgba(59, 130, 246, 0.1) 50%,
+            rgba(59, 130, 246, 0) 100%
+          );
+        }
       }
 
-      &:last-child {
-        border-bottom: none;
+      td:first-child {
+        transition: transform 0.2s ease;
 
-        td:first-child {
-          border-bottom-left-radius: 0.5rem;
+        &[title="inProgress"] {
+          color: #0ea5e9;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+          }
         }
 
-        td:last-child {
-          border-bottom-right-radius: 0.5rem;
+        &[title="applied"] {
+          color: #10b981;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+          }
+        }
+
+        &[title="yetToStart"] {
+          color: #f59e0b;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+          }
         }
       }
-    }
 
-    td {
-      color: #4a5568;
-      font-size: 0.95rem;
-
-      &:first-child {
-        font-weight: 600;
-
-        &[title="Active"] {
-          color: #2f855a;
-        }
-
-        &[title="Pending"] {
-          color: #c05621;
-        }
-
-        &[title="Rejected"] {
-          color: #c53030;
-        }
+      td:nth-child(3) {
+        padding: 0.5rem;
       }
     }
   }
 }
 
-// For smaller screens
+tbody tr:only-child td {
+  text-align: center;
+  color: #94a3b8;
+  padding: 3rem 1.5rem;
+  font-style: italic;
+  background: linear-gradient(
+    135deg,
+    rgba(248, 250, 252, 0.5) 0%,
+    rgba(248, 250, 252, 0.8) 100%
+  );
+}
+
 @media (max-width: 1024px) {
   .table {
     th,
     td {
-      padding: 0.75rem;
-      font-size: 0.9rem;
+      padding: 0.875rem 1rem;
+
+      &:first-child {
+        padding-left: 1.25rem;
+      }
+
+      &:last-child {
+        padding-right: 1.25rem;
+      }
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .tableContainer {
+    margin-top: 11.5rem;
   }
 }

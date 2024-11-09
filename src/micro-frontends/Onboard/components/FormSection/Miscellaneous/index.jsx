@@ -6,12 +6,23 @@ import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";
 import { focusErrorsIfAny } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * Miscellaneous Component
+ *
+ * Handles the miscellaneous section of the onboarding process.
+ * It validates, submits, and manages the user input for remarks and notes.
+ *
+ * @param {Object} _ - The component props (forwarded ref).
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered Miscellaneous component.
+ */
 const Miscellaneous = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -21,9 +32,11 @@ const Miscellaneous = forwardRef((_, ref) => {
       miscellaneous: { remarks, notes },
     },
   } = useSelector((state) => state.input);
+
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
 
+  // Input handling for the 'remarks' field
   const {
     value: remarksValue,
     handleInputChange: remarksChange,
@@ -33,6 +46,7 @@ const Miscellaneous = forwardRef((_, ref) => {
     isFocused: isRemarksFocused,
   } = useInput(remarks);
 
+  // Input handling for the 'notes' field
   const {
     value: notesValue,
     handleInputChange: notesChange,
@@ -42,10 +56,16 @@ const Miscellaneous = forwardRef((_, ref) => {
     isFocused: isNotesFocused,
   } = useInput(notes);
 
+  /**
+   * Handles form submission for the miscellaneous section.
+   * If there are errors, focuses on the fields with errors.
+   * Submits the form data to the Redux store if valid.
+   */
   const submit = async () => {
-    focusErrorsIfAny(sectionRef);
+    focusErrorsIfAny(sectionRef); // Focus on any error fields
 
     if (!isLoading[BUTTON]) {
+      // Dispatch actions to update the remarks and notes fields in the store
       dispatch(
         inputActions.updateField({
           section: SECTIONS.MISCELLANEOUS,
@@ -64,6 +84,7 @@ const Miscellaneous = forwardRef((_, ref) => {
     }
   };
 
+  // Expose submit method to parent component using ref
   useImperativeHandle(ref, () => ({
     submit,
   }));
@@ -74,9 +95,10 @@ const Miscellaneous = forwardRef((_, ref) => {
       disabled={!isEditMode}
       className={sectionClasses.onboardFormSection}
     >
+      {/* Remarks Textarea */}
       <Textarea
         id="remarks"
-        label="Remarks"
+        label={sections.miscellaneous.remarks}
         value={remarksValue}
         changeHandler={remarksChange}
         blurHandler={remarksBlur}
@@ -86,9 +108,10 @@ const Miscellaneous = forwardRef((_, ref) => {
         extraClass={sectionClasses.fullInputWidth}
       />
 
+      {/* Notes Textarea */}
       <Textarea
         id="notes"
-        label="Notes"
+        label={sections.miscellaneous.notes}
         value={notesValue}
         changeHandler={notesChange}
         blurHandler={notesBlur}

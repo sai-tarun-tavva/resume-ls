@@ -28,5 +28,4 @@ const LoginHub = () => {
 };
 
 LoginHub.displayName = "LoginHub";
-
 export default LoginHub;

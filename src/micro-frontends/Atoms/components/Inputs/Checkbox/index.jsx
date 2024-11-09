@@ -16,9 +16,9 @@ import classes from "./index.module.scss";
  * @param {function} props.focusHandler - Function to call when the checkbox gains focus.
  * @param {boolean} props.error - The error state of the checkbox.
  * @param {string} props.helperText - Additional helper text to display below the checkbox.
- * @param {string} extraClass - Additional CSS classes to apply to the input control.
+ * @param {string} props.extraClass - Additional CSS classes to apply to the input control.
  * @param {boolean} props.isRequired - Whether the checkbox is required.
- * @returns {JSX.Element} The CheckboxV2 component.
+ * @returns {JSX.Element} The Checkbox component.
  */
 const Checkbox = forwardRef(
   (
@@ -39,6 +39,12 @@ const Checkbox = forwardRef(
   ) => {
     const inputRef = useRef();
 
+    /**
+     * Exposes focus control to parent components.
+     *
+     * Sets up an imperative handle to allow parent components to trigger
+     * the focus event on the input element using the ref.
+     */
     useImperativeHandle(ref, () => ({
       focus: () => inputRef.current.focus(),
     }));

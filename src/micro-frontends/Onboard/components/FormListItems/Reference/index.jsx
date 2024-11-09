@@ -8,6 +8,17 @@ import {
 } from "../../../../../utilities";
 import classes from "./index.module.scss";
 
+/**
+ * Reference Component
+ *
+ * Handles the input fields for collecting reference information, such as Name, Phone, Email, Designation, and Company.
+ * Each field is validated using the provided validation functions and stores its value.
+ *
+ * @param {Object} labels - The labels for the fields (name, phone, email, etc.).
+ * @param {Object} defaultValue - The default values for the fields.
+ * @param {Object} validationFuncs - The validation functions for each input field.
+ * @param {string} id - The unique identifier for the form fields.
+ */
 const Reference = forwardRef(
   ({ labels, defaultValue, validationFuncs, id }, ref) => {
     const {
@@ -34,6 +45,7 @@ const Reference = forwardRef(
       company: companyValidationFunc,
     } = validationFuncs;
 
+    // Hooking up input state management for all fields
     const {
       value: nameValue,
       handleInputChange: nameChange,
@@ -94,6 +106,7 @@ const Reference = forwardRef(
       forceValidations: forceCompanyValidations,
     } = useInput(companyDefaultValue, companyValidationFunc, undefined, true);
 
+    // Grouping all errors and values dynamically
     const allErrors = [
       nameError,
       phoneError,
@@ -108,7 +121,13 @@ const Reference = forwardRef(
       designationValue,
       companyValue,
     ];
+
+    // Checking the section validity based on errors and values
     const isSectionValid = determineSectionValidity(allErrors, allValues);
+
+    /**
+     * Force validations for all fields in the reference section.
+     */
     const forceValidations = () => {
       forceNameValidations();
       forcePhoneValidations();
@@ -117,6 +136,11 @@ const Reference = forwardRef(
       forceCompanyValidations();
     };
 
+    /**
+     * Handles form submission and validates the fields.
+     *
+     * @returns {Object} - Contains validation status and reference data.
+     */
     const submit = () => {
       const referenceData = {
         name: nameValue,
@@ -140,12 +164,14 @@ const Reference = forwardRef(
       };
     };
 
+    // Exposing submit method to the parent component via ref
     useImperativeHandle(ref, () => ({
       submit,
     }));
 
     return (
       <>
+        {/* Input field for Name */}
         <InputV2
           id={`${nameLabel} ${id}`}
           label={`${nameLabel} ${id}`}
@@ -160,6 +186,7 @@ const Reference = forwardRef(
         />
 
         <div className={classes.referenceRow}>
+          {/* Input field for Phone */}
           <InputV2
             id={`${phoneLabel} ${id}`}
             label={`${phoneLabel} ${id}`}
@@ -173,6 +200,7 @@ const Reference = forwardRef(
             isRequired
           />
 
+          {/* Input field for Email */}
           <InputV2
             id={`${emailLabel} ${id}`}
             label={`${emailLabel} ${id}`}
@@ -188,6 +216,7 @@ const Reference = forwardRef(
         </div>
 
         <div className={classes.referenceRow}>
+          {/* Input field for Designation */}
           <InputV2
             id={`${designationLabel} ${id}`}
             label={`${designationLabel} ${id}`}
@@ -201,6 +230,7 @@ const Reference = forwardRef(
             isRequired
           />
 
+          {/* Input field for Company */}
           <InputV2
             id={`${companyLabel} ${id}`}
             label={`${companyLabel} ${id}`}

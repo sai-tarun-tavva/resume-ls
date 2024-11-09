@@ -18,5 +18,4 @@ const AuthPanel = () => {
 };
 
 AuthPanel.displayName = "AuthPanel";
-
 export default AuthPanel;

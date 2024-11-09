@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { ROUTES } from "./constants";
 
+// Lazy-loaded components for different pages and sections
 const Welcome = React.lazy(() => import("./pages/Welcome"));
 
 const Insight = React.lazy(() => import("./pages/Insight"));
@@ -27,15 +28,19 @@ const PageNotFound = React.lazy(() =>
   import("./micro-frontends/Atoms/components/PageNotFound")
 );
 
+// Extracting route paths from ROUTES constant
 const { INSIGHT, ONBOARD, SPARK } = ROUTES;
 
 /**
- * Router configuration, defines for the application.
+ * App Router Configuration
  *
- * @returns {Object} The router configuration object.
+ * Defines all the routes for the application, including lazy-loaded pages
+ * and protected routes to ensure that only authenticated users can access certain pages.
+ *
+ * @returns {Object} The router configuration object with defined paths and components.
  */
 const appRouter = createBrowserRouter([
-  // Default Welcome page
+  // Default route - Welcome page
   {
     path: "",
     element: (
@@ -57,6 +62,7 @@ const appRouter = createBrowserRouter([
       />
     ),
     children: [
+      // Insight Candidates Page (Default)
       {
         index: true,
         element: (
@@ -69,6 +75,7 @@ const appRouter = createBrowserRouter([
           />
         ),
       },
+      // Insight Candidate Form (Edit)
       {
         path: INSIGHT.CANDIDATE_FORM,
         element: (
@@ -96,6 +103,7 @@ const appRouter = createBrowserRouter([
       />
     ),
     children: [
+      // Onboard Candidates Page (Default)
       {
         index: true,
         element: (
@@ -108,6 +116,7 @@ const appRouter = createBrowserRouter([
           />
         ),
       },
+      // Onboard Candidate Form (New)
       {
         path: ONBOARD.CANDIDATE_FORM.NEW,
         element: (
@@ -120,6 +129,7 @@ const appRouter = createBrowserRouter([
           />
         ),
       },
+      // Onboard Candidate Form (View)
       {
         path: ONBOARD.CANDIDATE_FORM.VIEW,
         element: (
@@ -147,7 +157,7 @@ const appRouter = createBrowserRouter([
       />
     ),
   },
-  // Not Found Page
+  // Not Found Page (404)
   {
     path: "*",
     element: (

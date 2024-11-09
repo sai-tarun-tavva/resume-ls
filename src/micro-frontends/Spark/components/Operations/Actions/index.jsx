@@ -6,12 +6,16 @@ import classes from "./index.module.scss";
 /**
  * Actions Component
  *
- * Displays a list of actions that can be selected by the user.
+ * Displays a list of selectable actions, with a required indicator if needed.
+ * Manages and validates selected actions, displaying an error if no actions are selected.
  *
  * @param {Object} props - The component props.
- * @param {string} props.error - Error message related to actions.
+ * @param {Array<string>} props.selectedActions - List of selected action keys.
+ * @param {function} props.setSelectedActions - Function to update selected actions.
+ * @param {string} props.actionsError - Error message related to actions selection.
  * @param {function} props.setActionsError - Function to set the error message.
- * @returns {JSX.Element} The actions component.
+ * @param {boolean} props.isRequired - Indicates if selecting an action is mandatory.
+ * @returns {JSX.Element} The rendered actions component.
  */
 const Actions = ({
   selectedActions,
@@ -23,6 +27,11 @@ const Actions = ({
   const { header, items: actionItems } = CONTENT.SPARK.operations.actions;
   const errorMessage = CONTENT.COMMON.errors.actions.empty;
 
+  /**
+   * Handles changes to the selected actions, adding or removing actions based on checkbox state.
+   *
+   * @param {ChangeEvent} event - The change event triggered by the checkbox.
+   */
   const handleCheckboxChange = (event) => {
     const key = event.target.id;
 
@@ -32,16 +41,14 @@ const Actions = ({
     } else {
       updatedActions.push(key);
     }
+
     setSelectedActions(updatedActions);
-    if (updatedActions.length > 0) {
-      setActionsError("");
-    } else {
-      setActionsError(errorMessage);
-    }
+    setActionsError(updatedActions.length > 0 ? "" : errorMessage);
   };
 
   /**
-   * Prevent form submission when Enter key is pressed.
+   * Prevents form submission when the Enter key is pressed on a checkbox.
+   *
    * @param {KeyboardEvent} event - The keyboard event triggered on key press.
    */
   const preventSubmitOnEnter = (event) => {
@@ -74,8 +81,12 @@ const Actions = ({
 };
 
 Actions.propTypes = {
-  error: PropTypes.string,
+  selectedActions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setSelectedActions: PropTypes.func.isRequired,
+  actionsError: PropTypes.string,
   setActionsError: PropTypes.func.isRequired,
+  isRequired: PropTypes.bool,
 };
 
 export default Actions;
+Actions.displayName = "Actions";

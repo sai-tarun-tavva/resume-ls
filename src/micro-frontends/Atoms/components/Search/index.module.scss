@@ -40,7 +40,7 @@
   .leftIcon {
     color: var(--primary-color);
     font-size: 1.5rem;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -143,5 +143,11 @@
     color: var(--primary-color);
     right: 1rem;
     top: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .search {
+    margin-right: 0;
   }
 }

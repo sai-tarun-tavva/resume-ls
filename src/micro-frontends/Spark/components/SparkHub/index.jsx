@@ -3,15 +3,17 @@ import Header from "../../../Atoms/components/Operations";
 import Operations from "../Operations";
 import Results from "../Results";
 import store from "../../store/store";
-import classes from "./index.module.scss";
 import { PAGES } from "../../../../constants";
+import classes from "./index.module.scss";
 
 /**
  * SparkHub Component
  *
- * Main hub for displaying operations, results, or overlay messages.
+ * Main hub for displaying operations and results within the application.
+ * Wraps the `Operations` and `Results` components with the Redux provider for state management.
  *
- * @returns {JSX.Element} The SparkHub component.
+ * @component
+ * @returns {JSX.Element} The SparkHub component containing a header, operations, and results sections.
  */
 const SparkHub = () => {
   return (
@@ -30,3 +32,4 @@ const SparkHub = () => {
 };
 
 export default SparkHub;
+SparkHub.displayName = "SparkHub";

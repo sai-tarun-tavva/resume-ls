@@ -40,5 +40,4 @@ WelcomePanel.propTypes = {
 };
 
 WelcomePanel.displayName = "WelcomePanel";
-
 export default WelcomePanel;

@@ -1,48 +1,60 @@
+/**
+ * Constants representing different visa status values.
+ * These are used throughout the application to manage various types of visa statuses.
+ */
 export const VISA_STATUS_VALUES = {
-  ASYLUM_REFUGEE: "Asylum-Refugee",
-  E1: "E-1",
-  E2: "E-2",
-  E3: "E-3",
-  EAD: "EAD",
-  EB1: "EB-1",
-  EB2: "EB-2",
-  EB3: "EB-3",
-  F1CPT: "F-1-CPT",
-  F1OPT: "F-1-OPT",
-  GREEN_CARD: "GreenCard",
-  H1B: "H-1B",
-  H4: "H-4",
-  J1: "J-1",
-  J2: "J-2",
-  L1: "L-1",
-  L2: "L-2",
-  OTHERS: "others",
-  TN: "TN",
-  US_CITIZEN: "USCitizen",
+  ASYLUM_REFUGEE: "Asylum-Refugee", // Asylum or refugee status
+  E1: "E-1", // E-1 visa (Treaty Trader)
+  E2: "E-2", // E-2 visa (Treaty Investor)
+  E3: "E-3", // E-3 visa (Specialty Occupation Professionals from Australia)
+  EAD: "EAD", // Employment Authorization Document
+  EB1: "EB-1", // EB-1 visa (Priority Workers)
+  EB2: "EB-2", // EB-2 visa (Advanced Degree Professionals)
+  EB3: "EB-3", // EB-3 visa (Skilled Workers, Professionals)
+  F1CPT: "F-1-CPT", // F-1 CPT (Curricular Practical Training)
+  F1OPT: "F-1-OPT", // F-1 OPT (Optional Practical Training)
+  GREEN_CARD: "GreenCard", // Green Card (Permanent Resident)
+  H1B: "H-1B", // H-1B visa (Specialty Occupations)
+  H4: "H-4", // H-4 visa (Dependent of H-1B Holder)
+  J1: "J-1", // J-1 visa (Exchange Visitor)
+  J2: "J-2", // J-2 visa (Dependent of J-1 Holder)
+  L1: "L-1", // L-1 visa (Intracompany Transferee)
+  L2: "L-2", // L-2 visa (Dependent of L-1 Holder)
+  OTHERS: "others", // Other visa types
+  TN: "TN", // TN visa (NAFTA Professionals)
+  US_CITIZEN: "USCitizen", // US Citizen status
 };
 
+/**
+ * Options for various sections of the form.
+ * These options are used for dropdowns and selection fields in the UI.
+ */
 export const OPTIONS = {
+  // Onboarding status options
   ONBOARDING_STATUS: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "applied", label: "Applied" },
     { value: "yetToStart", label: "Yet To Start" },
     { value: "inProgress", label: "In Progress" },
     { value: "completed", label: "Completed" },
   ],
+  // Gender options
   GENDER: [
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
     { value: "other", label: "Other" },
   ],
+  // Marital status options
   MARITAL_STATUS: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "single", label: "Single" },
     { value: "married", label: "Married" },
     { value: "divorced", label: "Divorced" },
     { value: "widowed", label: "Widowed" },
   ],
+  // Visa status options with labels mapping to the `VISA_STATUS_VALUES`
   VISA_STATUS: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     {
       value: VISA_STATUS_VALUES.ASYLUM_REFUGEE,
       label: "Asylum/Refugee (Granted Protection in the U.S.)",
@@ -120,18 +132,21 @@ export const OPTIONS = {
     { value: VISA_STATUS_VALUES.US_CITIZEN, label: "U.S. Citizen" },
     { value: VISA_STATUS_VALUES.OTHERS, label: "Other Visa Types" },
   ],
+  // Photo ID type options
   PHOTO_ID_TYPE: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "DL", label: "Driver's License" },
     { value: "StateID", label: "State ID" },
   ],
+  // Country options (India and USA)
   COUNTRY: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "india", label: "India" },
     { value: "usa", label: "USA" },
   ],
+  // Indian state options
   STATE_INDIA: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "AP", label: "Andhra Pradesh" },
     { value: "AR", label: "Arunachal Pradesh" },
     { value: "AS", label: "Assam" },
@@ -161,8 +176,9 @@ export const OPTIONS = {
     { value: "UK", label: "Uttarakhand" },
     { value: "WB", label: "West Bengal" },
   ],
+  // US state options
   STATE_USA: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "AL", label: "Alabama" },
     { value: "AK", label: "Alaska" },
     { value: "AZ", label: "Arizona" },
@@ -214,25 +230,29 @@ export const OPTIONS = {
     { value: "WI", label: "Wisconsin" },
     { value: "WY", label: "Wyoming" },
   ],
+  // How soon the candidate is willing to relocate
   HOW_SOON_RELOCATION: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "withinTwoWeeks", label: "Within 2 weeks" },
     { value: "moreThanTwoWeeks", label: "More than 2 weeks" },
   ],
+  // Relocation preference options
   STAY_PREFERENCE: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "guestHouse", label: "Opt for guest house" },
     { value: "other", label: "Other" },
   ],
+  // Experience months (from 0 to 11)
   EXPERIENCE_MONTHS: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     ...Array.from({ length: 12 }, (_, i) => ({
       value: `${i}`,
       label: `${i}`,
     })),
   ],
+  // Offer letter status options
   OFFER_LETTER_STATUS: [
-    { value: "", label: "" },
+    { value: "", label: "" }, // Placeholder option
     { value: "inProgress", label: "In Progress" },
     { value: "accepted", label: "Accepted" },
     { value: "rejected", label: "Rejected" },

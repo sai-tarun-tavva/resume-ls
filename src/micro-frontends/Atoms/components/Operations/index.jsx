@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import Header from "../../../Atoms/components/Header";
 import Logo from "../../../Atoms/components/Logo";
@@ -19,9 +20,13 @@ import classes from "./index.module.scss";
 /**
  * Operations Component
  *
- * Provides search functionality on the onboarding candidates page.
+ * Provides search and pagination functionality for candidate pages.
  *
- * @returns {JSX.Element} The rendered Operations component.
+ * @param {Object} props - The component props.
+ * @param {string} props.currentPage - Indicates the current page context.
+ * @param {boolean} [props.includeSearch=true] - Whether to include the search functionality.
+ * @param {boolean} [props.includePagination=true] - Whether to include pagination functionality.
+ * @returns {JSX.Element} The Operations component.
  */
 const Operations = ({
   currentPage,
@@ -71,7 +76,7 @@ const Operations = ({
 
   /**
    * Handles the search on submit event.
-   * Update refetch and search term redux state.
+   * Updates refetch and search term in state.
    */
   const handleSearch = (searchText) => {
     enableRefetch();
@@ -95,8 +100,8 @@ const Operations = ({
       {includePagination && (
         <Pagination
           enablePagination={enableOperations}
-          previousPage={previousPage}
-          nextPage={nextPage}
+          previousPage={+previousPage}
+          nextPage={+nextPage}
           totalCount={totalCount}
           searchTerm={searchTerm}
           countPerPage={candidatesPerPage}
@@ -110,6 +115,12 @@ const Operations = ({
       />
     </Header>
   );
+};
+
+Operations.propTypes = {
+  currentPage: PropTypes.string.isRequired,
+  includeSearch: PropTypes.bool,
+  includePagination: PropTypes.bool,
 };
 
 Operations.displayName = "Operations";

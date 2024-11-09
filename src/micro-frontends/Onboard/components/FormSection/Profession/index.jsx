@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -16,12 +16,28 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES, INPUT_TYPES } from "../../../../../constants";
+import {
+  LOADING_ACTION_TYPES,
+  INPUT_TYPES,
+  CONTENT,
+} from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * Profession Component
+ *
+ * Handles the profession-related section of the onboarding process.
+ * It validates, submits, and manages user input related to professional details
+ * like training attended, experience, previous jobs, and references.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered Profession component.
+ */
 const Profession = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -37,11 +53,13 @@ const Profession = forwardRef((_, ref) => {
       },
     },
   } = useSelector((state) => state.input);
+
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
 
   const { profession: validations } = onboardingValidations;
 
+  // Handling 'Training Attended' checkbox state
   const trainingAttendedAsBoolean =
     trainingAttended === FIELDS.RELOCATION.INTERESTED.OPTIONS.YES
       ? true
@@ -59,6 +77,7 @@ const Profession = forwardRef((_, ref) => {
     INPUT_TYPES.CHECKBOX
   );
 
+  // Handling experience fields
   const {
     value: experienceYearsValue,
     handleInputChange: experienceYearsChange,
@@ -79,20 +98,29 @@ const Profession = forwardRef((_, ref) => {
     forceValidations: forceExperienceMonthsValidations,
   } = useInput(months, validations.experienceInMonths, undefined, true);
 
+  // Refs for lists (previous experience, technologies, references)
   const technologiesRef = useRef();
   const prevExpRef = useRef();
   const referencesRef = useRef();
 
+  // Collect all errors and values for the profession section
   const allErrors = [experienceYearsError, experienceMonthsError];
   const allValues = [experienceYearsValue, experienceMonthsValue];
 
+  // Check if the section is valid based on errors and values
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  // Function to trigger validation for all fields
   const forceValidations = () => {
     forceExperienceYearsValidations();
     forceExperienceMonthsValidations();
   };
 
+  /**
+   * Handles form submission.
+   * Validates the section and submits data to the Redux store.
+   * Focuses on errors if any validation fails.
+   */
   const submit = async () => {
     const {
       isSectionValid: arePrevExperiencesValid,
@@ -105,18 +133,21 @@ const Profession = forwardRef((_, ref) => {
     const areReferencesValid = referenceSubmitResult?.isSectionValid;
     const referencesList = referenceSubmitResult?.listItems;
 
+    // Check if the section is valid and all sub-sections (lists) are valid
     if (
       !isSectionValid ||
       !arePrevExperiencesValid ||
       !areTechnologiesValid ||
       !areReferencesValid
     ) {
+      // Trigger force validations if any validation fails
       forceValidations();
       prevExpRef.current?.forceValidations?.();
       technologiesRef.current?.forceValidations?.();
       referencesRef.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
     } else if (!isLoading[BUTTON]) {
+      // If all validations pass, update the Redux store with form data
       dispatch(
         inputActions.updateField({
           section: SECTIONS.PROFESSION,
@@ -161,6 +192,7 @@ const Profession = forwardRef((_, ref) => {
     }
   };
 
+  // Expose submit method to parent component using useImperativeHandle
   useImperativeHandle(ref, () => ({
     submit,
   }));
@@ -173,7 +205,7 @@ const Profession = forwardRef((_, ref) => {
     >
       <Checkbox
         id="trainingAttended"
-        label="Training Attended?"
+        label={sections.profession.training}
         value={trainingAttendedValue}
         changeHandler={trainingAttendedChange}
         blurHandler={trainingAttendedBlur}
@@ -185,7 +217,7 @@ const Profession = forwardRef((_, ref) => {
       <div className={sectionClasses.formRow}>
         <InputV2
           id="experienceYears"
-          label="Experience in Years"
+          label={sections.profession.expYears}
           type="number"
           value={experienceYearsValue}
           changeHandler={experienceYearsChange}
@@ -199,7 +231,7 @@ const Profession = forwardRef((_, ref) => {
 
         <Select
           id="experienceMonths"
-          label="Experience in Months"
+          label={sections.profession.expMonths}
           value={experienceMonthsValue}
           options={OPTIONS.EXPERIENCE_MONTHS}
           changeHandler={experienceMonthsChange}
@@ -213,13 +245,8 @@ const Profession = forwardRef((_, ref) => {
       </div>
 
       <ListAdd
-        label="Any past experience?"
-        itemLabels={{
-          employerName: "Company Name",
-          email: "Company Email",
-          phone: "Company Phone",
-          address: "Company Address",
-        }}
+        label={sections.profession.prevExpList.heading}
+        itemLabels={sections.profession.prevExpList.itemLabels}
         element={(props) => <PreviousExperience {...props} />}
         savedListItems={previousExperience}
         validationFuncs={{
@@ -232,8 +259,8 @@ const Profession = forwardRef((_, ref) => {
       />
 
       <ListAdd
-        label="Any familiar technologies?"
-        itemLabels={{ input: "Technology" }}
+        label={sections.profession.technologyList.heading}
+        itemLabels={sections.profession.technologyList.itemLabels}
         element={(props) => <SingleInput {...props} />}
         savedListItems={technologiesKnown}
         validationFuncs={{ input: validations.technology }}
@@ -242,15 +269,9 @@ const Profession = forwardRef((_, ref) => {
       />
 
       <ListAdd
-        label="Any references?"
-        itemLabels={{
-          name: "Reference Name",
-          phone: "Reference Phone",
-          email: "Reference Email",
-          designation: "Designation",
-          company: "Company",
-        }}
-        helperText="(atleast two references are preferred)"
+        label={sections.profession.referencesList.heading}
+        itemLabels={sections.profession.referencesList.itemLabels}
+        helperText={sections.profession.referencesList.helper}
         element={(props) => <Reference {...props} />}
         savedListItems={references}
         validationFuncs={{

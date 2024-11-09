@@ -1,22 +1,28 @@
 import { useSelector } from "react-redux";
-import { formatContent } from "../../../../../utilities";
+import MarkdownDisplay from "../../../../Atoms/components/MarkdownDisplay";
 import classes from "./index.module.scss";
 
 /**
  * Response Component
  *
- * Displays formatted content based on the selected key.
+ * Retrieves and displays the content associated with the currently selected key
+ * in the `result` state, formatted using the `MarkdownDisplay` component.
  *
- * @returns {JSX.Element} The response component.
+ * @component
+ * @returns {JSX.Element} The rendered response component, showing analysis results based on the selected key.
  */
 const Response = () => {
-  const { selectedKey, ...result } = useSelector((state) => state.result);
+  const {
+    selectedKey,
+    headerTabs: { ...result },
+  } = useSelector((state) => state.result);
 
   return (
     <section className={classes.responseContainer}>
-      {formatContent(result[selectedKey], classes)}
+      <MarkdownDisplay analysisResult={result[selectedKey]} />
     </section>
   );
 };
 
 export default Response;
+Response.displayName = "Response";

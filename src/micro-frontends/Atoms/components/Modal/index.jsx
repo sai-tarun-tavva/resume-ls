@@ -37,5 +37,4 @@ Modal.propTypes = {
 };
 
 Modal.displayName = "Modal";
-
 export default Modal;

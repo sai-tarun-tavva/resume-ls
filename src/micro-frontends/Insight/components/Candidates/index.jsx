@@ -27,7 +27,7 @@ const { APP } = LOADING_ACTION_TYPES;
 /**
  * InsightCandidates Component
  *
- * Fetches and displays candidate information.
+ * Fetches and displays candidate information. Includes a resume viewer if enabled.
  *
  * @returns {JSX.Element} The rendered InsightCandidates component.
  */
@@ -63,14 +63,16 @@ const InsightCandidates = () => {
 
   useEffect(() => {
     /**
-     * Update ref value whenever showResume changes
+     * Updates the showResumeRef whenever the showResume state changes,
+     * ensuring the ref remains current within other effects.
      */
     showResumeRef.current = showResume;
   }, [showResume]);
 
   useEffect(() => {
     /**
-     * Fetch candidates and update redux state.
+     * Fetches candidates data from the API, updates Redux state, and manages loading states.
+     * This effect is triggered on initial render and whenever a refetch is required.
      */
     const url =
       refetchURL ||
@@ -81,7 +83,6 @@ const InsightCandidates = () => {
 
     const getData = async () => {
       enableAppLoading();
-
       const { status, data } = await fetchCandidates(url);
 
       if (status === STATUS_CODES.SUCCESS) {
@@ -106,6 +107,7 @@ const InsightCandidates = () => {
       }
       disableAppLoading();
     };
+
     if (isInitial || refetch) {
       isInitial = false;
       getData();
@@ -124,7 +126,8 @@ const InsightCandidates = () => {
 
   useEffect(() => {
     /**
-     * Update resume id to be shown when candidates loaded and resume viewer open
+     * Sets the ID of the first candidate when the resume viewer is open
+     * and candidate data has been loaded, enabling default resume display.
      */
     if (showResumeRef.current && candidates?.length > 0) {
       dispatch(viewResumeActions.updateId(candidates[0].id));
@@ -133,7 +136,8 @@ const InsightCandidates = () => {
 
   useEffect(() => {
     /**
-     * Fetch resume pdf and update redux state.
+     * Fetches and displays the selected candidate's resume in PDF format.
+     * Updates state with PDF details or displays an error if the fetch fails.
      */
     const getPdf = async () => {
       enableFetchLoading();
@@ -162,7 +166,10 @@ const InsightCandidates = () => {
   ]);
 
   useEffect(() => {
-    // Update the state on window resize
+    /**
+     * Tracks window resize events to adjust layout for small screens.
+     * Updates isSmallScreen state based on screen width.
+     */
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < RESUME_VIEWER_WIDTH_START);
     };

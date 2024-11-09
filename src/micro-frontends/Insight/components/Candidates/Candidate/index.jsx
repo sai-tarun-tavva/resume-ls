@@ -118,5 +118,4 @@ Candidate.propTypes = {
 };
 
 Candidate.displayName = "Candidate";
-
 export default Candidate;

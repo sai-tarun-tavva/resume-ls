@@ -13,10 +13,11 @@
   box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 414px) {
+@media (max-width: 480px) {
   .operations {
     display: grid;
     grid-template-columns: auto auto;
+    gap: 1.5rem;
   }
 
   .operations > :nth-child(3) {

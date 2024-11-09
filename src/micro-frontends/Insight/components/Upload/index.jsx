@@ -1,14 +1,12 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import HelperMessage from "./HelperMessage";
 import DropArea from "./DropArea";
 import FileList from "./FileList";
 import Button from "../../../Atoms/components/Button";
 import Modal from "../../../Atoms/components/Modal";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
-import { uiActions } from "../../store";
-import { useLoading, useStatus } from "../../../../store";
+import { useLoading, useStatus, useUI } from "../../../../store";
 import { isValidFile, uploadFiles } from "../../../../utilities";
 import {
   CONTENT,
@@ -26,16 +24,16 @@ const { BUTTON } = LOADING_ACTION_TYPES;
  * Upload Component
  *
  * Manages file uploads in the application.
- * It provides functionality to upload files through drag-and-drop or file input,
+ * Provides functionality to upload files through drag-and-drop or file input,
  * displays the selected files, and manages the upload process.
  *
  * @returns {JSX.Element} The rendered Upload component.
  */
 const Upload = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
   const { updateStatus } = useStatus();
+  const { enableRefetch } = useUI();
   const [files, setFiles] = useState([]);
   const [allowUpload, setAllowUpload] = useState(false);
   const [dummyProgress, setDummyProgress] = useState(0);
@@ -51,13 +49,14 @@ const Upload = () => {
       else document.body.style.overflow = "";
       return !prevValue;
     });
-    setFiles([]); // Clear files after successful upload
+    setFiles([]);
     setUnparsedFiles([]);
     setParsedFilesCount(0);
   };
 
   /**
-   * Handles file selection through input and adds selected files.
+   * Handles file selection through file input and adds selected files.
+   *
    * @param {Event} event - The file input change event.
    */
   const handleFileChange = (event) => {
@@ -66,8 +65,9 @@ const Upload = () => {
   };
 
   /**
-   * Adds files to the list after validating them.
-   * @param {File[]} selectedFiles - The array of selected files.
+   * Adds validated files to the list, enforcing max file limit.
+   *
+   * @param {File[]} selectedFiles - Array of selected files.
    */
   const addFiles = useCallback(
     (selectedFiles) => {
@@ -97,12 +97,13 @@ const Upload = () => {
   );
 
   /**
-   * Handles file drag-and-drop event.
+   * Handles file drag-and-drop event and adds dropped files.
+   *
    * @param {DragEvent} event - The drag event.
    */
   const handleDrop = useCallback(
     (event) => {
-      event.preventDefault(); // Prevent default behavior (Prevent file from being opened)
+      event.preventDefault();
       const droppedFiles = Array.from(event.dataTransfer.files);
       addFiles(droppedFiles);
     },
@@ -110,16 +111,18 @@ const Upload = () => {
   );
 
   /**
-   * Handles drag over event to allow dropping.
+   * Handles drag over event to allow file dropping.
+   *
    * @param {DragEvent} event - The drag event.
    */
   const handleDragOver = (event) => {
-    event.preventDefault(); // Prevent default behavior to allow dropping
+    event.preventDefault();
   };
 
   /**
-   * Removes a file from the list based on its name.
-   * @param {string} fileName - The name of the file to be removed.
+   * Removes a file from the list by its name.
+   *
+   * @param {string} fileName - Name of the file to be removed.
    */
   const removeFile = (fileName) => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName));
@@ -132,8 +135,9 @@ const Upload = () => {
     : CONTENT.INSIGHT.upload.button + (files.length > 1 ? "s" : "");
 
   /**
-   * Handles file upload on button click.
-   * @param {Event} event - The click event.
+   * Initiates file upload process and updates upload status.
+   *
+   * @param {Event} event - The click event on upload button.
    */
   const handleUpload = async (event) => {
     event.preventDefault();
@@ -156,10 +160,7 @@ const Upload = () => {
     }
 
     const formData = new FormData();
-
-    files.forEach((file) => {
-      formData.append("file", file);
-    });
+    files.forEach((file) => formData.append("file", file));
 
     const { status, unparsed, uploadedCount } = await uploadFiles(formData);
 
@@ -177,7 +178,7 @@ const Upload = () => {
         setUnparsedFiles(unparsed);
       }
 
-      dispatch(uiActions.enableRefetch());
+      enableRefetch();
       navigate(`/${ROUTES.INSIGHT.HOME}`);
     } else {
       updateStatus({
@@ -187,10 +188,8 @@ const Upload = () => {
       });
     }
 
-    if (intervalId) {
-      clearInterval(intervalId); // Stop dummy progress once the upload is complete
-    }
-    setDummyProgress(0); // Reset progress
+    if (intervalId) clearInterval(intervalId);
+    setDummyProgress(0);
     disableButtonLoading();
   };
 

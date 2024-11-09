@@ -38,6 +38,12 @@ const RadioGroup = forwardRef(
   ) => {
     const inputRef = useRef();
 
+    /**
+     * Exposes focus control to parent components.
+     *
+     * Sets up an imperative handle to allow parent components to trigger
+     * the focus event on the input element using the ref.
+     */
     useImperativeHandle(ref, () => ({
       focus: () => inputRef.current.focus(),
     }));
@@ -102,4 +108,5 @@ RadioGroup.propTypes = {
   isRequired: PropTypes.bool,
 };
 
+RadioGroup.displayName = "RadioGroup";
 export default RadioGroup;

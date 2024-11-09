@@ -28,8 +28,9 @@ const { FETCH } = LOADING_ACTION_TYPES;
  * Operations Component
  *
  * Handles user input for various operations, including text input, file upload, and action selection.
+ * Validates form inputs and triggers suggestions for selected actions.
  *
- * @returns {JSX.Element} The operations component.
+ * @returns {JSX.Element} The rendered operations component.
  */
 const Operations = () => {
   const dispatch = useDispatch();
@@ -69,6 +70,9 @@ const Operations = () => {
     forceValidations: forceServiceTypeValidations,
   } = useInput("", sparkValidations.chooseService, undefined, true);
 
+  /**
+   * Validates selected actions, setting an error message if no actions are selected.
+   */
   const forceActionsValidations = () => {
     setActionsError(
       selectedActions.length > 0 ? "" : CONTENT.COMMON.errors.actions.empty
@@ -80,6 +84,9 @@ const Operations = () => {
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  /**
+   * Triggers validation for all input fields and selected actions.
+   */
   const forceValidations = () => {
     forceJobDescriptionValidations();
     forceServiceTypeValidations();
@@ -87,6 +94,13 @@ const Operations = () => {
     forceActionsValidations();
   };
 
+  /**
+   * Handles form submission, validating fields and sending form data
+   * to generate suggestions for each selected action.
+   *
+   * @async
+   * @param {Event} event - The form submission event.
+   */
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     await dispatchAsync(resetStatus);
@@ -96,43 +110,58 @@ const Operations = () => {
     if (!isSectionValid) {
       forceValidations();
     } else {
+      if (isLoading[FETCH]) return;
+
       enableFetchLoading();
+      dispatch(resultActions.resetState());
 
-      selectedActions.forEach(async (action) => {
+      for (const action of selectedActions) {
         const formData = new FormData();
-        formData.append("job_description", jobDescriptionValue);
+        formData.append("description", jobDescriptionValue);
         formData.append("resume", chooseResumeFile);
-        formData.append("model", serviceTypeValue);
-        formData.append("search_type", OPERATION_UI_API_KEYS[action]);
-        const { status, data } = await makeSuggestions(formData);
+        formData.append("compare_option", serviceTypeValue);
+        formData.append("action", OPERATION_UI_API_KEYS[action]);
 
-        if (status === STATUS_CODES.SUCCESS) {
-          const result = data?.comparison_result;
-          const success = data?.success;
-          const message = data?.message;
+        try {
+          const { status, data } = await makeSuggestions(formData);
 
-          if (!success)
+          if (status === STATUS_CODES.SUCCESS) {
+            const result = data?.analysis_result;
+            const success = data?.success;
+            const message = data?.message;
+
+            if (success === false) {
+              updateStatus({
+                message: message,
+                type: "failure",
+                darkMode: true,
+              });
+            } else {
+              succeededAction = action;
+              dispatch(resultActions.appendState({ action, value: result }));
+            }
+          } else {
+            await dispatchAsync(resetStatus);
             updateStatus({
-              message: message,
+              message: `Suggestions for ${CONTENT.SPARK.operations.actions.items[action]} failed due to server error.`,
               type: "failure",
               darkMode: true,
             });
-          else {
-            succeededAction = action;
-            dispatch(resultActions.updateState({ action, value: result }));
           }
-        } else {
+        } catch (error) {
+          console.error("Error during suggestion request:", error);
           await dispatchAsync(resetStatus);
           updateStatus({
-            message: `Suggestions for ${CONTENT.SPARK.operations.actions.items[action]} failed due to server error.`,
+            message: `Suggestions for ${CONTENT.SPARK.operations.actions.items[action]} failed due to error.`,
             type: "failure",
             darkMode: true,
           });
         }
-      });
+      }
 
-      if (succeededAction)
+      if (succeededAction) {
         dispatch(resultActions.updateSelectedKey(selectedActions[0]));
+      }
 
       disableFetchLoading();
     }
@@ -198,3 +227,4 @@ const Operations = () => {
 };
 
 export default Operations;
+Operations.displayName = "Operations";

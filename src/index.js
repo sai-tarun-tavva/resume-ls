@@ -5,10 +5,14 @@ import GlobalWrapper from "./pages/GlobalWrapper";
 import reportWebVitals from "./reportWebVitals";
 import "./index.scss";
 
+// Create a root element in the DOM and render the app
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
+    {/* GlobalWrapper wraps the application, providing context and state management */}
     <GlobalWrapper>
+      {/* Main app component that manages routing and UI */}
       <App />
     </GlobalWrapper>
   </React.StrictMode>

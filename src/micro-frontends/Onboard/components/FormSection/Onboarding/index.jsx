@@ -11,12 +11,23 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * Onboarding Component
+ *
+ * Handles the onboarding section of the application, including fields for the onboarding date and status.
+ * It validates the inputs and submits the data to the Redux store if the section is valid.
+ *
+ * @param {Object} _ - The component props (forwarded ref).
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered Onboarding component.
+ */
 const Onboarding = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -26,10 +37,14 @@ const Onboarding = forwardRef((_, ref) => {
       onboarding: { date, status },
     },
   } = useSelector((state) => state.input);
+
   const { onboarding: validations } = onboardingValidations;
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
 
+  /**
+   * Date Input Handling
+   */
   const {
     value: dateValue,
     handleInputChange: dateChange,
@@ -40,6 +55,9 @@ const Onboarding = forwardRef((_, ref) => {
     forceValidations: forceDateValidations,
   } = useInput(date, validations.date, undefined, true);
 
+  /**
+   * Status Input Handling
+   */
   const {
     value: statusValue,
     handleInputChange: statusChange,
@@ -53,13 +71,24 @@ const Onboarding = forwardRef((_, ref) => {
   const allErrors = [dateError, statusError];
   const allValues = [dateValue, statusValue];
 
+  /**
+   * Determines if the section is valid based on the errors and values
+   */
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  /**
+   * Forces validation for all inputs
+   */
   const forceValidations = () => {
     forceDateValidations();
     forceStatusValidations();
   };
 
+  /**
+   * Handles form submission.
+   * Validates the section and submits data to the Redux store.
+   * Focuses on errors if any validation fails.
+   */
   const submit = async () => {
     if (!isSectionValid) {
       forceValidations();
@@ -97,7 +126,7 @@ const Onboarding = forwardRef((_, ref) => {
       <InputV2
         id="onboardingDate"
         type="date"
-        label="Onboarding Date"
+        label={sections.onboarding.date}
         value={dateValue}
         changeHandler={dateChange}
         blurHandler={dateBlur}
@@ -108,7 +137,7 @@ const Onboarding = forwardRef((_, ref) => {
       />
       <Select
         id="onboardingStatus"
-        label="Onboarding Status"
+        label={sections.onboarding.status}
         options={OPTIONS.ONBOARDING_STATUS}
         value={statusValue}
         changeHandler={statusChange}

@@ -6,20 +6,38 @@ const initialState = {
   id: null, // Candidate ID of the resume file to be displayed
 };
 
-// Creating ViewResume Slice
+/**
+ * ViewResume slice for managing the visibility and selected resume ID in the UI.
+ */
 const ViewResumeSlice = createSlice({
   name: "view-resume",
   initialState,
   reducers: {
-    // Updates show to true in the state
+    /**
+     * Sets the `show` flag to true, indicating the resume should be displayed.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     showResume(state) {
       state.show = true;
     },
-    // Updates show to false in the state
+
+    /**
+     * Sets the `show` flag to false, hiding the resume from view.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     hideResume(state) {
       state.show = false;
     },
-    // Updates ID in the state
+
+    /**
+     * Updates the `id` in the state to the specified candidate ID.
+     *
+     * @param {Object} state - The current state of the slice.
+     * @param {Object} action - The dispatched action containing the candidate ID.
+     * @param {string | null} action.payload - The candidate ID to display, or null to clear.
+     */
     updateId(state, { payload }) {
       state.id = payload;
     },

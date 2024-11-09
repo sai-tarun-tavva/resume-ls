@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoading, useStatus, useUI } from "../../../../store";
 import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
+import TimestampDisplay from "../../../Atoms/components/TimestampDisplay";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
 import { dataActions, inputActions } from "../../store";
 import {
@@ -24,6 +25,12 @@ import {
 } from "../../../../constants";
 import classes from "./index.module.scss";
 
+/**
+ * Function to get the experience display text for a candidate.
+ * @param {number} years - Years of experience.
+ * @param {number} months - Months of experience.
+ * @returns {string} - Formatted experience text.
+ */
 const getExperienceDisplayText = (years, months) => {
   if (years && months) {
     return `${years} years and ${months} months`;
@@ -36,9 +43,22 @@ const getExperienceDisplayText = (years, months) => {
   }
 };
 
+// Variable to manage the initial fetch status
 let isInitial = true;
-const { APP } = LOADING_ACTION_TYPES;
 
+const { APP } = LOADING_ACTION_TYPES;
+const { columnHeaders, noCandidates } = CONTENT.ONBOARD.candidates;
+
+/**
+ * OnboardCandidates Component
+ *
+ * Fetches and displays a list of onboarded candidates. Handles fetching, displaying, searching,
+ * and navigating to candidate details. Displays a loading state if data is being fetched, and renders
+ * a no records message if no candidates are found.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered OnboardCandidates component.
+ */
 const OnboardCandidates = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,6 +71,7 @@ const OnboardCandidates = () => {
   const { isLoading, enableAppLoading, disableAppLoading } = useLoading();
   const { updateStatus } = useStatus();
 
+  // Effect to fetch candidates when component mounts or refetch is triggered
   useEffect(() => {
     const url =
       refetchURL ||
@@ -88,6 +109,7 @@ const OnboardCandidates = () => {
       disableAppLoading();
     };
 
+    // Fetch candidates if it is the initial load or refetch is triggered
     if (isInitial || refetch) {
       isInitial = false;
       fetchCandidates();
@@ -108,75 +130,102 @@ const OnboardCandidates = () => {
     <>
       <div className={classes.tableContainer}>
         {isLoading[APP] ? (
-          <Loader />
+          <Loader /> // Show loader if data is being fetched
         ) : candidates.length === 0 ? (
-          <NoRecords />
+          <NoRecords /> // Display message if no records found
         ) : (
           <table className={classes.table}>
+            {/* Table headers */}
             <thead>
               <tr>
-                <th title="Status" style={{ width: "10rem" }}>
-                  Status
+                <th title={columnHeaders.status} style={{ width: "10rem" }}>
+                  {columnHeaders.status}
                 </th>
-                <th title="Last Updated" style={{ width: "15rem" }}>
-                  Last Updated
+                <th
+                  title={columnHeaders.onboardingDate}
+                  style={{ width: "9rem" }}
+                >
+                  {columnHeaders.onboardingDate}
                 </th>
-                <th title="Company Name" style={{ width: "15rem" }}>
-                  Company Name
+                <th
+                  title={columnHeaders.lastUpdated}
+                  style={{ width: "23rem" }}
+                >
+                  {columnHeaders.lastUpdated}
                 </th>
-                <th title="Guest House Member" style={{ width: "8rem" }}>
-                  Guest House Member
+                <th title={columnHeaders.position} style={{ width: "12rem" }}>
+                  {columnHeaders.position}
                 </th>
-                <th title="Technology" style={{ width: "12rem" }}>
-                  Technology
+                <th title={columnHeaders.experience} style={{ width: "14rem" }}>
+                  {columnHeaders.experience}
                 </th>
-                <th title="Marketing Name" style={{ width: "15rem" }}>
-                  Marketing Name
+                <th
+                  title={columnHeaders.companyName}
+                  style={{ width: "15rem" }}
+                >
+                  {columnHeaders.companyName}
                 </th>
-                <th title="Position" style={{ width: "12rem" }}>
-                  Position
+                <th title={columnHeaders.technology} style={{ width: "12rem" }}>
+                  {columnHeaders.technology}
                 </th>
-                <th title="Experience" style={{ width: "14rem" }}>
-                  Experience
+                <th title={columnHeaders.firstName} style={{ width: "12rem" }}>
+                  {columnHeaders.firstName}
                 </th>
-                <th title="Location" style={{ width: "10rem" }}>
-                  Location
+                <th title={columnHeaders.lastName} style={{ width: "12rem" }}>
+                  {columnHeaders.lastName}
                 </th>
-                <th title="Relocation" style={{ width: "8rem" }}>
-                  Relocation
+                <th
+                  title={columnHeaders.marketingName}
+                  style={{ width: "15rem" }}
+                >
+                  {columnHeaders.marketingName}
                 </th>
-                <th title="First Name" style={{ width: "12rem" }}>
-                  First Name
+                <th title={columnHeaders.location} style={{ width: "10rem" }}>
+                  {columnHeaders.location}
                 </th>
-                <th title="Last Name" style={{ width: "12rem" }}>
-                  Last Name
+                <th title={columnHeaders.relocation} style={{ width: "8rem" }}>
+                  {columnHeaders.relocation}
                 </th>
-                <th title="Reference Name" style={{ width: "15rem" }}>
-                  Reference Name
+                <th title={columnHeaders.phone} style={{ width: "12rem" }}>
+                  {columnHeaders.phone}
                 </th>
-                <th title="Remarks" style={{ width: "20rem" }}>
-                  Remarks
+                <th title={columnHeaders.email} style={{ width: "18rem" }}>
+                  {columnHeaders.email}
                 </th>
-                <th title="Phone" style={{ width: "12rem" }}>
-                  Phone
+                <th title={columnHeaders.dob} style={{ width: "8rem" }}>
+                  {columnHeaders.dob}
                 </th>
-                <th title="Email" style={{ width: "18rem" }}>
-                  Email
+                <th
+                  title={columnHeaders.universityName}
+                  style={{ width: "15rem" }}
+                >
+                  {columnHeaders.universityName}
                 </th>
-                <th title="Offer" style={{ width: "8rem" }}>
-                  Offer Letter Status
+                <th title={columnHeaders.offerStatus} style={{ width: "8rem" }}>
+                  {columnHeaders.offerStatus}
                 </th>
-                <th title="Date of Birth" style={{ width: "8rem" }}>
-                  Date of Birth
+                <th
+                  title={columnHeaders.referenceName}
+                  style={{ width: "15rem" }}
+                >
+                  {columnHeaders.referenceName}
                 </th>
-                <th title="University" style={{ width: "15rem" }}>
-                  University
+                <th
+                  title={columnHeaders.guestHouseMember}
+                  style={{ width: "8rem" }}
+                >
+                  {columnHeaders.guestHouseMember}
                 </th>
-                <th title="Notes" style={{ width: "20rem" }}>
-                  Notes
+                <th title={columnHeaders.remarks} style={{ width: "20rem" }}>
+                  {columnHeaders.remarks}
+                </th>
+                <th title={columnHeaders.notes} style={{ width: "20rem" }}>
+                  {columnHeaders.notes}
                 </th>
               </tr>
             </thead>
+
+            {/* Table body displaying candidate data */}
             <tbody>
               {candidates && candidates.length > 0 ? (
                 candidates.map((candidate, index) => {
@@ -206,40 +255,11 @@ const OnboardCandidates = () => {
                           searchTerm
                         )}
                       </td>
+                      <td title={candidateInfo.onboarding.date}>
+                        {convertDate(candidateInfo.onboarding.date, false)}
+                      </td>
                       <td title={convertDate(updatedTime)}>
-                        {convertDate(updatedTime)}
-                      </td>
-                      <td
-                        title={
-                          candidateInfo.profession.previousExperience?.[0]
-                            ?.employerName
-                        }
-                      >
-                        {
-                          candidateInfo.profession.previousExperience?.[0]
-                            ?.employerName
-                        }
-                      </td>
-                      <td
-                        title={
-                          candidateInfo.relocation.preference === "guestHouse"
-                            ? "Yes"
-                            : "No"
-                        }
-                      >
-                        {candidateInfo.relocation.preference === "guestHouse"
-                          ? "Yes"
-                          : "No"}
-                      </td>
-                      <td
-                        title={candidateInfo.profession.technologiesKnown.join(
-                          ", "
-                        )}
-                      >
-                        {candidateInfo.profession.technologiesKnown.join(", ")}
-                      </td>
-                      <td title={candidateInfo.offerLetter.marketingName}>
-                        {candidateInfo.offerLetter.marketingName}
+                        <TimestampDisplay timestamp={updatedTime} />
                       </td>
                       <td title={candidateInfo.offerLetter.designation}>
                         {candidateInfo.offerLetter.designation}
@@ -257,17 +277,21 @@ const OnboardCandidates = () => {
                       </td>
                       <td
                         title={
-                          candidateInfo.personal.usaLocation.city
-                            ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
-                            : ""
+                          candidateInfo.profession.previousExperience?.[0]
+                            ?.employerName
                         }
                       >
-                        {candidateInfo.personal.usaLocation.city
-                          ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
-                          : ""}
+                        {
+                          candidateInfo.profession.previousExperience?.[0]
+                            ?.employerName
+                        }
                       </td>
-                      <td title={candidateInfo.relocation.interested}>
-                        {candidateInfo.relocation.interested}
+                      <td
+                        title={candidateInfo.profession.technologiesKnown.join(
+                          ", "
+                        )}
+                      >
+                        {candidateInfo.profession.technologiesKnown.join(", ")}
                       </td>
                       <td title={candidateInfo.personal.firstName}>
                         {highlightText(
@@ -281,11 +305,22 @@ const OnboardCandidates = () => {
                           searchTerm
                         )}
                       </td>
-                      <td title={candidateInfo.personal.referenceName}>
-                        {candidateInfo.personal.referenceName}
+                      <td title={candidateInfo.offerLetter.marketingName}>
+                        {candidateInfo.offerLetter.marketingName}
                       </td>
-                      <td title={candidateInfo.miscellaneous.remarks}>
-                        {candidateInfo.miscellaneous.remarks}
+                      <td
+                        title={
+                          candidateInfo.personal.usaLocation.city
+                            ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
+                            : ""
+                        }
+                      >
+                        {candidateInfo.personal.usaLocation.city
+                          ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
+                          : ""}
+                      </td>
+                      <td title={candidateInfo.relocation.interested}>
+                        {candidateInfo.relocation.interested}
                       </td>
                       <td
                         title={transformPhoneNumber(
@@ -307,16 +342,33 @@ const OnboardCandidates = () => {
                           searchTerm
                         )}
                       </td>
-                      <td title={candidateInfo.offerLetter.status}>
-                        {candidateInfo.offerLetter.status}
-                      </td>
                       <td title={candidateInfo.personal.dob}>
-                        {candidateInfo.personal.dob}
+                        {convertDate(candidateInfo.personal.dob, false)}
                       </td>
                       <td
                         title={candidateInfo.education.graduatedUniversity.name}
                       >
                         {candidateInfo.education.graduatedUniversity.name}
+                      </td>
+                      <td title={candidateInfo.offerLetter.status}>
+                        {candidateInfo.offerLetter.status}
+                      </td>
+                      <td title={candidateInfo.personal.referenceName}>
+                        {candidateInfo.personal.referenceName}
+                      </td>
+                      <td
+                        title={
+                          candidateInfo.relocation.preference === "guestHouse"
+                            ? "Yes"
+                            : "No"
+                        }
+                      >
+                        {candidateInfo.relocation.preference === "guestHouse"
+                          ? "Yes"
+                          : "No"}
+                      </td>
+                      <td title={candidateInfo.miscellaneous.remarks}>
+                        {candidateInfo.miscellaneous.remarks}
                       </td>
                       <td title={candidateInfo.miscellaneous.notes}>
                         {candidateInfo.miscellaneous.notes}
@@ -326,13 +378,15 @@ const OnboardCandidates = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan="21">No candidates available</td>
+                  <td colSpan="21">{noCandidates}</td>
                 </tr>
               )}
             </tbody>
           </table>
         )}
       </div>
+
+      {/* Floating button to onboard a new candidate */}
       <FloatingButton
         clickHandler={() => {
           navigate(`${ROUTES.ONBOARD.CANDIDATE_FORM.NEW}`);

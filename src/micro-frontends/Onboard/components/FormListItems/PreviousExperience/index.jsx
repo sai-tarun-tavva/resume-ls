@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
-import Address from "../../FormSection/Address";
+import Address from "../../FormSection/Address"; // Address input for the employer's address
 import { useInput } from "../../../../Atoms/hooks";
 import {
   determineSectionValidity,
@@ -9,8 +9,23 @@ import {
 } from "../../../../../utilities";
 import classes from "./index.module.scss";
 
+/**
+ * PreviousExperience Component
+ *
+ * This component is used to collect information about the user's previous employer including:
+ *  - Employer Name
+ *  - Employer Phone Number
+ *  - Employer Email ID
+ *  - Employer Address (via the Address component)
+ *
+ * @param {Object} labels - Contains the labels for the input fields.
+ * @param {Object} defaultValue - The default values for the fields.
+ * @param {Object} validationFuncs - The validation functions for the fields.
+ * @param {string} id - Unique identifier for the form fields.
+ */
 const PreviousExperience = forwardRef(
   ({ labels, defaultValue, validationFuncs, id }, ref) => {
+    // Destructure the labels for each field
     const {
       employerName: nameLabel,
       email: emailIdLabel,
@@ -18,18 +33,23 @@ const PreviousExperience = forwardRef(
       address: addressLabel,
     } = labels;
     const addressRef = useRef();
+
+    // Set the default values for each input field
     const {
       employerName: nameDefaultValue,
       email: emailIdDefaultValue,
       phone: phoneNumberDefaultValue,
       address: addressDefaultValue,
     } = defaultValue;
+
+    // Set validation functions for each field
     const {
       employerName: nameValidationFunc,
       email: emailIdValidationFunc,
       phone: phoneNumberValidationFunc,
     } = validationFuncs;
 
+    // Use custom hooks for managing state and validation of inputs
     const {
       value: nameValue,
       handleInputChange: nameChange,
@@ -65,16 +85,28 @@ const PreviousExperience = forwardRef(
       true
     );
 
+    // Collect all errors and values for the current section
     const allErrors = [nameError, emailIdError, phoneNumberError];
     const allValues = [nameValue, emailIdValue, phoneNumberValue];
 
+    // Determine if the section is valid
     const isSectionValid = determineSectionValidity(allErrors, allValues);
+
+    /**
+     * Force validation for all fields in the PreviousExperience section.
+     */
     const forceValidations = () => {
       forceNameValidations();
       forceEmailValidations();
       forcePhoneNumberValidations();
     };
 
+    /**
+     * Handles form submission and validates all fields, including the Address field.
+     * If the section is valid, it returns the collected data, otherwise returns errors.
+     *
+     * @returns {Object} - Contains validation status and collected reference data.
+     */
     const submit = () => {
       const addressSubmitResult = addressRef.current?.submit?.();
       const isAddressValid = addressSubmitResult?.isSectionValid;
@@ -87,6 +119,7 @@ const PreviousExperience = forwardRef(
         address,
       };
 
+      // If any validation fails, return false and force validations
       if (!isSectionValid || isAddressValid === false) {
         forceValidations();
         addressRef.current?.forceValidations();
@@ -102,12 +135,14 @@ const PreviousExperience = forwardRef(
       };
     };
 
+    // Exposing the submit method to the parent via ref
     useImperativeHandle(ref, () => ({
       submit,
     }));
 
     return (
       <>
+        {/* Employer Name input field */}
         <InputV2
           id={`${nameLabel} ${id}`}
           label={`${nameLabel} ${id}`}
@@ -122,6 +157,7 @@ const PreviousExperience = forwardRef(
         />
 
         <div className={classes.prevExpRow}>
+          {/* Email and Phone input fields */}
           <InputV2
             id={`${emailIdLabel} ${id}`}
             label={`${emailIdLabel} ${id}`}
@@ -147,6 +183,8 @@ const PreviousExperience = forwardRef(
             isRequired
           />
         </div>
+
+        {/* Address input field for employer */}
         <Address
           heading={`${addressLabel} ${id}`}
           defaultValue={addressDefaultValue}

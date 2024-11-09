@@ -13,17 +13,27 @@ const {
 // Initial state for the UI context
 const initialState = {
   pagination: {
-    previousPage: "",
-    nextPage: "",
-    totalCount: 0,
+    previousPage: "", // Page number to fetch previous set of candidates
+    nextPage: "", // Page number to fetch next set of candidates
+    totalCount: 0, // Total number of candidates available
   },
-  searchTerm: "",
-  refetch: false,
-  refetchURL: "",
+  searchTerm: "", // Term to search/filter the candidates
+  refetch: false, // Flag to determine whether to re-fetch the candidates
+  refetchURL: "", // URL to refetch corresponding set of candidates
 };
 
+// Creating the UI context
 const UIContext = createContext(initialState);
 
+/**
+ * Reducer function to handle UI state actions
+ *
+ * @param {Object} state - The current state of the UI.
+ * @param {Object} action - The dispatched action with type and optional payload.
+ * @param {string} action.type - The type of action (e.g., UPDATE_SEARCH_TERM).
+ * @param {Object} [action.payload] - The new values for the specified action.
+ * @returns {Object} - The updated state based on the action type.
+ */
 const uiReducer = (state, action) => {
   const { type, payload } = action;
 
@@ -45,30 +55,60 @@ const uiReducer = (state, action) => {
   }
 };
 
+/**
+ * UIContextProvider Component
+ *
+ * Provides a context for managing UI state, including functions to update search term,
+ * pagination, refetch URL, and to enable/disable refetch.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components that will access the UI context.
+ * @returns {JSX.Element} The provider component with UI state and actions.
+ */
 const UIContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(uiReducer, initialState);
 
-  // Actions to update the state
+  /**
+   * Updates the search term used for filtering data.
+   * @param {string} searchTerm - The new search term.
+   */
   const updateSearchTerm = useCallback((searchTerm) => {
     dispatch({ type: UPDATE_SEARCH_TERM, payload: searchTerm });
   }, []);
 
+  /**
+   * Updates pagination details such as previous and next pages.
+   * @param {Object} pagination - The pagination object with previousPage, nextPage, and totalCount.
+   */
   const updatePagination = useCallback((pagination) => {
     dispatch({ type: UPDATE_PAGINATION, payload: pagination });
   }, []);
 
+  /**
+   * Updates the URL used for refetching data.
+   * @param {string} refetchURL - The new refetch URL.
+   */
   const updateRefetchURL = useCallback((refetchURL) => {
     dispatch({ type: UPDATE_REFETCH_URL, payload: refetchURL });
   }, []);
 
+  /**
+   * Enables the refetch flag to trigger data refetching.
+   */
   const enableRefetch = useCallback(() => {
     dispatch({ type: ENABLE_REFETCH });
   }, []);
 
+  /**
+   * Disables the refetch flag to prevent unnecessary data refetching.
+   */
   const disableRefetch = useCallback(() => {
     dispatch({ type: DISABLE_REFETCH });
   }, []);
 
+  /**
+   * Resets the UI state to initial values, triggering a refetch.
+   */
   const resetUI = useCallback(() => {
     dispatch({ type: RESET_ALL });
   }, []);
@@ -86,6 +126,15 @@ const UIContextProvider = ({ children }) => {
   return <UIContext.Provider value={uiCtx}>{children}</UIContext.Provider>;
 };
 
+UIContextProvider.displayName = "UIContextProvider";
 export default UIContextProvider;
 
+/**
+ * useUI Hook
+ *
+ * Custom hook to access the UI context values, including current UI state
+ * and actions for updating search term, pagination, refetch URL, and more.
+ *
+ * @returns {Object} - The UI context containing state and actions.
+ */
 export const useUI = () => useContext(UIContext);

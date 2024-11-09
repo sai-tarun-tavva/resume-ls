@@ -128,3 +128,11 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .loaderContainer {
+    margin-left: unset;
+    margin-top: 30rem;
+    width: 100%;
+  }
+}

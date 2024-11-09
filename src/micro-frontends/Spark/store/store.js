@@ -8,7 +8,13 @@ const reducer = {
   result: resultReducer, // Manages results from API responses
 };
 
-// Configuring the Redux store with the combined reducers
+/**
+ * Configures the Redux store with combined reducers for data and result management.
+ *
+ * @type {Store} The configured Redux store instance.
+ * @property {Reducer} data - Reducer managing user input data.
+ * @property {Reducer} result - Reducer managing API response results.
+ */
 const store = configureStore({
   reducer: reducer,
 });

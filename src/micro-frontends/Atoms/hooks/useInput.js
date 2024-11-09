@@ -8,6 +8,7 @@ import { INPUT_TYPES } from "../../../constants";
  * @param {function} checkForErrors - A function to validate the input value.
  * @param {function} transform - A function to transform the input value on blur.
  * @param {boolean} forceValidationsOnSubmit - Flag to force validation on submit.
+ * @param {string} inputType - Type of the input, e.g., text or checkbox.
  * @returns {object} An object containing input value, handlers, and error state.
  */
 export const useInput = (
@@ -23,6 +24,11 @@ export const useInput = (
 
   const errorMessage = checkForErrors(String(enteredValue).trim());
 
+  /**
+   * Handles input value changes based on input type.
+   *
+   * @param {Event} event - The input change event.
+   */
   const handleInputChange = (event) => {
     switch (inputType) {
       case INPUT_TYPES.CHECKBOX:
@@ -34,26 +40,41 @@ export const useInput = (
     setDidEdit(false);
   };
 
+  /**
+   * Sets the input focus state.
+   */
   const handleInputFocus = () => {
     setIsFocused(true);
   };
 
+  /**
+   * Handles input blur event, applying transformations if specified.
+   */
   const handleInputBlur = () => {
     setDidEdit(true);
     setIsFocused(false);
     setEnteredValue(transform(enteredValue));
   };
 
+  /**
+   * Resets the input value to its default and clears the edit state.
+   */
   const resetValue = useCallback(() => {
     setEnteredValue(defaultValue);
     setDidEdit(false);
   }, [defaultValue]);
 
+  /**
+   * Clears the input value and resets the edit state.
+   */
   const clearValue = useCallback(() => {
     setEnteredValue("");
     setDidEdit(false);
   }, []);
 
+  /**
+   * Forces validation checks by setting the `didEdit` state.
+   */
   const forceValidations = useCallback(() => {
     if (forceValidationsOnSubmit) {
       setDidEdit(true);

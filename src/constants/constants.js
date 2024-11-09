@@ -1,30 +1,77 @@
+/**
+ * Page Constants
+ *
+ * Defines main application page identifiers.
+ */
 export const PAGES = {
   INSIGHT: "INSIGHT",
   ONBOARD: "ONBOARD",
   SPARK: "SPARK",
 };
 
+/**
+ * INSIGHT Configuration
+ *
+ * Manages settings specific to the INSIGHT module.
+ *
+ * @property {number} CANDIDATES_PER_PAGE - Number of candidates displayed per page.
+ * @property {number} MAX_FILES - Maximum file upload limit.
+ * @property {number} MAX_FILE_SIZE - Maximum file size in megabytes.
+ * @property {number} RESUME_VIEWER_WIDTH_START - Minimum width to show resume viewer.
+ */
 export const INSIGHT = {
   CANDIDATES_PER_PAGE: 20,
   MAX_FILES: 30,
   MAX_FILE_SIZE: 5, // in MB
-  RESUME_VIEWER_WIDTH_START: 414,
+  RESUME_VIEWER_WIDTH_START: 480,
 };
 
+/**
+ * ONBOARD Configuration
+ *
+ * Manages settings specific to the ONBOARD module.
+ *
+ * @property {number} CANDIDATES_PER_PAGE - Number of candidates displayed per page.
+ */
 export const ONBOARD = {
   CANDIDATES_PER_PAGE: 20,
 };
 
+/**
+ * Loader Types
+ *
+ * Defines loading spinner or bar types.
+ *
+ * @property {string} BAR - Loading bar style.
+ * @property {string} SPIN - Loading spinner style.
+ */
 export const LOADER_TYPES = {
   BAR: "bar",
   SPIN: "spin",
 };
 
+/**
+ * Input Types
+ *
+ * Defines types of inputs used in forms.
+ *
+ * @property {string} CHECKBOX - Checkbox input type.
+ * @property {string} FILE - File input type.
+ */
 export const INPUT_TYPES = {
   CHECKBOX: "checkbox",
   FILE: "file",
 };
 
+/**
+ * HTTP Status Codes
+ *
+ * Contains frequently used HTTP status codes for API responses.
+ *
+ * @property {number} SUCCESS - Status code for successful requests.
+ * @property {number} CREATED - Status code for successfully created resources.
+ * @property {number} INVALID - Status code for invalid request data.
+ */
 export const STATUS_CODES = {
   SUCCESS: 200,
   CREATED: 201,
@@ -49,17 +96,46 @@ export const REGEX = {
   sevisIDRegex: /^N[0-9]{10}$/, // Starts with "N" followed by exactly 10 digits
 };
 
+/**
+ * Loading Action Types
+ *
+ * Defines keys for loading states to manage different loading contexts.
+ *
+ * @property {string} APP - App-level loading state.
+ * @property {string} BUTTON - Button-level loading state.
+ * @property {string} FETCH - Fetch-related loading state.
+ */
 export const LOADING_ACTION_TYPES = {
   APP: "APP",
   BUTTON: "BUTTON",
   FETCH: "FETCH",
 };
 
+/**
+ * Status Action Types
+ *
+ * Defines keys for managing status updates in global state.
+ *
+ * @property {string} UPDATE - Action type to update the status.
+ * @property {string} RESET - Action type to reset the status.
+ */
 export const STATUS_ACTION_TYPES = {
   UPDATE: "UPDATE_STATUS",
   RESET: "RESET_STATUS",
 };
 
+/**
+ * UI Action Types
+ *
+ * Defines keys for managing UI-related actions within global state.
+ *
+ * @property {string} UPDATE_SEARCH_TERM - Action type for updating the search term.
+ * @property {string} UPDATE_PAGINATION - Action type for pagination updates.
+ * @property {string} UPDATE_REFETCH_URL - Action type for updating the refetch URL.
+ * @property {string} ENABLE_REFETCH - Action type to enable refetching.
+ * @property {string} DISABLE_REFETCH - Action type to disable refetching.
+ * @property {string} RESET_ALL - Action type to reset the entire UI state.
+ */
 export const UI_ACTION_TYPES = {
   UPDATE_SEARCH_TERM: "UPDATE_SEARCH_TERM",
   UPDATE_PAGINATION: "UPDATE_PAGINATION",

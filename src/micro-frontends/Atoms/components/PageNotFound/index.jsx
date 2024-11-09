@@ -20,7 +20,6 @@ const PageNotFound = () => {
       <p className={classes.notFoundSuggestion}>
         {suggestionStart}
         <Link to={ROUTES.INSIGHT.HOME} replace>
-          {/* pending */}
           {suggestedPageName}
         </Link>
         {suggestionEnd}

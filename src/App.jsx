@@ -1,16 +1,18 @@
 import { RouterProvider } from "react-router-dom";
-import StatusMessage from "./micro-frontends/Atoms/components/StatusMessage";
 import appRouter from "./app-router";
 
 /**
- * Main application component
- * Handles state for pagination and data filtering, and renders child components.
+ * Main Application Component
+ *
+ * This is the entry point for the app. It:
+ * - Renders the `RouterProvider` to handle routing based on the app's configuration (defined in `appRouter`).
+ *
  * @returns {JSX.Element} The rendered component.
  */
 const App = () => {
   return (
     <main>
-      <StatusMessage />
+      {/* RouterProvider is used to provide routing functionality to the app using the defined appRouter */}
       <RouterProvider router={appRouter} />
     </main>
   );

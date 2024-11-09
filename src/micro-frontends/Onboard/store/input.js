@@ -7,6 +7,7 @@ import {
   FIELDS_REFERENCE,
 } from "../constants";
 
+// Default values for address fields
 export const defaultAddress = {
   [FIELDS_ADDRESS.ADDRESS1]: "",
   [FIELDS_ADDRESS.ADDRESS2]: "",
@@ -16,6 +17,7 @@ export const defaultAddress = {
   [FIELDS_ADDRESS.ZIPCODE]: "",
 };
 
+// Default values for previous employment experience fields
 export const defaultPrevExp = {
   [FIELDS_PREV_EXP.EMPLOYER_NAME]: "",
   [FIELDS_PREV_EXP.ADDRESS]: defaultAddress,
@@ -23,6 +25,7 @@ export const defaultPrevExp = {
   [FIELDS_PREV_EXP.PHONE]: "",
 };
 
+// Default values for reference fields
 export const defaultReference = {
   [FIELDS_REFERENCE.NAME]: "",
   [FIELDS_REFERENCE.PHONE]: "",
@@ -31,11 +34,13 @@ export const defaultReference = {
   [FIELDS_REFERENCE.COMPANY]: "",
 };
 
+// Initial state of the input slice
 const initialState = {
-  currentSectionIndex: 0,
-  isEditMode: false,
-  shouldSubmitFormSection: false,
+  currentSectionIndex: 0, // Index of the current section in the form
+  isEditMode: false, // Flag indicating whether the form is in edit mode
+  shouldSubmitFormSection: false, // Flag for whether the section can be submitted
   data: {
+    // Sections and their fields, initialized with default values
     [SECTIONS.RECORD]: {
       [FIELDS.RECORD.ID]: "",
       [FIELDS.RECORD.CREATED_DATE]: "",
@@ -92,7 +97,6 @@ const initialState = {
     [SECTIONS.PROFESSION]: {
       [FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE]:
         FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
-
       [FIELDS.PROFESSION.EXPERIENCE.VALUE]: {
         [FIELDS.PROFESSION.EXPERIENCE.YEARS]: "",
         [FIELDS.PROFESSION.EXPERIENCE.MONTHS]: "",
@@ -131,51 +135,110 @@ const initialState = {
   },
 };
 
+// Creating slice for input management
 const InputSlice = createSlice({
-  name: "input",
-  initialState,
+  name: "input", // Name of the slice
+  initialState, // Initial state for the slice
   reducers: {
-    // Update fields
+    /**
+     * Updates a field in the state.
+     *
+     * @param {Object} state - The current state of the slice.
+     * @param {Object} action - The dispatched action with payload data.
+     * @param {string} action.payload.section - The section to update.
+     * @param {string} action.payload.field - The field to update.
+     * @param {*} action.payload.value - The new value to assign to the field.
+     */
     updateField(state, action) {
       const { section, field, value } = action.payload;
-      state.data[section][field] = value;
+      state.data[section][field] = value; // Update the specific field in the section
     },
-    // Replace candidate data
+
+    /**
+     * Replaces the entire candidate data.
+     *
+     * @param {Object} state - The current state of the slice.
+     * @param {Object} action - The dispatched action with the new candidate data.
+     * @param {Object} action.payload - The new candidate data to replace the old data.
+     */
     replaceCandidate(state, { payload }) {
-      state.data = payload;
+      state.data = payload; // Replace entire candidate data
     },
-    // Increment current section index by 1
+
+    /**
+     * Increments the current section index by 1.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     incrementCurrentSectionIndex(state) {
-      state.currentSectionIndex += 1;
+      state.currentSectionIndex += 1; // Move to the next section
     },
-    // Decrement current section index by 1
+
+    /**
+     * Decrements the current section index by 1.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     decrementCurrentSectionIndex(state) {
-      state.currentSectionIndex -= 1;
+      state.currentSectionIndex -= 1; // Move to the previous section
     },
-    // Update current section index with payload
+
+    /**
+     * Updates the current section index with a specific value.
+     *
+     * @param {Object} state - The current state of the slice.
+     * @param {Object} action - The dispatched action with the payload value.
+     * @param {number} action.payload - The value to set the current section index to.
+     */
     updateCurrentSectionIndex(state, { payload }) {
-      state.currentSectionIndex = payload;
+      state.currentSectionIndex = payload; // Set section index to the payload value
     },
-    // Enables edit mode
+
+    /**
+     * Enables edit mode in the form.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     enableEditMode(state) {
-      state.isEditMode = true;
+      state.isEditMode = true; // Set edit mode flag to true
     },
-    // Enables view mode
+
+    /**
+     * Enables view mode in the form.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     enableViewMode(state) {
-      state.isEditMode = false;
+      state.isEditMode = false; // Set edit mode flag to false
     },
-    // Enable form section submission
+
+    /**
+     * Enables submission for the current section.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     enableFormSectionSubmission(state) {
-      state.shouldSubmitFormSection = true;
+      state.shouldSubmitFormSection = true; // Set the flag to enable form section submission
     },
-    // Disable form section submission
+
+    /**
+     * Disables submission for the current section.
+     *
+     * @param {Object} state - The current state of the slice.
+     */
     disableFormSectionSubmission(state) {
-      state.shouldSubmitFormSection = false;
+      state.shouldSubmitFormSection = false; // Set the flag to disable form section submission
     },
-    // Resets the form
+
+    /**
+     * Resets the form to its initial state.
+     *
+     * @returns {Object} The initial state of the slice.
+     */
     resetForm: () => initialState,
   },
 });
 
+// Exporting actions and reducer for the slice
 export const inputActions = InputSlice.actions;
 export default InputSlice.reducer;

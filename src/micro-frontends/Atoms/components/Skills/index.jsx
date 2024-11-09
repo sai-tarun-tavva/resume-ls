@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Skill from "../Skill";
+import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -46,7 +47,9 @@ const Skills = ({
             />
           ))
         ) : (
-          <p className={classes.noSkill}>No skills found</p>
+          <p className={classes.noSkill}>
+            {CONTENT.INSIGHT.candidateForm.noSkills}
+          </p>
         )}
       </div>
     </div>
@@ -62,5 +65,4 @@ Skills.propTypes = {
 };
 
 Skills.displayName = "Skills";
-
 export default Skills;

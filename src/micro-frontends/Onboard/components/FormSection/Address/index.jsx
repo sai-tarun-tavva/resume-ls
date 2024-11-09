@@ -8,7 +8,13 @@ import {
 } from "../../../../../utilities";
 import { FIELDS_ADDRESS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
+import { CONTENT } from "../../../../../constants";
 
+/**
+ * Function to return state options based on the selected country
+ * @param {string} country - The selected country (India, USA, etc.)
+ * @returns {Array} - List of state options based on the country
+ */
 const getStateOptions = (country) => {
   switch (country) {
     case "india":
@@ -22,6 +28,20 @@ const getStateOptions = (country) => {
 
 let isInitial = true;
 
+/**
+ * Address Component
+ *
+ * Handles the address section of the form, including fields like Address Line 1,
+ * Address Line 2, City, State, Country, and Zipcode.
+ * It also validates the input and manages state dynamically based on country selection.
+ *
+ * @param {Object} props - The props object passed down from the parent
+ * @param {string} props.heading - The heading for the address section (optional)
+ * @param {Object} props.defaultValue - Default address values including address1, address2, city, state, country, zipcode
+ * @param {string} props.id - Unique ID for the form section
+ * @param {string} props.extraClass - Additional class names for styling
+ * @returns {JSX.Element} - Rendered address form fields
+ */
 const Address = forwardRef(
   (
     {
@@ -35,6 +55,9 @@ const Address = forwardRef(
     const { address: validations } = onboardingValidations;
     const firstInputRef = useRef();
 
+    /**
+     * Address Line 1 Input Field (State and Validation)
+     */
     const {
       value: address1Value,
       handleInputChange: address1Change,
@@ -46,6 +69,9 @@ const Address = forwardRef(
       resetValue: resetAddress1,
     } = useInput(address1, validations.address1, undefined, true);
 
+    /**
+     * Address Line 2 Input Field (State and Validation)
+     */
     const {
       value: address2Value,
       handleInputChange: address2Change,
@@ -56,6 +82,9 @@ const Address = forwardRef(
       resetValue: resetAddress2,
     } = useInput(address2);
 
+    /**
+     * City Input Field (State and Validation)
+     */
     const {
       value: cityValue,
       handleInputChange: cityChange,
@@ -67,6 +96,9 @@ const Address = forwardRef(
       resetValue: resetCity,
     } = useInput(city, validations.city, undefined, true);
 
+    /**
+     * State Input Field (State and Validation)
+     */
     const {
       value: stateValue,
       handleInputChange: stateChange,
@@ -78,6 +110,9 @@ const Address = forwardRef(
       forceValidations: forceStateValidations,
     } = useInput(state, validations.state, undefined, true);
 
+    /**
+     * Country Input Field (State and Validation)
+     */
     const {
       value: countryValue,
       handleInputChange: countryChange,
@@ -89,6 +124,9 @@ const Address = forwardRef(
       resetValue: resetCountry,
     } = useInput(country, validations.country, undefined, true);
 
+    /**
+     * Zipcode Input Field (State and Validation)
+     */
     const {
       value: zipcodeValue,
       handleInputChange: zipcodeChange,
@@ -105,16 +143,18 @@ const Address = forwardRef(
       true
     );
 
+    /**
+     * Effect Hook to force zip code validations based on country selection
+     */
     useEffect(() => {
       // force zip code validations based on new country's zipcode regex
-      // ALERT: DO NOT FORCE WHILE MOUNTING
       if (!isInitial) {
         forceZipcodeValidations();
       }
       isInitial = true;
     }, [countryValue, forceZipcodeValidations]);
 
-    // Group all errors and values dynamically
+    // Group all errors and values dynamically for validation
     const allErrors = [
       address1Error,
       cityError,
@@ -131,8 +171,14 @@ const Address = forwardRef(
       zipcodeValue,
     ];
 
+    /**
+     * Validates the entire section (address form)
+     */
     const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+    /**
+     * Forces validation for all address fields
+     */
     const forceValidations = () => {
       forceAddress1Validations();
       forceCityValidations();
@@ -141,6 +187,9 @@ const Address = forwardRef(
       forceZipcodeValidations();
     };
 
+    /**
+     * Resets all address fields to their default values
+     */
     const resetValues = () => {
       resetAddress1();
       resetAddress2();
@@ -150,6 +199,10 @@ const Address = forwardRef(
       resetZipcode();
     };
 
+    /**
+     * Submits the form data if the section is valid
+     * @returns {Object} - Validated item data or error state
+     */
     const submit = () => {
       if (!isSectionValid) {
         forceValidations();
@@ -169,7 +222,7 @@ const Address = forwardRef(
       };
     };
 
-    // Expose methods to parent using ref
+    // Expose methods to parent via ref
     useImperativeHandle(ref, () => ({
       submit,
       forceValidations,
@@ -187,7 +240,7 @@ const Address = forwardRef(
             ref={firstInputRef}
             id={`${id}-address1`}
             type="text"
-            label="Address Line 1"
+            label={CONTENT.ONBOARD.candidateForm.address.address1}
             value={address1Value}
             changeHandler={address1Change}
             blurHandler={address1Blur}
@@ -201,7 +254,7 @@ const Address = forwardRef(
           <InputV2
             id={`${id}-address2`}
             type="text"
-            label="Address Line 2"
+            label={CONTENT.ONBOARD.candidateForm.address.address2}
             value={address2Value}
             changeHandler={address2Change}
             blurHandler={address2Blur}
@@ -216,7 +269,7 @@ const Address = forwardRef(
           <InputV2
             id={`${id}-city`}
             type="text"
-            label="City"
+            label={CONTENT.ONBOARD.candidateForm.address.city}
             value={cityValue}
             changeHandler={cityChange}
             blurHandler={cityBlur}
@@ -229,7 +282,7 @@ const Address = forwardRef(
 
           <Select
             id={`${id}-state`}
-            label="State"
+            label={CONTENT.ONBOARD.candidateForm.address.state}
             value={stateValue}
             options={getStateOptions(countryValue)}
             changeHandler={stateChange}
@@ -245,7 +298,7 @@ const Address = forwardRef(
         <div className={`${classes.addressRow} ${extraClass}`}>
           <Select
             id={`${id}-country`}
-            label="Country"
+            label={CONTENT.ONBOARD.candidateForm.address.country}
             value={countryValue}
             options={OPTIONS.COUNTRY}
             changeHandler={countryChange}
@@ -260,7 +313,7 @@ const Address = forwardRef(
           <InputV2
             id={`${id}-zipcode`}
             type="text"
-            label="Zipcode"
+            label={CONTENT.ONBOARD.candidateForm.address.zipcode}
             value={zipcodeValue}
             changeHandler={zipcodeChange}
             blurHandler={zipcodeBlur}

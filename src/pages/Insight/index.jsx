@@ -4,9 +4,15 @@ import InsightHub from "../../micro-frontends/Insight/components/InsightHub";
 /**
  * Insight Component
  *
- * Serves as the main entry point for the Insight application.
- * It renders the CandidatesHub component to display the candidates' information.
+ * The primary entry point for the Resume Insight application, providing
+ * tools for viewing and managing candidate data. This component utilizes
+ * `Helmet` to set the page title dynamically to "Resume Insight," which
+ * enhances SEO and user navigation context.
  *
+ * The `InsightHub` component within displays detailed candidate information,
+ * serving as the main interface for the Insight application.
+ *
+ * @component
  * @returns {JSX.Element} The rendered Insight component.
  */
 const Insight = () => {
@@ -21,5 +27,4 @@ const Insight = () => {
 };
 
 Insight.displayName = "Insight";
-
 export default Insight;

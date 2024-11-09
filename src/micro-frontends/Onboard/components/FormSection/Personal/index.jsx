@@ -16,7 +16,7 @@ import {
   transformPhoneNumber,
   transformSSN,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
 import {
   SECTIONS,
   FIELDS,
@@ -29,9 +29,21 @@ import {
   PORT_OF_ENTRY_NOT_REQUIRED_VISA,
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+import PropTypes from "prop-types";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * Personal Component
+ *
+ * Handles the personal details section of the onboarding process.
+ * It validates, submits, and manages the user input for personal details such as name, email, phone numbers, etc.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered Personal component.
+ */
 const Personal = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
@@ -60,10 +72,12 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       },
     },
   } = useSelector((state) => state.input);
+
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
   const { personal: validations } = onboardingValidations;
 
+  // Input handlers for personal information fields
   const {
     value: firstNameValue,
     handleInputChange: firstNameChange,
@@ -171,6 +185,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     forceValidations: forceVisaStatusValidations,
   } = useInput(visaStatus, validations.visaStatus, undefined, true);
 
+  // Check if EAD number is required based on visa status
   const isEADRequired = !(
     EAD_NOT_REQUIRED_VISA.includes(visaStatusValue) || visaStatusValue === ""
   );
@@ -250,6 +265,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
   const isFirstRenderForPhotoID = useRef(true);
   const isFirstRenderForEadNumber = useRef(true);
 
+  // Effect to clear photo ID number when photo ID type changes
   useEffect(() => {
     // Skip clearing on the first render for photo ID
     if (isFirstRenderForPhotoID.current) {
@@ -260,6 +276,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     clearPhotoIDNumber();
   }, [photoIDTypeValue, clearPhotoIDNumber]);
 
+  // Effect to clear EAD number when visa status changes
   useEffect(() => {
     // Skip clearing on the first render for EAD number
     if (isFirstRenderForEadNumber.current) {
@@ -302,6 +319,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  // Function to force validations on all inputs
   const forceValidations = () => {
     forceFirstNameValidations();
     forceLastNameValidations();
@@ -321,6 +339,11 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     }
   };
 
+  /**
+   * Handles form submission.
+   * Validates the section and submits data to the Redux store.
+   * Focuses on errors if any validation fails.
+   */
   const submit = async () => {
     if (!isSectionValid) {
       focusErrorsIfAny(sectionRef);
@@ -402,6 +425,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         }
       }
 
+      // Dispatching all personal details to the store
       dispatch(
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
@@ -529,7 +553,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="firstName"
           type="text"
-          label="First Name"
+          label={sections.personal.firstName}
           value={firstNameValue}
           changeHandler={firstNameChange}
           blurHandler={firstNameBlur}
@@ -543,7 +567,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="lastName"
           type="text"
-          label="Last Name"
+          label={sections.personal.lastName}
           value={lastNameValue}
           changeHandler={lastNameChange}
           blurHandler={lastNameBlur}
@@ -558,7 +582,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       <InputV2
         id="emailId"
         type="email"
-        label="Email ID"
+        label={sections.personal.emailId}
         value={emailIdValue}
         changeHandler={emailIdChange}
         blurHandler={emailIdBlur}
@@ -573,7 +597,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="phoneNumber"
           type="tel"
-          label="Phone Number"
+          label={sections.personal.phone}
           value={phoneNumberValue}
           changeHandler={phoneNumberChange}
           blurHandler={phoneNumberBlur}
@@ -587,7 +611,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="secondaryPhoneNumber"
           type="tel"
-          label="Secondary or WhatsApp Number"
+          label={sections.personal.secondaryPhone}
           value={secondaryPhoneNumberValue}
           changeHandler={secondaryPhoneNumberChange}
           blurHandler={secondaryPhoneNumberBlur}
@@ -600,7 +624,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
 
       <RadioGroup
         id="gender"
-        label="Gender"
+        label={sections.personal.gender}
         value={genderValue}
         options={OPTIONS.GENDER}
         changeHandler={genderChange}
@@ -614,7 +638,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="dob"
           type="date"
-          label="Date of Birth"
+          label={sections.personal.dob}
           value={dobValue}
           changeHandler={dobChange}
           blurHandler={dobBlur}
@@ -629,7 +653,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <Select
           id="maritalStatus"
           type="text"
-          label="Marital Status"
+          label={sections.personal.maritalStatus}
           options={OPTIONS.MARITAL_STATUS}
           value={maritalStatusValue}
           changeHandler={maritalStatusChange}
@@ -644,7 +668,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="passportNumber"
           type="text"
-          label="Passport Number"
+          label={sections.personal.passportNumber}
           value={passportNumberValue}
           changeHandler={passportNumberChange}
           blurHandler={passportNumberBlur}
@@ -658,7 +682,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="SSN"
           type="text"
-          label="SSN"
+          label={sections.personal.ssn}
           value={SSNValue}
           changeHandler={SSNChange}
           blurHandler={SSNBlur}
@@ -672,7 +696,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       <Select
         id="visaStatus"
         type="text"
-        label="Visa Status"
+        label={sections.personal.visaStatus}
         options={OPTIONS.VISA_STATUS}
         value={visaStatusValue}
         changeHandler={visaStatusChange}
@@ -687,7 +711,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="eadNumber"
           type="text"
-          label="EAD Number"
+          label={sections.personal.eadNumber}
           value={eadNumberValue}
           changeHandler={eadNumberChange}
           blurHandler={eadNumberBlur}
@@ -702,7 +726,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       <Select
         id="photoIDType"
         type="text"
-        label="Photo ID Type"
+        label={sections.personal.photoIDType}
         options={OPTIONS.PHOTO_ID_TYPE}
         value={photoIDTypeValue}
         changeHandler={photoIDTypeChange}
@@ -718,7 +742,9 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           id="photoIDNumber"
           type="text"
           label={
-            photoIDTypeValue === "DL" ? "License number" : "State ID number"
+            photoIDTypeValue === "DL"
+              ? sections.personal.licenseNumber
+              : sections.personal.stateIDNumber
           }
           value={photoIDNumberValue}
           changeHandler={photoIDNumberChange}
@@ -735,7 +761,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="skypeId"
           type="text"
-          label="Skype ID"
+          label={sections.personal.skypeID}
           value={skypeIdValue}
           changeHandler={skypeIdChange}
           blurHandler={skypeIdBlur}
@@ -748,7 +774,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         <InputV2
           id="referenceName"
           type="text"
-          label="Reference Name"
+          label={sections.personal.referenceName}
           value={referenceNameValue}
           changeHandler={referenceNameChange}
           blurHandler={referenceNameBlur}
@@ -761,6 +787,10 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     </fieldset>
   );
 });
+
+Personal.propTypes = {
+  isInNewRoute: PropTypes.bool.isRequired,
+};
 
 Personal.displayName = "FormPersonal";
 export default Personal;

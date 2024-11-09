@@ -12,7 +12,7 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
 import {
   SECTIONS,
   FIELDS,
@@ -23,7 +23,18 @@ import {
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * USTravelAndStay Component
+ *
+ * Handles the US travel and stay section of the onboarding process.
+ * It validates, submits, and manages the user input for US entry month/year and stay addresses.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered USTravelAndStay component.
+ */
 const USTravelAndStay = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -34,20 +45,23 @@ const USTravelAndStay = forwardRef((_, ref) => {
       usTravelAndStay: { usEntry, stayAddresses },
     },
   } = useSelector((state) => state.input);
+
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
 
   const { usTravelAndStay: validations } = onboardingValidations;
 
+  // Determine if the port of entry is required or optional based on visa status
   const isPortOfEntryNotRequired =
     PORT_OF_ENTRY_NOT_REQUIRED_VISA.includes(visaStatus);
   const isPortOfEntryOptional =
     PORT_OF_ENTRY_OPTIONAL_VISA.includes(visaStatus);
 
+  // Determine if stay addresses in the US are optional based on visa status
   const isUSStayAddressesOptional =
     US_STAY_ADDRESSES_OPTIONAL_VISA.includes(visaStatus);
 
-  // Entry Date (Month and Year only)
+  // Handling entry date (Month and Year)
   const {
     value: usEntryValue,
     handleInputChange: usEntryChange,
@@ -65,26 +79,36 @@ const USTravelAndStay = forwardRef((_, ref) => {
 
   const stayAddressesRef = useRef();
 
+  // Collect all errors for validation
   const allErrors = [usEntryError];
   const allValues = [
     !isPortOfEntryNotRequired && !isPortOfEntryOptional ? usEntryValue : true,
   ];
 
+  // Check if the section is valid based on errors and values
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  // Function to trigger validation
   const forceValidations = () => {
     forceUsEntryValidations();
   };
 
+  /**
+   * Handles form submission.
+   * Validates the section and submits data to the Redux store.
+   * Focuses on errors if any validation fails.
+   */
   const submit = async () => {
     const { isSectionValid: areAddressesValid, listItems: addresses } =
       stayAddressesRef?.current?.submit?.();
 
+    // If the section is invalid, force validation and focus errors
     if (!isSectionValid || !areAddressesValid) {
       if (!isPortOfEntryNotRequired) forceValidations();
       stayAddressesRef.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
     } else if (!isLoading[BUTTON]) {
+      // Update fields in Redux store upon successful validation
       dispatch(
         inputActions.updateField({
           section: SECTIONS.US_TRAVEL_AND_STAY,
@@ -104,6 +128,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
     }
   };
 
+  // Expose submit method to parent component using useImperativeHandle
   useImperativeHandle(ref, () => ({
     submit,
   }));
@@ -114,10 +139,11 @@ const USTravelAndStay = forwardRef((_, ref) => {
       disabled={!isEditMode}
       className={sectionClasses.onboardFormSection}
     >
+      {/* Only display entry field if port of entry is required */}
       {!isPortOfEntryNotRequired && (
         <InputV2
           id="usEntry"
-          label="Month and Year of US Entry"
+          label={sections.usTravelAndStay.monthYear}
           type="month"
           value={usEntryValue}
           changeHandler={usEntryChange}
@@ -130,10 +156,11 @@ const USTravelAndStay = forwardRef((_, ref) => {
         />
       )}
 
+      {/* Address section that can have multiple items */}
       <ListAdd
-        label="Stay Addresses in the US"
-        helperText="(One is mandatory, can add up to 3)"
-        heading="Stay Address"
+        label={sections.usTravelAndStay.stayAddressesList.label}
+        helperText={sections.usTravelAndStay.stayAddressesList.helper}
+        heading={sections.usTravelAndStay.stayAddressesList.heading}
         element={(props) => <Address {...props} />}
         savedListItems={
           stayAddresses.length > 0

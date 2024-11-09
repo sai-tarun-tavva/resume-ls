@@ -1,12 +1,16 @@
+import PropTypes from "prop-types";
 import classes from "./index.module.scss";
 
 /**
  * Logo Component
  *
- * Renders the logo with a suffix and an icon.
- * The logo and suffix are fetched from constants.
+ * Renders the logo with an icon, a suffix, and text.
  *
- * @returns {JSX.Element} - Rendered logo component
+ * @param {Object} props - The component props.
+ * @param {string} props.logoIcon - The icon class for the logo.
+ * @param {string} props.logoSuffix - The suffix text for the logo.
+ * @param {string} props.logoText - The main text for the logo.
+ * @returns {JSX.Element} The rendered logo component.
  */
 const Logo = ({ logoIcon, logoSuffix, logoText }) => {
   return (
@@ -18,6 +22,12 @@ const Logo = ({ logoIcon, logoSuffix, logoText }) => {
       </span>
     </div>
   );
+};
+
+Logo.propTypes = {
+  logoIcon: PropTypes.string.isRequired,
+  logoSuffix: PropTypes.string.isRequired,
+  logoText: PropTypes.string.isRequired,
 };
 
 Logo.displayName = "Logo";

@@ -9,9 +9,12 @@ const { FETCH } = LOADING_ACTION_TYPES;
 /**
  * OverlayMessage Component
  *
- * Displays a message overlay when there are no results.
+ * Displays an overlay message or a loader when there are no results.
+ * Shows a loader if data is currently being fetched; otherwise, it displays
+ * a message encouraging users to perform an operation.
  *
- * @returns {JSX.Element} The overlay message component.
+ * @component
+ * @returns {JSX.Element} The rendered overlay message component.
  */
 const OverlayMessage = () => {
   const { isLoading } = useLoading();
@@ -40,3 +43,4 @@ const OverlayMessage = () => {
 };
 
 export default OverlayMessage;
+OverlayMessage.displayName = "OverlayMessage";

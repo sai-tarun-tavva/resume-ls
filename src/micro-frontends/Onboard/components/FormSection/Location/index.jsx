@@ -7,7 +7,11 @@ import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
 import { focusErrorsIfAny } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES, INPUT_TYPES } from "../../../../../constants";
+import {
+  LOADING_ACTION_TYPES,
+  INPUT_TYPES,
+  CONTENT,
+} from "../../../../../constants";
 import {
   FIELDS,
   SECTIONS,
@@ -17,10 +21,22 @@ import {
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * Location Component
+ *
+ * Handles the location section of the onboarding process.
+ * It validates, submits, and manages user input for both USA and India location addresses.
+ * Displays the India location address input based on visa status and user selection.
+ *
+ * @param {Object} _ - The component props (forwarded ref).
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered Location component.
+ */
 const Location = forwardRef((_, ref) => {
-  const usaLocRef = useRef();
-  const indiaLocRef = useRef();
+  const usaLocRef = useRef(); // Reference for the USA address component
+  const indiaLocRef = useRef(); // Reference for the India address component
   const dispatch = useDispatch();
   const { isLoading } = useLoading();
 
@@ -33,23 +49,37 @@ const Location = forwardRef((_, ref) => {
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
 
-  // Determine if home address is not required based on visa status
+  /**
+   * Determines if the user is exempt from providing a home address based on their visa status.
+   * If the visa status includes specific values, home address is not required.
+   */
   const isExemptFromHomeAddress =
     HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatus);
 
-  // Determine if home address is optional based on visa status
+  /**
+   * Determines if the home address is optional based on the visa status.
+   * If the visa status includes specific values, home address is optional.
+   */
   const isHomeAddressOptional =
     HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatus);
 
-  // If not exempt and not optional, then it's required
+  /**
+   * If home address is not exempt, it will be required by default.
+   */
   const shouldShowHomeAddress = !isExemptFromHomeAddress;
 
+  // Input handling for the checkbox that tracks if the user has a home country address
   const {
     value: hasHomeCountryAddress,
     handleInputChange: handleHasHomeCountryChange,
     handleInputBlur: handleHasHomeCountryBlur,
   } = useInput(false, undefined, undefined, undefined, INPUT_TYPES.CHECKBOX);
 
+  /**
+   * Handles form submission for the location section.
+   * Validates the addresses and submits data to the Redux store if valid.
+   * If there are any validation errors, focuses on the fields with errors.
+   */
   const submit = async () => {
     // Validate USA address (always required)
     const usaAddressResult = usaLocRef.current?.submit?.();
@@ -72,10 +102,11 @@ const Location = forwardRef((_, ref) => {
       indiaAddress = indiaAddressResult?.item || defaultAddress;
     }
 
+    // If any address is invalid, focus on errors
     if (!isUSAAddressValid || isIndiaAddressValid === false) {
       focusErrorsIfAny(sectionRef);
     } else if (!isLoading[BUTTON]) {
-      // Update store with validated addresses
+      // Update the store with validated addresses
       dispatch(
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
@@ -95,6 +126,7 @@ const Location = forwardRef((_, ref) => {
     }
   };
 
+  // Expose submit method to parent component via ref
   useImperativeHandle(ref, () => ({
     submit,
   }));
@@ -105,31 +137,37 @@ const Location = forwardRef((_, ref) => {
       disabled={!isEditMode}
       className={sectionClasses.onboardFormSection}
     >
+      {/* USA Address Section */}
       <Address
-        heading="Address in USA"
+        heading={sections.location.usaHeading}
         defaultValue={usaLocation}
         id="current"
         ref={usaLocRef}
       />
 
+      {/* India Address Section, based on visa status */}
       {shouldShowHomeAddress && (
         <>
+          {/* Checkbox for optional India address */}
           {isHomeAddressOptional && (
             <Checkbox
               id="hasIndianAddress"
-              label="Have any address in India (if applicable) or another country?"
+              label={sections.location.haveIndian.label}
               value={hasHomeCountryAddress}
               changeHandler={handleHasHomeCountryChange}
               blurHandler={handleHasHomeCountryBlur}
-              helperText="(Considered no by default)"
+              helperText={sections.location.haveIndian.helper}
               extraClass={sectionClasses.fullInputWidth}
               isRequired
             />
           )}
 
+          {/* India address field appears if the address is mandatory or user opted to provide it */}
           {(!isHomeAddressOptional || hasHomeCountryAddress) && (
             <Address
-              heading={!isHomeAddressOptional ? "Address in India" : ""}
+              heading={
+                !isHomeAddressOptional ? sections.location.indiaHeading : ""
+              }
               defaultValue={indiaLocation}
               id="current"
               ref={indiaLocRef}

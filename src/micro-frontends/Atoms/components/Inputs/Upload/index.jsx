@@ -35,6 +35,13 @@ const Upload = ({
   const { drag, browse } = CONTENT.SPARK.operations.upload;
   const fileInputRef = useRef(null);
 
+  /**
+   * Handles the "Enter" or "Space" key press events to trigger file input click.
+   *
+   * @param {KeyboardEvent} event - The keydown event.
+   * If "Enter" or "Space" is pressed, it triggers a click on the file input.
+   * Prevents default behavior to avoid form submission or scrolling.
+   */
   const handleKeyDown = (event) => {
     if (event.key === "Enter" || event.key === " ") {
       fileInputRef.current.click();
@@ -42,6 +49,13 @@ const Upload = ({
     }
   };
 
+  /**
+   * Handles the "Enter" or "Space" key press events to trigger file removal.
+   *
+   * @param {KeyboardEvent} event - The keydown event.
+   * If "Enter" or "Space" is pressed, it calls the resetFile function.
+   * Prevents default behavior to avoid unintended actions.
+   */
   const handleRemoveKeyDown = (event) => {
     if (event.key === "Enter" || event.key === " ") {
       resetFile();
@@ -106,9 +120,9 @@ Upload.propTypes = {
   dropHandler: PropTypes.func.isRequired,
   dragOverHandler: PropTypes.func.isRequired,
   resetFile: PropTypes.func.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.string.isRequired,
   isRequired: PropTypes.bool,
 };
 
-export default Upload;
 Upload.displayName = "Upload";
+export default Upload;

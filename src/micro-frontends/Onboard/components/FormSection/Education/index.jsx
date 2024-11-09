@@ -14,13 +14,20 @@ import {
   onboardingValidations,
   transformPhoneNumber,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../../constants";
+import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
 import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 import { useLoading } from "../../../../../store";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * Education Form Component
+ * Handles the education section including SEVIS ID, DSO details, university details, and certifications.
+ *
+ * @param {Object} ref - The ref used to expose methods to the parent component.
+ */
 const Education = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -48,6 +55,10 @@ const Education = forwardRef((_, ref) => {
   const { isLoading } = useLoading();
   const { education: validations } = onboardingValidations;
 
+  /**
+   * Input hooks for each form field with validation functions.
+   * These hooks manage the state and validation of each input field.
+   */
   const {
     value: sevisIDValue,
     handleInputChange: sevisIDChange,
@@ -123,6 +134,7 @@ const Education = forwardRef((_, ref) => {
     forceValidations: forceStreamValidations,
   } = useInput(stream, validations.universityStream, undefined, true);
 
+  // Collect all errors and validate the section
   const allErrors = [
     sevisIDError,
     dsoNameError,
@@ -144,6 +156,9 @@ const Education = forwardRef((_, ref) => {
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
+  /**
+   * Force validations for all fields in the education section
+   */
   const forceValidations = () => {
     forceUniversityNameValidations();
     forcePassedMonthAndYearValidations();
@@ -154,6 +169,10 @@ const Education = forwardRef((_, ref) => {
     forceDSOPhoneValidations();
   };
 
+  /**
+   * Handles form submission and updates the Redux store with validated data.
+   * It validates the USA and home country address fields as well as certificates.
+   */
   const submit = async () => {
     const addressSubmitResult = addressRef.current?.submit?.();
     const isAddressValid = addressSubmitResult?.isSectionValid;
@@ -171,6 +190,7 @@ const Education = forwardRef((_, ref) => {
       listRef?.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
     } else if (!isLoading[BUTTON]) {
+      // Dispatch updates for SEVIS ID, DSO, and university details
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EDUCATION,
@@ -219,12 +239,13 @@ const Education = forwardRef((_, ref) => {
       disabled={!isEditMode}
       className={sectionClasses.onboardFormSection}
     >
+      {/* Only show these fields if education details are required */}
       {isEducationRequired && (
         <>
           <div className={sectionClasses.formRow}>
             <InputV2
               id="sevisID"
-              label="SEVIS ID"
+              label={sections.education.sevisID}
               value={sevisIDValue}
               changeHandler={sevisIDChange}
               blurHandler={sevisIDBlur}
@@ -237,7 +258,7 @@ const Education = forwardRef((_, ref) => {
 
             <InputV2
               id="dsoName"
-              label="DSO Name"
+              label={sections.education.dsoName}
               value={dsoNameValue}
               changeHandler={dsoNameChange}
               blurHandler={dsoNameBlur}
@@ -251,7 +272,7 @@ const Education = forwardRef((_, ref) => {
           <div className={sectionClasses.formRow}>
             <InputV2
               id="dsoEmail"
-              label="DSO Email"
+              label={sections.education.dsoEmail}
               type="email"
               value={dsoEmailValue}
               changeHandler={dsoEmailChange}
@@ -265,7 +286,7 @@ const Education = forwardRef((_, ref) => {
 
             <InputV2
               id="dsoPhone"
-              label="DSO Phone"
+              label={sections.education.dsoPhone}
               type="tel"
               value={dsoPhoneValue}
               changeHandler={dsoPhoneChange}
@@ -281,7 +302,7 @@ const Education = forwardRef((_, ref) => {
           <div className={sectionClasses.formRow}>
             <InputV2
               id="graduatedUniversityName"
-              label="Graduated University Name"
+              label={sections.education.university.name}
               value={universityNameValue}
               changeHandler={universityNameChange}
               blurHandler={universityNameBlur}
@@ -294,7 +315,7 @@ const Education = forwardRef((_, ref) => {
 
             <InputV2
               id="graduatedUniversityPassedMonthAndYear"
-              label="Passed month and year"
+              label={sections.education.university.passDate}
               type="month"
               value={passedMonthAndYearValue}
               changeHandler={passedMonthAndYearChange}
@@ -309,7 +330,7 @@ const Education = forwardRef((_, ref) => {
 
           <InputV2
             id="graduatedUniversityStream"
-            label="Stream"
+            label={sections.education.university.stream}
             value={streamValue}
             changeHandler={streamChange}
             blurHandler={streamBlur}
@@ -320,16 +341,17 @@ const Education = forwardRef((_, ref) => {
             isRequired
           />
           <Address
-            heading="University Address"
+            heading={sections.education.university.address}
             defaultValue={universityAddress}
             id="university"
             ref={addressRef}
           />
         </>
       )}
+      {/* Dynamic list for additional certifications */}
       <ListAdd
-        label="Any certifications?"
-        itemLabels={{ input: "Certificate" }}
+        label={sections.education.certificationsList.heading}
+        itemLabels={sections.education.certificationsList.itemLabels}
         validationFuncs={{ input: validations.certificate }}
         element={(props) => <SingleInput {...props} />}
         savedListItems={additionalCertifications}

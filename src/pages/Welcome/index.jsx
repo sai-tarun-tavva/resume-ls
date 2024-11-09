@@ -3,10 +3,12 @@ import LoginHub from "../../micro-frontends/Welcome/components/LoginHub";
 /**
  * Welcome Component
  *
- * Serves as the entry point for user authentication.
- * It renders the LoginHub component to manage user login functionality.
+ * Serves as the entry point for user authentication, providing a seamless
+ * user experience by rendering the LoginHub component. The LoginHub manages
+ * the login process, handling user inputs and validation within a contained interface.
  *
- * @returns {JSX.Element} The rendered Welcome component.
+ * @component
+ * @returns {JSX.Element} A component that displays the LoginHub for user authentication.
  */
 const Welcome = () => {
   return <LoginHub />;

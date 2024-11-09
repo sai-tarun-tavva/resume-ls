@@ -8,9 +8,15 @@ import classes from "./index.module.scss";
 /**
  * Pagination Component
  *
- * For navigating through paginated data.
+ * Renders controls for navigating through paginated data.
  *
  * @param {Object} props - The component props.
+ * @param {number} props.previousPage - The previous page number.
+ * @param {number} props.nextPage - The next page number.
+ * @param {number} props.totalCount - The total number of items available.
+ * @param {string} props.searchTerm - The current search term used for filtering.
+ * @param {number} props.countPerPage - The number of items displayed per page.
+ * @param {string} props.apiEndpoint - The API endpoint used for fetching data.
  * @returns {JSX.Element} The rendered pagination component.
  */
 const Pagination = ({
@@ -25,7 +31,6 @@ const Pagination = ({
   const { enableRefetch, updateRefetchURL } = useUI();
 
   const totalPages = Math.ceil(totalCount / countPerPage);
-
   let currentPage = totalPages;
   const { APP } = LOADING_ACTION_TYPES;
 
@@ -82,10 +87,14 @@ const Pagination = ({
   );
 };
 
-Pagination.displayName = "Pagination";
-
 Pagination.propTypes = {
-  enablePagination: PropTypes.bool.isRequired,
+  previousPage: PropTypes.number,
+  nextPage: PropTypes.number,
+  totalCount: PropTypes.number.isRequired,
+  searchTerm: PropTypes.string,
+  countPerPage: PropTypes.number.isRequired,
+  apiEndpoint: PropTypes.object.isRequired,
 };
 
+Pagination.displayName = "Pagination";
 export default Pagination;

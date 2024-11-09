@@ -46,5 +46,4 @@ Skill.propTypes = {
 };
 
 Skill.displayName = "Skill";
-
 export default Skill;

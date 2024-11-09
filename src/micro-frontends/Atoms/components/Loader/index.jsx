@@ -1,12 +1,16 @@
+import PropTypes from "prop-types";
 import { LOADER_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
  * Loader Component
  *
- * Displays a loading indicator.
+ * Displays a loading indicator, which can be either a spinning loader or a bar loader.
  *
- * @returns {JSX.Element} The rendered Loader component.
+ * @param {Object} props - The component props.
+ * @param {string} [props.type=LOADER_TYPES.SPIN] - The type of loader to display (spin or bar).
+ * @param {string} [props.extraClass=""] - Additional CSS classes for customization.
+ * @returns {JSX.Element} The Loader component.
  */
 const Loader = ({ type = LOADER_TYPES.SPIN, extraClass = "" }) => {
   return (
@@ -22,6 +26,11 @@ const Loader = ({ type = LOADER_TYPES.SPIN, extraClass = "" }) => {
       />
     </div>
   );
+};
+
+Loader.propTypes = {
+  type: PropTypes.oneOf([LOADER_TYPES.SPIN, LOADER_TYPES.BAR]),
+  extraClass: PropTypes.string,
 };
 
 Loader.displayName = "Loader";

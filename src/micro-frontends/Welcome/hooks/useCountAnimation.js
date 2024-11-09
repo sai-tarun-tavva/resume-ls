@@ -9,7 +9,12 @@ import { useEffect, useState } from "react";
 export const useCountAnimation = (targetCount) => {
   const [count, setCount] = useState(0);
 
-  // Function to determine the duration of the animation based on the target count
+  /**
+   * Determines the duration of the animation based on the target count.
+   *
+   * @param {number} target - The target count for the animation.
+   * @returns {number} Duration in seconds based on the target count range.
+   */
   const determineDuration = (target) => {
     if (target < 100) return 1; // 1 second for counts less than 100
     if (target < 1000) return 3; // 3 seconds for counts less than 1000
@@ -23,6 +28,10 @@ export const useCountAnimation = (targetCount) => {
       const totalIncrements = Math.ceil(targetCount / incrementStep); // Total increments needed
       const intervalTime = (duration * 1000) / totalIncrements; // Convert duration to milliseconds
 
+      /**
+       * Interval callback function that increments the count until it reaches the target count.
+       * Ensures the count does not exceed the target count and clears the interval once completed.
+       */
       const interval = setInterval(() => {
         setCount((prevCount) => {
           if (prevCount < targetCount) {

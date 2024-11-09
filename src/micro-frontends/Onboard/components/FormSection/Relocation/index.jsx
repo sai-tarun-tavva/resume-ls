@@ -1,4 +1,4 @@
-import { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
+import { forwardRef, useImperativeHandle, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -12,12 +12,27 @@ import {
   focusErrorsIfAny,
   onboardingValidations,
 } from "../../../../../utilities";
-import { LOADING_ACTION_TYPES, INPUT_TYPES } from "../../../../../constants";
+import {
+  LOADING_ACTION_TYPES,
+  INPUT_TYPES,
+  CONTENT,
+} from "../../../../../constants";
 import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { sections } = CONTENT.ONBOARD.candidateForm;
 
+/**
+ * Relocation Component
+ *
+ * Handles the relocation section of the onboarding process.
+ * It validates, submits, and manages the user input for relocation preferences.
+ *
+ * @param {Object} _ - The component props (forwarded ref).
+ * @param {React.Ref} ref - The reference passed from the parent component.
+ * @returns {JSX.Element} The rendered Relocation component.
+ */
 const Relocation = forwardRef((_, ref) => {
   const dispatch = useDispatch();
   const {
@@ -27,6 +42,7 @@ const Relocation = forwardRef((_, ref) => {
       relocation: { interested, preference, howSoon, address },
     },
   } = useSelector((state) => state.input);
+
   const addressRef = useRef(); // Create a ref to call Address validation
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
@@ -70,10 +86,18 @@ const Relocation = forwardRef((_, ref) => {
     forceValidations: forceHowSoonValidations,
   } = useInput(howSoon, validations.howSoon, undefined, true);
 
+  /**
+   * Effect to reset the preference field when the 'interested' value changes.
+   * Ensures that if 'interested' changes, the preference is reset as well.
+   */
   useEffect(() => {
     resetPreference();
   }, [interestedValue, resetPreference]);
 
+  /**
+   * Effect to reset the address when preference changes to 'other'.
+   * Dispatches the default address when this happens.
+   */
   useEffect(() => {
     addressRef.current?.resetValues?.();
     if (preferenceValue !== "other" && preference === "other")
@@ -96,12 +120,19 @@ const Relocation = forwardRef((_, ref) => {
     interestedValue ? howSoonValue : true,
   ];
 
+  /**
+   * Validates if the relocation section is valid.
+   * Checks errors and corresponding values to determine if the section is complete.
+   */
   const isRelocationValid = determineSectionValidity(
     relocationErrors,
     relocationValues
   );
 
-  // Force Relocation validations
+  /**
+   * Forces validations for relocation inputs (preference, howSoon).
+   * This is triggered when the user interacts with relocation-related fields.
+   */
   const forceRelocationValidations = () => {
     if (interestedValue) {
       forcePreferenceValidations();
@@ -109,6 +140,11 @@ const Relocation = forwardRef((_, ref) => {
     }
   };
 
+  /**
+   * Handles the form submission for the relocation section.
+   * Validates the section, and submits the data to Redux store if valid.
+   * Triggers focus on any errors if validation fails.
+   */
   const submit = async () => {
     const addressSubmitResult = addressRef.current?.submit?.();
     const isAddressValid = addressSubmitResult?.isSectionValid;
@@ -172,11 +208,11 @@ const Relocation = forwardRef((_, ref) => {
     >
       <Checkbox
         id="relocationInterested"
-        label="Interested in Relocation?"
+        label={sections.relocation.interested.label}
         value={interestedValue}
         changeHandler={interestedChange}
         blurHandler={interestedBlur}
-        helperText="(Considered yes by default)"
+        helperText={sections.relocation.interested.helper}
         extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
@@ -184,7 +220,7 @@ const Relocation = forwardRef((_, ref) => {
         <>
           <Select
             id="howSoonRelocation"
-            label="How soon are you willing to relocate?"
+            label={sections.relocation.howSoon}
             options={OPTIONS.HOW_SOON_RELOCATION}
             value={howSoonValue}
             changeHandler={howSoonChange}
@@ -197,7 +233,7 @@ const Relocation = forwardRef((_, ref) => {
           />
           <Select
             id="relocationPreference"
-            label="Preference of stay"
+            label={sections.relocation.stayPreference}
             options={OPTIONS.STAY_PREFERENCE}
             value={preferenceValue}
             changeHandler={preferenceChange}
@@ -212,7 +248,7 @@ const Relocation = forwardRef((_, ref) => {
       )}
       {preferenceValue === "other" && (
         <Address
-          heading="What is the relocation address?"
+          heading={sections.relocation.address}
           defaultValue={address}
           id="relocation"
           ref={addressRef}

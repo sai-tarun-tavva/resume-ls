@@ -12,10 +12,25 @@ const {
   HASHTAGS,
 } = OPERATION_UI_KEYS;
 
+/**
+ * Content Constants
+ *
+ * This object centralizes all content strings, error messages, labels, placeholders, and button text
+ * used across the application.
+ */
 export const CONTENT = {
+  /**
+   * Common messages and error content used throughout the application.
+   */
   COMMON: {
     serverError: "Server error, please try again later.",
     noCandidateRecord: "No candidates found.",
+    searchTooltipHeader: "Searches by:",
+    mainNavigation: {
+      onboard: "Onboard",
+      insight: "Insight",
+      spark: "Spark",
+    },
     errors: {
       username: {
         empty: "Username is required.",
@@ -223,6 +238,10 @@ export const CONTENT = {
       suggestedPageName: "Home page",
     },
   },
+
+  /**
+   * Welcome screen messages and labels.
+   */
   WELCOME: {
     statusMessages: {
       login: "Incorrect username or password.",
@@ -255,6 +274,10 @@ export const CONTENT = {
       },
     },
   },
+
+  /**
+   * INSIGHT Module content for candidate management.
+   */
   INSIGHT: {
     statusMessages: {
       form: {
@@ -262,11 +285,11 @@ export const CONTENT = {
         failure: "Failed to update candidate information. Please try again.",
       },
       skill: {
-        empty: "Cannot add empty skill.",
+        empty: "Cannot add an empty skill.",
         existing: "Skill already exists.",
         added: " added to skills.",
         fetchFail:
-          "Failed to fetch skill set, auto skill suggestions does not work!",
+          "Failed to fetch skill set, auto skill suggestions are unavailable!",
       },
       upload: {
         maxFiles:
@@ -276,8 +299,8 @@ export const CONTENT = {
     upload: {
       helper: {
         message:
-          "Uploading more than 30 files? For a smoother experience, consider using our batch process. Click the link below!",
-        urlText: "Head to batch process",
+          "For over 30 files, consider using batch processing. Click below!",
+        urlText: "Go to batch process",
       },
       dragDrop: {
         heading: "Drag and drop or click here",
@@ -325,6 +348,7 @@ export const CONTENT = {
       },
     },
     candidateForm: {
+      noSkills: "No skills found",
       placeholders: {
         name: "Name",
         phoneNumber: "Phone number",
@@ -338,9 +362,7 @@ export const CONTENT = {
       suggestions: {
         helper: "Choose from suggestions below",
         button: {
-          create: {
-            default: "Couldn't find? create a skill",
-          },
+          create: { default: "Couldn't find? Create a skill" },
         },
       },
       button: {
@@ -352,6 +374,10 @@ export const CONTENT = {
       },
     },
   },
+
+  /**
+   * ONBOARD Module content for onboarding candidate management.
+   */
   ONBOARD: {
     operations: {
       logoSuffix: "R",
@@ -361,13 +387,178 @@ export const CONTENT = {
         searchFields: ["Status", "First name", "Last name", "Email", "Mobile"],
       },
     },
+    candidates: {
+      columnHeaders: {
+        status: "Status",
+        onboardingDate: "Onboarding Date",
+        lastUpdated: "Last Updated",
+        position: "Position",
+        experience: "Experience",
+        companyName: "Company Name",
+        technology: "Technology",
+        firstName: "First Name",
+        lastName: "Last Name",
+        marketingName: "Marketing Name",
+        location: "Location",
+        relocation: "Relocation",
+        phone: "Mobile Number",
+        email: "Email Address",
+        dob: "Date of Birth",
+        universityName: "University Name",
+        offerStatus: "Offer Letter Status",
+        referenceName: "Reference Name",
+        guestHouseMember: "Guest House Member",
+        remarks: "Remarks",
+        notes: "Notes",
+      },
+      noCandidates: "No candidates available",
+    },
+    candidateForm: {
+      address: {
+        address1: "Address Line 1",
+        address2: "Address Line 2",
+        city: "City",
+        state: "State",
+        country: "Country",
+        zipcode: "Zipcode",
+      },
+      sections: {
+        onboarding: {
+          date: "Onboarding Date",
+          status: "Onboarding Status",
+        },
+        personal: {
+          firstName: "First Name",
+          lastName: "Last Name",
+          emailId: "Email ID",
+          phone: "Mobile Number",
+          secondaryPhone: "Secondary or WhatsApp Number",
+          gender: "Gender",
+          dob: "Date of Birth",
+          maritalStatus: "Marital Status",
+          passportNumber: "Passport Number",
+          ssn: "Social Security Number",
+          visaStatus: "Visa Status",
+          eadNumber: "EAD Number",
+          photoIDType: "Photo ID Type",
+          licenseNumber: "License number",
+          stateIDNumber: "State ID number",
+          skypeID: "Skype ID",
+          referenceName: "Reference Name",
+        },
+        location: {
+          usaHeading: "Address in USA",
+          haveIndian: {
+            label:
+              "Have any address in India (if applicable) or another country?",
+            helper: "(Considered no by default)",
+          },
+          indiaHeading: "Address in India",
+        },
+        relocation: {
+          interested: {
+            label: "Interested in Relocation?",
+            helper: "(Considered yes by default)",
+          },
+          howSoon: "How soon are you willing to relocate?",
+          stayPreference: "Preference of stay",
+          address: "What is the relocation address?",
+        },
+        education: {
+          sevisID: "SEVIS ID",
+          dsoName: "DSO Name",
+          dsoEmail: "DSO Email",
+          dsoPhone: "DSO Phone",
+          university: {
+            name: "Graduated University Name",
+            passDate: "Passed month and year",
+            stream: "Stream",
+            address: "University Address",
+          },
+          certificationsList: {
+            heading: "Any certifications?",
+            itemLabels: {
+              input: "Certificate",
+            },
+          },
+        },
+        profession: {
+          training: "Training Attended?",
+          expYears: "Experience in Years",
+          expMonths: "Experience in Months",
+          prevExpList: {
+            heading: "Any past experience?",
+            itemLabels: {
+              employerName: "Company Name",
+              email: "Company Email",
+              phone: "Company Phone",
+              address: "Company Address",
+            },
+          },
+          technologyList: {
+            heading: "Any familiar technologies?",
+            itemLabels: { input: "Technology" },
+          },
+          referencesList: {
+            heading: "Any references?",
+            itemLabels: {
+              name: "Reference Name",
+              phone: "Reference Phone",
+              email: "Reference Email",
+              designation: "Designation",
+              company: "Company",
+            },
+            helper: "(atleast two references are preferred)",
+          },
+        },
+        offerLetter: {
+          status: "Offer Letter Status",
+          marketingName: "Marketing Name",
+          designation: "Designation",
+          startDate: "Start Date",
+          endDate: "End Date",
+          rolesAndResponsibilities: "Roles and Responsibilities",
+        },
+        usTravelAndStay: {
+          monthYear: "Month and Year of US Entry",
+          stayAddressesList: {
+            label: "Stay Addresses in the US",
+            helper: "(One is mandatory, can add up to 3)",
+            heading: "Stay Address",
+          },
+        },
+        emergencyContacts: {
+          usaHeading: "USA",
+          homeHeading:
+            "Home Country (India, if applicable, or Other Countries)",
+          fullName: "Full Name",
+          phone: "Mobile Number",
+        },
+        miscellaneous: {
+          remarks: "Remarks",
+          notes: "Notes",
+        },
+      },
+      buttons: {
+        close: "Close",
+        save: {
+          default: "Save",
+          next: "Save & Next",
+          loading: "Saving...",
+        },
+      },
+    },
   },
+
+  /**
+   * SPARK Module content for AI-powered resume analysis.
+   */
   SPARK: {
     operations: {
       logoSuffix: "R",
       logo: "Spark",
       textarea: {
-        placeholder: "Enter job decsription",
+        placeholder: "Enter job description",
       },
       upload: {
         drag: "Drag & drop your resume here or ",
@@ -413,6 +604,7 @@ export const CONTENT = {
       [QUESTIONS]: "Interview Questions",
       [EXPERIENCE]: "Domain Experience",
       [SKILLS]: "Desired Skills",
+      [HASHTAGS]: "Hashtags",
     },
   },
 };
