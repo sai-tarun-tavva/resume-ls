@@ -1,32 +1,38 @@
 import { useEffect, useState } from "react";
 
 /**
- * Custom hook to animate a count from 0 to a specified target count.
+ * Custom hook to animate a count from 0 to a specified target count with formatting.
+ * Displays the count in K, M, and B suffixes for thousands, millions, and billions.
  *
  * @param {number} targetCount - The target number to count up to.
- * @returns {number} The current animated count.
+ * @returns {string} The current animated count as a formatted string.
  */
 export const useCountAnimation = (targetCount) => {
   const [count, setCount] = useState(0);
 
   /**
-   * Determines the duration of the animation based on the target count.
+   * Formats the count with appropriate suffixes (K, M, B) based on value.
    *
-   * @param {number} target - The target count for the animation.
-   * @returns {number} Duration in seconds based on the target count range.
+   * @param {number} value - The current count value.
+   * @returns {string} Formatted string with suffixes for large numbers.
    */
-  const determineDuration = (target) => {
-    if (target < 100) return 1; // 1 second for counts less than 100
-    if (target < 1000) return 3; // 3 seconds for counts less than 1000
-    return 5; // 5 seconds for counts 1000 and above
+  const formatCount = (value) => {
+    if (value >= 1_000_000_000) {
+      return (value / 1_000_000_000).toFixed(1) + "B"; // Billions
+    } else if (value >= 1_000_000) {
+      return (value / 1_000_000).toFixed(1) + "M"; // Millions
+    } else if (value >= 1_000) {
+      return (value / 1_000).toFixed(1) + "K"; // Thousands
+    }
+    return value.toString(); // Less than 1000
   };
 
   useEffect(() => {
     if (targetCount > 0) {
-      const duration = determineDuration(targetCount); // Set duration based on target count
-      const incrementStep = Math.ceil(targetCount / (duration * 100)); // Calculate increment step
-      const totalIncrements = Math.ceil(targetCount / incrementStep); // Total increments needed
-      const intervalTime = (duration * 1000) / totalIncrements; // Convert duration to milliseconds
+      const duration = 2; // Set duration in seconds
+      const maxSteps = duration * 30; // Limit to ~30 updates per second
+      const incrementStep = Math.max(1, Math.floor(targetCount / maxSteps)); // Adjust step size dynamically
+      const intervalTime = (duration * 1000) / (targetCount / incrementStep); // Interval based on step size
 
       /**
        * Interval callback function that increments the count until it reaches the target count.
@@ -34,12 +40,11 @@ export const useCountAnimation = (targetCount) => {
        */
       const interval = setInterval(() => {
         setCount((prevCount) => {
-          if (prevCount < targetCount) {
-            return Math.min(prevCount + incrementStep, targetCount); // Prevent overshooting
-          } else {
+          const nextCount = Math.min(prevCount + incrementStep, targetCount);
+          if (nextCount === targetCount) {
             clearInterval(interval); // Clear interval when target is reached
-            return prevCount; // Return the final count
           }
+          return nextCount;
         });
       }, intervalTime); // Use calculated interval time
 
@@ -47,5 +52,5 @@ export const useCountAnimation = (targetCount) => {
     }
   }, [targetCount]); // Restart animation when targetCount changes
 
-  return count;
+  return formatCount(count);
 };
