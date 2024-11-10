@@ -1,0 +1,43 @@
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-self: end;
+
+  a {
+    width: 9rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+    border: 0.1rem solid var(--primary-color);
+    background-color: transparent;
+    color: var(--primary-color);
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      border-color: var(--primary-hover);
+      color: var(--primary-hover);
+      background-color: transparent;
+    }
+
+    &:focus-visible {
+      outline: 0.1rem solid var(--primary-color);
+      outline-offset: 0.2rem;
+      box-shadow: 0 0 0 0.25rem var(--primary-shadow);
+    }
+  }
+
+  .navActions {
+    display: flex;
+
+    .button {
+      margin: 0 1rem;
+      width: 9rem;
+      border-radius: 0.25rem;
+      font-weight: bold;
+    }
+  }
+}

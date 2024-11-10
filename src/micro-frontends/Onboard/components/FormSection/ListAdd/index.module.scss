@@ -1,0 +1,81 @@
+.list {
+  width: 80%;
+  .control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .label {
+      color: var(--primary-color);
+
+      .helperText {
+        font-size: 0.75rem;
+        color: var(--text-light);
+        margin-left: 0.5rem;
+      }
+    }
+
+    .addButton {
+      background-color: transparent;
+      color: var(--primary-color);
+      font-size: 2rem;
+      box-shadow: unset;
+
+      i::before {
+        box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+      }
+
+      &:hover {
+        color: var(--primary-hover);
+      }
+
+      &:disabled {
+        color: light-dark(rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3));
+        border-color: light-dark(
+          rgba(118, 118, 118, 0.3),
+          rgba(195, 195, 195, 0.3)
+        );
+      }
+    }
+  }
+
+  .listItem {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+
+    .removeButton {
+      background-color: transparent;
+      color: var(--primary-color);
+      font-size: 1rem;
+      box-shadow: unset;
+
+      i::before {
+        box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+      }
+
+      &:hover {
+        color: var(--primary-hover);
+      }
+    }
+
+    & > div {
+      flex: 1;
+    }
+  }
+}
+
+.addButton,
+.removeButton {
+  &:focus-visible {
+    outline: none;
+    outline-offset: unset;
+    box-shadow: unset;
+
+    i::before {
+      border-radius: 0.1rem;
+      outline: 0.1rem solid var(--primary-color) !important;
+      outline-offset: 0.2rem !important;
+    }
+  }
+}

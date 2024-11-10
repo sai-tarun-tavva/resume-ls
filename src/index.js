@@ -1,17 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
 import App from "./App";
-import store from "./store/store";
+import GlobalWrapper from "./pages/GlobalWrapper";
 import reportWebVitals from "./reportWebVitals";
 import "./index.scss";
 
+// Create a root element in the DOM and render the app
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    {/* GlobalWrapper wraps the application, providing context and state management */}
+    <GlobalWrapper>
+      {/* Main app component that manages routing and UI */}
       <App />
-    </Provider>
+    </GlobalWrapper>
   </React.StrictMode>
 );
 

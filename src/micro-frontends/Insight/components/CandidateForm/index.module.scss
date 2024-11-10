@@ -1,0 +1,112 @@
+.candidateFormContainer {
+  margin: 15.3rem auto 0;
+  display: flex;
+
+  .candidateForm {
+    max-width: 53rem;
+    flex: 60%;
+
+    .inputColumns {
+      padding: 1rem 4rem;
+      display: flex;
+      justify-content: space-around;
+
+      .candidateControl {
+        input {
+          &:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0.25rem 0.35rem -0.375rem var(--primary-shadow);
+          }
+        }
+      }
+    }
+
+    .hiddenInput {
+      display: none;
+    }
+
+    .buttonGroup {
+      display: flex;
+      justify-content: space-between;
+      margin: 1rem 4rem 1rem 0;
+      position: absolute;
+      top: 8rem;
+      right: 0;
+
+      .closeButton,
+      .saveButton {
+        border-radius: 0.3rem;
+        font-size: 1.25rem;
+        box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+      }
+
+      .closeButton {
+        margin-left: auto;
+        border: 0.1rem solid var(--primary-color);
+        margin-right: 1.25rem;
+        background-color: transparent;
+        color: var(--primary-color);
+
+        &:hover {
+          border-color: var(--primary-hover);
+          color: var(--primary-hover);
+          background-color: transparent;
+        }
+      }
+
+      .saveButton {
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-color);
+
+        &:hover {
+          background-color: var(--primary-hover);
+        }
+
+        &:disabled {
+          background-color: #eaedf0;
+          color: #6c757d;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .skillsSection {
+    flex: 40%;
+    padding-right: 4rem;
+
+    .skillsContainer {
+      background: #ffffff;
+      padding: 2rem;
+      height: 33rem;
+      box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .candidateFormContainer {
+    display: grid;
+
+    .candidateForm {
+      max-width: 90%;
+    }
+
+    .skillsSection {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .candidateFormContainer {
+    .candidateForm {
+      .buttonGroup {
+        position: unset;
+        top: unset;
+        right: unset;
+      }
+    }
+  }
+}

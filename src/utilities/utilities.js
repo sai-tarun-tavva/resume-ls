@@ -1,4 +1,4 @@
-import { END_POINTS, MAX_FILE_SIZE } from "../constants";
+import { INSIGHT } from "../constants";
 
 /**
  * Builds the URL for fetching candidates based on the query, limit, and page parameters.
@@ -7,13 +7,18 @@ import { END_POINTS, MAX_FILE_SIZE } from "../constants";
  * @param {string} [page=""] - The page number for pagination (optional).
  * @returns {string} The dynamically built URL with encoded query parameters.
  */
-export const buildFetchCandidatesUrl = (limit = "", page = "", query = "") => {
+export const buildFetchCandidatesUrl = (
+  endPoint = "",
+  limit = "",
+  page = "",
+  query = ""
+) => {
   // Encode query params to ensure special characters are handled
   const encodedLimit = encodeURIComponent(limit);
   const encodedPage = encodeURIComponent(page);
 
   // Destructure to get the base URL and parameters
-  const { url, params } = END_POINTS.FETCH_CANDIDATES;
+  const { url, params } = endPoint;
 
   // Create a new URL object for constructing the complete URL
   const fetchUrl = new URL(url);
@@ -45,13 +50,27 @@ export const isValidFile = (file) => {
   ];
 
   // Convert the file size from MB to bytes
-  const maxSizeInBytes = MAX_FILE_SIZE * 1024 * 1024;
+  const maxSizeInBytes = INSIGHT.MAX_FILE_SIZE * 1024 * 1024;
 
   // Check file type and file size
   const isValidType = validTypes.includes(file.type);
   const isValidSize = file.size <= maxSizeInBytes;
 
   return isValidType && isValidSize;
+};
+
+/**
+ * Calculates and returns the date exactly 18 years ago from today.
+ * The returned date is formatted as YYYY-MM-DD.
+ *
+ * @returns {string} The date 18 years ago in the format YYYY-MM-DD.
+ */
+export const getEighteenYearsAgoDate = () => {
+  const today = new Date();
+  // Subtract 18 years from today's date
+  today.setFullYear(today.getFullYear() - 18);
+  // Return the date in the YYYY-MM-DD format
+  return today.toISOString().split("T")[0]; // Format the date as YYYY-MM-DD
 };
 
 /**
@@ -135,14 +154,15 @@ export const isCandidateNew = (dateCreated) => {
 };
 
 /**
- * Resets the status asynchronously.
+ * Dispatches the action synchronously.
  * @param {function} action - The action to dispatch.
- * @returns {Promise<void>} A promise that resolves after the status is reset.
+ * @returns {Promise<void>} A promise that resolves after the action is dispatched.
  */
-export const resetStatusAsync = (action) => (dispatch) => {
+export const dispatchAsync = (action) => {
   return new Promise((resolve) => {
-    dispatch(action());
-    resolve(); // Resolve after resetting status
+    // Dispatching the action
+    action();
+    resolve(); // Resolve after dispatching the action
   });
 };
 
@@ -171,6 +191,45 @@ export const calculateTimeAgo = (date) => {
   if (interval >= 1) return `${interval} minute${interval > 1 ? "s" : ""} ago`;
 
   return `${Math.floor(seconds)} second${seconds > 1 ? "s" : ""} ago`;
+};
+
+/**
+ * Converts an ISO date string to a human-readable formatted date in a U.S. time zone.
+ * @param {string} dateStr - The ISO date string to be formatted.
+ * @param {boolean} includeTime - Whether to include the time in the output.
+ * @returns {string} A formatted date string in the "MMM DD, YYYY hh:mm:ss AM/PM" format.
+ */
+export const convertDate = (dateStr, includeTime = true) => {
+  if (!dateStr) return "";
+
+  let date;
+  if (!includeTime) {
+    const [year, month, day] = dateStr.split("-").map(Number);
+    date = new Date(year, month - 1, day);
+  } else {
+    date = new Date(dateStr);
+  }
+
+  const timeZone = "America/New_York"; // Change this to "America/Los_Angeles" for Pacific Time
+
+  let options = {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    timeZone,
+  };
+
+  if (includeTime) {
+    options = {
+      ...options,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    };
+  }
+
+  return date.toLocaleString("en-US", options);
 };
 
 /**
@@ -241,12 +300,93 @@ export const arraysEqual = (arr1, arr2) => {
   if (
     !Array.isArray(arr1) ||
     !Array.isArray(arr2) ||
-    arr1?.length !== arr2?.length
+    arr1.length !== arr2.length
   )
     return false;
-  const sortedArr1 = [...arr1].sort();
-  const sortedArr2 = [...arr2].sort();
-  return sortedArr1.every((value, index) => value === sortedArr2[index]);
+
+  // Sort the arrays to ensure the order does not affect equality
+  const sortedArr1 = [...arr1].sort((a, b) => {
+    // Use JSON.stringify for object comparison, fallback to string comparison
+    return typeof a === "object" && typeof b === "object"
+      ? JSON.stringify(a).localeCompare(JSON.stringify(b))
+      : a.localeCompare(b);
+  });
+
+  const sortedArr2 = [...arr2].sort((a, b) => {
+    return typeof a === "object" && typeof b === "object"
+      ? JSON.stringify(a).localeCompare(JSON.stringify(b))
+      : a.localeCompare(b);
+  });
+
+  // Use areObjectsEqual for comparing objects or primitive values
+  return sortedArr1.every((value, index) => {
+    return typeof value === "object"
+      ? areObjectsEqual(value, sortedArr2[index])
+      : value === sortedArr2[index]; // For primitive values
+  });
+};
+
+/**
+ * Checks if two objects are equal.
+ * @param {Object} obj1 - The first object to compare.
+ * @param {Object} obj2 - The second object to compare.
+ * @returns {boolean} True if objects are equal, false otherwise.
+ */
+export const areObjectsEqual = (obj1, obj2) => {
+  // Check if both are objects (and not null)
+  if (obj1 === obj2) return true; // Check for reference equality
+  if (
+    typeof obj1 !== "object" ||
+    typeof obj2 !== "object" ||
+    obj1 === null ||
+    obj2 === null
+  ) {
+    return false; // One is not an object
+  }
+
+  // Get the keys of both objects
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  // Check if the number of keys is the same
+  if (keys1.length !== keys2.length) return false;
+
+  // Check if values are equal for each key
+  for (let key of keys1) {
+    // Check if the key exists in both objects
+    if (!keys2.includes(key)) return false;
+
+    // Recursively check for deep equality
+    const value1 = obj1[key];
+    const value2 = obj2[key];
+
+    // If the value is an object or an array, perform a deep comparison
+    if (typeof value1 === "object" && typeof value2 === "object") {
+      if (!areObjectsEqual(value1, value2)) return false; // Deep comparison
+    } else if (value1 !== value2) {
+      return false; // Primitive value comparison
+    }
+  }
+
+  return true; // Objects are equal
+};
+
+/**
+ * Function to get the experience display text for a candidate.
+ * @param {number} years - Years of experience.
+ * @param {number} months - Months of experience.
+ * @returns {string} - Formatted experience text.
+ */
+export const getExperienceDisplayText = (years, months) => {
+  if (years && months) {
+    return `${years} years and ${months} months`;
+  } else if (years) {
+    return `${years} years`;
+  } else if (months) {
+    return `${months} months`;
+  } else {
+    return "";
+  }
 };
 
 /**
@@ -277,6 +417,64 @@ export const transformPhoneNumber = (value, isCountryCode = false) => {
       6
     )}-${digitsOnly.slice(6)}`;
   }
+};
+
+/**
+ * Focuses on the first element in the provided section reference that has an error.
+ * If no element with an error is found, no action is taken.
+ *
+ * @param {Object} sectionRef - A reference object pointing to the section DOM element.
+ * @returns {void} This function does not return a value.
+ */
+export const focusErrorsIfAny = (sectionRef) => {
+  const firstErrorElement = sectionRef.current.querySelector(
+    "[data-error='true']"
+  );
+  firstErrorElement?.focus();
+};
+
+/**
+ * Extracts and returns only the numeric digits from a given string.
+ * Removes all non-digit characters, including spaces, and trims the result.
+ *
+ * @param {string} value - The input string from which digits are to be extracted.
+ * @returns {string} A string containing only the numeric digits from the input.
+ */
+export const extractOnlyDigits = (value) => {
+  return value.replace(/\D/g, "").trim();
+};
+
+/**
+ * Validates an array of error states and value states.
+ * @param {Array} errors - An array of error states to check if they are falsy.
+ * @param {Array} values - An array of values to check if they are truthy (not empty).
+ * @returns {boolean} True if all errors are falsy and all values are truthy, false otherwise.
+ */
+export const determineSectionValidity = (errors, values) => {
+  const noErrors = errors.every((error) => !error); // No errors should be present
+  const allValuesPresent = values.every((value) => value); // All values must be present
+  return noErrors && allValuesPresent;
+};
+
+/**
+ * Transforms a Social Security Number (SSN) into the xxx-xx-xxxx format.
+ * @param {string} value - The SSN as a string.
+ * @returns {string} The formatted SSN, or the original if not valid.
+ */
+export const transformSSN = (value) => {
+  // Remove all spaces and hyphens from the input
+  const digitsOnly = value.replace(/[\s-]+/g, "");
+
+  // Ensure we only reformat if we have exactly 9 digits
+  if (digitsOnly.length !== 9) {
+    return value; // Return the original input if it's not exactly 9 digits
+  }
+
+  // Format the SSN into xxx-xx-xxxx
+  return `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(
+    3,
+    5
+  )}-${digitsOnly.slice(5)}`;
 };
 
 /**

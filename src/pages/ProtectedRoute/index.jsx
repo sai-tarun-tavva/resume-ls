@@ -1,30 +1,30 @@
 import React from "react";
+import ProtectedWrapper from "../ProtectedWrapper";
 import { Navigate } from "react-router-dom";
-import { ROUTES } from "../../constants";
 
 /**
  * ProtectedRoute Component
  *
- * Checks if a user is authenticated.
- * If the user is not authenticated, they are redirected to the login page.
+ * This component verifies if a user is authenticated by checking for an access token in session storage.
+ * If the access token is absent, it redirects the user to the login page, ensuring secure access
+ * to protected routes.
  *
  * @param {Object} props - The component props.
- * @param {React.Component} props.element - The component to render if authenticated.
- * @returns {React.Component} The protected route element or redirect.
+ * @param {React.Component} props.element - The component to render if the user is authenticated.
+ * @returns {JSX.Element} - Either the protected content wrapped in `ProtectedWrapper` or a redirection to the login page.
  */
 const ProtectedRoute = ({ element }) => {
   const accessToken = sessionStorage.getItem("accessToken");
 
-  // Check if accessToken exists in sessionStorage
+  // Redirect to login if accessToken does not exist
   if (!accessToken) {
-    // If no accessToken, redirect to login page
     sessionStorage.clear();
     localStorage.clear();
-    return <Navigate to={`/${ROUTES.AUTH}`} replace />;
+    return <Navigate to="/" replace />;
   }
 
-  // If authenticated, render the protected component
-  return element;
+  // Render the protected component if authenticated
+  return <ProtectedWrapper>{element}</ProtectedWrapper>;
 };
 
 ProtectedRoute.displayName = "ProtectedRoute";

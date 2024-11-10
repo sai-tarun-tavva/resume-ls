@@ -1,29 +1,171 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import React, { Suspense } from "react";
+import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Candidates from "./components/CandidatesHub/Candidates";
-import CandidateForm from "./components/CandidatesHub/CandidateForm";
-import PageNotFound from "./atoms/PageNotFound";
 import { ROUTES } from "./constants";
 
+// Lazy-loaded components for different pages and sections
+const Welcome = React.lazy(() => import("./pages/Welcome"));
+
+const Insight = React.lazy(() => import("./pages/Insight"));
+const InsightCandidates = React.lazy(() =>
+  import("./micro-frontends/Insight/components/Candidates")
+);
+const InsightForm = React.lazy(() =>
+  import("./micro-frontends/Insight/components/CandidateForm")
+);
+
+const Onboard = React.lazy(() => import("./pages/Onboard"));
+const OnboardCandidates = React.lazy(() =>
+  import("./micro-frontends/Onboard/components/Candidates")
+);
+const OnboardForm = React.lazy(() =>
+  import("./micro-frontends/Onboard/components/Form")
+);
+
+const Spark = React.lazy(() => import("./pages/Spark"));
+
+const PageNotFound = React.lazy(() =>
+  import("./micro-frontends/Atoms/components/PageNotFound")
+);
+
+// Extracting route paths from ROUTES constant
+const { INSIGHT, ONBOARD, SPARK } = ROUTES;
+
 /**
- * Router configuration for the application.
- * Defines routes for the application, including home, login, candidate forms, and a catch-all for 404 pages.
- * @returns {Object} The router configuration object.
+ * App Router Configuration
+ *
+ * Defines all the routes for the application, including lazy-loaded pages
+ * and protected routes to ensure that only authenticated users can access certain pages.
+ *
+ * @returns {Object} The router configuration object with defined paths and components.
  */
 const appRouter = createBrowserRouter([
-  { path: "", element: <Navigate to={ROUTES.AUTH} /> }, // pending to change based on auth
-  { path: ROUTES.AUTH, element: <Login /> },
+  // Default route - Welcome page
   {
-    path: ROUTES.HOME,
-    element: <ProtectedRoute element={<Home />} />,
+    path: "",
+    element: (
+      <Suspense>
+        <Welcome />
+      </Suspense>
+    ),
+  },
+  // Insight Home Page
+  {
+    path: INSIGHT.HOME,
+    element: (
+      <ProtectedRoute
+        element={
+          <Suspense>
+            <Insight />
+          </Suspense>
+        }
+      />
+    ),
     children: [
-      { index: true, element: <Candidates /> },
-      { path: ROUTES.CANDIDATE_FORM, element: <CandidateForm /> },
+      // Insight Candidates Page (Default)
+      {
+        index: true,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <InsightCandidates />
+              </Suspense>
+            }
+          />
+        ),
+      },
+      // Insight Candidate Form (Edit)
+      {
+        path: INSIGHT.CANDIDATE_FORM,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <InsightForm />
+              </Suspense>
+            }
+          />
+        ),
+      },
     ],
   },
-  { path: "*", element: <PageNotFound /> },
+  // Onboard Home Page
+  {
+    path: ONBOARD.HOME,
+    element: (
+      <ProtectedRoute
+        element={
+          <Suspense>
+            <Onboard />
+          </Suspense>
+        }
+      />
+    ),
+    children: [
+      // Onboard Candidates Page (Default)
+      {
+        index: true,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <OnboardCandidates />
+              </Suspense>
+            }
+          />
+        ),
+      },
+      // Onboard Candidate Form (New)
+      {
+        path: ONBOARD.CANDIDATE_FORM.NEW,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <OnboardForm />
+              </Suspense>
+            }
+          />
+        ),
+      },
+      // Onboard Candidate Form (View)
+      {
+        path: ONBOARD.CANDIDATE_FORM.VIEW,
+        element: (
+          <ProtectedRoute
+            element={
+              <Suspense>
+                <OnboardForm />
+              </Suspense>
+            }
+          />
+        ),
+      },
+    ],
+  },
+  // Spark Home Page
+  {
+    path: SPARK.HOME,
+    element: (
+      <ProtectedRoute
+        element={
+          <Suspense>
+            <Spark />
+          </Suspense>
+        }
+      />
+    ),
+  },
+  // Not Found Page (404)
+  {
+    path: "*",
+    element: (
+      <Suspense>
+        <PageNotFound />
+      </Suspense>
+    ),
+  },
 ]);
 
 export default appRouter;

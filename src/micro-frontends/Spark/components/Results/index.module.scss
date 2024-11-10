@@ -1,0 +1,24 @@
+.loaderContainer {
+  margin-left: 30%;
+  width: 70%;
+}
+
+.results {
+  flex: 0 0 70%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  margin-left: 30%;
+  min-height: 93vh;
+}
+
+@media (max-width: 768px) {
+  .loaderContainer {
+    margin-left: unset;
+    margin-top: 30rem;
+    width: 100%;
+  }
+  .results {
+    margin-left: unset;
+  }
+}

@@ -1,0 +1,48 @@
+.welcomePanel {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  padding: 20px;
+
+  .logo {
+    width: 32rem;
+  }
+
+  h1 {
+    text-transform: capitalize;
+    color: #073f74;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  & > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    margin-top: 5rem;
+
+    .counterWrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 2.5rem;
+      color: #073f74;
+      font-weight: 700;
+      margin-top: 5rem;
+
+      .countUp {
+        font-size: 3rem;
+      }
+
+      p {
+        font-size: 1.25rem;
+        margin-top: 0.5rem;
+        color: #555;
+        text-transform: lowercase;
+      }
+    }
+  }
+}

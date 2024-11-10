@@ -1,0 +1,15 @@
+.heading {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  width: 80%;
+}
+
+.addressRow {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+
+  .halfInputWidth {
+    width: 45%;
+  }
+}

@@ -1,0 +1,115 @@
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  width: 60%;
+
+  & > div {
+    display: flex;
+
+    .required {
+      color: var(--error-color);
+      margin-left: 0.25rem;
+    }
+
+    .radioLabel {
+      font-size: 0.875rem;
+      color: var(--primary-color);
+      font-weight: bold;
+      margin-right: auto;
+    }
+
+    .helperText {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 0.25rem;
+    }
+
+    .radioControl {
+      display: flex;
+      align-items: center;
+      margin-right: 1rem;
+      cursor: pointer;
+
+      .radioInput {
+        position: absolute;
+        opacity: 0;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin: 0;
+        cursor: pointer;
+        z-index: 1;
+
+        &:focus-visible + label:before {
+          box-shadow: 0 0 0 0.1rem var(--primary-color);
+        }
+
+        &:checked + label:before {
+          background-color: var(--primary-color);
+          box-shadow: 0 0 0.5rem var(--primary-shadow);
+        }
+
+        &:checked + label:after {
+          transform: scale(1);
+        }
+
+        &.error + label:before {
+          border: 1px solid var(--error-color);
+          background-color: var(--error-light);
+        }
+
+        &.error[data-error="true"]:focus + label:before {
+          box-shadow: 0 0 0 0.1rem var(--error-color);
+        }
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        padding-left: 2rem;
+        position: relative;
+        cursor: pointer;
+
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          width: 1.25rem;
+          height: 1.25rem;
+          border-radius: 50%;
+          background-color: var(--border-color);
+          transition: var(--transition);
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          left: 0.25rem;
+          width: 0.75rem;
+          height: 0.75rem;
+          border-radius: 50%;
+          background-color: white;
+          transform: scale(0);
+          transition: transform 0.2s ease;
+        }
+
+        .radioOptionLabel {
+          font-size: 0.875rem;
+          color: var(--text-color);
+          transition: var(--transition);
+
+          &:hover {
+            color: var(--primary-hover);
+          }
+        }
+      }
+    }
+  }
+
+  .errorText {
+    color: var(--error-color);
+    font-size: 0.75rem;
+    height: 1rem;
+    display: block;
+  }
+}

@@ -1,0 +1,13 @@
+.prevExpRow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .halfInputWidth {
+    width: 45%;
+  }
+}
+
+.fullInputWidth {
+  width: 100%;
+}

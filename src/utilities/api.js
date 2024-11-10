@@ -1,5 +1,5 @@
-import { formatFileSize } from "./utilities";
-import { END_POINTS, ROUTES } from "../constants";
+import { formatFileSize, replaceRouteParam } from "./utilities";
+import { END_POINTS } from "../constants";
 
 /**
  * Makes an API call using the provided URL and options, including handling of the access token.
@@ -22,7 +22,7 @@ export const fetchWithToken = async (url, options = {}) => {
       // Clear storage and redirect to login if token refresh fails
       sessionStorage.clear();
       localStorage.clear();
-      window.location.href = `/${ROUTES.AUTH}`; // Adjust the path as necessary
+      window.location.href = `/`; // Adjust the path as necessary
       return; // Prevent further execution
     }
   }
@@ -49,7 +49,7 @@ export const fetchWithToken = async (url, options = {}) => {
       // Clear storage and redirect to login if refresh fails
       sessionStorage.clear();
       localStorage.clear();
-      window.location.href = `/${ROUTES.AUTH}`; // Adjust the path as necessary
+      window.location.href = `/`; // Adjust the path as necessary
       return; // Prevent further execution
     }
   }
@@ -70,7 +70,7 @@ export const refreshAccessToken = async () => {
   if (!refreshToken) return "failure";
 
   try {
-    const response = await fetch(END_POINTS.REFRESH_TOKEN, {
+    const response = await fetch(END_POINTS.WELCOME.REFRESH_TOKEN, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +139,7 @@ export const handleLogout = async () => {
 
     if (refreshToken) {
       // Make an API request to your backend to invalidate/blacklist the refresh token
-      const response = await fetchWithToken(END_POINTS.LOGOUT, {
+      const response = await fetchWithToken(END_POINTS.WELCOME.LOGOUT, {
         method: "POST",
         body,
       });
@@ -149,7 +149,7 @@ export const handleLogout = async () => {
         console.error("Failed to logout", response.statusText);
       }
     } else {
-      console.error("No refresh token found in localStorage");
+      console.error("Error logging out");
     }
   } catch (error) {
     console.error("Error logging out:", error);
@@ -166,9 +166,12 @@ export const handleLogout = async () => {
  */
 export const fetchPdf = async (id) => {
   try {
-    const response = await fetchWithToken(`${END_POINTS.VIEW_RESUME}${id}/`, {
-      method: "GET",
-    });
+    const response = await fetchWithToken(
+      `${END_POINTS.INSIGHT.VIEW_RESUME}${id}/`,
+      {
+        method: "GET",
+      }
+    );
 
     // Check if response is ok
     if (!response.ok) {
@@ -262,7 +265,7 @@ export const editCandidate = async (id, body) => {
   try {
     // Make the API request to update candidate data
     const response = await fetchWithToken(
-      END_POINTS.EDIT_CANDIDATE.replace("{{id}}", id),
+      END_POINTS.INSIGHT.EDIT_CANDIDATE.replace("{{id}}", id),
       {
         method: "PUT",
         body,
@@ -291,17 +294,23 @@ export const editCandidate = async (id, body) => {
 export const uploadFiles = async (body) => {
   try {
     // Make the API request to upload files
-    const response = await fetchWithToken(END_POINTS.UPLOAD_RESUME, {
+    const response = await fetchWithToken(END_POINTS.INSIGHT.UPLOAD_RESUME, {
       method: "POST",
       body,
     });
 
+    const { data, uploaded_count } = await response.json();
+
     // Return the response data and status
-    return { status: response.status };
+    return {
+      status: response.status,
+      unparsed: data,
+      uploadedCount: uploaded_count,
+    };
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);
-    return { status: 500 };
+    return { status: 500, unparsed: [], uploadedCount: 0 };
   }
 };
 
@@ -316,7 +325,7 @@ export const uploadFiles = async (body) => {
 export const fetchSuggestedSkills = async (param = "") => {
   try {
     const response = await fetchWithToken(
-      `${END_POINTS.FETCH_SUGGESTED_SKILLS}${param}`,
+      `${END_POINTS.INSIGHT.FETCH_SUGGESTED_SKILLS}${param}`,
       {
         method: "GET",
       }
@@ -342,7 +351,7 @@ export const fetchSuggestedSkills = async (param = "") => {
  */
 export const createNewSkill = async (body) => {
   try {
-    const response = await fetchWithToken(END_POINTS.CREATE_NEW_SKILL, {
+    const response = await fetchWithToken(END_POINTS.INSIGHT.CREATE_NEW_SKILL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -360,5 +369,127 @@ export const createNewSkill = async (body) => {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);
     return { status: 500 };
+  }
+};
+
+/**
+ * Fetches the list of onboarding candidates from the API.
+ *
+ * @async
+ * @function
+ * @param {string} url - The URL to which the request is sent.
+ * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
+ */
+export const fetchOnboardCandidates = async (url) => {
+  try {
+    const response = await fetchWithToken(url, {
+      method: "GET",
+    });
+    const resData = await response.json();
+
+    // Return the response data and status
+    return { status: response.status, data: resData };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500, data: null };
+  }
+};
+
+/**
+ * Onboards the new candidate by adding him.
+ *
+ * @async
+ * @function
+ * @param {Object} body - The request body containing new candidate to be added.
+ * @returns {Promise<Object>} An object containing the response status.
+ */
+export const addOnboardCandidate = async (body) => {
+  try {
+    const response = await fetchWithToken(END_POINTS.ONBOARD.ADD_CANDIDATE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const resData = await response.json();
+
+    // Return status
+    if (!response.ok) {
+      return { status: 500, apiData: null };
+    }
+
+    return { status: response.status, apiData: resData.data };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};
+
+/**
+ * Updates the existing candidate.
+ *
+ * @async
+ * @function
+ * @param {Object} body - The request body containing whole candidate with new details to be updated.
+ * @param {Object} id - The id of the candidate to be updated.
+ * @returns {Promise<Object>} An object containing the response status.
+ */
+export const updateOnboardCandidate = async (body, id) => {
+  try {
+    const response = await fetchWithToken(
+      replaceRouteParam(END_POINTS.ONBOARD.UPDATE_CANDIDATE, { id }),
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    const resData = await response.json();
+
+    // Return status
+    if (!response.ok) {
+      return { status: 500, apiData: null };
+    }
+
+    return { status: response.status, apiData: resData.data };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500 };
+  }
+};
+
+/**
+ * Makes a GET request to retrieve suggestions.
+ *
+ * @async
+ * @function
+ * @param {Object} body - The request body containing whole details get suggestion
+ * @returns {Promise<{ status: number, data: Object|null }>} The status and data from the response.
+ */
+export const makeSuggestions = async (body = null) => {
+  try {
+    const response = await fetchWithToken(END_POINTS.SPARK.GET_SUGGESTIONS, {
+      method: "POST",
+      body,
+    });
+
+    if (!response.ok) {
+      // Assume any error that causes this block to execute is a server issue
+      return { status: response.status, data: null };
+    } else {
+      // Return the response data and status
+      const resData = await response.json();
+      return { status: response.status, data: resData };
+    }
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Error fetching suggestions:", error);
+    return { status: 500, data: null };
   }
 };

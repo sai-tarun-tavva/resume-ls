@@ -1,0 +1,31 @@
+.formContainer {
+  display: flex;
+
+  .form {
+    position: relative;
+    overflow: hidden;
+    width: 70%;
+    height: 70vh;
+    margin: 13rem 2.5% 2rem 28.5%;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    transition: var(--transition);
+    background-color: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .carouselContainer {
+      display: flex;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .formContainer {
+    .form {
+      margin-top: 16rem;
+    }
+  }
+}
