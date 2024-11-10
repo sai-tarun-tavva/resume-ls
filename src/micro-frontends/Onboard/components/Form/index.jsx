@@ -53,11 +53,14 @@ const Form = () => {
   }, [isInNewRoute, dispatch]);
 
   /**
-   * Redirect to the candidates list if the view route is accessed directly.
+   * Redirect to the not found page if the view route is accessed directly.
    */
   useEffect(() => {
-    if (!data.record.id && !isInNewRoute) navigate(ROUTES.ONBOARD.HOME);
-  }, [data.record.id, navigate, isInNewRoute]);
+    if (!data.record.id && !isInNewRoute)
+      navigate(ROUTES.COMMON.NOT_FOUND, {
+        state: { from: routeLocation.pathname },
+      });
+  }, [data.record.id, navigate, isInNewRoute, routeLocation]);
 
   /**
    * Handle candidate update or addition

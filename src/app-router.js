@@ -31,7 +31,7 @@ const PageNotFound = React.lazy(() =>
 );
 
 // Extracting route paths from ROUTES constant
-const { INSIGHT, ONBOARD, SPARK, QUEST } = ROUTES;
+const { COMMON, INSIGHT, ONBOARD, SPARK, QUEST } = ROUTES;
 
 /**
  * App Router Configuration
@@ -170,6 +170,15 @@ const appRouter = createBrowserRouter([
           </Suspense>
         }
       />
+    ),
+  },
+  // Specific route for /not-found
+  {
+    path: COMMON.NOT_FOUND,
+    element: (
+      <Suspense>
+        <PageNotFound />
+      </Suspense>
     ),
   },
   // Not Found Page (404)

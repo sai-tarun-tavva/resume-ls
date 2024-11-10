@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../../../Atoms/hooks";
 import AutoSuggestion from "./AutoSuggestion";
@@ -39,6 +39,7 @@ const { BUTTON } = LOADING_ACTION_TYPES;
  */
 const CandidateForm = () => {
   const { candidateId } = useParams();
+  const routeLocation = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { candidates, skills: globalFetchedSkills } = useSelector(
@@ -351,10 +352,13 @@ const CandidateForm = () => {
     }
   };
 
-  // Redirect to the candidates list if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
+  // Redirect to the not found page if the edit route is accessed directly because candidate details are only fetched on the candidates page, not when accessing the edit route directly.
   useEffect(() => {
-    if (!info) navigate(ROUTES.INSIGHT.HOME);
-  }, [info, navigate]);
+    if (!info)
+      navigate(ROUTES.COMMON.NOT_FOUND, {
+        state: { from: routeLocation.pathname },
+      });
+  }, [info, navigate, routeLocation]);
 
   // Fetches the skills list on mount
   useEffect(() => {
