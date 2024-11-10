@@ -7,6 +7,7 @@ export const PAGES = {
   INSIGHT: "INSIGHT",
   ONBOARD: "ONBOARD",
   SPARK: "SPARK",
+  QUEST: "QUEST",
 };
 
 /**

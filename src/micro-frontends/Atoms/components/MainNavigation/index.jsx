@@ -4,7 +4,7 @@ import { useUI } from "../../../../store";
 import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
-const { insight, onboard, spark } = CONTENT.COMMON.mainNavigation;
+const { insight, onboard, spark, quest } = CONTENT.COMMON.mainNavigation;
 
 /**
  * MainNavigation Component
@@ -49,7 +49,6 @@ const MainNavigation = () => {
             {insight}
           </NavLink>
         </li>
-
         <li>
           <NavLink
             to={`/${ROUTES.SPARK.HOME}`}
@@ -59,6 +58,17 @@ const MainNavigation = () => {
             }
           >
             {spark}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to={`/${ROUTES.QUEST.HOME}`}
+            onClick={navClickHandler}
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+          >
+            {quest}
           </NavLink>
         </li>
       </ul>

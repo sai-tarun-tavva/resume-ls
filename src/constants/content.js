@@ -30,6 +30,7 @@ export const CONTENT = {
       onboard: "Onboard",
       insight: "Insight",
       spark: "Spark",
+      quest: "Quest",
     },
     errors: {
       username: {
@@ -607,6 +608,16 @@ export const CONTENT = {
       [EXPERIENCE]: "Domain Experience",
       [SKILLS]: "Desired Skills",
       [HASHTAGS]: "Hashtags",
+    },
+  },
+
+  /**
+   * QUEST Module content for assessing candidates.
+   */
+  QUEST: {
+    operations: {
+      logoSuffix: "R",
+      logo: "Quest",
     },
   },
 };

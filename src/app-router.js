@@ -24,12 +24,14 @@ const OnboardForm = React.lazy(() =>
 
 const Spark = React.lazy(() => import("./pages/Spark"));
 
+const Quest = React.lazy(() => import("./pages/Quest"));
+
 const PageNotFound = React.lazy(() =>
   import("./micro-frontends/Atoms/components/PageNotFound")
 );
 
 // Extracting route paths from ROUTES constant
-const { INSIGHT, ONBOARD, SPARK } = ROUTES;
+const { INSIGHT, ONBOARD, SPARK, QUEST } = ROUTES;
 
 /**
  * App Router Configuration
@@ -152,6 +154,19 @@ const appRouter = createBrowserRouter([
         element={
           <Suspense>
             <Spark />
+          </Suspense>
+        }
+      />
+    ),
+  },
+  // Quest Home Page
+  {
+    path: QUEST.HOME,
+    element: (
+      <ProtectedRoute
+        element={
+          <Suspense>
+            <Quest />
           </Suspense>
         }
       />
