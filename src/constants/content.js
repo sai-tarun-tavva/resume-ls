@@ -27,6 +27,7 @@ export const CONTENT = {
     noCandidateRecord: "No candidates found.",
     searchTooltipHeader: "Searches by:",
     mainNavigation: {
+      heading: "Resume Suite",
       onboard: "Onboard",
       insight: "Insight",
       spark: "Spark",
@@ -232,7 +233,7 @@ export const CONTENT = {
     pageNotFound: {
       title: "404",
       message:
-        "It seems the resume you were looking for got lost in cyberspace! 🚀",
+        "It seems the candidate you were looking for got lost in cyberspace! 🚀",
       suggestionStart: "Head back to the ",
       suggestionEnd: " to find the perfect candidate!",
       suggestedPageName: "Home page",

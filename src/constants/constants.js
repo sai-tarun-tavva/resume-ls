@@ -4,9 +4,9 @@
  * Defines main application page identifiers.
  */
 export const PAGES = {
-  INSIGHT: "INSIGHT",
-  ONBOARD: "ONBOARD",
-  SPARK: "SPARK",
+  INSIGHT: "insight",
+  ONBOARD: "onboard",
+  SPARK: "spark",
 };
 
 /**

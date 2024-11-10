@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { CONTENT, ROUTES } from "../../../../constants";
+import { Link, useLocation } from "react-router-dom";
+import { CONTENT, PAGES, ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -13,13 +13,23 @@ import classes from "./index.module.scss";
 const PageNotFound = () => {
   const { title, message, suggestionStart, suggestedPageName, suggestionEnd } =
     CONTENT.COMMON.pageNotFound;
+  const location = useLocation();
+  const previousRoute = location.state?.from || "";
+
   return (
     <div className={classes.notFoundContainer}>
       <h1 className={classes.notFoundTitle}>{title}</h1>
       <p className={classes.notFoundMessage}>{message}</p>
       <p className={classes.notFoundSuggestion}>
         {suggestionStart}
-        <Link to={ROUTES.INSIGHT.HOME} replace>
+        <Link
+          to={
+            previousRoute.includes(PAGES.ONBOARD)
+              ? `/${ROUTES.ONBOARD.HOME}`
+              : `/${ROUTES.INSIGHT.HOME}`
+          }
+          replace
+        >
           {suggestedPageName}
         </Link>
         {suggestionEnd}
