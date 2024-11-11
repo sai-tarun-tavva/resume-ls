@@ -25,6 +25,7 @@ import {
   CONTENT,
 } from "../../../../constants";
 import classes from "./index.module.scss";
+import { OPTIONS } from "../../constants";
 
 // Variable to manage the initial fetch status
 let isInitial = true;
@@ -232,9 +233,22 @@ const OnboardCandidates = () => {
                         );
                       }}
                     >
-                      <td title={candidateInfo.onboarding.status}>
+                      <td
+                        className={
+                          classes[`status-${candidateInfo.onboarding.status}`]
+                        }
+                        title={
+                          OPTIONS.ONBOARDING_STATUS.find(
+                            (status) =>
+                              status.value === candidateInfo.onboarding.status
+                          )?.label
+                        }
+                      >
                         {highlightText(
-                          candidateInfo.onboarding.status,
+                          OPTIONS.ONBOARDING_STATUS.find(
+                            (status) =>
+                              status.value === candidateInfo.onboarding.status
+                          )?.label,
                           searchTerm
                         )}
                       </td>

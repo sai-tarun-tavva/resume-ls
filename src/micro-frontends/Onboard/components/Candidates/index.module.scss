@@ -130,7 +130,7 @@
       td:first-child {
         transition: transform 0.2s ease;
 
-        &[title="yetToReview"] {
+        &.status-yetToReview {
           color: #f97316;
           &::before {
             content: "";
@@ -145,7 +145,7 @@
           }
         }
 
-        &[title="underReview"] {
+        &.status-underReview {
           color: #a855f7;
           &::before {
             content: "";
@@ -160,7 +160,7 @@
           }
         }
 
-        &[title="inProgress"] {
+        &.status-inProgress {
           color: #14b8a6;
           &::before {
             content: "";
