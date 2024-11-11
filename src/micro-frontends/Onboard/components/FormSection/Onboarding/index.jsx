@@ -161,13 +161,9 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
       <Select
         id="onboardingStatus"
         label={sections.onboarding.status.label}
-        options={
-          isInNewRoute
-            ? OPTIONS.ONBOARDING_STATUS.filter(
-                (option) => option.value !== ONBOARDING_STATUS_VALUES.COMPLETED
-              )
-            : OPTIONS.ONBOARDING_STATUS
-        }
+        options={OPTIONS.ONBOARDING_STATUS.filter(
+          (option) => option.value !== ONBOARDING_STATUS_VALUES.COMPLETED
+        )}
         value={statusValue}
         changeHandler={statusChange}
         blurHandler={statusBlur}
