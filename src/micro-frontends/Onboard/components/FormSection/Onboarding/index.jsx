@@ -166,7 +166,11 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
               )
             : OPTIONS.ONBOARDING_STATUS
         }
-        value={statusValue}
+        value={
+          OPTIONS.ONBOARDING_STATUS.find(
+            (status) => status.label === statusValue
+          )?.value
+        }
         changeHandler={statusChange}
         blurHandler={statusBlur}
         focusHandler={statusFocus}
