@@ -17,6 +17,7 @@ import classes from "./index.module.scss";
  * @param {function} props.blurHandler - Function to call when the select loses focus.
  * @param {function} props.focusHandler - Function to call when the select gains focus.
  * @param {string} [props.error] - Error message to display if validation fails.
+ * @param {string} [props.helperText] - Additional helper text to display after the select label.
  * @param {boolean} [props.isFocused] - Whether the select is focused initially.
  * @param {boolean} [props.isRequired] - Whether the select field is required.
  * @returns {JSX.Element} The Select component.
@@ -33,6 +34,7 @@ const Select = forwardRef(
       blurHandler,
       focusHandler,
       error,
+      helperText = "",
       isFocused,
       isRequired = false,
       ...props
@@ -54,7 +56,10 @@ const Select = forwardRef(
     return (
       <div className={`${classes.control} ${extraClass}`}>
         <label htmlFor={id}>
-          {label} {isRequired && <span className={classes.required}>*</span>}
+          {label} {isRequired && <span className={classes.required}>*</span>}{" "}
+          {helperText && (
+            <small className={classes.helperText}>{helperText}</small>
+          )}
         </label>
         <select
           ref={inputRef}
@@ -98,6 +103,7 @@ Select.propTypes = {
   blurHandler: PropTypes.func,
   focusHandler: PropTypes.func,
   error: PropTypes.string,
+  helperText: PropTypes.string,
   isFocused: PropTypes.bool,
   isRequired: PropTypes.bool,
 };

@@ -26,6 +26,16 @@ export const VISA_STATUS_VALUES = {
 };
 
 /**
+ * Constants representing different onboarding status values.
+ */
+export const ONBOARDING_STATUS_VALUES = {
+  YET_TO_REVIEW: "yetToReview",
+  UNDER_REVIEW: "underReview",
+  IN_PROGRESS: "inProgress",
+  COMPLETED: "completed",
+};
+
+/**
  * Options for various sections of the form.
  * These options are used for dropdowns and selection fields in the UI.
  */
@@ -33,10 +43,10 @@ export const OPTIONS = {
   // Onboarding status options
   ONBOARDING_STATUS: [
     { value: "", label: "" }, // Placeholder option
-    { value: "yetToReview", label: "Yet To Review" },
-    { value: "underReview", label: "Under Review" },
-    { value: "inProgress", label: "In Progress" },
-    { value: "completed", label: "Completed" },
+    { value: ONBOARDING_STATUS_VALUES.YET_TO_REVIEW, label: "Yet To Review" },
+    { value: ONBOARDING_STATUS_VALUES.UNDER_REVIEW, label: "Under Review" },
+    { value: ONBOARDING_STATUS_VALUES.IN_PROGRESS, label: "In Progress" },
+    { value: ONBOARDING_STATUS_VALUES.COMPLETED, label: "Completed" },
   ],
   // Gender options
   GENDER: [

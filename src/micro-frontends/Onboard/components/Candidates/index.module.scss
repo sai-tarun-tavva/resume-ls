@@ -130,8 +130,38 @@
       td:first-child {
         transition: transform 0.2s ease;
 
+        &[title="yetToReview"] {
+          color: #f97316;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+          }
+        }
+
+        &[title="underReview"] {
+          color: #a855f7;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+          }
+        }
+
         &[title="inProgress"] {
-          color: #0ea5e9;
+          color: #14b8a6;
           &::before {
             content: "";
             display: inline-block;
@@ -141,37 +171,7 @@
             vertical-align: middle;
             border-radius: 50%;
             background: currentColor;
-            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
-          }
-        }
-
-        &[title="applied"] {
-          color: #10b981;
-          &::before {
-            content: "";
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin-right: 8px;
-            vertical-align: middle;
-            border-radius: 50%;
-            background: currentColor;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
-          }
-        }
-
-        &[title="yetToStart"] {
-          color: #f59e0b;
-          &::before {
-            content: "";
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin-right: 8px;
-            vertical-align: middle;
-            border-radius: 50%;
-            background: currentColor;
-            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15);
           }
         }
       }
@@ -181,18 +181,6 @@
       }
     }
   }
-}
-
-tbody tr:only-child td {
-  text-align: center;
-  color: #94a3b8;
-  padding: 3rem 1.5rem;
-  font-style: italic;
-  background: linear-gradient(
-    135deg,
-    rgba(248, 250, 252, 0.5) 0%,
-    rgba(248, 250, 252, 0.8) 100%
-  );
 }
 
 @media (max-width: 1024px) {

@@ -428,7 +428,10 @@ export const CONTENT = {
       sections: {
         onboarding: {
           date: "Onboarding Date",
-          status: "Onboarding Status",
+          status: {
+            label: "Onboarding Status",
+            helper: "(Considered IN PROGRESS by default)",
+          },
         },
         personal: {
           firstName: "First Name",

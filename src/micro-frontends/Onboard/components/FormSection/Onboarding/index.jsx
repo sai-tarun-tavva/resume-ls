@@ -12,7 +12,12 @@ import {
   onboardingValidations,
 } from "../../../../../utilities";
 import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
-import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
+import {
+  SECTIONS,
+  FIELDS,
+  OPTIONS,
+  ONBOARDING_STATUS_VALUES,
+} from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
@@ -28,7 +33,7 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Onboarding component.
  */
-const Onboarding = forwardRef((_, ref) => {
+const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -66,7 +71,12 @@ const Onboarding = forwardRef((_, ref) => {
     error: statusError,
     isFocused: isStatusFocused,
     forceValidations: forceStatusValidations,
-  } = useInput(status, validations.status, undefined, true);
+  } = useInput(
+    status || ONBOARDING_STATUS_VALUES.IN_PROGRESS,
+    validations.status,
+    undefined,
+    true
+  );
 
   const allErrors = [dateError, statusError];
   const allValues = [dateValue, statusValue];
@@ -144,15 +154,16 @@ const Onboarding = forwardRef((_, ref) => {
       />
       <Select
         id="onboardingStatus"
-        label={sections.onboarding.status}
+        label={sections.onboarding.status.label}
         options={OPTIONS.ONBOARDING_STATUS.filter(
-          (option) => option.value !== "completed"
+          (option) => option.value !== ONBOARDING_STATUS_VALUES.COMPLETED
         )}
         value={statusValue}
         changeHandler={statusChange}
         blurHandler={statusBlur}
         focusHandler={statusFocus}
         error={statusError}
+        helperText={isInNewRoute ? sections.onboarding.status.helper : ""}
         isFocused={isStatusFocused}
         isRequired
       />

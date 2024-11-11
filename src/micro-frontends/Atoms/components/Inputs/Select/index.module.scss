@@ -12,6 +12,12 @@
     font-weight: bold;
     margin-bottom: 0.2rem;
     margin-left: 0.1rem;
+
+    .helperText {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-left: 0.5rem;
+    }
   }
 
   .required {
