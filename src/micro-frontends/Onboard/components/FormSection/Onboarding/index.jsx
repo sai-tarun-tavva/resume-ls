@@ -1,5 +1,6 @@
 import { useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import { useSectionInputsFocus } from "../../../hooks";
@@ -30,6 +31,7 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * It validates the inputs and submits the data to the Redux store if the section is valid.
  *
  * @param {Object} _ - The component props (forwarded ref).
+ * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Onboarding component.
  */
@@ -115,7 +117,9 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.ONBOARDING,
           field: FIELDS.ONBOARDING.STATUS,
-          value: statusValue,
+          value: OPTIONS.ONBOARDING_STATUS.find(
+            (status) => status.value === statusValue
+          )?.label,
         })
       );
       dispatch(
@@ -155,9 +159,13 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
       <Select
         id="onboardingStatus"
         label={sections.onboarding.status.label}
-        options={OPTIONS.ONBOARDING_STATUS.filter(
-          (option) => option.value !== ONBOARDING_STATUS_VALUES.COMPLETED
-        )}
+        options={
+          isInNewRoute
+            ? OPTIONS.ONBOARDING_STATUS.filter(
+                (option) => option.value !== ONBOARDING_STATUS_VALUES.COMPLETED
+              )
+            : OPTIONS.ONBOARDING_STATUS
+        }
         value={statusValue}
         changeHandler={statusChange}
         blurHandler={statusBlur}
@@ -170,6 +178,10 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
     </fieldset>
   );
 });
+
+Onboarding.propTypes = {
+  isInNewRoute: PropTypes.bool.isRequired,
+};
 
 Onboarding.displayName = "FormOnboarding";
 export default Onboarding;

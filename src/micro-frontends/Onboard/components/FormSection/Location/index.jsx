@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import Address from "../Address";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import { useSectionInputsFocus } from "../../../hooks";
@@ -31,10 +32,11 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * Displays the India location address input based on visa status and user selection.
  *
  * @param {Object} _ - The component props (forwarded ref).
+ * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Location component.
  */
-const Location = forwardRef((_, ref) => {
+const Location = forwardRef(({ isInNewRoute }, ref) => {
   const usaLocRef = useRef(); // Reference for the USA address component
   const indiaLocRef = useRef(); // Reference for the India address component
   const dispatch = useDispatch();
@@ -164,7 +166,9 @@ const Location = forwardRef((_, ref) => {
               value={hasHomeCountryAddress}
               changeHandler={handleHasHomeCountryChange}
               blurHandler={handleHasHomeCountryBlur}
-              helperText={sections.location.haveIndian.helper}
+              helperText={
+                isInNewRoute ? sections.location.haveIndian.helper : ""
+              }
               extraClass={sectionClasses.fullInputWidth}
               isRequired
             />
@@ -187,6 +191,10 @@ const Location = forwardRef((_, ref) => {
     </fieldset>
   );
 });
+
+Location.propTypes = {
+  isInNewRoute: PropTypes.bool.isRequired,
+};
 
 Location.displayName = "Location";
 export default Location;

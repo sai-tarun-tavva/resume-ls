@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
@@ -35,10 +36,11 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * like training attended, experience, previous jobs, and references.
  *
  * @param {Object} props - The component props.
+ * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Profession component.
  */
-const Profession = forwardRef((_, ref) => {
+const Profession = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -212,11 +214,11 @@ const Profession = forwardRef((_, ref) => {
     >
       <Checkbox
         id="trainingAttended"
-        label={sections.profession.training}
+        label={sections.profession.training.label}
         value={trainingAttendedValue}
         changeHandler={trainingAttendedChange}
         blurHandler={trainingAttendedBlur}
-        helperText="(Considered no by default)"
+        helperText={isInNewRoute ? sections.profession.training.helper : ""}
         extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
@@ -294,6 +296,10 @@ const Profession = forwardRef((_, ref) => {
     </fieldset>
   );
 });
+
+Profession.propTypes = {
+  isInNewRoute: PropTypes.bool.isRequired,
+};
 
 Profession.displayName = "FormProfession";
 export default Profession;

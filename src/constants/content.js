@@ -489,7 +489,10 @@ export const CONTENT = {
           },
         },
         profession: {
-          training: "Training Attended?",
+          training: {
+            label: "Training Attended?",
+            helper: "(Considered no by default)",
+          },
           expYears: "Experience in Years",
           expMonths: "Experience in Months",
           prevExpList: {

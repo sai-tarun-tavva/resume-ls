@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
 import Select from "../../../../Atoms/components/Inputs/Select";
@@ -29,7 +30,6 @@ import {
   PORT_OF_ENTRY_NOT_REQUIRED_VISA,
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
-import PropTypes from "prop-types";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
 const { sections } = CONTENT.ONBOARD.candidateForm;
@@ -41,6 +41,7 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * It validates, submits, and manages the user input for personal details such as name, email, phone numbers, etc.
  *
  * @param {Object} props - The component props.
+ * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Personal component.
  */
