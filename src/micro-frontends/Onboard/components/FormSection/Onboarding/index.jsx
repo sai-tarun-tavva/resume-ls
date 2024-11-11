@@ -74,7 +74,9 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
     isFocused: isStatusFocused,
     forceValidations: forceStatusValidations,
   } = useInput(
-    status || ONBOARDING_STATUS_VALUES.IN_PROGRESS,
+    OPTIONS.ONBOARDING_STATUS.find(
+      (statusOption) => statusOption.label === status
+    )?.value || ONBOARDING_STATUS_VALUES.IN_PROGRESS,
     validations.status,
     undefined,
     true
@@ -166,11 +168,7 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
               )
             : OPTIONS.ONBOARDING_STATUS
         }
-        value={
-          OPTIONS.ONBOARDING_STATUS.find(
-            (status) => status.label === statusValue
-          )?.value
-        }
+        value={statusValue}
         changeHandler={statusChange}
         blurHandler={statusBlur}
         focusHandler={statusFocus}
