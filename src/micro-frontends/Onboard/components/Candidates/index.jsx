@@ -293,13 +293,13 @@ const OnboardCandidates = () => {
                       </td>
                       <td
                         title={
-                          candidateInfo.personal.usaLocation.city
-                            ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
+                          candidateInfo.location.usaLocation.city
+                            ? `${candidateInfo.location.usaLocation.city}, ${candidateInfo.location.usaLocation.state}`
                             : ""
                         }
                       >
-                        {candidateInfo.personal.usaLocation.city
-                          ? `${candidateInfo.personal.usaLocation.city}, ${candidateInfo.personal.usaLocation.state}`
+                        {candidateInfo.location.usaLocation.city
+                          ? `${candidateInfo.location.usaLocation.city}, ${candidateInfo.location.usaLocation.state}`
                           : ""}
                       </td>
                       <td title={candidateInfo.relocation.interested}>

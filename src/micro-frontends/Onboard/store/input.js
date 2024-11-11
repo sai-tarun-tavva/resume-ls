@@ -47,18 +47,18 @@ const initialState = {
       [FIELDS.RECORD.UPDATED_DATE]: "",
     },
     [SECTIONS.ONBOARDING]: {
+      completed: false,
       [FIELDS.ONBOARDING.DATE]: "",
       [FIELDS.ONBOARDING.STATUS]: "",
     },
     [SECTIONS.PERSONAL]: {
+      completed: false,
       [FIELDS.PERSONAL.FIRST_NAME]: "",
       [FIELDS.PERSONAL.LAST_NAME]: "",
       [FIELDS.PERSONAL.EMAIL_ID]: "",
       [FIELDS.PERSONAL.PHONE_NUMBER]: "",
       [FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER]: "",
       [FIELDS.PERSONAL.GENDER]: "",
-      [FIELDS.PERSONAL.USA_LOCATION]: defaultAddress,
-      [FIELDS.PERSONAL.INDIA_LOCATION]: defaultAddress,
       [FIELDS.PERSONAL.DOB]: "",
       [FIELDS.PERSONAL.MARITAL_STATUS]: "",
       [FIELDS.PERSONAL.PASSPORT_NUMBER]: "",
@@ -72,7 +72,13 @@ const initialState = {
       [FIELDS.PERSONAL.SKYPE_ID]: "",
       [FIELDS.PERSONAL.REFERENCE_NAME]: "",
     },
+    [SECTIONS.LOCATION]: {
+      completed: false,
+      [FIELDS.LOCATION.USA_LOCATION]: defaultAddress,
+      [FIELDS.LOCATION.INDIA_LOCATION]: defaultAddress,
+    },
     [SECTIONS.RELOCATION]: {
+      completed: false,
       [FIELDS.RELOCATION.INTERESTED.VALUE]:
         FIELDS.RELOCATION.INTERESTED.OPTIONS.YES,
       [FIELDS.RELOCATION.HOW_SOON]: "",
@@ -80,6 +86,7 @@ const initialState = {
       [FIELDS.RELOCATION.ADDRESS]: defaultAddress,
     },
     [SECTIONS.EDUCATION]: {
+      completed: false,
       [FIELDS.EDUCATION.SEVIS_ID]: "",
       [FIELDS.EDUCATION.DSO.VALUE]: {
         [FIELDS.EDUCATION.DSO.NAME]: "",
@@ -95,6 +102,7 @@ const initialState = {
       },
     },
     [SECTIONS.PROFESSION]: {
+      completed: false,
       [FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE]:
         FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
       [FIELDS.PROFESSION.EXPERIENCE.VALUE]: {
@@ -106,6 +114,7 @@ const initialState = {
       [FIELDS.PROFESSION.REFERENCES]: [],
     },
     [SECTIONS.OFFER_LETTER]: {
+      completed: false,
       [FIELDS.OFFER_LETTER.STATUS]: "",
       [FIELDS.OFFER_LETTER.LAST_UPDATED]: "",
       [FIELDS.OFFER_LETTER.MARKETING_NAME]: "",
@@ -115,10 +124,12 @@ const initialState = {
       [FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES]: "",
     },
     [SECTIONS.US_TRAVEL_AND_STAY]: {
+      completed: false,
       [FIELDS.US_TRAVEL_AND_STAY.US_ENTRY]: "",
       [FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES]: [],
     },
     [SECTIONS.EMERGENCY_CONTACTS]: {
+      completed: false,
       [FIELDS.EMERGENCY_CONTACTS.USA.VALUE]: {
         [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: "",
         [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]: "",
@@ -129,6 +140,7 @@ const initialState = {
       },
     },
     [SECTIONS.MISCELLANEOUS]: {
+      completed: false,
       [FIELDS.MISCELLANEOUS.REMARKS]: "",
       [FIELDS.MISCELLANEOUS.NOTES]: "",
     },

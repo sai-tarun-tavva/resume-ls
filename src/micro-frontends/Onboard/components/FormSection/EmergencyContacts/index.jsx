@@ -193,7 +193,13 @@ const EmergencyContacts = forwardRef((_, ref) => {
           },
         })
       );
-
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EMERGENCY_CONTACTS,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

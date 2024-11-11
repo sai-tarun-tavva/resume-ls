@@ -44,7 +44,8 @@ const Location = forwardRef((_, ref) => {
     currentSectionIndex,
     isEditMode,
     data: {
-      personal: { usaLocation, indiaLocation, visaStatus },
+      personal: { visaStatus },
+      location: { usaLocation, indiaLocation },
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
@@ -109,17 +110,24 @@ const Location = forwardRef((_, ref) => {
       // Update the store with validated addresses
       dispatch(
         inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.USA_LOCATION,
+          section: SECTIONS.LOCATION,
+          field: FIELDS.LOCATION.USA_LOCATION,
           value: usaAddress,
         })
       );
 
       dispatch(
         inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.INDIA_LOCATION,
+          section: SECTIONS.LOCATION,
+          field: FIELDS.LOCATION.INDIA_LOCATION,
           value: indiaAddress,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.LOCATION,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());

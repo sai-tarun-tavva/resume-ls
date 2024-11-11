@@ -84,8 +84,18 @@ const Form = () => {
           type: "failure",
         });
       } else {
-        if (isInNewRoute) dispatch(inputActions.incrementCurrentSectionIndex());
-        else
+        if (isInNewRoute) {
+          if (current < 9)
+            dispatch(inputActions.incrementCurrentSectionIndex());
+          else {
+            updateStatus({
+              message: "Successfully added new candidate details!",
+              type: "success",
+            });
+            enableRefetch();
+            navigate("..");
+          }
+        } else
           updateStatus({
             message: "Successfully updated candidate details!",
             type: "success",
@@ -94,20 +104,6 @@ const Form = () => {
 
       dispatch(inputActions.disableFormSectionSubmission());
       disableButtonLoading();
-
-      // Check for final section and refetch if applicable
-      if (
-        isInNewRoute &&
-        data.miscellaneous.remarks &&
-        data.miscellaneous.notes
-      ) {
-        updateStatus({
-          message: "Successfully added new candidate details!",
-          type: "success",
-        });
-        enableRefetch();
-        navigate("..");
-      }
     };
 
     updateCandidate();
@@ -122,6 +118,7 @@ const Form = () => {
     resetStatus,
     updateStatus,
     enableRefetch,
+    current,
   ]);
 
   // Refs for each form section

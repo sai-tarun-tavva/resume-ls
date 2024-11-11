@@ -230,6 +230,13 @@ const OfferLetter = forwardRef((_, ref) => {
           value: rolesAndResponsibilitiesValue,
         })
       );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.OFFER_LETTER,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

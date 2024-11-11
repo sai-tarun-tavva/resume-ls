@@ -360,8 +360,8 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         ) {
           dispatch(
             inputActions.updateField({
-              section: SECTIONS.PERSONAL,
-              field: FIELDS.PERSONAL.INDIA_LOCATION,
+              section: SECTIONS.LOCATION,
+              field: FIELDS.LOCATION.INDIA_LOCATION,
               value: defaultAddress,
             })
           );
@@ -532,6 +532,13 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           section: SECTIONS.PERSONAL,
           field: FIELDS.PERSONAL.REFERENCE_NAME,
           value: referenceNameValue,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PERSONAL,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());

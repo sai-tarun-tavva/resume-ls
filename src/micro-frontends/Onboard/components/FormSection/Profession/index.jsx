@@ -188,6 +188,13 @@ const Profession = forwardRef((_, ref) => {
           value: referencesList,
         })
       );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

@@ -108,6 +108,13 @@ const Onboarding = forwardRef((_, ref) => {
           value: statusValue,
         })
       );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.ONBOARDING,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

@@ -124,6 +124,13 @@ const USTravelAndStay = forwardRef((_, ref) => {
           value: addresses,
         })
       );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.US_TRAVEL_AND_STAY,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

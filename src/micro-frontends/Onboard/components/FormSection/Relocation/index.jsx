@@ -182,7 +182,6 @@ const Relocation = forwardRef((_, ref) => {
           })
         );
       }
-
       dispatch(
         inputActions.updateField({
           section: SECTIONS.RELOCATION,
@@ -190,7 +189,13 @@ const Relocation = forwardRef((_, ref) => {
           value: relocationAddress || defaultAddress,
         })
       );
-
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.RELOCATION,
+          field: FIELDS.COMMON.COMPLETED,
+          value: true,
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };
