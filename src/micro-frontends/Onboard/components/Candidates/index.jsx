@@ -10,6 +10,7 @@ import { dataActions, inputActions } from "../../store";
 import {
   buildFetchCandidatesUrl,
   convertDate,
+  fetchCandidateById,
   fetchOnboardCandidates,
   getExperienceDisplayText,
   highlightText,
@@ -54,6 +55,40 @@ const OnboardCandidates = () => {
   const { isLoading, enableAppLoading, disableAppLoading } = useLoading();
   const { updateStatus } = useStatus();
 
+  /**
+   * Handles the double-click event on a candidate row.
+   *
+   * Fetches detailed information for the selected candidate by ID and navigates to the candidate's details page.
+   * Displays a loading indicator during the fetch process, and updates the app status if an error occurs.
+   *
+   * @async
+   * @function
+   * @param {number} id - The ID of the candidate to fetch details for.
+   */
+  const handleDoubleClick = async (id) => {
+    enableAppLoading();
+    const url = replaceRouteParam(END_POINTS.ONBOARD.FETCH_CANDIDATE, { id });
+
+    const { status, data: candidate } = await fetchCandidateById(url);
+
+    if (status === STATUS_CODES.SUCCESS) {
+      dispatch(inputActions.replaceCandidate(candidate));
+      navigate(
+        replaceRouteParam(ROUTES.ONBOARD.CANDIDATE_FORM.VIEW, {
+          id,
+        })
+      );
+    } else {
+      updateStatus({
+        message: CONTENT.COMMON.serverError,
+        type: "failure",
+        darkMode: true,
+      });
+    }
+
+    disableAppLoading();
+  };
+
   // Effect to fetch candidates when component mounts or refetch is triggered
   useEffect(() => {
     const url =
@@ -87,6 +122,7 @@ const OnboardCandidates = () => {
         updateStatus({
           message: CONTENT.COMMON.serverError,
           type: "failure",
+          darkMode: true,
         });
       }
       disableAppLoading();
@@ -220,17 +256,7 @@ const OnboardCandidates = () => {
                   return (
                     <tr
                       key={index}
-                      onDoubleClick={() => {
-                        dispatch(inputActions.replaceCandidate(candidateInfo));
-                        navigate(
-                          replaceRouteParam(
-                            ROUTES.ONBOARD.CANDIDATE_FORM.VIEW,
-                            {
-                              id: candidateId,
-                            }
-                          )
-                        );
-                      }}
+                      onDoubleClick={() => handleDoubleClick(candidateId)}
                     >
                       <td
                         className={

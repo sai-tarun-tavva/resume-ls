@@ -174,7 +174,9 @@ const InputSlice = createSlice({
      * @param {Object} action.payload - The new candidate data to replace the old data.
      */
     replaceCandidate(state, { payload }) {
-      state.data = payload; // Replace entire candidate data
+      const newCandidate = { ...payload.additional_info };
+      newCandidate.record.id = payload.id;
+      state.data = newCandidate; // Replace entire candidate data
     },
 
     /**

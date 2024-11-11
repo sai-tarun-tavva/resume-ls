@@ -91,6 +91,7 @@ const Form = () => {
             updateStatus({
               message: "Successfully added new candidate details!",
               type: "success",
+              darkMode: true,
             });
             enableRefetch();
             navigate("..");

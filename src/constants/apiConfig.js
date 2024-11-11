@@ -55,6 +55,7 @@ export const END_POINTS = {
       url: `${ONBOARD_HOST_PORT}candidates_filter/`,
       params: { limit: "limit", page: "page", query: "query" },
     },
+    FETCH_CANDIDATE: `${ONBOARD_HOST_PORT}candidates_get/:id/`,
     ADD_CANDIDATE: `${ONBOARD_HOST_PORT}candidates/`,
     UPDATE_CANDIDATE: `${ONBOARD_HOST_PORT}candidates/:id/`,
   },
