@@ -47,12 +47,12 @@ const initialState = {
       [FIELDS.RECORD.UPDATED_DATE]: "",
     },
     [SECTIONS.ONBOARDING]: {
-      completed: false,
+      completed: "",
       [FIELDS.ONBOARDING.DATE]: "",
       [FIELDS.ONBOARDING.STATUS]: "",
     },
     [SECTIONS.PERSONAL]: {
-      completed: false,
+      completed: "",
       [FIELDS.PERSONAL.FIRST_NAME]: "",
       [FIELDS.PERSONAL.LAST_NAME]: "",
       [FIELDS.PERSONAL.EMAIL_ID]: "",
@@ -73,12 +73,12 @@ const initialState = {
       [FIELDS.PERSONAL.REFERENCE_NAME]: "",
     },
     [SECTIONS.LOCATION]: {
-      completed: false,
+      completed: "",
       [FIELDS.LOCATION.USA_LOCATION]: defaultAddress,
       [FIELDS.LOCATION.INDIA_LOCATION]: defaultAddress,
     },
     [SECTIONS.RELOCATION]: {
-      completed: false,
+      completed: "",
       [FIELDS.RELOCATION.INTERESTED.VALUE]:
         FIELDS.RELOCATION.INTERESTED.OPTIONS.YES,
       [FIELDS.RELOCATION.HOW_SOON]: "",
@@ -86,7 +86,7 @@ const initialState = {
       [FIELDS.RELOCATION.ADDRESS]: defaultAddress,
     },
     [SECTIONS.EDUCATION]: {
-      completed: false,
+      completed: "",
       [FIELDS.EDUCATION.SEVIS_ID]: "",
       [FIELDS.EDUCATION.DSO.VALUE]: {
         [FIELDS.EDUCATION.DSO.NAME]: "",
@@ -102,7 +102,7 @@ const initialState = {
       },
     },
     [SECTIONS.PROFESSION]: {
-      completed: false,
+      completed: "",
       [FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE]:
         FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
       [FIELDS.PROFESSION.EXPERIENCE.VALUE]: {
@@ -114,7 +114,7 @@ const initialState = {
       [FIELDS.PROFESSION.REFERENCES]: [],
     },
     [SECTIONS.OFFER_LETTER]: {
-      completed: false,
+      completed: "",
       [FIELDS.OFFER_LETTER.STATUS]: "",
       [FIELDS.OFFER_LETTER.LAST_UPDATED]: "",
       [FIELDS.OFFER_LETTER.MARKETING_NAME]: "",
@@ -124,12 +124,12 @@ const initialState = {
       [FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES]: "",
     },
     [SECTIONS.US_TRAVEL_AND_STAY]: {
-      completed: false,
+      completed: "",
       [FIELDS.US_TRAVEL_AND_STAY.US_ENTRY]: "",
       [FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES]: [],
     },
     [SECTIONS.EMERGENCY_CONTACTS]: {
-      completed: false,
+      completed: "",
       [FIELDS.EMERGENCY_CONTACTS.USA.VALUE]: {
         [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: "",
         [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]: "",
@@ -140,7 +140,7 @@ const initialState = {
       },
     },
     [SECTIONS.MISCELLANEOUS]: {
-      completed: false,
+      completed: "",
       [FIELDS.MISCELLANEOUS.REMARKS]: "",
       [FIELDS.MISCELLANEOUS.NOTES]: "",
     },

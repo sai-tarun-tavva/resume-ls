@@ -33,8 +33,8 @@ export const OPTIONS = {
   // Onboarding status options
   ONBOARDING_STATUS: [
     { value: "", label: "" }, // Placeholder option
-    { value: "applied", label: "Applied" },
-    { value: "yetToStart", label: "Yet To Start" },
+    { value: "yetToReview", label: "Yet To Review" },
+    { value: "underReview", label: "Under Review" },
     { value: "inProgress", label: "In Progress" },
     { value: "completed", label: "Completed" },
   ],

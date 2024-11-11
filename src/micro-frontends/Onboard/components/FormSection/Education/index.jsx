@@ -228,7 +228,7 @@ const Education = forwardRef((_, ref) => {
         inputActions.updateField({
           section: SECTIONS.EDUCATION,
           field: FIELDS.COMMON.COMPLETED,
-          value: true,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());

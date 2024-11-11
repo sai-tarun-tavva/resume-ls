@@ -127,7 +127,7 @@ const Location = forwardRef((_, ref) => {
         inputActions.updateField({
           section: SECTIONS.LOCATION,
           field: FIELDS.COMMON.COMPLETED,
-          value: true,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());

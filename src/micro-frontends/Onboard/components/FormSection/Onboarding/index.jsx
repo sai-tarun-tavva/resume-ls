@@ -112,7 +112,7 @@ const Onboarding = forwardRef((_, ref) => {
         inputActions.updateField({
           section: SECTIONS.ONBOARDING,
           field: FIELDS.COMMON.COMPLETED,
-          value: true,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());
@@ -145,7 +145,9 @@ const Onboarding = forwardRef((_, ref) => {
       <Select
         id="onboardingStatus"
         label={sections.onboarding.status}
-        options={OPTIONS.ONBOARDING_STATUS}
+        options={OPTIONS.ONBOARDING_STATUS.filter(
+          (option) => option.value !== "completed"
+        )}
         value={statusValue}
         changeHandler={statusChange}
         blurHandler={statusBlur}

@@ -538,7 +538,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
           field: FIELDS.COMMON.COMPLETED,
-          value: true,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());

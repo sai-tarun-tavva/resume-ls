@@ -234,7 +234,7 @@ const OfferLetter = forwardRef((_, ref) => {
         inputActions.updateField({
           section: SECTIONS.OFFER_LETTER,
           field: FIELDS.COMMON.COMPLETED,
-          value: true,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());

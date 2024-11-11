@@ -128,7 +128,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
         inputActions.updateField({
           section: SECTIONS.US_TRAVEL_AND_STAY,
           field: FIELDS.COMMON.COMPLETED,
-          value: true,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());

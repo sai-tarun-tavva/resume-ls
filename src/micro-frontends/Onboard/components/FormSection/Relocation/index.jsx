@@ -193,7 +193,7 @@ const Relocation = forwardRef((_, ref) => {
         inputActions.updateField({
           section: SECTIONS.RELOCATION,
           field: FIELDS.COMMON.COMPLETED,
-          value: true,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());
