@@ -82,7 +82,9 @@ const Select = forwardRef(
             </option>
           ))}
         </select>
-        <small className={classes.errorText}>{error || ""}</small>
+        {isRequired && (
+          <small className={classes.errorText}>{error || ""}</small>
+        )}
       </div>
     );
   }

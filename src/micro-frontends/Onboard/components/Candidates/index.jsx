@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoading, useStatus, useUI } from "../../../../store";
@@ -6,6 +6,9 @@ import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import TimestampDisplay from "../../../Atoms/components/TimestampDisplay";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
+import Select from "../../../Atoms/components/Inputs/Select";
+import Button from "../../../Atoms/components/Button";
+import { useInput } from "../../../Atoms/hooks";
 import { dataActions, inputActions } from "../../store";
 import {
   buildFetchCandidatesUrl,
@@ -16,6 +19,7 @@ import {
   highlightText,
   replaceRouteParam,
   transformPhoneNumber,
+  updateCandidateStatus,
 } from "../../../../utilities";
 import {
   ONBOARD,
@@ -25,12 +29,15 @@ import {
   STATUS_CODES,
   CONTENT,
 } from "../../../../constants";
+import { ONBOARDING_STATUS_VALUES, OPTIONS } from "../../constants";
 import classes from "./index.module.scss";
 
 // Variable to manage the initial fetch status
 let isInitial = true;
 
-const { APP } = LOADING_ACTION_TYPES;
+const initialEditStatus = { id: null, status: "" };
+
+const { APP, BUTTON } = LOADING_ACTION_TYPES;
 const { columnHeaders, noCandidates } = CONTENT.ONBOARD.candidates;
 
 /**
@@ -52,8 +59,55 @@ const OnboardCandidates = () => {
     disableRefetch,
     updatePagination,
   } = useUI();
-  const { isLoading, enableAppLoading, disableAppLoading } = useLoading();
+  const {
+    isLoading,
+    enableAppLoading,
+    disableAppLoading,
+    enableButtonLoading,
+    disableButtonLoading,
+  } = useLoading();
   const { updateStatus } = useStatus();
+
+  const [editStatus, setEditStatus] = useState(initialEditStatus);
+
+  const {
+    value: statusValue,
+    handleInputChange: statusChange,
+    handleInputBlur: statusBlur,
+    handleInputFocus: statusFocus,
+    isFocused: isStatusFocused,
+  } = useInput(
+    OPTIONS.ONBOARDING_STATUS.find((statusOption) => {
+      return statusOption.label === editStatus.status;
+    })?.value || ONBOARDING_STATUS_VALUES.IN_PROGRESS
+  );
+
+  const handleUpdateStatus = async (id, statusValue) => {
+    const statusLabel = OPTIONS.ONBOARDING_STATUS.find(
+      (status) => status.value === statusValue
+    )?.label;
+
+    enableButtonLoading();
+
+    const url = replaceRouteParam(END_POINTS.ONBOARD.UPDATE_STATUS, { id });
+
+    const { status, response } = await updateCandidateStatus(url, {
+      onboarding: { status: statusLabel },
+    });
+
+    if (status === STATUS_CODES.SUCCESS) {
+      dispatch(dataActions.replaceCandidate(response?.data));
+    } else {
+      updateStatus({
+        message: CONTENT.COMMON.serverError,
+        type: "failure",
+        darkMode: true,
+      });
+    }
+
+    setEditStatus(initialEditStatus);
+    disableButtonLoading();
+  };
 
   /**
    * Handles the double-click event on a candidate row.
@@ -131,6 +185,7 @@ const OnboardCandidates = () => {
     // Fetch candidates if it is the initial load or refetch is triggered
     if (isInitial || refetch) {
       isInitial = false;
+      setEditStatus(initialEditStatus);
       fetchCandidates();
       disableRefetch();
     }
@@ -143,6 +198,7 @@ const OnboardCandidates = () => {
     disableRefetch,
     updatePagination,
     updateStatus,
+    setEditStatus,
   ]);
 
   return (
@@ -157,7 +213,7 @@ const OnboardCandidates = () => {
             {/* Table headers */}
             <thead>
               <tr>
-                <th title={columnHeaders.status} style={{ width: "10rem" }}>
+                <th title={columnHeaders.status} style={{ width: "12rem" }}>
                   {columnHeaders.status}
                 </th>
                 <th
@@ -258,19 +314,88 @@ const OnboardCandidates = () => {
                       key={index}
                       onDoubleClick={() => handleDoubleClick(candidateId)}
                     >
-                      <td
-                        className={
-                          classes[
-                            `status-${candidateInfo.onboarding.status
-                              .replace(/\s+/g, "")
-                              .toLowerCase()}`
-                          ]
-                        }
-                        title={candidateInfo.onboarding.status}
-                      >
-                        {highlightText(
-                          candidateInfo.onboarding.status,
-                          searchTerm
+                      <td>
+                        {editStatus.id === candidateId ? (
+                          <>
+                            <Select
+                              id="edit-status"
+                              label=""
+                              value={statusValue}
+                              options={OPTIONS.ONBOARDING_STATUS}
+                              changeHandler={statusChange}
+                              blurHandler={statusBlur}
+                              focusHandler={statusFocus}
+                              isFocused={isStatusFocused}
+                              extraClass={classes.editStatusSelect}
+                            />
+                            {isLoading[BUTTON] ? (
+                              <Loader
+                                extraClass={classes.extraLoaderContainer}
+                              />
+                            ) : (
+                              <Button className={classes.editStatusButton}>
+                                <i
+                                  className={"bi bi-floppy"}
+                                  onClick={() =>
+                                    handleUpdateStatus(candidateId, statusValue)
+                                  }
+                                  onMouseEnter={(e) =>
+                                    e.currentTarget.classList.replace(
+                                      "bi-floppy",
+                                      "bi-floppy-fill"
+                                    )
+                                  }
+                                  onMouseLeave={(e) =>
+                                    e.currentTarget.classList.replace(
+                                      "bi-floppy-fill",
+                                      "bi-floppy"
+                                    )
+                                  }
+                                />
+                              </Button>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <div
+                              className={
+                                classes[
+                                  `status-${candidateInfo.onboarding.status
+                                    .replace(/\s+/g, "")
+                                    .toLowerCase()}`
+                                ]
+                              }
+                              title={candidateInfo.onboarding.status}
+                            >
+                              {highlightText(
+                                candidateInfo.onboarding.status,
+                                searchTerm
+                              )}
+                            </div>
+                            <Button className={classes.editStatusButton}>
+                              <i
+                                className={"bi bi-pencil"}
+                                onClick={() =>
+                                  setEditStatus({
+                                    id: candidateId,
+                                    status: candidateInfo.onboarding.status,
+                                  })
+                                }
+                                onMouseEnter={(e) =>
+                                  e.currentTarget.classList.replace(
+                                    "bi-pencil",
+                                    "bi-pencil-fill"
+                                  )
+                                }
+                                onMouseLeave={(e) =>
+                                  e.currentTarget.classList.replace(
+                                    "bi-pencil-fill",
+                                    "bi-pencil"
+                                  )
+                                }
+                              />
+                            </Button>
+                          </>
                         )}
                       </td>
                       <td title={candidateInfo.onboarding.date}>

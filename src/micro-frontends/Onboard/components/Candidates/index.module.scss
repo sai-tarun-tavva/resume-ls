@@ -6,7 +6,7 @@
   position: fixed;
   overflow-y: auto;
   height: 85vh;
-  cursor: pointer;
+  cursor: default;
 
   background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, 0) 2%),
     linear-gradient(to left, #fff 0%, rgba(255, 255, 255, 0) 2%);
@@ -129,8 +129,26 @@
 
       td:first-child {
         transition: transform 0.2s ease;
+        overflow: unset;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: unset;
+        width: 12rem;
+        padding: 1.2rem 1rem;
+        cursor: pointer;
 
-        &.status-yettoreview {
+        .extraLoaderContainer {
+          position: unset;
+          width: unset;
+          min-height: unset;
+
+          & > div {
+            width: 1.5rem;
+          }
+        }
+
+        .status-yettoreview {
           color: #f97316;
           &::before {
             content: "";
@@ -145,7 +163,7 @@
           }
         }
 
-        &.status-underreview {
+        .status-underreview {
           color: #a855f7;
           &::before {
             content: "";
@@ -160,7 +178,7 @@
           }
         }
 
-        &.status-inprogress {
+        .status-inprogress {
           color: #14b8a6;
           &::before {
             content: "";
@@ -173,6 +191,27 @@
             background: currentColor;
             box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15);
           }
+        }
+
+        .editStatusButton {
+          background: transparent;
+          box-shadow: unset;
+          padding: unset;
+
+          i {
+            color: var(--primary-color);
+          }
+
+          &:hover {
+            i {
+              color: var(--primary-hover);
+            }
+          }
+        }
+
+        .editStatusSelect {
+          margin-bottom: unset;
+          flex: 0.9;
         }
       }
 

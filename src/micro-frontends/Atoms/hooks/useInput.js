@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { INPUT_TYPES } from "../../../constants";
 
 /**
@@ -21,6 +21,11 @@ export const useInput = (
   const [enteredValue, setEnteredValue] = useState(defaultValue);
   const [didEdit, setDidEdit] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+
+  // Update `enteredValue` whenever `defaultValue` changes
+  useEffect(() => {
+    setEnteredValue(defaultValue);
+  }, [defaultValue]);
 
   const errorMessage = checkForErrors(String(enteredValue).trim());
 

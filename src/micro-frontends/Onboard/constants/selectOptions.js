@@ -42,7 +42,6 @@ export const ONBOARDING_STATUS_VALUES = {
 export const OPTIONS = {
   // Onboarding status options
   ONBOARDING_STATUS: [
-    { value: "", label: "" }, // Placeholder option
     { value: ONBOARDING_STATUS_VALUES.YET_TO_REVIEW, label: "Yet To Review" },
     { value: ONBOARDING_STATUS_VALUES.UNDER_REVIEW, label: "Under Review" },
     { value: ONBOARDING_STATUS_VALUES.IN_PROGRESS, label: "In Progress" },

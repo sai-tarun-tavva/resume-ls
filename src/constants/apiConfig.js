@@ -58,6 +58,7 @@ export const END_POINTS = {
     FETCH_CANDIDATE: `${ONBOARD_HOST_PORT}candidates_get/:id/`,
     ADD_CANDIDATE: `${ONBOARD_HOST_PORT}candidates/`,
     UPDATE_CANDIDATE: `${ONBOARD_HOST_PORT}candidates/:id/`,
+    UPDATE_STATUS: `${ONBOARD_HOST_PORT}update_status/:id/`,
   },
 
   /**
