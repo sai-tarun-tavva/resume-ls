@@ -45,7 +45,7 @@ export const ONBOARD = {
  * @property {number} SUGGESTED_CHANGES - Number of changes suggested to improve resumes.
  */
 export const SPARK = {
-  SUGGESTED_CHANGES: 8751, // Dummy count for visual appearance on purpose
+  SUGGESTED_CHANGES: 155, // Dummy count for visual appearance on purpose
 };
 
 /**
