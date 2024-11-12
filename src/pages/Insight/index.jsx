@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import InsightHub from "../../micro-frontends/Insight/components/InsightHub";
+import { CONTENT } from "../../constants";
 
 /**
  * Insight Component
@@ -19,7 +20,7 @@ const Insight = () => {
   return (
     <>
       <Helmet>
-        <title>Resume Insight</title>
+        <title>{CONTENT.COMMON.pageTitles.insight}</title>
       </Helmet>
       <InsightHub />
     </>

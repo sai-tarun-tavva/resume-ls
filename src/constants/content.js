@@ -26,6 +26,12 @@ export const CONTENT = {
     serverError: "Server error, please try again later.",
     noCandidateRecord: "No candidates found.",
     searchTooltipHeader: "Searches by:",
+    pageTitles: {
+      welcome: "Resume Suite",
+      insight: "Resume Insight",
+      onboard: "Resume Onboard",
+      spark: "Resume Spark",
+    },
     mainNavigation: {
       heading: "Resume Suite",
       onboard: "Onboard",

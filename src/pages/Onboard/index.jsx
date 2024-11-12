@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import OnboardHub from "../../micro-frontends/Onboard/components/OnboardHub";
+import { CONTENT } from "../../constants";
 
 /**
  * Onboard Component
@@ -18,7 +19,7 @@ const Onboard = () => {
   return (
     <>
       <Helmet>
-        <title>Resume Onboard</title>
+        <title>{CONTENT.COMMON.pageTitles.onboard}</title>
       </Helmet>
       <OnboardHub />
     </>

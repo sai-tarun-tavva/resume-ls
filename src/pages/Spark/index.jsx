@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import SparkHub from "../../micro-frontends/Spark/components/SparkHub";
+import { CONTENT } from "../../constants";
 
 /**
  * Spark Component
@@ -18,7 +19,7 @@ const Spark = () => {
   return (
     <>
       <Helmet>
-        <title>Resume Spark</title>
+        <title>{CONTENT.COMMON.pageTitles.spark}</title>
       </Helmet>
       <SparkHub />
     </>
