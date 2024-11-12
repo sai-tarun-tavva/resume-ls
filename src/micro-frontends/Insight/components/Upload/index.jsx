@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import HelperMessage from "./HelperMessage";
+// import HelperMessage from "./HelperMessage";
 import DropArea from "./DropArea";
 import FileList from "./FileList";
 import Button from "../../../Atoms/components/Button";
@@ -230,7 +230,7 @@ const Upload = () => {
             </div>
           ) : (
             <>
-              <HelperMessage />
+              {/* <HelperMessage /> */}
               <form className={classes.uploadFormContainer}>
                 <DropArea
                   handleDrop={handleDrop}
