@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoading, useStatus, useUI } from "../../../../store";
 import Loader from "../../../Atoms/components/Loader";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import TimestampDisplay from "../../../Atoms/components/TimestampDisplay";
 import FloatingButton from "../../../Atoms/components/FloatingButton";
 import Select from "../../../Atoms/components/Inputs/Select";
 import Button from "../../../Atoms/components/Button";
+import StatusUpdateConfirmation from "../StatusUpdateConfirmation";
 import { useInput } from "../../../Atoms/hooks";
+import { useLoading, useStatus, useUI } from "../../../../store";
 import { dataActions, inputActions } from "../../store";
 import {
   buildFetchCandidatesUrl,
@@ -16,6 +17,8 @@ import {
   fetchCandidateById,
   fetchOnboardCandidates,
   getExperienceDisplayText,
+  getLabelByValue,
+  getValueByLabel,
   highlightText,
   replaceRouteParam,
   transformPhoneNumber,
@@ -56,6 +59,7 @@ const OnboardCandidates = () => {
   const { candidates } = useSelector((state) => state.data);
   const {
     state: { refetch, refetchURL, searchTerm },
+    enableRefetch,
     disableRefetch,
     updatePagination,
   } = useUI();
@@ -69,6 +73,8 @@ const OnboardCandidates = () => {
   const { updateStatus } = useStatus();
 
   const [editStatus, setEditStatus] = useState(initialEditStatus);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [isDetailsProvided, setIsDetailsProvided] = useState(null);
 
   const {
     value: statusValue,
@@ -76,17 +82,31 @@ const OnboardCandidates = () => {
     handleInputBlur: statusBlur,
     handleInputFocus: statusFocus,
     isFocused: isStatusFocused,
+    resetValue: resetStatusValue,
   } = useInput(
-    OPTIONS.ONBOARDING_STATUS.find((statusOption) => {
-      return statusOption.label === editStatus.status;
-    })?.value || ONBOARDING_STATUS_VALUES.IN_PROGRESS
+    getValueByLabel(OPTIONS.ONBOARDING_STATUS, editStatus.status) ||
+      ONBOARDING_STATUS_VALUES.IN_PROGRESS
   );
 
-  const handleUpdateStatus = async (id, statusValue) => {
-    const statusLabel = OPTIONS.ONBOARDING_STATUS.find(
-      (status) => status.value === statusValue
-    )?.label;
+  /**
+   * Resets the component's state related to editing and status update modals.
+   */
+  const resetStates = () => {
+    setEditStatus(initialEditStatus);
+    setIsStatusModalOpen(false);
+    setIsDetailsProvided(null);
+    resetStatusValue();
+  };
 
+  /**
+   * Updates the onboarding status of a candidate and shows a success or failure message based on the outcome.
+   *
+   * @async
+   * @function
+   * @param {number} id - The ID of the candidate to update.
+   * @param {string} statusLabel - The new status label to set for the candidate.
+   */
+  const updateOnboardingStatus = async (id, statusLabel) => {
     enableButtonLoading();
 
     const url = replaceRouteParam(END_POINTS.ONBOARD.UPDATE_STATUS, { id });
@@ -97,16 +117,67 @@ const OnboardCandidates = () => {
 
     if (status === STATUS_CODES.SUCCESS) {
       dispatch(dataActions.replaceCandidate(response?.data));
+      resetStates();
+      updateStatus({
+        message: CONTENT.ONBOARD.statusMessages.form.success_update_status,
+        type: "success",
+        darkMode: true,
+      });
+
+      if (
+        getValueByLabel(OPTIONS.ONBOARDING_STATUS, statusLabel) ===
+        ONBOARDING_STATUS_VALUES.COMPLETED
+      ) {
+        enableRefetch();
+      }
+    } else if (status === STATUS_CODES.INVALID) {
+      // If required details are not provided, show warning
+      setIsDetailsProvided(false);
     } else {
       updateStatus({
-        message: CONTENT.COMMON.serverError,
+        message: CONTENT.ONBOARD.statusMessages.form.failure,
         type: "failure",
         darkMode: true,
       });
     }
 
-    setEditStatus(initialEditStatus);
     disableButtonLoading();
+  };
+
+  /**
+   * Redirects the user to the candidate edit page.
+   *
+   * @param {number} id - The ID of the candidate to edit.
+   */
+  const redirectToEdit = (id) => {
+    resetStates();
+    handleDoubleClick(id);
+  };
+
+  /**
+   * Handles the closure of the status update confirmation modal and resets related states.
+   */
+  const handleStatusModalClose = () => {
+    resetStates();
+  };
+
+  /**
+   * Handles the click event for updating a candidate's status.
+   *
+   * If the status is "COMPLETED," it opens the status confirmation modal.
+   * Otherwise, it directly updates the status.
+   *
+   * @param {number} id - The ID of the candidate to update.
+   * @param {string} statusValue - The new status value.
+   */
+  const handleUpdateStatusClick = (id, statusValue) => {
+    const statusLabel = getLabelByValue(OPTIONS.ONBOARDING_STATUS, statusValue);
+
+    if (statusValue === ONBOARDING_STATUS_VALUES.COMPLETED) {
+      setIsStatusModalOpen(true);
+    } else {
+      updateOnboardingStatus(id, statusLabel);
+    }
   };
 
   /**
@@ -143,7 +214,17 @@ const OnboardCandidates = () => {
     disableAppLoading();
   };
 
-  // Effect to fetch candidates when component mounts or refetch is triggered
+  /**
+   * Effect to synchronize `statusValue` with the `editStatus` state when `statusValue` changes.
+   */
+  useEffect(() => {
+    setEditStatus((prevValue) => ({ ...prevValue, status: statusValue }));
+  }, [statusValue]);
+
+  /**
+   * Fetches the list of candidates when the component mounts or when refetch is triggered.
+   * Updates the UI state based on the fetch result.
+   */
   useEffect(() => {
     const url =
       refetchURL ||
@@ -152,6 +233,11 @@ const OnboardCandidates = () => {
         ONBOARD.CANDIDATES_PER_PAGE
       );
 
+    /**
+     * Fetches candidates from the server.
+     *
+     * @async
+     */
     const fetchCandidates = async () => {
       enableAppLoading();
 
@@ -182,7 +268,7 @@ const OnboardCandidates = () => {
       disableAppLoading();
     };
 
-    // Fetch candidates if it is the initial load or refetch is triggered
+    // Fetch candidates if it's the initial load or refetch is triggered
     if (isInitial || refetch) {
       isInitial = false;
       setEditStatus(initialEditStatus);
@@ -203,6 +289,20 @@ const OnboardCandidates = () => {
 
   return (
     <>
+      {isStatusModalOpen && (
+        <StatusUpdateConfirmation
+          isDetailsProvided={isDetailsProvided}
+          handleClose={handleStatusModalClose}
+          handleSave={() =>
+            isDetailsProvided === false
+              ? redirectToEdit(editStatus.id)
+              : updateOnboardingStatus(
+                  editStatus.id,
+                  getLabelByValue(OPTIONS.ONBOARDING_STATUS, editStatus.status)
+                )
+          }
+        />
+      )}
       <div className={classes.tableContainer}>
         {isLoading[APP] ? (
           <Loader /> // Show loader if data is being fetched
@@ -337,7 +437,10 @@ const OnboardCandidates = () => {
                                 <i
                                   className={"bi bi-floppy"}
                                   onClick={() =>
-                                    handleUpdateStatus(candidateId, statusValue)
+                                    handleUpdateStatusClick(
+                                      candidateId,
+                                      statusValue
+                                    )
                                   }
                                   onMouseEnter={(e) =>
                                     e.currentTarget.classList.replace(
@@ -378,7 +481,10 @@ const OnboardCandidates = () => {
                                 onClick={() =>
                                   setEditStatus({
                                     id: candidateId,
-                                    status: candidateInfo.onboarding.status,
+                                    status: getValueByLabel(
+                                      OPTIONS.ONBOARDING_STATUS,
+                                      candidateInfo.onboarding.status
+                                    ),
                                   })
                                 }
                                 onMouseEnter={(e) =>
@@ -532,6 +638,7 @@ const OnboardCandidates = () => {
       {/* Floating button to onboard a new candidate */}
       <FloatingButton
         clickHandler={() => {
+          dispatch(inputActions.resetForm());
           navigate(`${ROUTES.ONBOARD.CANDIDATE_FORM.NEW}`);
         }}
         title={"Onboard new candidate"}

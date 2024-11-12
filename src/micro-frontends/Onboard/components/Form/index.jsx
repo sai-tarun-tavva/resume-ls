@@ -80,7 +80,7 @@ const Form = () => {
 
       if (status !== STATUS_CODES.SUCCESS) {
         updateStatus({
-          message: CONTENT.COMMON.serverError,
+          message: CONTENT.ONBOARD.statusMessages.form.failure,
           type: "failure",
         });
       } else {
@@ -89,7 +89,7 @@ const Form = () => {
             dispatch(inputActions.incrementCurrentSectionIndex());
           else {
             updateStatus({
-              message: "Successfully added new candidate details!",
+              message: CONTENT.ONBOARD.statusMessages.form.success_add,
               type: "success",
               darkMode: true,
             });
@@ -98,7 +98,7 @@ const Form = () => {
           }
         } else
           updateStatus({
-            message: "Successfully updated candidate details!",
+            message: CONTENT.ONBOARD.statusMessages.form.success_update,
             type: "success",
           });
       }

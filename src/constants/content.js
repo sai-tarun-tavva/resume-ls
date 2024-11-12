@@ -382,6 +382,15 @@ export const CONTENT = {
    * ONBOARD Module content for onboarding candidate management.
    */
   ONBOARD: {
+    statusMessages: {
+      form: {
+        success_add: "Successfully added new candidate details!",
+        success_update: "Successfully updated candidate details!",
+        success_update_status: "Successfully updated candidate status!",
+        failure:
+          "Failed to update candidate information. Please try again later.",
+      },
+    },
     operations: {
       logoSuffix: "R",
       logo: "Onboard",
@@ -415,6 +424,35 @@ export const CONTENT = {
         notes: "Notes",
       },
       noCandidates: "No candidates available",
+      statusUpdateModal: {
+        closeButton: {
+          default: "Cancel",
+        },
+        importantNotice: {
+          primaryMessageHeading: "Important Notice",
+          primaryMessageParagraph:
+            " Setting this status to COMPLETED will finalize the candidate's onboarding. If all required details are provided, the candidate will be removed from the active onboarding list.",
+          secondaryMessage:
+            "Ensure all information is accurate and complete before proceeding, as you will no longer have access to this candidate’s onboarding details once marked as complete.",
+          confirmMessage: "Would you like to proceed?",
+          saveButton: {
+            default: "OK",
+            loading: "Saving...",
+          },
+        },
+        incompleteDetails: {
+          primaryMessageHeading: "Incomplete Candidate Details",
+          primaryMessageParagraph:
+            "Some required details for this candidate have not been provided. Please complete all necessary information before setting the status to COMPLETED.",
+          secondaryMessage:
+            "Make sure to review all sections of the candidate form to confirm that every field is filled out accurately.",
+          confirmMessage:
+            "Click EDIT to provide the missing information, or CANCEL to return later.",
+          editButton: {
+            default: "Edit",
+          },
+        },
+      },
     },
     candidateForm: {
       address: {

@@ -493,3 +493,25 @@ export const transformExperience = (value) => {
 
   return Math.round(num);
 };
+
+/**
+ * Retrieves the value associated with a given label from an options array.
+ *
+ * @param {Array} options - Array of option objects, each containing `label` and `value` properties.
+ * @param {string} label - The label for which the corresponding value should be retrieved.
+ * @returns {string|undefined} The value associated with the specified label, or undefined if not found.
+ */
+export const getValueByLabel = (options, label) => {
+  return options.find((option) => option.label === label)?.value;
+};
+
+/**
+ * Retrieves the label associated with a given value from an options array.
+ *
+ * @param {Array} options - Array of option objects, each containing `label` and `value` properties.
+ * @param {string} value - The value for which the corresponding label should be retrieved.
+ * @returns {string|undefined} The label associated with the specified value, or undefined if not found.
+ */
+export const getLabelByValue = (options, value) => {
+  return options.find((option) => option.value === value)?.label;
+};

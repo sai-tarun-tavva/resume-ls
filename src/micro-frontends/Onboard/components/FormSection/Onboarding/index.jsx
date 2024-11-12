@@ -10,6 +10,8 @@ import { inputActions } from "../../../store";
 import {
   determineSectionValidity,
   focusErrorsIfAny,
+  getLabelByValue,
+  getValueByLabel,
   onboardingValidations,
 } from "../../../../../utilities";
 import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
@@ -74,9 +76,8 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
     isFocused: isStatusFocused,
     forceValidations: forceStatusValidations,
   } = useInput(
-    OPTIONS.ONBOARDING_STATUS.find(
-      (statusOption) => statusOption.label === status
-    )?.value || ONBOARDING_STATUS_VALUES.IN_PROGRESS,
+    getValueByLabel(OPTIONS.ONBOARDING_STATUS, status) ||
+      ONBOARDING_STATUS_VALUES.IN_PROGRESS,
     validations.status,
     undefined,
     true
@@ -119,9 +120,7 @@ const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.ONBOARDING,
           field: FIELDS.ONBOARDING.STATUS,
-          value: OPTIONS.ONBOARDING_STATUS.find(
-            (status) => status.value === statusValue
-          )?.label,
+          value: getLabelByValue(OPTIONS.ONBOARDING_STATUS, statusValue),
         })
       );
       dispatch(
