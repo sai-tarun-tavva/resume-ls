@@ -53,11 +53,14 @@ const Form = () => {
   }, [isInNewRoute, dispatch]);
 
   /**
-   * Redirect to the candidates list if the view route is accessed directly.
+   * Redirect to the not found page if the view route is accessed directly.
    */
   useEffect(() => {
-    if (!data.record.id && !isInNewRoute) navigate(ROUTES.ONBOARD.HOME);
-  }, [data.record.id, navigate, isInNewRoute]);
+    if (!data.record.id && !isInNewRoute)
+      navigate(ROUTES.COMMON.NOT_FOUND, {
+        state: { from: routeLocation.pathname },
+      });
+  }, [data.record.id, navigate, isInNewRoute, routeLocation]);
 
   /**
    * Handle candidate update or addition
@@ -77,34 +80,31 @@ const Form = () => {
 
       if (status !== STATUS_CODES.SUCCESS) {
         updateStatus({
-          message: CONTENT.COMMON.serverError,
+          message: CONTENT.ONBOARD.statusMessages.form.failure,
           type: "failure",
         });
       } else {
-        if (isInNewRoute) dispatch(inputActions.incrementCurrentSectionIndex());
-        else
+        if (isInNewRoute) {
+          if (current < 9)
+            dispatch(inputActions.incrementCurrentSectionIndex());
+          else {
+            updateStatus({
+              message: CONTENT.ONBOARD.statusMessages.form.success_add,
+              type: "success",
+              darkMode: true,
+            });
+            enableRefetch();
+            navigate("..");
+          }
+        } else
           updateStatus({
-            message: "Successfully updated candidate details!",
+            message: CONTENT.ONBOARD.statusMessages.form.success_update,
             type: "success",
           });
       }
 
       dispatch(inputActions.disableFormSectionSubmission());
       disableButtonLoading();
-
-      // Check for final section and refetch if applicable
-      if (
-        isInNewRoute &&
-        data.miscellaneous.remarks &&
-        data.miscellaneous.notes
-      ) {
-        updateStatus({
-          message: "Successfully added new candidate details!",
-          type: "success",
-        });
-        enableRefetch();
-        navigate("..");
-      }
     };
 
     updateCandidate();
@@ -119,6 +119,7 @@ const Form = () => {
     resetStatus,
     updateStatus,
     enableRefetch,
+    current,
   ]);
 
   // Refs for each form section

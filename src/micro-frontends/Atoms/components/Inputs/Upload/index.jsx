@@ -80,6 +80,7 @@ const Upload = ({
           id={id}
           ref={fileInputRef}
           onChange={changeHandler}
+          accept=".doc,.docx,.pdf,.txt"
           style={{ display: "none" }}
         />
         <i className={`bi bi-cloud-upload ${classes.icon}`}></i>

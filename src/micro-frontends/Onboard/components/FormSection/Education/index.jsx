@@ -224,6 +224,13 @@ const Education = forwardRef((_, ref) => {
           },
         })
       );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.COMMON.COMPLETED,
+          value: "Done",
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

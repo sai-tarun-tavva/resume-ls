@@ -4,27 +4,13 @@ import Select from "../../../../Atoms/components/Inputs/Select";
 import { useInput } from "../../../../Atoms/hooks";
 import {
   determineSectionValidity,
+  getLabelByValue,
   onboardingValidations,
 } from "../../../../../utilities";
 import { FIELDS_ADDRESS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
+import states from "../../../constants/countries.json";
 import { CONTENT } from "../../../../../constants";
-
-/**
- * Function to return state options based on the selected country
- * @param {string} country - The selected country (India, USA, etc.)
- * @returns {Array} - List of state options based on the country
- */
-const getStateOptions = (country) => {
-  switch (country) {
-    case "india":
-      return OPTIONS.STATE_INDIA;
-    case "usa":
-      return OPTIONS.STATE_USA;
-    default:
-      return OPTIONS.STATE_USA;
-  }
-};
 
 let isInitial = true;
 
@@ -107,6 +93,7 @@ const Address = forwardRef(
       error: stateError,
       isFocused: isStateFocused,
       resetValue: resetState,
+      clearValue: clearState,
       forceValidations: forceStateValidations,
     } = useInput(state, validations.state, undefined, true);
 
@@ -149,10 +136,12 @@ const Address = forwardRef(
     useEffect(() => {
       // force zip code validations based on new country's zipcode regex
       if (!isInitial) {
+        clearState();
         forceZipcodeValidations();
       }
+
       isInitial = true;
-    }, [countryValue, forceZipcodeValidations]);
+    }, [countryValue, forceZipcodeValidations, clearState]);
 
     // Group all errors and values dynamically for validation
     const allErrors = [
@@ -284,7 +273,11 @@ const Address = forwardRef(
             id={`${id}-state`}
             label={CONTENT.ONBOARD.candidateForm.address.state}
             value={stateValue}
-            options={getStateOptions(countryValue)}
+            options={[
+              { value: "", label: "" },
+              ...(states[getLabelByValue(OPTIONS.COUNTRY, countryValue)] ||
+                states["USA"]),
+            ]}
             changeHandler={stateChange}
             blurHandler={stateBlur}
             focusHandler={stateFocus}
@@ -300,7 +293,7 @@ const Address = forwardRef(
             id={`${id}-country`}
             label={CONTENT.ONBOARD.candidateForm.address.country}
             value={countryValue}
-            options={OPTIONS.COUNTRY}
+            options={[{ value: "", label: "" }, ...OPTIONS.COUNTRY]}
             changeHandler={countryChange}
             blurHandler={countryBlur}
             focusHandler={countryFocus}

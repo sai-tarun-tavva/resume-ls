@@ -1,4 +1,6 @@
+import { Helmet } from "react-helmet-async";
 import LoginHub from "../../micro-frontends/Welcome/components/LoginHub";
+import { CONTENT } from "../../constants";
 
 /**
  * Welcome Component
@@ -11,7 +13,14 @@ import LoginHub from "../../micro-frontends/Welcome/components/LoginHub";
  * @returns {JSX.Element} A component that displays the LoginHub for user authentication.
  */
 const Welcome = () => {
-  return <LoginHub />;
+  return (
+    <>
+      <Helmet>
+        <title>{CONTENT.COMMON.pageTitles.welcome}</title>
+      </Helmet>
+      <LoginHub />
+    </>
+  );
 };
 
 Welcome.displayName = "Welcome";

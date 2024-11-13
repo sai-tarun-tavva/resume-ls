@@ -80,6 +80,13 @@ const Miscellaneous = forwardRef((_, ref) => {
           value: notesValue,
         })
       );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.MISCELLANEOUS,
+          field: FIELDS.COMMON.COMPLETED,
+          value: "Done",
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };

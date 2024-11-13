@@ -26,7 +26,14 @@ export const CONTENT = {
     serverError: "Server error, please try again later.",
     noCandidateRecord: "No candidates found.",
     searchTooltipHeader: "Searches by:",
+    pageTitles: {
+      welcome: "Resume Suite",
+      insight: "Resume Insight",
+      onboard: "Resume Onboard",
+      spark: "Resume Spark",
+    },
     mainNavigation: {
+      heading: "Resume Suite",
       onboard: "Onboard",
       insight: "Insight",
       spark: "Spark",
@@ -232,7 +239,7 @@ export const CONTENT = {
     pageNotFound: {
       title: "404",
       message:
-        "It seems the resume you were looking for got lost in cyberspace! 🚀",
+        "It seems the candidate you were looking for got lost in cyberspace! 🚀",
       suggestionStart: "Head back to the ",
       suggestionEnd: " to find the perfect candidate!",
       suggestedPageName: "Home page",
@@ -381,6 +388,15 @@ export const CONTENT = {
    * ONBOARD Module content for onboarding candidate management.
    */
   ONBOARD: {
+    statusMessages: {
+      form: {
+        success_add: "Successfully added new candidate details!",
+        success_update: "Successfully updated candidate details!",
+        success_update_status: "Successfully updated candidate status!",
+        failure:
+          "Failed to update candidate information. Please try again later.",
+      },
+    },
     operations: {
       logoSuffix: "R",
       logo: "Onboard",
@@ -401,6 +417,7 @@ export const CONTENT = {
         firstName: "First Name",
         lastName: "Last Name",
         marketingName: "Marketing Name",
+        visaStatus: "Visa Status",
         location: "Location",
         relocation: "Relocation",
         phone: "Mobile Number",
@@ -414,6 +431,28 @@ export const CONTENT = {
         notes: "Notes",
       },
       noCandidates: "No candidates available",
+      statusUpdateModal: {
+        closeButton: {
+          default: "Close",
+        },
+        onboardDetails: {
+          primaryMessageHeading: "Onboarding Complete",
+          primaryMessageParagraph:
+            "The candidate has been successfully onboarded. All required details have been provided, and the candidate has been removed from the active onboarding list.",
+        },
+        incompleteDetails: {
+          primaryMessageHeading: "Incomplete Candidate Details",
+          primaryMessageParagraph:
+            "Some required details for this candidate have not been provided. Please complete all necessary information before setting the status to COMPLETED.",
+          secondaryMessage:
+            "Make sure to review all sections of the candidate form to confirm that every field is filled out accurately.",
+          confirmMessage:
+            "Click EDIT to provide the missing information, or CANCEL to return later.",
+          editButton: {
+            default: "Edit",
+          },
+        },
+      },
     },
     candidateForm: {
       address: {
@@ -427,7 +466,10 @@ export const CONTENT = {
       sections: {
         onboarding: {
           date: "Onboarding Date",
-          status: "Onboarding Status",
+          status: {
+            label: "Onboarding Status",
+            helper: "(Considered IN PROGRESS by default)",
+          },
         },
         personal: {
           firstName: "First Name",
@@ -485,7 +527,10 @@ export const CONTENT = {
           },
         },
         profession: {
-          training: "Training Attended?",
+          training: {
+            label: "Training Attended?",
+            helper: "(Considered no by default)",
+          },
           expYears: "Experience in Years",
           expMonths: "Experience in Months",
           prevExpList: {

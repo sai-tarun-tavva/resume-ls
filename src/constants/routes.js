@@ -5,6 +5,17 @@
  */
 export const ROUTES = {
   /**
+   * COMMON Routes
+   *
+   * Routes for common pages.
+   *
+   * @property {string} NOT_FOUND - Not found page for the website.
+   */
+  COMMON: {
+    NOT_FOUND: "not-found",
+  },
+
+  /**
    * INSIGHT Routes
    *
    * Routes for the INSIGHT module, which focuses on candidate management.

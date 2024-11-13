@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Address from "../Address";
@@ -30,10 +31,11 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * It validates, submits, and manages the user input for relocation preferences.
  *
  * @param {Object} _ - The component props (forwarded ref).
+ * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Relocation component.
  */
-const Relocation = forwardRef((_, ref) => {
+const Relocation = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
@@ -182,7 +184,6 @@ const Relocation = forwardRef((_, ref) => {
           })
         );
       }
-
       dispatch(
         inputActions.updateField({
           section: SECTIONS.RELOCATION,
@@ -190,7 +191,13 @@ const Relocation = forwardRef((_, ref) => {
           value: relocationAddress || defaultAddress,
         })
       );
-
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.RELOCATION,
+          field: FIELDS.COMMON.COMPLETED,
+          value: "Done",
+        })
+      );
       dispatch(inputActions.enableFormSectionSubmission());
     }
   };
@@ -212,7 +219,7 @@ const Relocation = forwardRef((_, ref) => {
         value={interestedValue}
         changeHandler={interestedChange}
         blurHandler={interestedBlur}
-        helperText={sections.relocation.interested.helper}
+        helperText={isInNewRoute ? sections.relocation.interested.helper : ""}
         extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
@@ -257,6 +264,10 @@ const Relocation = forwardRef((_, ref) => {
     </fieldset>
   );
 });
+
+Relocation.propTypes = {
+  isInNewRoute: PropTypes.bool.isRequired,
+};
 
 Relocation.displayName = "FormRelocation";
 export default Relocation;
