@@ -34,12 +34,21 @@ html {
   --primary-color: rgb(24, 94, 170);
   --primary-shadow: rgba(24, 94, 170, 0.3);
   --primary-hover: rgb(0, 74, 132);
+
   --error-color: rgb(239, 67, 67);
   --error-light: rgb(255, 241, 240);
   --error-shadow: rgba(239, 68, 68, 0.5);
-  --warning-color: rgb(255, 173, 51);
-  --warning-light: rgb(255, 244, 229);
-  --warning-shadow: rgba(255, 173, 51, 0.5);
+
+  --warning-color: rgb(230, 155, 45);
+  --warning-light: rgb(255, 236, 215);
+  --warning-shadow: rgba(230, 155, 45, 0.6);
+  --warning-hover: rgb(204, 138, 40);
+
+  --success-color: rgb(34, 197, 94);
+  --success-light: rgb(237, 247, 242);
+  --success-shadow: rgba(34, 197, 94, 0.5);
+  --success-hover: rgb(22, 160, 77);
+
   --text-color: rgb(31, 41, 56);
   --text-light: rgb(107, 114, 128);
   --bg-color: rgb(242, 243, 245);
@@ -51,6 +60,7 @@ html {
   --table-header-bg: rgb(249, 250, 251);
   --table-border: rgb(229, 231, 235);
   --table-hover: rgb(249, 250, 251);
+
   --transition: all 0.3s ease;
 }
 
@@ -102,12 +112,11 @@ mark {
 
 ::-webkit-scrollbar {
   width: 0.15rem;
-  height: 0.1rem;
+  height: 0.3rem;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(100, 100, 100, 0.3);
-  border-radius: 0.6rem;
   transition: background-color 0.3s ease;
 }
 

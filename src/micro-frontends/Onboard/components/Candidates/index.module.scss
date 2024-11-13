@@ -12,7 +12,7 @@
     linear-gradient(to left, #fff 0%, rgba(255, 255, 255, 0) 2%);
   background-position: left center, right center;
   background-repeat: no-repeat;
-  background-size: 40px 100%, 40px 100%;
+  background-size: 2.5rem 100%, 2.5rem 100%;
   background-attachment: local, local;
 }
 
@@ -27,65 +27,39 @@
     position: sticky;
     top: 0;
     z-index: 10;
-
-    &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        rgba(203, 213, 225, 0) 0%,
-        rgba(203, 213, 225, 0.4) 50%,
-        rgba(203, 213, 225, 0) 100%
-      );
-    }
   }
 
   th {
-    background: linear-gradient(135deg, var(--primary-color), #1e88e5);
-    color: white;
-    backdrop-filter: blur(8px);
+    background: #1e88e5;
+    color: #e5e7eb;
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     letter-spacing: 0.03em;
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.5rem;
     text-align: left;
     white-space: nowrap;
     text-transform: uppercase;
-    transition: all 0.2s ease;
+    border-bottom: 0.06rem solid #d1d5db;
     position: relative;
+    box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.1);
 
     &:hover {
-      color: #0f172a;
-
-      &::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0.75rem;
-        right: 0.75rem;
-        height: 2px;
-        background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-        border-radius: 2px;
-      }
+      color: #f3f4f6;
     }
   }
 
   td {
-    padding: 1rem 1.5rem;
     text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 0;
+    padding-left: 1.5rem;
     font-size: 0.875rem;
     color: #334155;
-    border-bottom: 1px solid #f1f5f9;
-    transition: all 0.2s ease;
+    border-bottom: 0.06rem solid #f1f5f9;
     font-weight: 600;
+    transition: all 0.2s ease;
   }
 
   tbody {
@@ -96,19 +70,15 @@
       &:hover {
         background: linear-gradient(
           90deg,
-          rgba(249, 250, 251, 0.5) 0%,
-          rgba(249, 250, 251, 0.8) 50%,
-          rgba(249, 250, 251, 0.5) 100%
+          rgba(229, 232, 235, 0.5) 0%,
+          rgba(229, 232, 235, 0.8) 50%,
+          rgba(229, 232, 235, 0.5) 100%
         );
-        transform: translateY(-1px);
+        transform: translateY(-0.06rem);
 
         td {
           color: #1e293b;
           border-bottom-color: transparent;
-
-          &:first-child {
-            transform: translateX(4px);
-          }
         }
 
         &::after {
@@ -117,7 +87,7 @@
           left: 0;
           right: 0;
           bottom: 0;
-          height: 1px;
+          height: 0.06rem;
           background: linear-gradient(
             90deg,
             rgba(59, 130, 246, 0) 0%,
@@ -135,8 +105,8 @@
         align-items: center;
         max-width: unset;
         width: 12rem;
-        padding: 1.2rem 1rem;
-        cursor: pointer;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
 
         .extraLoaderContainer {
           position: unset;
@@ -144,7 +114,24 @@
           min-height: unset;
 
           & > div {
-            width: 1.5rem;
+            width: 1rem;
+            background: radial-gradient(
+                  farthest-side,
+                  var(--primary-color) 94%,
+                  #0000
+                )
+                top/0.2rem 0.2rem no-repeat,
+              conic-gradient(#0000 30%, var(--primary-color));
+            mask: radial-gradient(
+              farthest-side,
+              #0000 calc(100% - 0.2rem),
+              #000 0
+            );
+            -webkit-mask: radial-gradient(
+              farthest-side,
+              #0000 calc(100% - 0.2rem),
+              #000 0
+            );
           }
         }
 
@@ -153,13 +140,13 @@
           &::before {
             content: "";
             display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin-right: 8px;
+            width: 0.4rem;
+            height: 0.4rem;
+            margin-right: 0.5rem;
             vertical-align: middle;
             border-radius: 50%;
             background: currentColor;
-            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+            box-shadow: 0 0 0 0.25rem rgba(249, 115, 22, 0.15);
           }
         }
 
@@ -168,13 +155,13 @@
           &::before {
             content: "";
             display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin-right: 8px;
+            width: 0.4rem;
+            height: 0.4rem;
+            margin-right: 0.5rem;
             vertical-align: middle;
             border-radius: 50%;
             background: currentColor;
-            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+            box-shadow: 0 0 0 0.25rem rgba(168, 85, 247, 0.15);
           }
         }
 
@@ -183,13 +170,13 @@
           &::before {
             content: "";
             display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin-right: 8px;
+            width: 0.4rem;
+            height: 0.4rem;
+            margin-right: 0.5rem;
             vertical-align: middle;
             border-radius: 50%;
             background: currentColor;
-            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15);
+            box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.15);
           }
         }
 
@@ -197,6 +184,8 @@
           background: transparent;
           box-shadow: unset;
           padding: unset;
+          cursor: pointer;
+          font-size: 0.875rem;
 
           i {
             color: var(--primary-color);
@@ -212,28 +201,17 @@
         .editStatusSelect {
           margin-bottom: unset;
           flex: 0.9;
+          label {
+            margin: unset;
+          }
+
+          select {
+            font-size: 0.875rem;
+            padding: 0;
+            border-bottom: unset;
+            box-shadow: unset;
+          }
         }
-      }
-
-      td:nth-child(3) {
-        padding: 0.5rem;
-      }
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .table {
-    th,
-    td {
-      padding: 0.875rem 1rem;
-
-      &:first-child {
-        padding-left: 1.25rem;
-      }
-
-      &:last-child {
-        padding-right: 1.25rem;
       }
     }
   }
@@ -242,5 +220,17 @@
 @media (max-width: 480px) {
   .tableContainer {
     margin-top: 11.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .table {
+    tbody {
+      tr {
+        td:first-child {
+          padding: 1.2rem 1rem;
+        }
+      }
+    }
   }
 }

@@ -417,6 +417,7 @@ export const CONTENT = {
         firstName: "First Name",
         lastName: "Last Name",
         marketingName: "Marketing Name",
+        visaStatus: "Visa Status",
         location: "Location",
         relocation: "Relocation",
         phone: "Mobile Number",
@@ -432,19 +433,12 @@ export const CONTENT = {
       noCandidates: "No candidates available",
       statusUpdateModal: {
         closeButton: {
-          default: "Cancel",
+          default: "Close",
         },
-        importantNotice: {
-          primaryMessageHeading: "Important Notice",
+        onboardDetails: {
+          primaryMessageHeading: "Onboarding Complete",
           primaryMessageParagraph:
-            " Setting this status to COMPLETED will finalize the candidate's onboarding. If all required details are provided, the candidate will be removed from the active onboarding list.",
-          secondaryMessage:
-            "Ensure all information is accurate and complete before proceeding, as you will no longer have access to this candidate’s onboarding details once marked as complete.",
-          confirmMessage: "Would you like to proceed?",
-          saveButton: {
-            default: "OK",
-            loading: "Saving...",
-          },
+            "The candidate has been successfully onboarded. All required details have been provided, and the candidate has been removed from the active onboarding list.",
         },
         incompleteDetails: {
           primaryMessageHeading: "Incomplete Candidate Details",

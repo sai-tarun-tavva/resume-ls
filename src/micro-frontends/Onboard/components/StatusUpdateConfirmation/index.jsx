@@ -1,12 +1,10 @@
 import PropTypes from "prop-types";
 import Modal from "../../../Atoms/components/Modal";
 import Button from "../../../Atoms/components/Button";
-import { useLoading } from "../../../../store";
-import { CONTENT, LOADING_ACTION_TYPES } from "../../../../constants";
-import classes from "./index.module.scss";
+import { CONTENT } from "../../../../constants";
+import styles from "./index.module.scss";
 
-const { BUTTON } = LOADING_ACTION_TYPES;
-const { closeButton, importantNotice, incompleteDetails } =
+const { closeButton, onboardDetails, incompleteDetails } =
   CONTENT.ONBOARD.candidates.statusUpdateModal;
 
 /**
@@ -20,80 +18,78 @@ const { closeButton, importantNotice, incompleteDetails } =
  * @param {Object} props - The component props.
  * @param {boolean} props.isDetailsProvided - Indicates if all required candidate details have been provided.
  * @param {function} props.handleClose - Callback function to close the modal.
- * @param {function} props.handleSave - Callback function to proceed with the status update.
+ * @param {function} props.handleEdit - Callback function to redirect to the edit page.
  * @returns {JSX.Element} The rendered StatusUpdateConfirmation component.
  */
 const StatusUpdateConfirmation = ({
   isDetailsProvided,
   handleClose,
-  handleSave,
+  handleEdit,
 }) => {
-  const { isLoading } = useLoading();
-
-  const buttonText =
-    isDetailsProvided === false
-      ? incompleteDetails.editButton.default
-      : isLoading[BUTTON]
-      ? importantNotice.saveButton.loading
-      : importantNotice.saveButton.default;
+  const buttonText = isDetailsProvided
+    ? closeButton.default
+    : incompleteDetails.editButton.default;
 
   return (
     <Modal handleClose={handleClose}>
       <div
-        className={`${classes.contentContainer} ${
-          isDetailsProvided === false
-            ? classes.warningStyle
-            : classes.errorStyle
+        className={`${styles.contentContainer} ${
+          isDetailsProvided ? styles.successStyle : styles.warningStyle
         }`}
       >
-        {isDetailsProvided === false ? (
-          <>
-            <p className={classes.primaryMessage}>
-              <strong>{incompleteDetails.primaryMessageHeading}</strong>
-              <br />
-              {incompleteDetails.primaryMessageParagraph}
-            </p>
-            <p className={classes.secondaryMessage}>
-              {incompleteDetails.secondaryMessage}
-            </p>
-            <p className={classes.confirmMessage}>
-              {incompleteDetails.confirmMessage}
-            </p>
-          </>
-        ) : (
-          <>
-            <p className={classes.primaryMessage}>
-              <strong>{importantNotice.primaryMessageHeading}</strong>
-              <br />
-              {importantNotice.primaryMessageParagraph}
-            </p>
-            <p className={classes.secondaryMessage}>
-              {importantNotice.secondaryMessage}
-            </p>
-            <p className={classes.confirmMessage}>
-              {importantNotice.confirmMessage}
-            </p>
-          </>
-        )}
-      </div>
+        <div className={styles.innerContainer}>
+          {isDetailsProvided ? (
+            <div className={styles.message}>
+              <i className="bi bi-check-circle-fill" />
+              <div>
+                <h3>{onboardDetails.primaryMessageHeading}</h3>
+                <p>{onboardDetails.primaryMessageParagraph}</p>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.message}>
+              <i className="bi bi-exclamation-triangle-fill" />
+              <div>
+                <h3>{incompleteDetails.primaryMessageHeading}</h3>
+                <p>{incompleteDetails.primaryMessageParagraph}</p>
+              </div>
+            </div>
+          )}
 
-      <div className={classes.buttonGroup}>
-        <Button
-          title={closeButton.default}
-          className={classes.closeButton}
-          onClick={handleClose}
-        >
-          {closeButton.default}
-        </Button>
-        <Button
-          title={buttonText}
-          className={`${classes.saveButton} ${
-            isLoading[BUTTON] ? "loading" : ""
-          }`}
-          onClick={handleSave}
-        >
-          {buttonText}
-        </Button>
+          <div className={styles.footer}>
+            {!isDetailsProvided && (
+              <>
+                <p
+                  className={`${styles.secondaryMessage} ${styles.warningMessage}`}
+                >
+                  {incompleteDetails.secondaryMessage}
+                </p>
+                <p className={styles.confirmMessage}>
+                  {incompleteDetails.confirmMessage}
+                </p>
+              </>
+            )}
+
+            <div className={styles.buttonGroup}>
+              {!isDetailsProvided && (
+                <Button
+                  title={closeButton.default}
+                  className={styles.closeButton}
+                  onClick={handleClose}
+                >
+                  {closeButton.default}
+                </Button>
+              )}
+              <Button
+                title={buttonText}
+                className={styles.saveButton}
+                onClick={isDetailsProvided ? handleClose : handleEdit}
+              >
+                {buttonText}
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </Modal>
   );
@@ -102,7 +98,7 @@ const StatusUpdateConfirmation = ({
 StatusUpdateConfirmation.propTypes = {
   isDetailsProvided: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
 };
 
 StatusUpdateConfirmation.displayName = "StatusUpdateConfirmation";

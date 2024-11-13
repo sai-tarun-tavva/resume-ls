@@ -14,6 +14,7 @@ import { dataActions, inputActions } from "../../store";
 import {
   buildFetchCandidatesUrl,
   convertDate,
+  dispatchAsync,
   fetchCandidateById,
   fetchOnboardCandidates,
   getExperienceDisplayText,
@@ -70,7 +71,7 @@ const OnboardCandidates = () => {
     enableButtonLoading,
     disableButtonLoading,
   } = useLoading();
-  const { updateStatus } = useStatus();
+  const { updateStatus, resetStatus } = useStatus();
 
   const [editStatus, setEditStatus] = useState(initialEditStatus);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
@@ -83,10 +84,7 @@ const OnboardCandidates = () => {
     handleInputFocus: statusFocus,
     isFocused: isStatusFocused,
     resetValue: resetStatusValue,
-  } = useInput(
-    getValueByLabel(OPTIONS.ONBOARDING_STATUS, editStatus.status) ||
-      ONBOARDING_STATUS_VALUES.IN_PROGRESS
-  );
+  } = useInput(editStatus.status || ONBOARDING_STATUS_VALUES.IN_PROGRESS);
 
   /**
    * Resets the component's state related to editing and status update modals.
@@ -108,6 +106,7 @@ const OnboardCandidates = () => {
    */
   const updateOnboardingStatus = async (id, statusLabel) => {
     enableButtonLoading();
+    await dispatchAsync(resetStatus);
 
     const url = replaceRouteParam(END_POINTS.ONBOARD.UPDATE_STATUS, { id });
 
@@ -116,22 +115,25 @@ const OnboardCandidates = () => {
     });
 
     if (status === STATUS_CODES.SUCCESS) {
-      dispatch(dataActions.replaceCandidate(response?.data));
-      resetStates();
-      updateStatus({
-        message: CONTENT.ONBOARD.statusMessages.form.success_update_status,
-        type: "success",
-        darkMode: true,
-      });
-
       if (
         getValueByLabel(OPTIONS.ONBOARDING_STATUS, statusLabel) ===
         ONBOARDING_STATUS_VALUES.COMPLETED
       ) {
+        setIsStatusModalOpen(true);
+        setIsDetailsProvided(true);
         enableRefetch();
+      } else {
+        dispatch(dataActions.replaceCandidate(response?.data));
+        resetStates();
+        updateStatus({
+          message: CONTENT.ONBOARD.statusMessages.form.success_update_status,
+          type: "success",
+          darkMode: true,
+        });
       }
     } else if (status === STATUS_CODES.INVALID) {
       // If required details are not provided, show warning
+      setIsStatusModalOpen(true);
       setIsDetailsProvided(false);
     } else {
       updateStatus({
@@ -173,11 +175,7 @@ const OnboardCandidates = () => {
   const handleUpdateStatusClick = (id, statusValue) => {
     const statusLabel = getLabelByValue(OPTIONS.ONBOARDING_STATUS, statusValue);
 
-    if (statusValue === ONBOARDING_STATUS_VALUES.COMPLETED) {
-      setIsStatusModalOpen(true);
-    } else {
-      updateOnboardingStatus(id, statusLabel);
-    }
+    updateOnboardingStatus(id, statusLabel);
   };
 
   /**
@@ -322,17 +320,26 @@ const OnboardCandidates = () => {
                 >
                   {columnHeaders.onboardingDate}
                 </th>
-                <th
-                  title={columnHeaders.lastUpdated}
-                  style={{ width: "23rem" }}
-                >
-                  {columnHeaders.lastUpdated}
+                <th title={columnHeaders.firstName} style={{ width: "12rem" }}>
+                  {columnHeaders.firstName}
                 </th>
-                <th title={columnHeaders.position} style={{ width: "12rem" }}>
-                  {columnHeaders.position}
+                <th title={columnHeaders.lastName} style={{ width: "12rem" }}>
+                  {columnHeaders.lastName}
                 </th>
                 <th title={columnHeaders.experience} style={{ width: "14rem" }}>
                   {columnHeaders.experience}
+                </th>
+                <th title={columnHeaders.technology} style={{ width: "12rem" }}>
+                  {columnHeaders.technology}
+                </th>
+                <th title={columnHeaders.visaStatus} style={{ width: "10rem" }}>
+                  {columnHeaders.visaStatus}
+                </th>
+                <th title={columnHeaders.location} style={{ width: "10rem" }}>
+                  {columnHeaders.location}
+                </th>
+                <th title={columnHeaders.position} style={{ width: "12rem" }}>
+                  {columnHeaders.position}
                 </th>
                 <th
                   title={columnHeaders.companyName}
@@ -340,23 +347,11 @@ const OnboardCandidates = () => {
                 >
                   {columnHeaders.companyName}
                 </th>
-                <th title={columnHeaders.technology} style={{ width: "12rem" }}>
-                  {columnHeaders.technology}
-                </th>
-                <th title={columnHeaders.firstName} style={{ width: "12rem" }}>
-                  {columnHeaders.firstName}
-                </th>
-                <th title={columnHeaders.lastName} style={{ width: "12rem" }}>
-                  {columnHeaders.lastName}
-                </th>
                 <th
                   title={columnHeaders.marketingName}
                   style={{ width: "15rem" }}
                 >
                   {columnHeaders.marketingName}
-                </th>
-                <th title={columnHeaders.location} style={{ width: "10rem" }}>
-                  {columnHeaders.location}
                 </th>
                 <th title={columnHeaders.relocation} style={{ width: "8rem" }}>
                   {columnHeaders.relocation}
@@ -397,6 +392,12 @@ const OnboardCandidates = () => {
                 <th title={columnHeaders.notes} style={{ width: "20rem" }}>
                   {columnHeaders.notes}
                 </th>
+                <th
+                  title={columnHeaders.lastUpdated}
+                  style={{ width: "23rem" }}
+                >
+                  {columnHeaders.lastUpdated}
+                </th>
               </tr>
             </thead>
 
@@ -427,6 +428,7 @@ const OnboardCandidates = () => {
                               focusHandler={statusFocus}
                               isFocused={isStatusFocused}
                               extraClass={classes.editStatusSelect}
+                              version="version-1"
                             />
                             {isLoading[BUTTON] ? (
                               <Loader
@@ -507,11 +509,17 @@ const OnboardCandidates = () => {
                       <td title={candidateInfo.onboarding.date}>
                         {convertDate(candidateInfo.onboarding.date, false)}
                       </td>
-                      <td title={convertDate(updatedTime)}>
-                        <TimestampDisplay timestamp={updatedTime} />
+                      <td title={candidateInfo.personal.firstName}>
+                        {highlightText(
+                          candidateInfo.personal.firstName,
+                          searchTerm
+                        )}
                       </td>
-                      <td title={candidateInfo.offerLetter.designation}>
-                        {candidateInfo.offerLetter.designation}
+                      <td title={candidateInfo.personal.lastName}>
+                        {highlightText(
+                          candidateInfo.personal.lastName,
+                          searchTerm
+                        )}
                       </td>
                       <td
                         title={getExperienceDisplayText(
@@ -525,37 +533,17 @@ const OnboardCandidates = () => {
                         )}
                       </td>
                       <td
-                        title={
-                          candidateInfo.profession.previousExperience?.[0]
-                            ?.employerName
-                        }
-                      >
-                        {
-                          candidateInfo.profession.previousExperience?.[0]
-                            ?.employerName
-                        }
-                      </td>
-                      <td
                         title={candidateInfo.profession.technologiesKnown.join(
                           ", "
                         )}
                       >
                         {candidateInfo.profession.technologiesKnown.join(", ")}
                       </td>
-                      <td title={candidateInfo.personal.firstName}>
+                      <td title={candidateInfo.personal.visaStatus}>
                         {highlightText(
-                          candidateInfo.personal.firstName,
+                          candidateInfo.personal.visaStatus,
                           searchTerm
                         )}
-                      </td>
-                      <td title={candidateInfo.personal.lastName}>
-                        {highlightText(
-                          candidateInfo.personal.lastName,
-                          searchTerm
-                        )}
-                      </td>
-                      <td title={candidateInfo.offerLetter.marketingName}>
-                        {candidateInfo.offerLetter.marketingName}
                       </td>
                       <td
                         title={
@@ -567,6 +555,23 @@ const OnboardCandidates = () => {
                         {candidateInfo.location.usaLocation.city
                           ? `${candidateInfo.location.usaLocation.city}, ${candidateInfo.location.usaLocation.state}`
                           : ""}
+                      </td>
+                      <td title={candidateInfo.offerLetter.designation}>
+                        {candidateInfo.offerLetter.designation}
+                      </td>
+                      <td
+                        title={
+                          candidateInfo.profession.previousExperience?.[0]
+                            ?.employerName
+                        }
+                      >
+                        {
+                          candidateInfo.profession.previousExperience?.[0]
+                            ?.employerName
+                        }
+                      </td>
+                      <td title={candidateInfo.offerLetter.marketingName}>
+                        {candidateInfo.offerLetter.marketingName}
                       </td>
                       <td title={candidateInfo.relocation.interested}>
                         {candidateInfo.relocation.interested}
@@ -621,6 +626,9 @@ const OnboardCandidates = () => {
                       </td>
                       <td title={candidateInfo.miscellaneous.notes}>
                         {candidateInfo.miscellaneous.notes}
+                      </td>
+                      <td title={convertDate(updatedTime)}>
+                        <TimestampDisplay timestamp={updatedTime} />
                       </td>
                     </tr>
                   );

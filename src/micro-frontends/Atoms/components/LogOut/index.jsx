@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import Button from "../Button";
 import { handleLogout as logout } from "../../../../utilities";
 import classes from "./index.module.scss";
 
@@ -28,13 +27,13 @@ const Logout = ({ className = "" }) => {
   };
 
   return (
-    <Button
+    <button
       className={`${classes.logout} ${className}`}
       title="Log Out"
       onClick={handleLogout}
     >
       <i className="bi bi-box-arrow-left"></i>
-    </Button>
+    </button>
   );
 };
 

@@ -79,7 +79,7 @@ InputV2.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   extraClass: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   changeHandler: PropTypes.func.isRequired,
   blurHandler: PropTypes.func,
   focusHandler: PropTypes.func,
