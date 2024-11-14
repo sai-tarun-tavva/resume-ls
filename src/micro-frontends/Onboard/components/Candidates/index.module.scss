@@ -140,7 +140,7 @@
         }
 
         .status-yettoreview {
-          color: #f97316;
+          color: #f1c40f;
           &::before {
             content: "";
             display: inline-block;
@@ -150,7 +150,7 @@
             vertical-align: middle;
             border-radius: 50%;
             background: currentColor;
-            box-shadow: 0 0 0 0.25rem rgba(249, 115, 22, 0.15);
+            box-shadow: 0 0 0 0.25rem rgba(241, 196, 15, 0.2);
           }
         }
 
@@ -165,11 +165,26 @@
             vertical-align: middle;
             border-radius: 50%;
             background: currentColor;
-            box-shadow: 0 0 0 0.25rem rgba(168, 85, 247, 0.15);
+            box-shadow: 0 0 0 0.25rem rgba(165, 105, 189, 0.2);
           }
         }
 
         .status-inprogress {
+          color: #f97316;
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 0.4rem;
+            height: 0.4rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 0.25rem rgba(250, 130, 49, 0.2);
+          }
+        }
+
+        .status-completed {
           color: #14b8a6;
           &::before {
             content: "";
@@ -180,7 +195,7 @@
             vertical-align: middle;
             border-radius: 50%;
             background: currentColor;
-            box-shadow: 0 0 0 0.25rem rgba(20, 184, 166, 0.15);
+            box-shadow: 0 0 0 0.25rem rgba(46, 204, 113, 0.2);
           }
         }
 
