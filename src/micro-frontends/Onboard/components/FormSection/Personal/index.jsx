@@ -246,7 +246,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     error: SSNError,
     isFocused: isSSNFocused,
     forceValidations: forceSSNValidations,
-  } = useInput(SSN, validations.SSN, transformSSN, true);
+  } = useInput(transformSSN(SSN), validations.SSN, transformSSN, true);
 
   const {
     value: photoIDTypeValue,
@@ -524,7 +524,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
           field: FIELDS.PERSONAL.SSN,
-          value: SSNValue,
+          value: extractOnlyDigits(SSNValue),
         })
       );
       dispatch(
