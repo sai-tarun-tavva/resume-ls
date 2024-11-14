@@ -24,6 +24,7 @@ export const INSIGHT = {
   MAX_FILES: 30,
   MAX_FILE_SIZE: 5, // in MB
   RESUME_VIEWER_WIDTH_START: 480,
+  TOGGLE_FIELD: "TOGGLE_FIELD",
 };
 
 /**
