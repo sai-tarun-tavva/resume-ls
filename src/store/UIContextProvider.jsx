@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useReducer } from "react";
-import { UI_ACTION_TYPES } from "../constants";
+import { INSIGHT, UI_ACTION_TYPES } from "../constants";
 
 const {
   UPDATE_SEARCH_TERM,
@@ -7,6 +7,7 @@ const {
   UPDATE_REFETCH_URL,
   ENABLE_REFETCH,
   DISABLE_REFETCH,
+  UPDATE_CANDIDATES_PER_PAGE,
   RESET_ALL,
 } = UI_ACTION_TYPES;
 
@@ -17,6 +18,7 @@ const initialState = {
     nextPage: "", // Page number to fetch next set of candidates
     totalCount: 0, // Total number of candidates available
   },
+  candidatesPerPage: INSIGHT.CANDIDATES_PER_PAGE, // Number of candidates per page
   searchTerm: "", // Term to search/filter the candidates
   refetch: false, // Flag to determine whether to re-fetch the candidates
   refetchURL: "", // URL to refetch corresponding set of candidates
@@ -48,6 +50,8 @@ const uiReducer = (state, action) => {
       return { ...state, refetch: true };
     case DISABLE_REFETCH:
       return { ...state, refetch: false };
+    case UPDATE_CANDIDATES_PER_PAGE:
+      return { ...state, candidatesPerPage: payload };
     case RESET_ALL:
       return { ...initialState, refetch: true };
     default:
@@ -107,6 +111,14 @@ const UIContextProvider = ({ children }) => {
   }, []);
 
   /**
+   * Updates the number of candidates displayed per page.
+   * @param {number} candidatesPerPage - The new number of candidates per page.
+   */
+  const updateCandidatesPerPage = useCallback((candidatesPerPage) => {
+    dispatch({ type: UPDATE_CANDIDATES_PER_PAGE, payload: candidatesPerPage });
+  }, []);
+
+  /**
    * Resets the UI state to initial values, triggering a refetch.
    */
   const resetUI = useCallback(() => {
@@ -121,6 +133,7 @@ const UIContextProvider = ({ children }) => {
     enableRefetch,
     disableRefetch,
     resetUI,
+    updateCandidatesPerPage,
   };
 
   return <UIContext.Provider value={uiCtx}>{children}</UIContext.Provider>;

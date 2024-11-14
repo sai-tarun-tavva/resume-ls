@@ -1,5 +1,5 @@
 .cards {
-  margin: 12.3rem 10% 0;
+  margin: 13.3rem 10% 0;
 
   &.smaller {
     width: 30%;
@@ -10,12 +10,12 @@
 @media (max-width: 1024px) {
   .cards {
     width: 90%;
-    margin: 11.3rem auto 0;
+    margin: 12.3rem auto 0;
   }
 }
 
 @media (max-width: 480px) {
   .cards {
-    margin: 15rem auto 0;
+    margin: 16rem auto 0;
   }
 }

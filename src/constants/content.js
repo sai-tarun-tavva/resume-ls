@@ -347,6 +347,11 @@ export const CONTENT = {
       paragraph: "Please download the file to view its contents",
       button: "Download Resume",
     },
+    candidates: {
+      numberOfRecords1: "Showing ",
+      numberOfRecords2: " Candidates ",
+      perPage: "Per Page: ",
+    },
     candidate: {
       defaultValues: {
         name: "Name",

@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CandidatesPerPage from "./CandidatesPerPage";
 import Candidate from "./Candidate";
 import NoRecords from "../../../Atoms/components/NoRecords";
 import Loader from "../../../Atoms/components/Loader";
@@ -182,30 +183,33 @@ const InsightCandidates = () => {
   }, []);
 
   return (
-    <section
-      className={`${classes.cards} ${
-        showResume && !isSmallScreen && classes.smaller
-      }`}
-    >
-      {isLoading[APP] ? (
-        <Loader />
-      ) : candidates.length === 0 ? (
-        <NoRecords />
-      ) : (
-        <Fragment>
-          {candidates.map((candidate) => (
-            <Candidate
-              key={candidate.id}
-              candidate={candidate}
-              openResumeInNewTab={isSmallScreen}
-            />
-          ))}
-          {showResume && !isSmallScreen && (
-            <ResumeViewer details={pdfDetails} />
-          )}
-        </Fragment>
-      )}
-    </section>
+    <Fragment>
+      <CandidatesPerPage />
+      <section
+        className={`${classes.cards} ${
+          showResume && !isSmallScreen && classes.smaller
+        }`}
+      >
+        {isLoading[APP] ? (
+          <Loader />
+        ) : candidates.length === 0 ? (
+          <NoRecords />
+        ) : (
+          <Fragment>
+            {candidates.map((candidate) => (
+              <Candidate
+                key={candidate.id}
+                candidate={candidate}
+                openResumeInNewTab={isSmallScreen}
+              />
+            ))}
+            {showResume && !isSmallScreen && (
+              <ResumeViewer details={pdfDetails} />
+            )}
+          </Fragment>
+        )}
+      </section>
+    </Fragment>
   );
 };
 

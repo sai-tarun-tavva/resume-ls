@@ -9,7 +9,6 @@ import { useUI } from "../../../../store";
 import { buildFetchCandidatesUrl } from "../../../../utilities";
 import {
   ONBOARD,
-  INSIGHT,
   CONTENT,
   END_POINTS,
   ROUTES,
@@ -40,6 +39,7 @@ const Operations = ({
     state: {
       pagination: { previousPage, nextPage, totalCount },
       searchTerm,
+      candidatesPerPage: perPage,
     },
     enableRefetch,
     updateRefetchURL,
@@ -54,7 +54,7 @@ const Operations = ({
       displayContent = CONTENT.INSIGHT.operations;
       enableOpsRoute = ROUTES.INSIGHT.HOME;
       apiEndpoint = END_POINTS.INSIGHT.FETCH_CANDIDATES;
-      candidatesPerPage = INSIGHT.CANDIDATES_PER_PAGE;
+      candidatesPerPage = perPage;
       break;
     case PAGES.ONBOARD:
       logoIcon = "bi bi-clipboard-check";
@@ -76,7 +76,7 @@ const Operations = ({
   const searchFields = displayContent?.search?.searchFields;
   const totalCountText = displayContent?.countInfo;
   const enableOperations = location.pathname === `/${enableOpsRoute}`;
-  const displayCount = [PAGES.INSIGHT, PAGES.ONBOARD].includes(currentPage);
+  const displayCount = [PAGES.ONBOARD].includes(currentPage);
 
   /**
    * Handles the search on submit event.

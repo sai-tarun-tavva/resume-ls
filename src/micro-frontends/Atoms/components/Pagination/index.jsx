@@ -15,7 +15,6 @@ import classes from "./index.module.scss";
  * @param {number} props.nextPage - The next page number.
  * @param {number} props.totalCount - The total number of items available.
  * @param {string} props.searchTerm - The current search term used for filtering.
- * @param {number} props.countPerPage - The number of items displayed per page.
  * @param {string} props.apiEndpoint - The API endpoint used for fetching data.
  * @returns {JSX.Element} The rendered pagination component.
  */
@@ -24,13 +23,16 @@ const Pagination = ({
   nextPage,
   totalCount,
   searchTerm,
-  countPerPage,
   apiEndpoint,
 }) => {
   const { isLoading } = useLoading();
-  const { enableRefetch, updateRefetchURL } = useUI();
+  const {
+    state: { candidatesPerPage },
+    enableRefetch,
+    updateRefetchURL,
+  } = useUI();
 
-  const totalPages = Math.ceil(totalCount / countPerPage);
+  const totalPages = Math.ceil(totalCount / candidatesPerPage);
   let currentPage = totalPages;
   const { APP } = LOADING_ACTION_TYPES;
 
@@ -48,7 +50,7 @@ const Pagination = ({
   const handlePageClick = async (page) => {
     const url = buildFetchCandidatesUrl(
       apiEndpoint,
-      countPerPage,
+      candidatesPerPage,
       page,
       searchTerm
     );
@@ -92,7 +94,6 @@ Pagination.propTypes = {
   nextPage: PropTypes.number,
   totalCount: PropTypes.number.isRequired,
   searchTerm: PropTypes.string,
-  countPerPage: PropTypes.number.isRequired,
   apiEndpoint: PropTypes.object.isRequired,
 };
 
