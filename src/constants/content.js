@@ -328,6 +328,7 @@ export const CONTENT = {
     operations: {
       logoSuffix: "R",
       logo: "Insight",
+      countInfo: "Total resumes: ",
       search: {
         placeholder: "Search...",
         searchFields: [
@@ -400,6 +401,7 @@ export const CONTENT = {
     operations: {
       logoSuffix: "R",
       logo: "Onboard",
+      countInfo: "Total candidates: ",
       search: {
         placeholder: "Search...",
         searchFields: ["Status", "First name", "Last name", "Email", "Mobile"],
