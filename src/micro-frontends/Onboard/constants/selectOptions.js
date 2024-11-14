@@ -203,5 +203,6 @@ export const OPTIONS = {
     { value: "inProgress", label: "In Progress" },
     { value: "accepted", label: "Accepted" },
     { value: "rejected", label: "Rejected" },
+    { value: "notApplicable", label: "Not Applicable" },
   ],
 };
