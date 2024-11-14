@@ -4,7 +4,7 @@ import { VISA_STATUS_VALUES } from "./selectOptions";
  * VISA_STATUS_VALUES.F1CPT and VISA_STATUS_VALUES.F1OPT are types of student visas
  * where candidates are required to provide education details.
  */
-export const EDUCATION_REQUIRED_VISA = [
+export const SEVIS_DSO_REQUIRED_VISA = [
   VISA_STATUS_VALUES.F1CPT, // F1 CPT visa holders require education details
   VISA_STATUS_VALUES.F1OPT, // F1 OPT visa holders require education details
 ];

@@ -38,16 +38,38 @@ export const ONBOARDING_STATUS_VALUES = {
 };
 
 /**
+ * Constants representing different onboarding status labels.
+ */
+export const ONBOARDING_STATUS_LABELS = {
+  YET_TO_REVIEW: "Yet To Review",
+  UNDER_REVIEW: "Under Review",
+  IN_PROGRESS: "In Progress",
+  COMPLETED: "Completed",
+};
+
+/**
  * Options for various sections of the form.
  * These options are used for dropdowns and selection fields in the UI.
  */
 export const OPTIONS = {
   // Onboarding status options
   ONBOARDING_STATUS: [
-    { value: ONBOARDING_STATUS_VALUES.YET_TO_REVIEW, label: "Yet To Review" },
-    { value: ONBOARDING_STATUS_VALUES.UNDER_REVIEW, label: "Under Review" },
-    { value: ONBOARDING_STATUS_VALUES.IN_PROGRESS, label: "In Progress" },
-    { value: ONBOARDING_STATUS_VALUES.COMPLETED, label: "Completed" },
+    {
+      value: ONBOARDING_STATUS_VALUES.YET_TO_REVIEW,
+      label: ONBOARDING_STATUS_LABELS.YET_TO_REVIEW,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.UNDER_REVIEW,
+      label: ONBOARDING_STATUS_LABELS.UNDER_REVIEW,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.IN_PROGRESS,
+      label: ONBOARDING_STATUS_LABELS.IN_PROGRESS,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.COMPLETED,
+      label: ONBOARDING_STATUS_LABELS.COMPLETED,
+    },
   ],
   // Gender options
   GENDER: [

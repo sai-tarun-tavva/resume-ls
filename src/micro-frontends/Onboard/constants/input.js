@@ -35,6 +35,17 @@ export const FIELDS_REFERENCE = {
 };
 
 /**
+ * Fields related to university of the candidate.
+ * These fields represent university name, address, passed month and year, stream, and company.
+ */
+export const FIELDS_UNIVERSITY = {
+  NAME: "universityName", // Key for the university's name
+  ADDRESS: "address", // Key for the university's address
+  PASSED_MONTH_YEAR: "passedMonthAndYear", // Key for the month and year the candidate graduated
+  STREAM: "stream", // Key for the academic stream
+};
+
+/**
  * Titles for the sections in the onboarding form.
  * These titles are used to organize the sections in the form.
  */
@@ -131,14 +142,8 @@ export const FIELDS = {
       EMAIL: "email", // Key for the DSO's email
       PHONE: "phone", // Key for the DSO's phone number
     },
-    GRADUATED_UNIVERSITY: {
-      VALUE: "graduatedUniversity", // Key for the graduated university
-      NAME: "name", // Key for the university's name
-      ADDRESS: "address", // Key for the university's address
-      PASSED_MONTH_YEAR: "passedMonthAndYear", // Key for the month and year the candidate graduated
-      STREAM: "stream", // Key for the academic stream
-      ADDITIONAL_CERTIFICATIONS: "additionalCertifications", // Key for any additional certifications
-    },
+    GRADUATED_UNIVERSITY: "universities",
+    ADDITIONAL_CERTIFICATIONS: "additionalCertifications", // Key for any additional certifications
   },
   PROFESSION: {
     TRAINING_ATTENDED: {

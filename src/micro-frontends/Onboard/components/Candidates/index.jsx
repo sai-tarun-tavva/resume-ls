@@ -291,7 +291,7 @@ const OnboardCandidates = () => {
         <StatusUpdateConfirmation
           isDetailsProvided={isDetailsProvided}
           handleClose={handleStatusModalClose}
-          handleSave={() =>
+          handleEdit={() =>
             isDetailsProvided === false
               ? redirectToEdit(editStatus.id)
               : updateOnboardingStatus(
@@ -311,90 +311,84 @@ const OnboardCandidates = () => {
             {/* Table headers */}
             <thead>
               <tr>
-                <th title={columnHeaders.status} style={{ width: "12rem" }}>
+                <th title={columnHeaders.status} style={{ width: "10rem" }}>
                   {columnHeaders.status}
                 </th>
                 <th
                   title={columnHeaders.onboardingDate}
-                  style={{ width: "9rem" }}
+                  style={{ width: "6rem" }}
                 >
                   {columnHeaders.onboardingDate}
                 </th>
-                <th title={columnHeaders.firstName} style={{ width: "12rem" }}>
-                  {columnHeaders.firstName}
+                <th title={columnHeaders.name} style={{ width: "9rem" }}>
+                  {columnHeaders.name}
                 </th>
-                <th title={columnHeaders.lastName} style={{ width: "12rem" }}>
-                  {columnHeaders.lastName}
-                </th>
-                <th title={columnHeaders.experience} style={{ width: "14rem" }}>
-                  {columnHeaders.experience}
+                <th
+                  title={columnHeaders.marketingName}
+                  style={{ width: "9rem" }}
+                >
+                  {columnHeaders.marketingName}
                 </th>
                 <th title={columnHeaders.technology} style={{ width: "12rem" }}>
                   {columnHeaders.technology}
                 </th>
-                <th title={columnHeaders.visaStatus} style={{ width: "10rem" }}>
-                  {columnHeaders.visaStatus}
+                <th title={columnHeaders.experience} style={{ width: "4rem" }}>
+                  {columnHeaders.experience}
                 </th>
-                <th title={columnHeaders.location} style={{ width: "10rem" }}>
+                <th title={columnHeaders.location} style={{ width: "7rem" }}>
                   {columnHeaders.location}
                 </th>
-                <th title={columnHeaders.position} style={{ width: "12rem" }}>
-                  {columnHeaders.position}
-                </th>
-                <th
-                  title={columnHeaders.companyName}
-                  style={{ width: "15rem" }}
-                >
-                  {columnHeaders.companyName}
-                </th>
-                <th
-                  title={columnHeaders.marketingName}
-                  style={{ width: "15rem" }}
-                >
-                  {columnHeaders.marketingName}
-                </th>
-                <th title={columnHeaders.relocation} style={{ width: "8rem" }}>
+                <th title={columnHeaders.relocation} style={{ width: "4rem" }}>
                   {columnHeaders.relocation}
                 </th>
-                <th title={columnHeaders.phone} style={{ width: "12rem" }}>
-                  {columnHeaders.phone}
+                <th title={columnHeaders.visaStatus} style={{ width: "4rem" }}>
+                  {columnHeaders.visaStatus}
                 </th>
-                <th title={columnHeaders.email} style={{ width: "18rem" }}>
-                  {columnHeaders.email}
-                </th>
-                <th title={columnHeaders.dob} style={{ width: "8rem" }}>
+                <th title={columnHeaders.dob} style={{ width: "6.5rem" }}>
                   {columnHeaders.dob}
                 </th>
                 <th
-                  title={columnHeaders.universityName}
-                  style={{ width: "15rem" }}
-                >
-                  {columnHeaders.universityName}
-                </th>
-                <th title={columnHeaders.offerStatus} style={{ width: "8rem" }}>
-                  {columnHeaders.offerStatus}
-                </th>
-                <th
-                  title={columnHeaders.referenceName}
-                  style={{ width: "15rem" }}
-                >
-                  {columnHeaders.referenceName}
-                </th>
-                <th
                   title={columnHeaders.guestHouseMember}
-                  style={{ width: "8rem" }}
+                  style={{ width: "2rem" }}
                 >
                   {columnHeaders.guestHouseMember}
                 </th>
-                <th title={columnHeaders.remarks} style={{ width: "20rem" }}>
+                <th
+                  title={columnHeaders.referenceName}
+                  style={{ width: "7rem" }}
+                >
+                  {columnHeaders.referenceName}
+                </th>
+                <th title={columnHeaders.phone} style={{ width: "8.5rem" }}>
+                  {columnHeaders.phone}
+                </th>
+                <th title={columnHeaders.email} style={{ width: "8rem" }}>
+                  {columnHeaders.email}
+                </th>
+                <th title={columnHeaders.position} style={{ width: "8rem" }}>
+                  {columnHeaders.position}
+                </th>
+                <th title={columnHeaders.companyName} style={{ width: "8rem" }}>
+                  {columnHeaders.companyName}
+                </th>
+                <th
+                  title={columnHeaders.universityName}
+                  style={{ width: "8rem" }}
+                >
+                  {columnHeaders.universityName}
+                </th>
+                <th title={columnHeaders.offerStatus} style={{ width: "5rem" }}>
+                  {columnHeaders.offerStatus}
+                </th>
+                <th title={columnHeaders.remarks} style={{ width: "15rem" }}>
                   {columnHeaders.remarks}
                 </th>
-                <th title={columnHeaders.notes} style={{ width: "20rem" }}>
+                <th title={columnHeaders.notes} style={{ width: "15rem" }}>
                   {columnHeaders.notes}
                 </th>
                 <th
                   title={columnHeaders.lastUpdated}
-                  style={{ width: "23rem" }}
+                  style={{ width: "19rem" }}
                 >
                   {columnHeaders.lastUpdated}
                 </th>
@@ -465,15 +459,15 @@ const OnboardCandidates = () => {
                             <div
                               className={
                                 classes[
-                                  `status-${candidateInfo.onboarding.status
+                                  `status-${candidateInfo?.onboarding?.status
                                     .replace(/\s+/g, "")
                                     .toLowerCase()}`
                                 ]
                               }
-                              title={candidateInfo.onboarding.status}
+                              title={candidateInfo?.onboarding?.status}
                             >
                               {highlightText(
-                                candidateInfo.onboarding.status,
+                                candidateInfo?.onboarding?.status,
                                 searchTerm
                               )}
                             </div>
@@ -485,7 +479,7 @@ const OnboardCandidates = () => {
                                     id: candidateId,
                                     status: getValueByLabel(
                                       OPTIONS.ONBOARDING_STATUS,
-                                      candidateInfo.onboarding.status
+                                      candidateInfo?.onboarding?.status
                                     ),
                                   })
                                 }
@@ -506,126 +500,146 @@ const OnboardCandidates = () => {
                           </>
                         )}
                       </td>
-                      <td title={candidateInfo.onboarding.date}>
-                        {convertDate(candidateInfo.onboarding.date, false)}
+                      <td title={candidateInfo?.onboarding?.date}>
+                        {convertDate(candidateInfo?.onboarding?.date, false)}
                       </td>
-                      <td title={candidateInfo.personal.firstName}>
+                      <td
+                        title={`${candidateInfo?.personal?.firstName}${
+                          candidateInfo?.personal?.lastName
+                            ? `, ${candidateInfo?.personal?.lastName}`
+                            : ""
+                        }`}
+                      >
                         {highlightText(
-                          candidateInfo.personal.firstName,
+                          `${candidateInfo?.personal?.firstName}${
+                            candidateInfo?.personal?.lastName
+                              ? `, ${candidateInfo?.personal?.lastName}`
+                              : ""
+                          }`,
                           searchTerm
                         )}
                       </td>
-                      <td title={candidateInfo.personal.lastName}>
-                        {highlightText(
-                          candidateInfo.personal.lastName,
-                          searchTerm
+                      <td title={candidateInfo?.offerLetter?.marketingName}>
+                        {candidateInfo?.offerLetter?.marketingName}
+                      </td>
+                      <td
+                        title={candidateInfo?.profession?.technologiesKnown?.join(
+                          ", "
+                        )}
+                      >
+                        {candidateInfo?.profession?.technologiesKnown?.join(
+                          ", "
                         )}
                       </td>
                       <td
                         title={getExperienceDisplayText(
-                          candidateInfo.profession.experience.years,
-                          candidateInfo.profession.experience.months
+                          candidateInfo?.profession?.experience?.years,
+                          candidateInfo?.profession?.experience?.months
                         )}
                       >
                         {getExperienceDisplayText(
-                          candidateInfo.profession.experience.years,
-                          candidateInfo.profession.experience.months
-                        )}
-                      </td>
-                      <td
-                        title={candidateInfo.profession.technologiesKnown.join(
-                          ", "
-                        )}
-                      >
-                        {candidateInfo.profession.technologiesKnown.join(", ")}
-                      </td>
-                      <td title={candidateInfo.personal.visaStatus}>
-                        {highlightText(
-                          candidateInfo.personal.visaStatus,
-                          searchTerm
+                          candidateInfo?.profession?.experience?.years,
+                          candidateInfo?.profession?.experience?.months
                         )}
                       </td>
                       <td
                         title={
-                          candidateInfo.location.usaLocation.city
-                            ? `${candidateInfo.location.usaLocation.city}, ${candidateInfo.location.usaLocation.state}`
+                          candidateInfo?.location?.usaLocation?.city
+                            ? `${candidateInfo?.location?.usaLocation?.city}, ${candidateInfo?.location?.usaLocation?.state}`
                             : ""
                         }
                       >
-                        {candidateInfo.location.usaLocation.city
-                          ? `${candidateInfo.location.usaLocation.city}, ${candidateInfo.location.usaLocation.state}`
+                        {candidateInfo?.location?.usaLocation?.city
+                          ? `${candidateInfo?.location?.usaLocation?.city}, ${candidateInfo?.location?.usaLocation?.state}`
                           : ""}
                       </td>
-                      <td title={candidateInfo.offerLetter.designation}>
-                        {candidateInfo.offerLetter.designation}
+                      <td title={candidateInfo?.relocation?.interested}>
+                        {candidateInfo?.relocation?.interested}
+                      </td>
+                      <td title={candidateInfo?.personal?.visaStatus}>
+                        {highlightText(
+                          candidateInfo?.personal?.visaStatus,
+                          searchTerm
+                        )}
+                      </td>
+                      <td title={candidateInfo?.personal?.dob}>
+                        {convertDate(candidateInfo?.personal?.dob, false)}
                       </td>
                       <td
                         title={
-                          candidateInfo.profession.previousExperience?.[0]
-                            ?.employerName
+                          candidateInfo?.relocation?.preference === "guestHouse"
+                            ? "Yes"
+                            : "No"
                         }
                       >
-                        {
-                          candidateInfo.profession.previousExperience?.[0]
-                            ?.employerName
-                        }
+                        {candidateInfo?.relocation?.preference === "guestHouse"
+                          ? "Yes"
+                          : "No"}
                       </td>
-                      <td title={candidateInfo.offerLetter.marketingName}>
-                        {candidateInfo.offerLetter.marketingName}
-                      </td>
-                      <td title={candidateInfo.relocation.interested}>
-                        {candidateInfo.relocation.interested}
+                      <td title={candidateInfo?.personal?.referenceName}>
+                        {candidateInfo?.personal?.referenceName}
                       </td>
                       <td
                         title={transformPhoneNumber(
-                          candidateInfo.personal.phoneNumber,
+                          candidateInfo?.personal?.phoneNumber,
                           true
                         )}
                       >
                         {highlightText(
                           transformPhoneNumber(
-                            candidateInfo.personal.phoneNumber,
+                            candidateInfo?.personal?.phoneNumber,
                             true
                           ),
                           searchTerm
                         )}
                       </td>
-                      <td title={candidateInfo.personal.emailId}>
+                      <td title={candidateInfo?.personal?.emailId}>
                         {highlightText(
-                          candidateInfo.personal.emailId,
+                          candidateInfo?.personal?.emailId,
                           searchTerm
                         )}
                       </td>
-                      <td title={candidateInfo.personal.dob}>
-                        {convertDate(candidateInfo.personal.dob, false)}
-                      </td>
-                      <td
-                        title={candidateInfo.education.graduatedUniversity.name}
-                      >
-                        {candidateInfo.education.graduatedUniversity.name}
-                      </td>
-                      <td title={candidateInfo.offerLetter.status}>
-                        {candidateInfo.offerLetter.status}
-                      </td>
-                      <td title={candidateInfo.personal.referenceName}>
-                        {candidateInfo.personal.referenceName}
+                      <td title={candidateInfo?.offerLetter?.designation}>
+                        {candidateInfo?.offerLetter?.designation}
                       </td>
                       <td
                         title={
-                          candidateInfo.relocation.preference === "guestHouse"
-                            ? "Yes"
-                            : "No"
+                          candidateInfo?.profession?.previousExperience?.[0]
+                            ?.employerName
                         }
                       >
-                        {candidateInfo.relocation.preference === "guestHouse"
-                          ? "Yes"
-                          : "No"}
+                        {
+                          candidateInfo?.profession?.previousExperience?.[0]
+                            ?.employerName
+                        }
                       </td>
-                      <td title={candidateInfo.miscellaneous.remarks}>
-                        {candidateInfo.miscellaneous.remarks}
+                      <td
+                        title={
+                          candidateInfo?.education?.universities?.[0]
+                            ?.universityName
+                        }
+                      >
+                        {
+                          candidateInfo?.education?.universities?.[0]
+                            ?.universityName
+                        }
                       </td>
-                      <td title={candidateInfo.miscellaneous.notes}>
-                        {candidateInfo.miscellaneous.notes}
+                      <td
+                        title={getLabelByValue(
+                          OPTIONS.OFFER_LETTER_STATUS,
+                          candidateInfo?.offerLetter?.status
+                        )}
+                      >
+                        {getLabelByValue(
+                          OPTIONS.OFFER_LETTER_STATUS,
+                          candidateInfo?.offerLetter?.status
+                        )}
+                      </td>
+                      <td title={candidateInfo?.miscellaneous?.remarks}>
+                        {candidateInfo?.miscellaneous?.remarks}
+                      </td>
+                      <td title={candidateInfo?.miscellaneous?.notes}>
+                        {candidateInfo?.miscellaneous?.notes}
                       </td>
                       <td title={convertDate(updatedTime)}>
                         <TimestampDisplay timestamp={updatedTime} />

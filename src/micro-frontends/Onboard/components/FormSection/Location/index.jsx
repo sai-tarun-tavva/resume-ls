@@ -114,7 +114,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.LOCATION,
           field: FIELDS.LOCATION.USA_LOCATION,
-          value: usaAddress,
+          value: usaAddress || defaultAddress,
         })
       );
 
@@ -122,7 +122,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.LOCATION,
           field: FIELDS.LOCATION.INDIA_LOCATION,
-          value: indiaAddress,
+          value: indiaAddress || defaultAddress,
         })
       );
       dispatch(

@@ -22,7 +22,7 @@ import {
   SECTIONS,
   FIELDS,
   OPTIONS,
-  EDUCATION_REQUIRED_VISA,
+  SEVIS_DSO_REQUIRED_VISA,
   EAD_NOT_REQUIRED_VISA,
   EAD_OPTIONAL_VISA,
   HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
@@ -67,9 +67,6 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         photoID: { type: photoIDType, number: photoIDNumber },
         skypeId,
         referenceName,
-      },
-      education: {
-        graduatedUniversity: { additionalCertifications },
       },
     },
   } = useSelector((state) => state.input);
@@ -379,7 +376,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         }
 
         // Resetting SevisID, DSO and university details if visa status is not one of F1-OPT, F1-CPT
-        if (!EDUCATION_REQUIRED_VISA.includes(visaStatusValue)) {
+        if (!SEVIS_DSO_REQUIRED_VISA.includes(visaStatusValue)) {
           dispatch(
             inputActions.updateField({
               section: SECTIONS.EDUCATION,
@@ -395,20 +392,6 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
                 [FIELDS.EDUCATION.DSO.NAME]: "",
                 [FIELDS.EDUCATION.DSO.EMAIL]: "",
                 [FIELDS.EDUCATION.DSO.PHONE]: "",
-              },
-            })
-          );
-          dispatch(
-            inputActions.updateField({
-              section: SECTIONS.EDUCATION,
-              field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
-              value: {
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY
-                  .ADDITIONAL_CERTIFICATIONS]: additionalCertifications,
               },
             })
           );

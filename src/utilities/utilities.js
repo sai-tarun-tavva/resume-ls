@@ -379,11 +379,11 @@ export const areObjectsEqual = (obj1, obj2) => {
  */
 export const getExperienceDisplayText = (years, months) => {
   if (years && months) {
-    return `${years} years and ${months} months`;
+    return `${years}Y ${months}M`;
   } else if (years) {
-    return `${years} years`;
+    return `${years}Y`;
   } else if (months) {
-    return `${months} months`;
+    return `${months}M`;
   } else {
     return "";
   }

@@ -5,6 +5,7 @@ import {
   FIELDS_ADDRESS,
   FIELDS_PREV_EXP,
   FIELDS_REFERENCE,
+  FIELDS_UNIVERSITY,
 } from "../constants";
 
 // Default values for address fields
@@ -15,6 +16,13 @@ export const defaultAddress = {
   [FIELDS_ADDRESS.STATE]: "",
   [FIELDS_ADDRESS.COUNTRY]: "",
   [FIELDS_ADDRESS.ZIPCODE]: "",
+};
+
+export const defaultUniversity = {
+  [FIELDS_UNIVERSITY.NAME]: "",
+  [FIELDS_UNIVERSITY.ADDRESS]: defaultAddress,
+  [FIELDS_UNIVERSITY.PASSED_MONTH_YEAR]: "",
+  [FIELDS_UNIVERSITY.STREAM]: "",
 };
 
 // Default values for previous employment experience fields
@@ -93,13 +101,8 @@ const initialState = {
         [FIELDS.EDUCATION.DSO.EMAIL]: "",
         [FIELDS.EDUCATION.DSO.PHONE]: "",
       },
-      [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE]: {
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]: [],
-      },
+      [FIELDS.EDUCATION.GRADUATED_UNIVERSITY]: [],
+      [FIELDS.EDUCATION.ADDITIONAL_CERTIFICATIONS]: [],
     },
     [SECTIONS.PROFESSION]: {
       completed: "",
