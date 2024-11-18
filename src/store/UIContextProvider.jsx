@@ -8,6 +8,7 @@ const {
   ENABLE_REFETCH,
   DISABLE_REFETCH,
   UPDATE_CANDIDATES_PER_PAGE,
+  UPDATE_SELECTED_STATUSES,
   RESET_ALL,
 } = UI_ACTION_TYPES;
 
@@ -20,6 +21,13 @@ const initialState = {
   },
   candidatesPerPage: INSIGHT.CANDIDATES_PER_PAGE, // Number of candidates per page
   searchTerm: "", // Term to search/filter the candidates
+  selectedStatuses: {
+    // To search/filter the candidates with selected statuses
+    inProgress: true,
+    yetToReview: true,
+    underReview: true,
+    completed: false,
+  },
   refetch: false, // Flag to determine whether to re-fetch the candidates
   refetchURL: "", // URL to refetch corresponding set of candidates
 };
@@ -52,6 +60,14 @@ const uiReducer = (state, action) => {
       return { ...state, refetch: false };
     case UPDATE_CANDIDATES_PER_PAGE:
       return { ...state, candidatesPerPage: payload };
+    case UPDATE_SELECTED_STATUSES:
+      return {
+        ...state,
+        selectedStatuses: {
+          ...state.selectedStatuses,
+          [payload]: !state.selectedStatuses[payload],
+        },
+      };
     case RESET_ALL:
       return { ...initialState, refetch: true };
     default:
@@ -119,6 +135,14 @@ const UIContextProvider = ({ children }) => {
   }, []);
 
   /**
+   * Updates the selected statuses used for filtering data.
+   * @param {string} status - The status to be updated.
+   */
+  const updateSelectedStatuses = useCallback((status) => {
+    dispatch({ type: UPDATE_SELECTED_STATUSES, payload: status });
+  }, []);
+
+  /**
    * Resets the UI state to initial values, triggering a refetch.
    */
   const resetUI = useCallback(() => {
@@ -134,6 +158,7 @@ const UIContextProvider = ({ children }) => {
     disableRefetch,
     resetUI,
     updateCandidatesPerPage,
+    updateSelectedStatuses,
   };
 
   return <UIContext.Provider value={uiCtx}>{children}</UIContext.Provider>;

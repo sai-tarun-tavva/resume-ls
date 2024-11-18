@@ -162,6 +162,10 @@ const Form = () => {
    */
   const nextClickHandler = (event) => {
     event.preventDefault();
+
+    // Hide sensitive fields on next in view mode
+    if (current === 1) personalRef.current?.hideSensitiveFieldsOnNext?.();
+
     dispatch(inputActions.incrementCurrentSectionIndex());
   };
 

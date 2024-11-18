@@ -454,7 +454,7 @@ const CandidateForm = () => {
               onKeyDown={preventSubmitOnEnter}
               leftIcon={<i className="bi bi-tools" />}
               extraClassControl={classes.candidateControl}
-              autocomplete="off"
+              autoComplete="off"
             />
             {showSuggestions && (
               <div ref={autoSuggestRef}>

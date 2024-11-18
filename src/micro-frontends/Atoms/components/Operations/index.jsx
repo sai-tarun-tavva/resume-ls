@@ -6,7 +6,11 @@ import Search from "../../../Atoms/components/Search";
 import Pagination from "../../../Atoms/components/Pagination";
 import Logout from "../../../Atoms/components/LogOut";
 import { useUI } from "../../../../store";
-import { buildFetchCandidatesUrl } from "../../../../utilities";
+import {
+  buildFetchCandidatesUrl,
+  getStatusesAsJoinedString,
+} from "../../../../utilities";
+import { OPTIONS } from "../../../Onboard/constants";
 import {
   ONBOARD,
   CONTENT,
@@ -40,6 +44,7 @@ const Operations = ({
       pagination: { previousPage, nextPage, totalCount },
       searchTerm,
       candidatesPerPage: perPage,
+      selectedStatuses,
     },
     enableRefetch,
     updateRefetchURL,
@@ -85,7 +90,18 @@ const Operations = ({
   const handleSearch = (searchText) => {
     enableRefetch();
     updateRefetchURL(
-      buildFetchCandidatesUrl(apiEndpoint, candidatesPerPage, "", searchText)
+      buildFetchCandidatesUrl(
+        apiEndpoint,
+        candidatesPerPage,
+        "",
+        searchText,
+        currentPage === PAGES.INSIGHT
+          ? ""
+          : getStatusesAsJoinedString(
+              OPTIONS.ONBOARDING_STATUS,
+              selectedStatuses
+            )
+      )
     );
     updateSearchTerm(searchText);
   };
@@ -117,6 +133,7 @@ const Operations = ({
           totalCount={totalCount}
           searchTerm={searchTerm}
           countPerPage={candidatesPerPage}
+          currentRoute={currentPage}
           apiEndpoint={apiEndpoint}
         />
       )}

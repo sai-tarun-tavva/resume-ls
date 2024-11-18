@@ -1,8 +1,12 @@
 import PropTypes from "prop-types";
 import Button from "../Button";
 import { useLoading, useUI } from "../../../../store";
-import { buildFetchCandidatesUrl } from "../../../../utilities";
-import { LOADING_ACTION_TYPES } from "../../../../constants";
+import {
+  buildFetchCandidatesUrl,
+  getStatusesAsJoinedString,
+} from "../../../../utilities";
+import { LOADING_ACTION_TYPES, PAGES } from "../../../../constants";
+import { OPTIONS } from "../../../Onboard/constants";
 import classes from "./index.module.scss";
 
 /**
@@ -11,28 +15,34 @@ import classes from "./index.module.scss";
  * Renders controls for navigating through paginated data.
  *
  * @param {Object} props - The component props.
+ * @param {boolean} props.enablePagination - Flag to enable or disable pagination controls.
  * @param {number} props.previousPage - The previous page number.
  * @param {number} props.nextPage - The next page number.
  * @param {number} props.totalCount - The total number of items available.
  * @param {string} props.searchTerm - The current search term used for filtering.
  * @param {string} props.apiEndpoint - The API endpoint used for fetching data.
+ * @param {number} props.countPerPage - Number of items per page.
+ * @param {string} props.currentRoute - The current route to determine additional filtering logic.
  * @returns {JSX.Element} The rendered pagination component.
  */
 const Pagination = ({
+  enablePagination,
   previousPage,
   nextPage,
   totalCount,
   searchTerm,
   apiEndpoint,
+  countPerPage,
+  currentRoute,
 }) => {
   const { isLoading } = useLoading();
   const {
-    state: { candidatesPerPage },
+    state: { selectedStatuses },
     enableRefetch,
     updateRefetchURL,
   } = useUI();
 
-  const totalPages = Math.ceil(totalCount / candidatesPerPage);
+  const totalPages = Math.ceil(totalCount / countPerPage);
   let currentPage = totalPages;
   const { APP } = LOADING_ACTION_TYPES;
 
@@ -50,9 +60,12 @@ const Pagination = ({
   const handlePageClick = async (page) => {
     const url = buildFetchCandidatesUrl(
       apiEndpoint,
-      candidatesPerPage,
+      countPerPage,
       page,
-      searchTerm
+      searchTerm,
+      currentRoute === PAGES.INSIGHT
+        ? ""
+        : getStatusesAsJoinedString(OPTIONS.ONBOARDING_STATUS, selectedStatuses)
     );
     enableRefetch();
     updateRefetchURL(url);
@@ -62,7 +75,7 @@ const Pagination = ({
     <nav className={classes.pagination}>
       <Button
         onClick={() => handlePageClick(previousPage)}
-        disabled={!previousPage || isLoading[APP]}
+        disabled={!previousPage || isLoading[APP] || !enablePagination}
         title="Previous"
         className={classes.prevButton}
       >
@@ -79,7 +92,7 @@ const Pagination = ({
       </span>
       <Button
         onClick={() => handlePageClick(nextPage)}
-        disabled={!nextPage || isLoading[APP]}
+        disabled={!nextPage || isLoading[APP] || !enablePagination}
         title="Next"
         className={classes.nextButton}
       >
@@ -90,11 +103,14 @@ const Pagination = ({
 };
 
 Pagination.propTypes = {
+  enablePagination: PropTypes.bool.isRequired,
   previousPage: PropTypes.number,
   nextPage: PropTypes.number,
   totalCount: PropTypes.number.isRequired,
   searchTerm: PropTypes.string,
   apiEndpoint: PropTypes.object.isRequired,
+  countPerPage: PropTypes.number.isRequired,
+  currentRoute: PropTypes.string.isRequired,
 };
 
 Pagination.displayName = "Pagination";

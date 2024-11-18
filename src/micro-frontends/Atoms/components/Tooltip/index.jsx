@@ -11,9 +11,15 @@ import classes from "./index.module.scss";
  * @param {React.ReactNode} props.baseContentToHover - The content that triggers the tooltip visibility.
  * @param {React.ReactNode} props.children - The content to display inside the tooltip.
  * @param {"hover" | "click"} [props.trigger="hover"] - Determines how the tooltip is triggered (hover or click).
+ * @param {string} [props.extraClass] - Additional CSS class to style the tooltip wrapper.
  * @returns {JSX.Element} The Tooltip component.
  */
-const Tooltip = ({ baseContentToHover, children, trigger = "hover" }) => {
+const Tooltip = ({
+  baseContentToHover,
+  children,
+  trigger = "hover",
+  extraClass,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const tooltipRef = useRef(null);
 
@@ -70,7 +76,7 @@ const Tooltip = ({ baseContentToHover, children, trigger = "hover" }) => {
 
   return (
     <div
-      className={classes.tooltipWrapper}
+      className={`${classes.tooltipWrapper} ${extraClass}`}
       onClick={handleToggleVisibility}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -93,6 +99,7 @@ Tooltip.propTypes = {
   baseContentToHover: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
   trigger: PropTypes.oneOf(["click", "hover"]),
+  extraClass: PropTypes.string,
 };
 
 Tooltip.displayName = "Tooltip";

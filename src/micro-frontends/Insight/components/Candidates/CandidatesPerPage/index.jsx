@@ -1,11 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import Select from "../../../../Atoms/components/Inputs/Select";
-import { useUI } from "../../../../../store";
+import { useLoading, useUI } from "../../../../../store";
 import { useInput } from "../../../../Atoms/hooks";
 import { buildFetchCandidatesUrl } from "../../../../../utilities";
-import { CONTENT, END_POINTS } from "../../../../../constants";
+import {
+  CONTENT,
+  END_POINTS,
+  LOADING_ACTION_TYPES,
+} from "../../../../../constants";
 import { OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
+
+const { APP } = LOADING_ACTION_TYPES;
 
 /**
  * CandidatesPerPage Component
@@ -27,6 +34,8 @@ const CandidatesPerPage = () => {
     updateRefetchURL,
     updateCandidatesPerPage,
   } = useUI();
+  const { isLoading } = useLoading();
+  const { candidates } = useSelector((state) => state.data);
 
   // Store the initial candidatesPerPage in a ref to prevent re-renders
   const initialCandidatesPerPage = useRef(candidatesPerPage);
@@ -111,8 +120,19 @@ const CandidatesPerPage = () => {
     >
       <div className={classes.currentRecords}>
         {CONTENT.INSIGHT.candidates.numberOfRecords1}
-        <span>{startRecord}</span> - <span>{endRecord}</span> of{" "}
-        <span>{totalCount}</span>
+        <>
+          <span>
+            {isLoading[APP] || candidates.length === 0 ? 0 : startRecord}
+          </span>{" "}
+          -{" "}
+          <span>
+            {isLoading[APP] || candidates.length === 0 ? 0 : endRecord}
+          </span>{" "}
+          of{" "}
+          <span>
+            {isLoading[APP] || candidates.length === 0 ? 0 : totalCount}
+          </span>
+        </>
         {CONTENT.INSIGHT.candidates.numberOfRecords2}
       </div>
       <div className={classes.perPageSelect}>

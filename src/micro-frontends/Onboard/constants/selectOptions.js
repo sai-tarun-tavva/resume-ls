@@ -15,16 +15,16 @@ export const VISA_STATUS_VALUES = {
   EB3: "EB-3", // EB-3 visa (Skilled Workers, Professionals)
   F1CPT: "F-1-CPT", // F-1 CPT (Curricular Practical Training)
   F1OPT: "F-1-OPT", // F-1 OPT (Optional Practical Training)
-  GREEN_CARD: "GreenCard", // Green Card (Permanent Resident)
+  GREEN_CARD: "Green-Card", // Green Card (Permanent Resident)
   H1B: "H-1B", // H-1B visa (Specialty Occupations)
   H4: "H-4", // H-4 visa (Dependent of H-1B Holder)
   J1: "J-1", // J-1 visa (Exchange Visitor)
   J2: "J-2", // J-2 visa (Dependent of J-1 Holder)
   L1: "L-1", // L-1 visa (Intracompany Transferee)
   L2: "L-2", // L-2 visa (Dependent of L-1 Holder)
-  OTHERS: "others", // Other visa types
+  OTHERS: "Others", // Other visa types
   TN: "TN", // TN visa (NAFTA Professionals)
-  US_CITIZEN: "USCitizen", // US Citizen status
+  US_CITIZEN: "US-Citizen", // US Citizen status
 };
 
 /**

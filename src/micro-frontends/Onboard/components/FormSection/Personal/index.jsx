@@ -27,6 +27,7 @@ import {
   CONTENT,
   LOADING_ACTION_TYPES,
   INSIGHT,
+  INPUT_TYPES,
 } from "../../../../../constants";
 import {
   SECTIONS,
@@ -42,7 +43,7 @@ import {
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
-const { TOGGLE_FIELD } = INSIGHT;
+const { TOGGLE_FIELD, HIDE_FIELD } = INSIGHT;
 const { sections } = CONTENT.ONBOARD.candidateForm;
 
 /**
@@ -65,6 +66,11 @@ const visibilityReducer = (state, action) => {
       return {
         ...state,
         [action.field]: !state[action.field],
+      };
+    case HIDE_FIELD:
+      return {
+        ...state,
+        [action.field]: false,
       };
     default:
       return state;
@@ -240,13 +246,14 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
 
   const {
     value: SSNValue,
+    originalValue: SSNOriginalValue,
     handleInputChange: SSNChange,
     handleInputBlur: SSNBlur,
     handleInputFocus: SSNFocus,
     error: SSNError,
     isFocused: isSSNFocused,
     forceValidations: forceSSNValidations,
-  } = useInput(transformSSN(SSN), validations.SSN, transformSSN, true);
+  } = useInput(SSN, validations.SSN, transformSSN, true, INPUT_TYPES.SSN);
 
   const {
     value: photoIDTypeValue,
@@ -368,6 +375,26 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     if (photoIDTypeValue) {
       forcePhotoIDNumberValidations();
     }
+  };
+
+  /**
+   * Hides sensitive fields like passport number, EAD number, and photo ID number.
+   * This function is typically called when navigating to the next section
+   * to ensure sensitive information is not displayed unnecessarily.
+   */
+  const hideSensitiveFieldsOnNext = () => {
+    dispatchVisibility({
+      type: HIDE_FIELD,
+      field: "passportNumber",
+    });
+    dispatchVisibility({
+      type: HIDE_FIELD,
+      field: "eadNumber",
+    });
+    dispatchVisibility({
+      type: HIDE_FIELD,
+      field: "photoIDNumber",
+    });
   };
 
   /**
@@ -524,7 +551,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
           field: FIELDS.PERSONAL.SSN,
-          value: extractOnlyDigits(SSNValue),
+          value: extractOnlyDigits(SSNOriginalValue),
         })
       );
       dispatch(
@@ -559,12 +586,15 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());
+
+      hideSensitiveFieldsOnNext();
     }
   };
 
   // Expose methods to parent using ref
   useImperativeHandle(ref, () => ({
     submit,
+    hideSensitiveFieldsOnNext,
   }));
 
   return (
@@ -692,7 +722,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       <div className={sectionClasses.formRow}>
         <InputV2
           id="passportNumber"
-          autocomplete="off"
+          autoComplete="off"
           type={showFields.passportNumber ? "text" : "password"}
           label={sections.personal.passportNumber}
           value={passportNumberValue}
@@ -723,6 +753,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           type="text"
           label={sections.personal.ssn}
           value={SSNValue}
+          autoComplete="off"
           changeHandler={SSNChange}
           blurHandler={SSNBlur}
           focusHandler={SSNFocus}
@@ -749,7 +780,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       {isEADRequired && (
         <InputV2
           id="eadNumber"
-          autocomplete="off"
+          autoComplete="off"
           type={showFields.eadNumber ? "text" : "password"}
           label={sections.personal.eadNumber}
           value={eadNumberValue}
@@ -793,7 +824,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       {photoIDTypeValue && (
         <InputV2
           id="photoIDNumber"
-          autocomplete="off"
+          autoComplete="off"
           type={showFields.photoIDNumber ? "text" : "password"}
           label={
             photoIDTypeValue === "DL"

@@ -112,7 +112,7 @@ export const CONTENT = {
       },
       stateIDNumber: {
         empty: "State ID number is required.",
-        invalid: "Please enter a valid state ID.",
+        invalid: "Please enter a valid state ID number.",
       },
       skypeIDNumber: {
         invalid: "Please enter a valid Skype ID.",
@@ -399,6 +399,8 @@ export const CONTENT = {
         success_add: "Successfully added new candidate details!",
         success_update: "Successfully updated candidate details!",
         success_update_status: "Successfully updated candidate status!",
+        success_update_status_completed:
+          "Successfully onboarded the candidate!",
         failure:
           "Failed to update candidate information. Please try again later.",
       },
@@ -491,8 +493,8 @@ export const CONTENT = {
           visaStatus: "Visa Status",
           eadNumber: "EAD Number",
           photoIDType: "Photo ID Type",
-          licenseNumber: "License number",
-          stateIDNumber: "State ID number",
+          licenseNumber: "License Number",
+          stateIDNumber: "State ID Number",
           skypeID: "Skype ID",
           referenceName: "Reference Name",
         },
@@ -503,7 +505,7 @@ export const CONTENT = {
               "Have any address in India (if applicable) or another country?",
             helper: "(Considered no by default)",
           },
-          indiaHeading: "Address in India",
+          indiaHeading: "Address in India (if applicable) or another country",
         },
         relocation: {
           interested: {
