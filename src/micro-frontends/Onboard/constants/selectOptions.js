@@ -1,3 +1,5 @@
+import countries from "./countries.json";
+
 /**
  * Constants representing different visa status values.
  * These are used throughout the application to manage various types of visa statuses.
@@ -13,16 +15,36 @@ export const VISA_STATUS_VALUES = {
   EB3: "EB-3", // EB-3 visa (Skilled Workers, Professionals)
   F1CPT: "F-1-CPT", // F-1 CPT (Curricular Practical Training)
   F1OPT: "F-1-OPT", // F-1 OPT (Optional Practical Training)
-  GREEN_CARD: "GreenCard", // Green Card (Permanent Resident)
+  GREEN_CARD: "Green-Card", // Green Card (Permanent Resident)
   H1B: "H-1B", // H-1B visa (Specialty Occupations)
   H4: "H-4", // H-4 visa (Dependent of H-1B Holder)
   J1: "J-1", // J-1 visa (Exchange Visitor)
   J2: "J-2", // J-2 visa (Dependent of J-1 Holder)
   L1: "L-1", // L-1 visa (Intracompany Transferee)
   L2: "L-2", // L-2 visa (Dependent of L-1 Holder)
-  OTHERS: "others", // Other visa types
+  OTHERS: "Others", // Other visa types
   TN: "TN", // TN visa (NAFTA Professionals)
-  US_CITIZEN: "USCitizen", // US Citizen status
+  US_CITIZEN: "US-Citizen", // US Citizen status
+};
+
+/**
+ * Constants representing different onboarding status values.
+ */
+export const ONBOARDING_STATUS_VALUES = {
+  YET_TO_REVIEW: "yetToReview",
+  UNDER_REVIEW: "underReview",
+  IN_PROGRESS: "inProgress",
+  COMPLETED: "completed",
+};
+
+/**
+ * Constants representing different onboarding status labels.
+ */
+export const ONBOARDING_STATUS_LABELS = {
+  YET_TO_REVIEW: "Yet To Review",
+  UNDER_REVIEW: "Under Review",
+  IN_PROGRESS: "In Progress",
+  COMPLETED: "Completed",
 };
 
 /**
@@ -32,11 +54,22 @@ export const VISA_STATUS_VALUES = {
 export const OPTIONS = {
   // Onboarding status options
   ONBOARDING_STATUS: [
-    { value: "", label: "" }, // Placeholder option
-    { value: "applied", label: "Applied" },
-    { value: "yetToStart", label: "Yet To Start" },
-    { value: "inProgress", label: "In Progress" },
-    { value: "completed", label: "Completed" },
+    {
+      value: ONBOARDING_STATUS_VALUES.YET_TO_REVIEW,
+      label: ONBOARDING_STATUS_LABELS.YET_TO_REVIEW,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.UNDER_REVIEW,
+      label: ONBOARDING_STATUS_LABELS.UNDER_REVIEW,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.IN_PROGRESS,
+      label: ONBOARDING_STATUS_LABELS.IN_PROGRESS,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.COMPLETED,
+      label: ONBOARDING_STATUS_LABELS.COMPLETED,
+    },
   ],
   // Gender options
   GENDER: [
@@ -139,97 +172,11 @@ export const OPTIONS = {
     { value: "StateID", label: "State ID" },
   ],
   // Country options (India and USA)
-  COUNTRY: [
-    { value: "", label: "" }, // Placeholder option
-    { value: "india", label: "India" },
-    { value: "usa", label: "USA" },
-  ],
-  // Indian state options
-  STATE_INDIA: [
-    { value: "", label: "" }, // Placeholder option
-    { value: "AP", label: "Andhra Pradesh" },
-    { value: "AR", label: "Arunachal Pradesh" },
-    { value: "AS", label: "Assam" },
-    { value: "BR", label: "Bihar" },
-    { value: "CT", label: "Chhattisgarh" },
-    { value: "GA", label: "Goa" },
-    { value: "GJ", label: "Gujarat" },
-    { value: "HR", label: "Haryana" },
-    { value: "HP", label: "Himachal Pradesh" },
-    { value: "JH", label: "Jharkhand" },
-    { value: "KA", label: "Karnataka" },
-    { value: "KL", label: "Kerala" },
-    { value: "MP", label: "Madhya Pradesh" },
-    { value: "MH", label: "Maharashtra" },
-    { value: "MN", label: "Manipur" },
-    { value: "ML", label: "Meghalaya" },
-    { value: "MZ", label: "Mizoram" },
-    { value: "NL", label: "Nagaland" },
-    { value: "OR", label: "Odisha" },
-    { value: "PB", label: "Punjab" },
-    { value: "RJ", label: "Rajasthan" },
-    { value: "SK", label: "Sikkim" },
-    { value: "TN", label: "Tamil Nadu" },
-    { value: "TG", label: "Telangana" },
-    { value: "TR", label: "Tripura" },
-    { value: "UP", label: "Uttar Pradesh" },
-    { value: "UK", label: "Uttarakhand" },
-    { value: "WB", label: "West Bengal" },
-  ],
-  // US state options
-  STATE_USA: [
-    { value: "", label: "" }, // Placeholder option
-    { value: "AL", label: "Alabama" },
-    { value: "AK", label: "Alaska" },
-    { value: "AZ", label: "Arizona" },
-    { value: "AR", label: "Arkansas" },
-    { value: "CA", label: "California" },
-    { value: "CO", label: "Colorado" },
-    { value: "CT", label: "Connecticut" },
-    { value: "DE", label: "Delaware" },
-    { value: "FL", label: "Florida" },
-    { value: "GA", label: "Georgia" },
-    { value: "HI", label: "Hawaii" },
-    { value: "ID", label: "Idaho" },
-    { value: "IL", label: "Illinois" },
-    { value: "IN", label: "Indiana" },
-    { value: "IA", label: "Iowa" },
-    { value: "KS", label: "Kansas" },
-    { value: "KY", label: "Kentucky" },
-    { value: "LA", label: "Louisiana" },
-    { value: "ME", label: "Maine" },
-    { value: "MD", label: "Maryland" },
-    { value: "MA", label: "Massachusetts" },
-    { value: "MI", label: "Michigan" },
-    { value: "MN", label: "Minnesota" },
-    { value: "MS", label: "Mississippi" },
-    { value: "MO", label: "Missouri" },
-    { value: "MT", label: "Montana" },
-    { value: "NE", label: "Nebraska" },
-    { value: "NV", label: "Nevada" },
-    { value: "NH", label: "New Hampshire" },
-    { value: "NJ", label: "New Jersey" },
-    { value: "NM", label: "New Mexico" },
-    { value: "NY", label: "New York" },
-    { value: "NC", label: "North Carolina" },
-    { value: "ND", label: "North Dakota" },
-    { value: "OH", label: "Ohio" },
-    { value: "OK", label: "Oklahoma" },
-    { value: "OR", label: "Oregon" },
-    { value: "PA", label: "Pennsylvania" },
-    { value: "RI", label: "Rhode Island" },
-    { value: "SC", label: "South Carolina" },
-    { value: "SD", label: "South Dakota" },
-    { value: "TN", label: "Tennessee" },
-    { value: "TX", label: "Texas" },
-    { value: "UT", label: "Utah" },
-    { value: "VT", label: "Vermont" },
-    { value: "VA", label: "Virginia" },
-    { value: "WA", label: "Washington" },
-    { value: "WV", label: "West Virginia" },
-    { value: "WI", label: "Wisconsin" },
-    { value: "WY", label: "Wyoming" },
-  ],
+  COUNTRY: Object.keys(countries).map((country) => ({
+    value: country.toLowerCase(),
+    label: country,
+  })),
+
   // How soon the candidate is willing to relocate
   HOW_SOON_RELOCATION: [
     { value: "", label: "" }, // Placeholder option
@@ -256,5 +203,6 @@ export const OPTIONS = {
     { value: "inProgress", label: "In Progress" },
     { value: "accepted", label: "Accepted" },
     { value: "rejected", label: "Rejected" },
+    { value: "notApplicable", label: "Not Applicable" },
   ],
 };

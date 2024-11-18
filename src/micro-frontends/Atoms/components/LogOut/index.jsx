@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import Button from "../Button";
 import { handleLogout as logout } from "../../../../utilities";
+import { useUI } from "../../../../store";
 import classes from "./index.module.scss";
 
 /**
@@ -15,6 +15,7 @@ import classes from "./index.module.scss";
  */
 const Logout = ({ className = "" }) => {
   const navigate = useNavigate();
+  const { resetUI } = useUI();
 
   /**
    * Logs the user out and redirects to the home page.
@@ -23,18 +24,19 @@ const Logout = ({ className = "" }) => {
    * then uses navigate to redirect the user to the home page.
    */
   const handleLogout = () => {
+    resetUI();
     logout();
     navigate(`/`);
   };
 
   return (
-    <Button
+    <button
       className={`${classes.logout} ${className}`}
       title="Log Out"
       onClick={handleLogout}
     >
       <i className="bi bi-box-arrow-left"></i>
-    </Button>
+    </button>
   );
 };
 

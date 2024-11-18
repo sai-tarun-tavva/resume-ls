@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import Address from "../Address";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import { useSectionInputsFocus } from "../../../hooks";
@@ -31,10 +32,11 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * Displays the India location address input based on visa status and user selection.
  *
  * @param {Object} _ - The component props (forwarded ref).
+ * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Location component.
  */
-const Location = forwardRef((_, ref) => {
+const Location = forwardRef(({ isInNewRoute }, ref) => {
   const usaLocRef = useRef(); // Reference for the USA address component
   const indiaLocRef = useRef(); // Reference for the India address component
   const dispatch = useDispatch();
@@ -44,7 +46,8 @@ const Location = forwardRef((_, ref) => {
     currentSectionIndex,
     isEditMode,
     data: {
-      personal: { usaLocation, indiaLocation, visaStatus },
+      personal: { visaStatus },
+      location: { usaLocation, indiaLocation },
     },
   } = useSelector((state) => state.input);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
@@ -109,17 +112,24 @@ const Location = forwardRef((_, ref) => {
       // Update the store with validated addresses
       dispatch(
         inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.USA_LOCATION,
-          value: usaAddress,
+          section: SECTIONS.LOCATION,
+          field: FIELDS.LOCATION.USA_LOCATION,
+          value: usaAddress || defaultAddress,
         })
       );
 
       dispatch(
         inputActions.updateField({
-          section: SECTIONS.PERSONAL,
-          field: FIELDS.PERSONAL.INDIA_LOCATION,
-          value: indiaAddress,
+          section: SECTIONS.LOCATION,
+          field: FIELDS.LOCATION.INDIA_LOCATION,
+          value: indiaAddress || defaultAddress,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.LOCATION,
+          field: FIELDS.COMMON.COMPLETED,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());
@@ -141,7 +151,7 @@ const Location = forwardRef((_, ref) => {
       <Address
         heading={sections.location.usaHeading}
         defaultValue={usaLocation}
-        id="current"
+        id="usaAddress"
         ref={usaLocRef}
       />
 
@@ -156,7 +166,9 @@ const Location = forwardRef((_, ref) => {
               value={hasHomeCountryAddress}
               changeHandler={handleHasHomeCountryChange}
               blurHandler={handleHasHomeCountryBlur}
-              helperText={sections.location.haveIndian.helper}
+              helperText={
+                isInNewRoute ? sections.location.haveIndian.helper : ""
+              }
               extraClass={sectionClasses.fullInputWidth}
               isRequired
             />
@@ -169,7 +181,7 @@ const Location = forwardRef((_, ref) => {
                 !isHomeAddressOptional ? sections.location.indiaHeading : ""
               }
               defaultValue={indiaLocation}
-              id="current"
+              id="indiaAddress"
               ref={indiaLocRef}
               isRequired
             />
@@ -179,6 +191,10 @@ const Location = forwardRef((_, ref) => {
     </fieldset>
   );
 });
+
+Location.propTypes = {
+  isInNewRoute: PropTypes.bool.isRequired,
+};
 
 Location.displayName = "Location";
 export default Location;

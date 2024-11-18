@@ -64,9 +64,10 @@
           font-weight: bold;
           background-color: #ffffff;
           height: 100%;
+          display: flex;
+          align-items: center;
 
           &::after {
-            transform: scaleX(1);
             background-color: var(--primary-color);
           }
         }

@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { transformSSN } from "../../../utilities";
 import { INPUT_TYPES } from "../../../constants";
 
 /**
@@ -18,11 +19,25 @@ export const useInput = (
   forceValidationsOnSubmit = false,
   inputType = ""
 ) => {
-  const [enteredValue, setEnteredValue] = useState(defaultValue);
+  const isSSN = inputType === INPUT_TYPES.SSN;
+
+  const [enteredValue, setEnteredValue] = useState(
+    isSSN ? transform(defaultValue) : defaultValue
+  );
+  const [originalValue, setOriginalValue] = useState(defaultValue);
   const [didEdit, setDidEdit] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  const errorMessage = checkForErrors(String(enteredValue).trim());
+  // Update `enteredValue` whenever `defaultValue` changes
+  // Importing transformSSN directly here to avoid unexpected re-renders by adding it as a dependency
+  useEffect(() => {
+    setEnteredValue(isSSN ? transformSSN(defaultValue) : defaultValue);
+    setOriginalValue(defaultValue);
+  }, [defaultValue, isSSN]);
+
+  const errorMessage = checkForErrors(
+    String(isSSN ? originalValue : enteredValue).trim()
+  );
 
   /**
    * Handles input value changes based on input type.
@@ -30,13 +45,24 @@ export const useInput = (
    * @param {Event} event - The input change event.
    */
   const handleInputChange = (event) => {
-    switch (inputType) {
-      case INPUT_TYPES.CHECKBOX:
-        setEnteredValue(event.target.checked);
-        break;
-      default:
-        setEnteredValue(event.target.value);
+    const { value } = event.target;
+
+    if (isSSN && event.nativeEvent.inputType === "deleteContentBackward") {
+      // If backspace is pressed, clear the SSN value
+      setOriginalValue("");
+      setEnteredValue("");
+    } else {
+      switch (inputType) {
+        case INPUT_TYPES.CHECKBOX:
+          setOriginalValue(event.target.checked);
+          setEnteredValue(event.target.checked);
+          break;
+        default:
+          setOriginalValue(value);
+          setEnteredValue(value);
+      }
     }
+
     setDidEdit(false);
   };
 
@@ -60,15 +86,18 @@ export const useInput = (
    * Resets the input value to its default and clears the edit state.
    */
   const resetValue = useCallback(() => {
-    setEnteredValue(defaultValue);
+    // Importing transformSSN directly here to avoid unexpected re-renders by adding it as a dependency
+    setEnteredValue(isSSN ? transformSSN(defaultValue) : defaultValue);
+    setOriginalValue(defaultValue);
     setDidEdit(false);
-  }, [defaultValue]);
+  }, [defaultValue, isSSN]);
 
   /**
    * Clears the input value and resets the edit state.
    */
   const clearValue = useCallback(() => {
     setEnteredValue("");
+    setOriginalValue("");
     setDidEdit(false);
   }, []);
 
@@ -85,6 +114,7 @@ export const useInput = (
 
   return {
     value: enteredValue,
+    originalValue,
     handleInputChange,
     handleInputBlur,
     handleInputFocus,

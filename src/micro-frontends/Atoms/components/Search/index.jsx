@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import PropTypes from "prop-types";
+import Tooltip from "../Tooltip";
 import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
@@ -11,10 +12,13 @@ const { searchTooltipHeader } = CONTENT.COMMON;
  * @param {string[]} searchFields - Array of searchable fields to display.
  * @returns {JSX.Element} The tooltip content element.
  */
-const getTooltipContent = (searchFields) => (
-  <div className={classes.tooltip}>
-    <div className={classes.tooltipArrow}></div>
-    <div className={classes.tooltipContent}>
+const getTooltipContent = (searchFields) => {
+  return (
+    <Tooltip
+      baseContentToHover={
+        <i className={`bi bi-info-circle-fill ${classes.leftIcon}`} />
+      }
+    >
       <p>{searchTooltipHeader}</p>
       <ul>
         {searchFields.map((field, index) => (
@@ -24,9 +28,9 @@ const getTooltipContent = (searchFields) => (
           </li>
         ))}
       </ul>
-    </div>
-  </div>
-);
+    </Tooltip>
+  );
+};
 
 /**
  * Search Component
@@ -62,12 +66,7 @@ const Search = ({
 
   return (
     <aside className={classes.search}>
-      <div className={classes.tooltipWrapper}>
-        <span className={classes.leftIcon}>
-          <i className="bi bi-info-circle-fill" />
-        </span>
-        {getTooltipContent(searchFields)}
-      </div>
+      {getTooltipContent(searchFields)}
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"

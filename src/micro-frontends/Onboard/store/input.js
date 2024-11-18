@@ -5,6 +5,7 @@ import {
   FIELDS_ADDRESS,
   FIELDS_PREV_EXP,
   FIELDS_REFERENCE,
+  FIELDS_UNIVERSITY,
 } from "../constants";
 
 // Default values for address fields
@@ -15,6 +16,13 @@ export const defaultAddress = {
   [FIELDS_ADDRESS.STATE]: "",
   [FIELDS_ADDRESS.COUNTRY]: "",
   [FIELDS_ADDRESS.ZIPCODE]: "",
+};
+
+export const defaultUniversity = {
+  [FIELDS_UNIVERSITY.NAME]: "",
+  [FIELDS_UNIVERSITY.ADDRESS]: defaultAddress,
+  [FIELDS_UNIVERSITY.PASSED_MONTH_YEAR]: "",
+  [FIELDS_UNIVERSITY.STREAM]: "",
 };
 
 // Default values for previous employment experience fields
@@ -47,18 +55,18 @@ const initialState = {
       [FIELDS.RECORD.UPDATED_DATE]: "",
     },
     [SECTIONS.ONBOARDING]: {
+      completed: "",
       [FIELDS.ONBOARDING.DATE]: "",
       [FIELDS.ONBOARDING.STATUS]: "",
     },
     [SECTIONS.PERSONAL]: {
+      completed: "",
       [FIELDS.PERSONAL.FIRST_NAME]: "",
       [FIELDS.PERSONAL.LAST_NAME]: "",
       [FIELDS.PERSONAL.EMAIL_ID]: "",
       [FIELDS.PERSONAL.PHONE_NUMBER]: "",
       [FIELDS.PERSONAL.SECONDARY_PHONE_NUMBER]: "",
       [FIELDS.PERSONAL.GENDER]: "",
-      [FIELDS.PERSONAL.USA_LOCATION]: defaultAddress,
-      [FIELDS.PERSONAL.INDIA_LOCATION]: defaultAddress,
       [FIELDS.PERSONAL.DOB]: "",
       [FIELDS.PERSONAL.MARITAL_STATUS]: "",
       [FIELDS.PERSONAL.PASSPORT_NUMBER]: "",
@@ -72,7 +80,13 @@ const initialState = {
       [FIELDS.PERSONAL.SKYPE_ID]: "",
       [FIELDS.PERSONAL.REFERENCE_NAME]: "",
     },
+    [SECTIONS.LOCATION]: {
+      completed: "",
+      [FIELDS.LOCATION.USA_LOCATION]: defaultAddress,
+      [FIELDS.LOCATION.INDIA_LOCATION]: defaultAddress,
+    },
     [SECTIONS.RELOCATION]: {
+      completed: "",
       [FIELDS.RELOCATION.INTERESTED.VALUE]:
         FIELDS.RELOCATION.INTERESTED.OPTIONS.YES,
       [FIELDS.RELOCATION.HOW_SOON]: "",
@@ -80,21 +94,18 @@ const initialState = {
       [FIELDS.RELOCATION.ADDRESS]: defaultAddress,
     },
     [SECTIONS.EDUCATION]: {
+      completed: "",
       [FIELDS.EDUCATION.SEVIS_ID]: "",
       [FIELDS.EDUCATION.DSO.VALUE]: {
         [FIELDS.EDUCATION.DSO.NAME]: "",
         [FIELDS.EDUCATION.DSO.EMAIL]: "",
         [FIELDS.EDUCATION.DSO.PHONE]: "",
       },
-      [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE]: {
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
-        [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]: [],
-      },
+      [FIELDS.EDUCATION.GRADUATED_UNIVERSITY]: [],
+      [FIELDS.EDUCATION.ADDITIONAL_CERTIFICATIONS]: [],
     },
     [SECTIONS.PROFESSION]: {
+      completed: "",
       [FIELDS.PROFESSION.TRAINING_ATTENDED.VALUE]:
         FIELDS.PROFESSION.TRAINING_ATTENDED.OPTIONS.NO,
       [FIELDS.PROFESSION.EXPERIENCE.VALUE]: {
@@ -106,6 +117,7 @@ const initialState = {
       [FIELDS.PROFESSION.REFERENCES]: [],
     },
     [SECTIONS.OFFER_LETTER]: {
+      completed: "",
       [FIELDS.OFFER_LETTER.STATUS]: "",
       [FIELDS.OFFER_LETTER.LAST_UPDATED]: "",
       [FIELDS.OFFER_LETTER.MARKETING_NAME]: "",
@@ -115,10 +127,12 @@ const initialState = {
       [FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES]: "",
     },
     [SECTIONS.US_TRAVEL_AND_STAY]: {
+      completed: "",
       [FIELDS.US_TRAVEL_AND_STAY.US_ENTRY]: "",
       [FIELDS.US_TRAVEL_AND_STAY.STAY_ADDRESSES]: [],
     },
     [SECTIONS.EMERGENCY_CONTACTS]: {
+      completed: "",
       [FIELDS.EMERGENCY_CONTACTS.USA.VALUE]: {
         [FIELDS.EMERGENCY_CONTACTS.USA.NAME]: "",
         [FIELDS.EMERGENCY_CONTACTS.USA.PHONE]: "",
@@ -129,6 +143,7 @@ const initialState = {
       },
     },
     [SECTIONS.MISCELLANEOUS]: {
+      completed: "",
       [FIELDS.MISCELLANEOUS.REMARKS]: "",
       [FIELDS.MISCELLANEOUS.NOTES]: "",
     },
@@ -162,7 +177,9 @@ const InputSlice = createSlice({
      * @param {Object} action.payload - The new candidate data to replace the old data.
      */
     replaceCandidate(state, { payload }) {
-      state.data = payload; // Replace entire candidate data
+      const newCandidate = { ...payload.additional_info };
+      newCandidate.record.id = payload.id;
+      state.data = newCandidate; // Replace entire candidate data
     },
 
     /**

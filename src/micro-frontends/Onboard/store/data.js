@@ -30,6 +30,25 @@ const DataSlice = createSlice({
         return newCandidate; // Return the updated candidate
       });
     },
+
+    /**
+     * Replaces an existing candidate with a new candidate object in the candidates list.
+     *
+     * @param {Object} state - The current state of the slice.
+     * @param {Object} action - The dispatched action with payload data.
+     * @param {Object} action.payload - The dispatched action containing the updated candidate data.
+     */
+    replaceCandidate(state, { payload }) {
+      // Find the index of the candidate in the list by matching the ID
+      const candidateIndex = state.candidates.findIndex(
+        (existingCandidate) => existingCandidate.id === payload.id
+      );
+
+      // If the candidate is found, replace it with the new candidate data
+      if (candidateIndex !== -1) {
+        state.candidates[candidateIndex] = payload;
+      }
+    },
   },
 });
 

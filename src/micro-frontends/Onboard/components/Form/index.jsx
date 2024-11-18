@@ -80,34 +80,31 @@ const Form = () => {
 
       if (status !== STATUS_CODES.SUCCESS) {
         updateStatus({
-          message: CONTENT.COMMON.serverError,
+          message: CONTENT.ONBOARD.statusMessages.form.failure,
           type: "failure",
         });
       } else {
-        if (isInNewRoute) dispatch(inputActions.incrementCurrentSectionIndex());
-        else
+        if (isInNewRoute) {
+          if (current < 9)
+            dispatch(inputActions.incrementCurrentSectionIndex());
+          else {
+            updateStatus({
+              message: CONTENT.ONBOARD.statusMessages.form.success_add,
+              type: "success",
+              darkMode: true,
+            });
+            enableRefetch();
+            navigate("..");
+          }
+        } else
           updateStatus({
-            message: "Successfully updated candidate details!",
+            message: CONTENT.ONBOARD.statusMessages.form.success_update,
             type: "success",
           });
       }
 
       dispatch(inputActions.disableFormSectionSubmission());
       disableButtonLoading();
-
-      // Check for final section and refetch if applicable
-      if (
-        isInNewRoute &&
-        data.miscellaneous.remarks &&
-        data.miscellaneous.notes
-      ) {
-        updateStatus({
-          message: "Successfully added new candidate details!",
-          type: "success",
-        });
-        enableRefetch();
-        navigate("..");
-      }
     };
 
     updateCandidate();
@@ -122,6 +119,7 @@ const Form = () => {
     resetStatus,
     updateStatus,
     enableRefetch,
+    current,
   ]);
 
   // Refs for each form section
@@ -160,9 +158,22 @@ const Form = () => {
 
   /**
    * Next button click handler
+   * Navigates to the next section of the form
+   */
+  const nextClickHandler = (event) => {
+    event.preventDefault();
+
+    // Hide sensitive fields on next in view mode
+    if (current === 1) personalRef.current?.hideSensitiveFieldsOnNext?.();
+
+    dispatch(inputActions.incrementCurrentSectionIndex());
+  };
+
+  /**
+   * Next and save button click handler
    * Submits the current section and navigates to the next section
    */
-  const nextClickHandler = async (event) => {
+  const nextAndSaveClickHandler = async (event) => {
     event.preventDefault();
 
     if (current === 0) {
@@ -217,6 +228,7 @@ const Form = () => {
           isInNewRoute={isInNewRoute}
           previousHandler={previousClickHandler}
           nextHandler={nextClickHandler}
+          nextAndSaveHandler={nextAndSaveClickHandler}
         />
       </form>
     </div>

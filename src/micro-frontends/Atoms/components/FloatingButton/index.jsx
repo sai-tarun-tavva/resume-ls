@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import Button from "../Button";
 import classes from "./index.module.scss";
 
 /**
@@ -15,13 +14,13 @@ import classes from "./index.module.scss";
  */
 const FloatingButton = ({ title, clickHandler, icon }) => {
   return (
-    <Button
+    <button
       className={`${classes.floatingButton} floating-button-global`}
       title={title}
       onClick={clickHandler}
     >
       {icon}
-    </Button>
+    </button>
   );
 };
 

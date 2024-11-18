@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Operations from "../../../Atoms/components/Operations";
+import { useUI } from "../../../../store";
 import store from "../../store/store";
 import { PAGES } from "../../../../constants";
 
@@ -14,9 +15,15 @@ import { PAGES } from "../../../../constants";
  * @returns {JSX.Element} The rendered OnboardHub component, which includes the operations UI and outlet for nested routes.
  */
 const OnboardHub = () => {
+  const {
+    state: {
+      pagination: { totalCount },
+    },
+  } = useUI();
+
   return (
     <Provider store={store}>
-      <Operations currentPage={PAGES.ONBOARD} />
+      <Operations currentPage={PAGES.ONBOARD} count={totalCount} />
       <Outlet />
     </Provider>
   );

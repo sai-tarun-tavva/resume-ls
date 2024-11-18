@@ -1,3 +1,28 @@
+.logoContainer {
+  display: flex;
+
+  .countInfo {
+    display: flex;
+    align-items: end;
+    align-self: end;
+    margin-bottom: 0.3rem;
+    margin-left: 1rem;
+
+    .text {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-right: 0.5rem;
+    }
+
+    .count {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+  }
+}
+
 .logoutExtraClass {
   margin-left: auto;
 }

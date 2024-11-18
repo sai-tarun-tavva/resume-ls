@@ -35,6 +35,17 @@ export const FIELDS_REFERENCE = {
 };
 
 /**
+ * Fields related to university of the candidate.
+ * These fields represent university name, address, passed month and year, stream, and company.
+ */
+export const FIELDS_UNIVERSITY = {
+  NAME: "universityName", // Key for the university's name
+  ADDRESS: "address", // Key for the university's address
+  PASSED_MONTH_YEAR: "passedMonthAndYear", // Key for the month and year the candidate graduated
+  STREAM: "stream", // Key for the academic stream
+};
+
+/**
  * Titles for the sections in the onboarding form.
  * These titles are used to organize the sections in the form.
  */
@@ -59,6 +70,7 @@ export const SECTIONS = {
   RECORD: "record", // Key for the record section
   ONBOARDING: "onboarding", // Key for the onboarding section
   PERSONAL: "personal", // Key for the personal section
+  LOCATION: "location", // Key for the location section
   RELOCATION: "relocation", // Key for the relocation section
   EDUCATION: "education", // Key for the education section
   PROFESSION: "profession", // Key for the profession section
@@ -73,6 +85,9 @@ export const SECTIONS = {
  * Each section has fields that correspond to different data points in the form.
  */
 export const FIELDS = {
+  COMMON: {
+    COMPLETED: "completed", // Key for the completion flag of each section
+  },
   RECORD: {
     ID: "id", // Key for the record ID
     CREATED_DATE: "createdDate", // Key for the creation date of the record
@@ -89,8 +104,6 @@ export const FIELDS = {
     PHONE_NUMBER: "phoneNumber", // Key for the candidate's phone number
     SECONDARY_PHONE_NUMBER: "secondaryPhoneNumber", // Key for the secondary phone number
     GENDER: "gender", // Key for the gender of the candidate
-    USA_LOCATION: "usaLocation", // Key for the candidate's location in the USA
-    INDIA_LOCATION: "indiaLocation", // Key for the candidate's location in India
     DOB: "dob", // Key for the date of birth of the candidate
     MARITAL_STATUS: "maritalStatus", // Key for the marital status of the candidate
     PASSPORT_NUMBER: "passportNumber", // Key for the passport number
@@ -104,6 +117,10 @@ export const FIELDS = {
     SSN: "SSN", // Key for the social security number (SSN)
     SKYPE_ID: "skypeId", // Key for the Skype ID
     REFERENCE_NAME: "referenceName", // Key for the reference name
+  },
+  LOCATION: {
+    USA_LOCATION: "usaLocation", // Key for the candidate's location in the USA
+    INDIA_LOCATION: "indiaLocation", // Key for the candidate's location in India
   },
   RELOCATION: {
     INTERESTED: {
@@ -125,14 +142,8 @@ export const FIELDS = {
       EMAIL: "email", // Key for the DSO's email
       PHONE: "phone", // Key for the DSO's phone number
     },
-    GRADUATED_UNIVERSITY: {
-      VALUE: "graduatedUniversity", // Key for the graduated university
-      NAME: "name", // Key for the university's name
-      ADDRESS: "address", // Key for the university's address
-      PASSED_MONTH_YEAR: "passedMonthAndYear", // Key for the month and year the candidate graduated
-      STREAM: "stream", // Key for the academic stream
-      ADDITIONAL_CERTIFICATIONS: "additionalCertifications", // Key for any additional certifications
-    },
+    GRADUATED_UNIVERSITY: "universities",
+    ADDITIONAL_CERTIFICATIONS: "additionalCertifications", // Key for any additional certifications
   },
   PROFESSION: {
     TRAINING_ATTENDED: {

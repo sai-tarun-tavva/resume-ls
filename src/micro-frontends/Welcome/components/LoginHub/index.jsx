@@ -15,12 +15,10 @@ import classes from "./index.module.scss";
  */
 const LoginHub = () => {
   // Fetch target count and loading state using the custom hook
-  const { targetCount: insightCount, isInsightCountLoading } = useTargetCount(
-    END_POINTS.WELCOME.FETCH_INSIGHT_COUNT
-  );
-  const { targetCount: onboardCount, isOnboardCountLoading } = useTargetCount(
-    END_POINTS.WELCOME.FETCH_ONBOARD_COUNT
-  );
+  const { targetCount: insightCount, isLoading: isInsightCountLoading } =
+    useTargetCount(END_POINTS.WELCOME.FETCH_INSIGHT_COUNT);
+  const { targetCount: onboardCount, isLoading: isOnboardCountLoading } =
+    useTargetCount(END_POINTS.WELCOME.FETCH_ONBOARD_COUNT);
 
   // Render loader while fetching data, then render panels
   return isInsightCountLoading || isOnboardCountLoading ? (

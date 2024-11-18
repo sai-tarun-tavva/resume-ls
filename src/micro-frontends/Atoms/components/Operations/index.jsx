@@ -6,10 +6,13 @@ import Search from "../../../Atoms/components/Search";
 import Pagination from "../../../Atoms/components/Pagination";
 import Logout from "../../../Atoms/components/LogOut";
 import { useUI } from "../../../../store";
-import { buildFetchCandidatesUrl } from "../../../../utilities";
+import {
+  buildFetchCandidatesUrl,
+  getStatusesAsJoinedString,
+} from "../../../../utilities";
+import { OPTIONS } from "../../../Onboard/constants";
 import {
   ONBOARD,
-  INSIGHT,
   CONTENT,
   END_POINTS,
   ROUTES,
@@ -24,12 +27,14 @@ import classes from "./index.module.scss";
  *
  * @param {Object} props - The component props.
  * @param {string} props.currentPage - Indicates the current page context.
+ * @param {string} props.count - Indicates the count to be displayed.
  * @param {boolean} [props.includeSearch=true] - Whether to include the search functionality.
  * @param {boolean} [props.includePagination=true] - Whether to include pagination functionality.
  * @returns {JSX.Element} The Operations component.
  */
 const Operations = ({
   currentPage,
+  count,
   includeSearch = true,
   includePagination = true,
 }) => {
@@ -38,6 +43,8 @@ const Operations = ({
     state: {
       pagination: { previousPage, nextPage, totalCount },
       searchTerm,
+      candidatesPerPage: perPage,
+      selectedStatuses,
     },
     enableRefetch,
     updateRefetchURL,
@@ -52,7 +59,7 @@ const Operations = ({
       displayContent = CONTENT.INSIGHT.operations;
       enableOpsRoute = ROUTES.INSIGHT.HOME;
       apiEndpoint = END_POINTS.INSIGHT.FETCH_CANDIDATES;
-      candidatesPerPage = INSIGHT.CANDIDATES_PER_PAGE;
+      candidatesPerPage = perPage;
       break;
     case PAGES.ONBOARD:
       logoIcon = "bi bi-clipboard-check";
@@ -76,7 +83,9 @@ const Operations = ({
   const { logoSuffix, logo } = displayContent;
   const searchPlaceholder = displayContent?.search?.placeholder;
   const searchFields = displayContent?.search?.searchFields;
+  const totalCountText = displayContent?.countInfo;
   const enableOperations = location.pathname === `/${enableOpsRoute}`;
+  const displayCount = [PAGES.ONBOARD].includes(currentPage);
 
   /**
    * Handles the search on submit event.
@@ -85,14 +94,33 @@ const Operations = ({
   const handleSearch = (searchText) => {
     enableRefetch();
     updateRefetchURL(
-      buildFetchCandidatesUrl(apiEndpoint, candidatesPerPage, "", searchText)
+      buildFetchCandidatesUrl(
+        apiEndpoint,
+        candidatesPerPage,
+        "",
+        searchText,
+        currentPage === PAGES.INSIGHT
+          ? ""
+          : getStatusesAsJoinedString(
+              OPTIONS.ONBOARDING_STATUS,
+              selectedStatuses
+            )
+      )
     );
     updateSearchTerm(searchText);
   };
 
   return (
     <Header>
-      <Logo logoIcon={logoIcon} logoSuffix={logoSuffix} logoText={logo} />
+      <div className={classes.logoContainer}>
+        <Logo logoIcon={logoIcon} logoSuffix={logoSuffix} logoText={logo} />
+        {displayCount && (
+          <div className={classes.countInfo}>
+            <span className={classes.text}>{totalCountText}</span>
+            <span className={classes.count}>{count}</span>
+          </div>
+        )}
+      </div>
       {includeSearch && (
         <Search
           enableSearch={enableOperations}
@@ -109,6 +137,7 @@ const Operations = ({
           totalCount={totalCount}
           searchTerm={searchTerm}
           countPerPage={candidatesPerPage}
+          currentRoute={currentPage}
           apiEndpoint={apiEndpoint}
         />
       )}
@@ -123,6 +152,7 @@ const Operations = ({
 
 Operations.propTypes = {
   currentPage: PropTypes.string.isRequired,
+  count: PropTypes.number,
   includeSearch: PropTypes.bool,
   includePagination: PropTypes.bool,
 };

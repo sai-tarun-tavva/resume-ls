@@ -191,20 +191,22 @@ export const onboardingValidations = {
           ),
   },
   address: {
-    zipcode: (value, country) =>
-      isEmpty(value)
-        ? validationMsgs.zipcode.empty
-        : country === "india"
-        ? validateWithRegex(
-            value,
-            REGEX.indiaZipCodeRegex,
-            validationMsgs.zipcode.invalid
-          )
-        : validateWithRegex(
-            value,
-            REGEX.usZipCodeRegex,
-            validationMsgs.zipcode.invalid
-          ),
+    zipcode: (value, country) => {
+      if (isEmpty(value)) {
+        return validationMsgs.zipcode.empty;
+      }
+
+      // Retrieve the appropriate regex for the specified country
+      const regex = REGEX.zipCodeRegex[country] || REGEX.zipCodeRegex.others;
+
+      // Skip validation if country has no specific regex (e.g., "Others")
+      if (!regex) {
+        return "";
+      }
+
+      // Validate using the determined regex pattern
+      return validateWithRegex(value, regex, validationMsgs.zipcode.invalid);
+    },
     address1: (value) => (isEmpty(value) ? validationMsgs.address1.empty : ""),
     city: (value) => (isEmpty(value) ? validationMsgs.city.empty : ""),
     state: (value) => (isEmpty(value) ? validationMsgs.state.empty : ""),

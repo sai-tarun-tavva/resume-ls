@@ -397,6 +397,30 @@ export const fetchOnboardCandidates = async (url) => {
 };
 
 /**
+ * Fetches a specific candidate's onboarding details by ID from the API.
+ *
+ * @async
+ * @function
+ * @param {string} url - The url of the API.
+ * @returns {Promise<Object>} An object containing the response status and the candidate data.
+ */
+export const fetchCandidateById = async (url) => {
+  try {
+    const response = await fetchWithToken(url, {
+      method: "GET",
+    });
+    const resData = await response.json();
+
+    // Return the response data and status
+    return { status: response.status, data: resData.data };
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Server or network issue:", error.message);
+    return { status: 500, data: null };
+  }
+};
+
+/**
  * Onboards the new candidate by adding him.
  *
  * @async
@@ -461,6 +485,36 @@ export const updateOnboardCandidate = async (body, id) => {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Server or network issue:", error.message);
     return { status: 500 };
+  }
+};
+
+/**
+ * Updates the status of an existing candidate.
+ *
+ * @async
+ * @function
+ * @param {string} url - The url of the API.
+ * @param {Object} body - The request body containing the new status to set for the candidate.
+ * @returns {Promise<Object>} An object containing the response status and API data.
+ */
+export const updateCandidateStatus = async (url, body) => {
+  try {
+    const response = await fetchWithToken(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const resData = await response.json();
+
+    // Return status
+    return { status: response.status, response: resData };
+  } catch (error) {
+    // Handle network or server issues
+    console.error("Server or network issue:", error.message);
+    return { status: 500, response: null };
   }
 };
 

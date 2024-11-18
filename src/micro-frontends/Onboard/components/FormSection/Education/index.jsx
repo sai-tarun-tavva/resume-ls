@@ -2,11 +2,11 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ListAdd from "../ListAdd";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
-import Address from "../Address";
+import SchoolOrUniversity from "../../FormListItems/SchoolOrUniversity";
 import SingleInput from "../../FormListItems/SingleInput";
 import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
-import { inputActions } from "../../../store";
+import { defaultUniversity, inputActions } from "../../../store";
 import {
   determineSectionValidity,
   extractOnlyDigits,
@@ -15,7 +15,7 @@ import {
   transformPhoneNumber,
 } from "../../../../../utilities";
 import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
-import { SECTIONS, FIELDS, EDUCATION_REQUIRED_VISA } from "../../../constants";
+import { SECTIONS, FIELDS, SEVIS_DSO_REQUIRED_VISA } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 import { useLoading } from "../../../../../store";
 
@@ -38,19 +38,15 @@ const Education = forwardRef((_, ref) => {
       education: {
         sevisID,
         dso: { name: dsoName, email: dsoEmail, phone: dsoPhone },
-        graduatedUniversity: {
-          name: universityName,
-          address: universityAddress,
-          passedMonthAndYear,
-          stream,
-          additionalCertifications,
-        },
+        universities,
+        additionalCertifications,
       },
     },
   } = useSelector((state) => state.input);
   const addressRef = useRef();
-  const listRef = useRef();
-  const isEducationRequired = EDUCATION_REQUIRED_VISA.includes(visaStatus);
+  const certificationsRef = useRef();
+  const universitiesRef = useRef();
+  const isSevisDSORequired = SEVIS_DSO_REQUIRED_VISA.includes(visaStatus);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
   const { education: validations } = onboardingValidations;
@@ -104,55 +100,9 @@ const Education = forwardRef((_, ref) => {
     true
   );
 
-  const {
-    value: universityNameValue,
-    handleInputChange: universityNameChange,
-    handleInputBlur: universityNameBlur,
-    handleInputFocus: universityNameFocus,
-    error: universityNameError,
-    isFocused: isUniversityNameFocused,
-    forceValidations: forceUniversityNameValidations,
-  } = useInput(universityName, validations.universityName, undefined, true);
-
-  const {
-    value: passedMonthAndYearValue,
-    handleInputChange: passedMonthAndYearChange,
-    handleInputBlur: passedMonthAndYearBlur,
-    handleInputFocus: passedMonthAndYearFocus,
-    error: passedMonthAndYearError,
-    isFocused: isPassedMonthAndYearFocused,
-    forceValidations: forcePassedMonthAndYearValidations,
-  } = useInput(passedMonthAndYear, validations.year, undefined, true);
-
-  const {
-    value: streamValue,
-    handleInputChange: streamChange,
-    handleInputBlur: streamBlur,
-    handleInputFocus: streamFocus,
-    error: streamError,
-    isFocused: isStreamFocused,
-    forceValidations: forceStreamValidations,
-  } = useInput(stream, validations.universityStream, undefined, true);
-
   // Collect all errors and validate the section
-  const allErrors = [
-    sevisIDError,
-    dsoNameError,
-    dsoEmailError,
-    dsoPhoneError,
-    universityNameError,
-    passedMonthAndYearError,
-    streamError,
-  ];
-  const allValues = [
-    sevisIDValue,
-    dsoNameValue,
-    dsoEmailValue,
-    dsoPhoneValue,
-    universityNameValue,
-    passedMonthAndYearValue,
-    streamValue,
-  ];
+  const allErrors = [sevisIDError, dsoNameError, dsoEmailError, dsoPhoneError];
+  const allValues = [sevisIDValue, dsoNameValue, dsoEmailValue, dsoPhoneValue];
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 
@@ -160,9 +110,6 @@ const Education = forwardRef((_, ref) => {
    * Force validations for all fields in the education section
    */
   const forceValidations = () => {
-    forceUniversityNameValidations();
-    forcePassedMonthAndYearValidations();
-    forceStreamValidations();
     forceSevisIDValidations();
     forceDSONameValidations();
     forceDSOEmailValidations();
@@ -174,20 +121,21 @@ const Education = forwardRef((_, ref) => {
    * It validates the USA and home country address fields as well as certificates.
    */
   const submit = async () => {
-    const addressSubmitResult = addressRef.current?.submit?.();
-    const isAddressValid = addressSubmitResult?.isSectionValid;
-    const address = addressSubmitResult?.item;
-
+    // ListAdd validation
     const { isSectionValid: areCertificatesValid, listItems: certificates } =
-      listRef?.current?.submit?.(); // ListAdd validation
+      certificationsRef?.current?.submit?.();
+    const { isSectionValid: areUniversitiesValid, listItems: universities } =
+      universitiesRef?.current?.submit?.();
 
     if (
-      (isEducationRequired && (!isSectionValid || isAddressValid === false)) ||
-      !areCertificatesValid
+      (isSevisDSORequired && !isSectionValid) ||
+      !areCertificatesValid ||
+      !areUniversitiesValid
     ) {
       forceValidations();
       addressRef.current?.forceValidations?.(); // Force Address validation
-      listRef?.current?.forceValidations?.();
+      certificationsRef?.current?.forceValidations?.();
+      universitiesRef?.current?.forceValidations?.();
       focusErrorsIfAny(sectionRef);
     } else if (!isLoading[BUTTON]) {
       // Dispatch updates for SEVIS ID, DSO, and university details
@@ -212,16 +160,27 @@ const Education = forwardRef((_, ref) => {
       dispatch(
         inputActions.updateField({
           section: SECTIONS.EDUCATION,
-          field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
-          value: {
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: universityNameValue,
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]:
-              passedMonthAndYearValue,
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: streamValue,
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: address,
-            [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDITIONAL_CERTIFICATIONS]:
-              certificates,
-          },
+          field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY,
+          value: universities.sort((a, b) => {
+            // Recent university should be first item
+            return (
+              new Date(b.passedMonthAndYear) - new Date(a.passedMonthAndYear)
+            );
+          }),
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.EDUCATION.ADDITIONAL_CERTIFICATIONS,
+          value: certificates,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.EDUCATION,
+          field: FIELDS.COMMON.COMPLETED,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());
@@ -240,7 +199,7 @@ const Education = forwardRef((_, ref) => {
       className={sectionClasses.onboardFormSection}
     >
       {/* Only show these fields if education details are required */}
-      {isEducationRequired && (
+      {isSevisDSORequired && (
         <>
           <div className={sectionClasses.formRow}>
             <InputV2
@@ -298,56 +257,26 @@ const Education = forwardRef((_, ref) => {
               isRequired
             />
           </div>
-
-          <div className={sectionClasses.formRow}>
-            <InputV2
-              id="graduatedUniversityName"
-              label={sections.education.university.name}
-              value={universityNameValue}
-              changeHandler={universityNameChange}
-              blurHandler={universityNameBlur}
-              focusHandler={universityNameFocus}
-              error={universityNameError}
-              isFocused={isUniversityNameFocused}
-              extraClass={sectionClasses.halfInputWidth}
-              isRequired
-            />
-
-            <InputV2
-              id="graduatedUniversityPassedMonthAndYear"
-              label={sections.education.university.passDate}
-              type="month"
-              value={passedMonthAndYearValue}
-              changeHandler={passedMonthAndYearChange}
-              blurHandler={passedMonthAndYearBlur}
-              focusHandler={passedMonthAndYearFocus}
-              error={passedMonthAndYearError}
-              isFocused={isPassedMonthAndYearFocused}
-              extraClass={sectionClasses.halfInputWidth}
-              isRequired
-            />
-          </div>
-
-          <InputV2
-            id="graduatedUniversityStream"
-            label={sections.education.university.stream}
-            value={streamValue}
-            changeHandler={streamChange}
-            blurHandler={streamBlur}
-            focusHandler={streamFocus}
-            error={streamError}
-            isFocused={isStreamFocused}
-            extraClass={sectionClasses.fullInputWidth}
-            isRequired
-          />
-          <Address
-            heading={sections.education.university.address}
-            defaultValue={universityAddress}
-            id="university"
-            ref={addressRef}
-          />
         </>
       )}
+      {/* Dynamic list for universities certifications */}
+      <ListAdd
+        label={sections.education.universityList.heading}
+        itemLabels={sections.education.universityList.itemLabels}
+        element={(props) => <SchoolOrUniversity {...props} />}
+        savedListItems={
+          universities.length > 0 ? universities : [defaultUniversity]
+        }
+        validationFuncs={{
+          universityName: validations.universityName,
+          stream: validations.universityStream,
+          passedMonthAndYear: validations.year,
+        }}
+        newValue={defaultUniversity}
+        ref={universitiesRef}
+        mandatoryItems={1}
+        helperText={sections.education.universityList.helper}
+      />
       {/* Dynamic list for additional certifications */}
       <ListAdd
         label={sections.education.certificationsList.heading}
@@ -356,7 +285,7 @@ const Education = forwardRef((_, ref) => {
         element={(props) => <SingleInput {...props} />}
         savedListItems={additionalCertifications}
         newValue={""}
-        ref={listRef}
+        ref={certificationsRef}
       />
     </fieldset>
   );

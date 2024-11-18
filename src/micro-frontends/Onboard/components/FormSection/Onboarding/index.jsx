@@ -1,7 +1,7 @@
 import { useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
-import Select from "../../../../Atoms/components/Inputs/Select";
 import { useSectionInputsFocus } from "../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
@@ -12,7 +12,7 @@ import {
   onboardingValidations,
 } from "../../../../../utilities";
 import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
-import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
+import { SECTIONS, FIELDS, ONBOARDING_STATUS_LABELS } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
@@ -25,16 +25,17 @@ const { sections } = CONTENT.ONBOARD.candidateForm;
  * It validates the inputs and submits the data to the Redux store if the section is valid.
  *
  * @param {Object} _ - The component props (forwarded ref).
+ * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
  * @param {React.Ref} ref - The reference passed from the parent component.
  * @returns {JSX.Element} The rendered Onboarding component.
  */
-const Onboarding = forwardRef((_, ref) => {
+const Onboarding = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
     currentSectionIndex,
     isEditMode,
     data: {
-      onboarding: { date, status },
+      onboarding: { date },
     },
   } = useSelector((state) => state.input);
 
@@ -55,21 +56,8 @@ const Onboarding = forwardRef((_, ref) => {
     forceValidations: forceDateValidations,
   } = useInput(date, validations.date, undefined, true);
 
-  /**
-   * Status Input Handling
-   */
-  const {
-    value: statusValue,
-    handleInputChange: statusChange,
-    handleInputBlur: statusBlur,
-    handleInputFocus: statusFocus,
-    error: statusError,
-    isFocused: isStatusFocused,
-    forceValidations: forceStatusValidations,
-  } = useInput(status, validations.status, undefined, true);
-
-  const allErrors = [dateError, statusError];
-  const allValues = [dateValue, statusValue];
+  const allErrors = [dateError];
+  const allValues = [dateValue];
 
   /**
    * Determines if the section is valid based on the errors and values
@@ -81,7 +69,6 @@ const Onboarding = forwardRef((_, ref) => {
    */
   const forceValidations = () => {
     forceDateValidations();
-    forceStatusValidations();
   };
 
   /**
@@ -101,11 +88,19 @@ const Onboarding = forwardRef((_, ref) => {
           value: dateValue,
         })
       );
+      if (isInNewRoute)
+        dispatch(
+          inputActions.updateField({
+            section: SECTIONS.ONBOARDING,
+            field: FIELDS.ONBOARDING.STATUS,
+            value: ONBOARDING_STATUS_LABELS.IN_PROGRESS,
+          })
+        );
       dispatch(
         inputActions.updateField({
           section: SECTIONS.ONBOARDING,
-          field: FIELDS.ONBOARDING.STATUS,
-          value: statusValue,
+          field: FIELDS.COMMON.COMPLETED,
+          value: "Done",
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());
@@ -135,21 +130,13 @@ const Onboarding = forwardRef((_, ref) => {
         isFocused={isDateFocused}
         isRequired
       />
-      <Select
-        id="onboardingStatus"
-        label={sections.onboarding.status}
-        options={OPTIONS.ONBOARDING_STATUS}
-        value={statusValue}
-        changeHandler={statusChange}
-        blurHandler={statusBlur}
-        focusHandler={statusFocus}
-        error={statusError}
-        isFocused={isStatusFocused}
-        isRequired
-      />
     </fieldset>
   );
 });
+
+Onboarding.propTypes = {
+  isInNewRoute: PropTypes.bool.isRequired,
+};
 
 Onboarding.displayName = "FormOnboarding";
 export default Onboarding;

@@ -17,8 +17,10 @@ import classes from "./index.module.scss";
  * @param {function} props.blurHandler - Function to call when the select loses focus.
  * @param {function} props.focusHandler - Function to call when the select gains focus.
  * @param {string} [props.error] - Error message to display if validation fails.
+ * @param {string} [props.helperText] - Additional helper text to display after the select label.
  * @param {boolean} [props.isFocused] - Whether the select is focused initially.
  * @param {boolean} [props.isRequired] - Whether the select field is required.
+ * @param {string} [props.version] - Style version to apply ("version-1" or "version-2").
  * @returns {JSX.Element} The Select component.
  */
 const Select = forwardRef(
@@ -33,8 +35,10 @@ const Select = forwardRef(
       blurHandler,
       focusHandler,
       error,
+      helperText = "",
       isFocused,
       isRequired = false,
+      version = "version-2", // Default to version-2
       ...props
     },
     ref
@@ -52,9 +56,12 @@ const Select = forwardRef(
     }));
 
     return (
-      <div className={`${classes.control} ${extraClass}`}>
+      <div className={`${classes[version]} ${extraClass}`}>
         <label htmlFor={id}>
-          {label} {isRequired && <span className={classes.required}>*</span>}
+          {label} {isRequired && <span className={classes.required}>*</span>}{" "}
+          {helperText && (
+            <small className={classes.helperText}>{helperText}</small>
+          )}
         </label>
         <select
           ref={inputRef}
@@ -77,7 +84,9 @@ const Select = forwardRef(
             </option>
           ))}
         </select>
-        <small className={classes.errorText}>{error || ""}</small>
+        {isRequired && (
+          <small className={classes.errorText}>{error || ""}</small>
+        )}
       </div>
     );
   }
@@ -93,13 +102,15 @@ Select.propTypes = {
     })
   ).isRequired,
   extraClass: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   changeHandler: PropTypes.func.isRequired,
   blurHandler: PropTypes.func,
   focusHandler: PropTypes.func,
   error: PropTypes.string,
+  helperText: PropTypes.string,
   isFocused: PropTypes.bool,
   isRequired: PropTypes.bool,
+  version: PropTypes.oneOf(["version-1", "version-2"]),
 };
 
 Select.displayName = "Select";

@@ -25,6 +25,8 @@ export const INSIGHT = {
   MAX_FILES: 30,
   MAX_FILE_SIZE: 5, // in MB
   RESUME_VIEWER_WIDTH_START: 480,
+  TOGGLE_FIELD: "TOGGLE_FIELD",
+  HIDE_FIELD: "HIDE_FIELD",
 };
 
 /**
@@ -46,7 +48,7 @@ export const ONBOARD = {
  * @property {number} SUGGESTED_CHANGES - Number of changes suggested to improve resumes.
  */
 export const SPARK = {
-  SUGGESTED_CHANGES: 8751, // Dummy count for visual appearance on purpose
+  SUGGESTED_CHANGES: 213, // Dummy count for visual appearance on purpose
 };
 
 /**
@@ -69,10 +71,12 @@ export const LOADER_TYPES = {
  *
  * @property {string} CHECKBOX - Checkbox input type.
  * @property {string} FILE - File input type.
+ * @property {string} SSN - SSN custom input.
  */
 export const INPUT_TYPES = {
   CHECKBOX: "checkbox",
   FILE: "file",
+  SSN: "ssn",
 };
 
 /**
@@ -99,12 +103,18 @@ export const REGEX = {
   linkedInRegex: /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/, // Valid LinkedIn profile URL: must start with "https://www.linkedin.com/in/" followed by alphanumeric characters or hyphens
   passportNumberRegex: /^[A-Z][0-9]{7}$/, // Valid passport number: starts with one uppercase letter, followed by exactly 7 digits (for example: A1234567)
   eadNumberRegex: /^[A-Z]{3}[0-9]{10}$/, // EAD card number: starts with exactly 3 uppercase letters, followed by exactly 10 digits (e.g., ABC1234567890)
-  ssnRegex: /^(?=(?:\D*\d){9}$)[\d\s-]+$/, // SSN: Allows exactly 9 digits with optional spaces and hyphens (e.g., 123-45-6789 or 123 45 6789)
+  ssnRegex: /^\d{9}$/, // SSN: Allows exactly 9 digits (e.g., 123456789)
   licenseNumberRegex: /^[A-Z0-9]{5,15}$/, // License number: allows 5 to 15 alphanumeric characters (uppercase letters and digits)
   stateIDNumberRegex: /^[A-Z0-9]{5,15}$/, // State ID number: similar to license number, allows 5 to 15 alphanumeric characters (uppercase letters and digits)
   skypeIDRegex: /^[a-zA-Z][a-zA-Z0-9_.,-:]{5,31}$/, // Skype ID: must start with a letter, followed by 5 to 31 characters that can include letters, digits, underscores, commas, periods, hyphens, and colons
-  usZipCodeRegex: /^\d{5}(-\d{4})?$/, // US ZIP code: exactly 5 digits, optionally followed by a hyphen and exactly 4 more digits
-  indiaZipCodeRegex: /^\d{6}$/, // Indian ZIP code: exactly 6 digits
+  zipCodeRegex: {
+    usa: /^\d{5}(-\d{4})?$/, // US ZIP code: exactly 5 digits, optionally followed by a hyphen and exactly 4 more digits
+    india: /^\d{6}$/, // Indian ZIP code: exactly 6 digits
+    canada: /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/, // Canada ZIP code: alternating letters and digits, with optional space/hyphen
+    australia: /^\d{4}$/, // Australia ZIP code: exactly 4 digits
+    mexico: /^\d{5}$/, // Mexico ZIP code: exactly 5 digits
+    others: null, // No validation for other countries
+  },
   sevisIDRegex: /^N[0-9]{10}$/, // Starts with "N" followed by exactly 10 digits
 };
 
@@ -155,4 +165,6 @@ export const UI_ACTION_TYPES = {
   ENABLE_REFETCH: "ENABLE_REFETCH",
   DISABLE_REFETCH: "DISABLE_REFETCH",
   RESET_ALL: "RESET_ALL",
+  UPDATE_CANDIDATES_PER_PAGE: "UPDATE_CANDIDATES_PER_PAGE",
+  UPDATE_SELECTED_STATUSES: "UPDATE_SELECTED_STATUSES",
 };
