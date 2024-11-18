@@ -11,7 +11,8 @@ export const buildFetchCandidatesUrl = (
   endPoint = "",
   limit = "",
   page = "",
-  query = ""
+  query = "",
+  statuses = ""
 ) => {
   // Encode query params to ensure special characters are handled
   const encodedLimit = encodeURIComponent(limit);
@@ -32,8 +33,25 @@ export const buildFetchCandidatesUrl = (
   if (query) {
     finalUrl += `&${params.query}=${query}`;
   }
+  if (statuses) {
+    finalUrl += `&${params?.statuses}=${statuses}`;
+  }
 
   return finalUrl;
+};
+
+/**
+ * Joins selected statuses into a comma-separated string based on their corresponding labels.
+ *
+ * @param {Array} options - Array of status options with label-value pairs.
+ * @param {Object} statuses - Object with boolean values indicating which statuses are selected.
+ * @returns {string} A comma-separated string of selected status labels.
+ */
+export const getStatusesAsJoinedString = (options, statuses) => {
+  return Object.keys(statuses)
+    .filter((key) => statuses[key])
+    .map((key) => getLabelByValue(options, key))
+    .join(",");
 };
 
 /**
@@ -76,17 +94,39 @@ export const getEighteenYearsAgoDate = () => {
 /**
  * Highlights the matching text within a given string.
  * @param {string} text - The text to search and highlight within.
- * @param {string} highlight - The text to highlight, which can include multiple terms separated by commas.
+ * @param {string} highlight - The text to highlight, which may or may not contain terms inside quotes.
  * @returns {JSX.Element} The text with highlighted matches.
  */
 export const highlightText = (text, highlight) => {
   if (!highlight) return text;
 
-  // Split the highlight string by commas and trim whitespace
-  const highlightTerms = highlight.split(",").map((term) => term.trim());
+  const extractQuotedTerms = (input) => {
+    const quoteRegex = /"([^"]+)"/g; // Regex to extract terms inside quotes
+    const terms = [];
+    let match;
+    while ((match = quoteRegex.exec(input)) !== null) {
+      terms.push(match[1]); // Extract the content inside quotes
+    }
+    return terms;
+  };
+
+  // Remove logical operators and parentheses, then split remaining terms
+  const cleanHighlight = highlight
+    .replace(/[()]/g, "") // Remove parentheses
+    .replace(/\b(AND|OR)\b/g, "") // Remove logical operators
+    .trim();
+
+  const quotedTerms = extractQuotedTerms(cleanHighlight); // Extract terms inside quotes
+  const plainTerms = cleanHighlight.replace(/"([^"]+)"/g, "").split(/[\s,]+/); // Remove quoted terms and split by space/comma
+  const allTerms = [
+    ...quotedTerms,
+    ...plainTerms.filter((term) => term.trim()),
+  ]; // Combine quoted and plain terms
+
+  if (allTerms.length === 0) return text;
 
   // Create a regular expression to match any of the highlight terms (case insensitive)
-  const regex = new RegExp(`(${highlightTerms.join("|")})`, "gi");
+  const regex = new RegExp(`(${allTerms.join("|")})`, "gi");
 
   // Split the text based on the regex
   const parts = text.split(regex);
@@ -95,7 +135,7 @@ export const highlightText = (text, highlight) => {
     <span>
       {parts.map((part, index) => {
         // Check if the current part matches any highlight term
-        const isHighlighted = highlightTerms.some(
+        const isHighlighted = allTerms.some(
           (term) => part.toLowerCase() === term.toLowerCase()
         );
         return isHighlighted ? <mark key={index}>{part}</mark> : part;
@@ -379,11 +419,11 @@ export const areObjectsEqual = (obj1, obj2) => {
  */
 export const getExperienceDisplayText = (years, months) => {
   if (years && months) {
-    return `${years} years and ${months} months`;
+    return `${years}Y ${months}M`;
   } else if (years) {
-    return `${years} years`;
+    return `${years}Y`;
   } else if (months) {
-    return `${months} months`;
+    return `${months}M`;
   } else {
     return "";
   }
@@ -457,9 +497,9 @@ export const determineSectionValidity = (errors, values) => {
 };
 
 /**
- * Transforms a Social Security Number (SSN) into the xxx-xx-xxxx format.
+ * Transforms a Social Security Number (SSN) into the •••-••-xxxx format.
  * @param {string} value - The SSN as a string.
- * @returns {string} The formatted SSN, or the original if not valid.
+ * @returns {string} The masked SSN in •••-••-xxxx format, or the original if not valid.
  */
 export const transformSSN = (value) => {
   // Remove all spaces and hyphens from the input
@@ -470,11 +510,8 @@ export const transformSSN = (value) => {
     return value; // Return the original input if it's not exactly 9 digits
   }
 
-  // Format the SSN into xxx-xx-xxxx
-  return `${digitsOnly.slice(0, 3)}-${digitsOnly.slice(
-    3,
-    5
-  )}-${digitsOnly.slice(5)}`;
+  // Format the SSN into •••-••-xxxx
+  return `•••-••-${digitsOnly.slice(5)}`;
 };
 
 /**

@@ -112,7 +112,7 @@ export const CONTENT = {
       },
       stateIDNumber: {
         empty: "State ID number is required.",
-        invalid: "Please enter a valid state ID.",
+        invalid: "Please enter a valid state ID number.",
       },
       skypeIDNumber: {
         invalid: "Please enter a valid Skype ID.",
@@ -328,6 +328,7 @@ export const CONTENT = {
     operations: {
       logoSuffix: "R",
       logo: "Insight",
+      countInfo: "Total resumes: ",
       search: {
         placeholder: "Search...",
         searchFields: [
@@ -345,6 +346,11 @@ export const CONTENT = {
       header: "Viewer is unsupported for .doc, .docx, .txt files",
       paragraph: "Please download the file to view its contents",
       button: "Download Resume",
+    },
+    candidates: {
+      numberOfRecords1: "Showing ",
+      numberOfRecords2: " Candidates ",
+      perPage: "Per Page: ",
     },
     candidate: {
       defaultValues: {
@@ -393,6 +399,8 @@ export const CONTENT = {
         success_add: "Successfully added new candidate details!",
         success_update: "Successfully updated candidate details!",
         success_update_status: "Successfully updated candidate status!",
+        success_update_status_completed:
+          "Successfully onboarded the candidate!",
         failure:
           "Failed to update candidate information. Please try again later.",
       },
@@ -400,6 +408,7 @@ export const CONTENT = {
     operations: {
       logoSuffix: "R",
       logo: "Onboard",
+      countInfo: "Total candidates: ",
       search: {
         placeholder: "Search...",
         searchFields: ["Status", "First name", "Last name", "Email", "Mobile"],
@@ -408,25 +417,24 @@ export const CONTENT = {
     candidates: {
       columnHeaders: {
         status: "Status",
-        onboardingDate: "Onboarding Date",
-        lastUpdated: "Last Updated (EST)",
+        onboardingDate: "Date",
+        lastUpdated: "Last Update",
         position: "Position",
-        experience: "Experience",
-        companyName: "Company Name",
+        experience: "Exp",
+        companyName: "Company",
         technology: "Technology",
-        firstName: "First Name",
-        lastName: "Last Name",
+        name: "Full Name",
         marketingName: "Marketing Name",
-        visaStatus: "Visa Status",
+        visaStatus: "Visa",
         location: "Location",
-        relocation: "Relocation",
-        phone: "Mobile Number",
-        email: "Email Address",
-        dob: "Date of Birth",
-        universityName: "University Name",
-        offerStatus: "Offer Letter Status",
-        referenceName: "Reference Name",
-        guestHouseMember: "Guest House Member",
+        relocation: "Reloc",
+        phone: "Mobile",
+        email: "Email",
+        dob: "DOB",
+        universityName: "University",
+        offerStatus: "Offer",
+        referenceName: "Referral",
+        guestHouseMember: "GH",
         remarks: "Remarks",
         notes: "Notes",
       },
@@ -485,8 +493,8 @@ export const CONTENT = {
           visaStatus: "Visa Status",
           eadNumber: "EAD Number",
           photoIDType: "Photo ID Type",
-          licenseNumber: "License number",
-          stateIDNumber: "State ID number",
+          licenseNumber: "License Number",
+          stateIDNumber: "State ID Number",
           skypeID: "Skype ID",
           referenceName: "Reference Name",
         },
@@ -497,7 +505,7 @@ export const CONTENT = {
               "Have any address in India (if applicable) or another country?",
             helper: "(Considered no by default)",
           },
-          indiaHeading: "Address in India",
+          indiaHeading: "Address in India (if applicable) or another country",
         },
         relocation: {
           interested: {
@@ -513,11 +521,15 @@ export const CONTENT = {
           dsoName: "DSO Name",
           dsoEmail: "DSO Email",
           dsoPhone: "DSO Phone",
-          university: {
-            name: "Graduated University Name",
-            passDate: "Passed month and year",
-            stream: "Stream",
-            address: "University Address",
+          universityList: {
+            heading: "Add School or University",
+            itemLabels: {
+              universityName: "School/University Name",
+              passedMonthAndYear: "Passed month and year",
+              stream: "Stream",
+              address: "School/University Address",
+            },
+            helper: "(atleast one school/university is mandatory)",
           },
           certificationsList: {
             heading: "Any certifications?",

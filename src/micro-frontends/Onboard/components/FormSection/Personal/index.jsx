@@ -1,4 +1,10 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useReducer,
+  useRef,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
@@ -17,12 +23,17 @@ import {
   transformPhoneNumber,
   transformSSN,
 } from "../../../../../utilities";
-import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
+import {
+  CONTENT,
+  LOADING_ACTION_TYPES,
+  INSIGHT,
+  INPUT_TYPES,
+} from "../../../../../constants";
 import {
   SECTIONS,
   FIELDS,
   OPTIONS,
-  EDUCATION_REQUIRED_VISA,
+  SEVIS_DSO_REQUIRED_VISA,
   EAD_NOT_REQUIRED_VISA,
   EAD_OPTIONAL_VISA,
   HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
@@ -32,19 +43,40 @@ import {
 import sectionClasses from "../sections.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
+const { TOGGLE_FIELD, HIDE_FIELD } = INSIGHT;
 const { sections } = CONTENT.ONBOARD.candidateForm;
 
 /**
- * Personal Component
+ * Reducer function for managing the visibility of sensitive fields.
  *
- * Handles the personal details section of the onboarding process.
- * It validates, submits, and manages the user input for personal details such as name, email, phone numbers, etc.
+ * This function toggles the visibility state of specified fields, allowing
+ * sensitive data to be shown or hidden based on user actions.
  *
- * @param {Object} props - The component props.
- * @param {boolean} props.isInNewRoute - Indicates if the component is in a new route.
- * @param {React.Ref} ref - The reference passed from the parent component.
- * @returns {JSX.Element} The rendered Personal component.
+ * @param {Object} state - The current state of visibility for each field.
+ *                          Each key represents a field, and its value is a boolean
+ *                          indicating whether the field is visible (true) or hidden (false).
+ * @param {Object} action - The action object containing information for the reducer.
+ * @param {string} action.type - The type of action to be performed (e.g., TOGGLE_FIELD).
+ * @param {string} action.field - The name of the field whose visibility is to be toggled.
+ * @returns {Object} - The updated state with the specified field's visibility toggled.
  */
+const visibilityReducer = (state, action) => {
+  switch (action.type) {
+    case TOGGLE_FIELD:
+      return {
+        ...state,
+        [action.field]: !state[action.field],
+      };
+    case HIDE_FIELD:
+      return {
+        ...state,
+        [action.field]: false,
+      };
+    default:
+      return state;
+  }
+};
+
 const Personal = forwardRef(({ isInNewRoute }, ref) => {
   const dispatch = useDispatch();
   const {
@@ -68,11 +100,15 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         skypeId,
         referenceName,
       },
-      education: {
-        graduatedUniversity: { additionalCertifications },
-      },
     },
   } = useSelector((state) => state.input);
+
+  // Initialize visibility state with reducer
+  const [showFields, dispatchVisibility] = useReducer(visibilityReducer, {
+    passportNumber: isInNewRoute,
+    eadNumber: isInNewRoute,
+    photoIDNumber: isInNewRoute,
+  });
 
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
@@ -210,13 +246,14 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
 
   const {
     value: SSNValue,
+    originalValue: SSNOriginalValue,
     handleInputChange: SSNChange,
     handleInputBlur: SSNBlur,
     handleInputFocus: SSNFocus,
     error: SSNError,
     isFocused: isSSNFocused,
     forceValidations: forceSSNValidations,
-  } = useInput(SSN, validations.SSN, transformSSN, true);
+  } = useInput(SSN, validations.SSN, transformSSN, true, INPUT_TYPES.SSN);
 
   const {
     value: photoIDTypeValue,
@@ -341,6 +378,26 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
   };
 
   /**
+   * Hides sensitive fields like passport number, EAD number, and photo ID number.
+   * This function is typically called when navigating to the next section
+   * to ensure sensitive information is not displayed unnecessarily.
+   */
+  const hideSensitiveFieldsOnNext = () => {
+    dispatchVisibility({
+      type: HIDE_FIELD,
+      field: "passportNumber",
+    });
+    dispatchVisibility({
+      type: HIDE_FIELD,
+      field: "eadNumber",
+    });
+    dispatchVisibility({
+      type: HIDE_FIELD,
+      field: "photoIDNumber",
+    });
+  };
+
+  /**
    * Handles form submission.
    * Validates the section and submits data to the Redux store.
    * Focuses on errors if any validation fails.
@@ -379,7 +436,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         }
 
         // Resetting SevisID, DSO and university details if visa status is not one of F1-OPT, F1-CPT
-        if (!EDUCATION_REQUIRED_VISA.includes(visaStatusValue)) {
+        if (!SEVIS_DSO_REQUIRED_VISA.includes(visaStatusValue)) {
           dispatch(
             inputActions.updateField({
               section: SECTIONS.EDUCATION,
@@ -395,20 +452,6 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
                 [FIELDS.EDUCATION.DSO.NAME]: "",
                 [FIELDS.EDUCATION.DSO.EMAIL]: "",
                 [FIELDS.EDUCATION.DSO.PHONE]: "",
-              },
-            })
-          );
-          dispatch(
-            inputActions.updateField({
-              section: SECTIONS.EDUCATION,
-              field: FIELDS.EDUCATION.GRADUATED_UNIVERSITY.VALUE,
-              value: {
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.NAME]: "",
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.PASSED_MONTH_YEAR]: "",
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.STREAM]: "",
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY.ADDRESS]: defaultAddress,
-                [FIELDS.EDUCATION.GRADUATED_UNIVERSITY
-                  .ADDITIONAL_CERTIFICATIONS]: additionalCertifications,
               },
             })
           );
@@ -508,7 +551,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.PERSONAL,
           field: FIELDS.PERSONAL.SSN,
-          value: SSNValue,
+          value: extractOnlyDigits(SSNOriginalValue),
         })
       );
       dispatch(
@@ -543,12 +586,15 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
         })
       );
       dispatch(inputActions.enableFormSectionSubmission());
+
+      hideSensitiveFieldsOnNext();
     }
   };
 
   // Expose methods to parent using ref
   useImperativeHandle(ref, () => ({
     submit,
+    hideSensitiveFieldsOnNext,
   }));
 
   return (
@@ -672,10 +718,12 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           extraClass={sectionClasses.halfInputWidth}
         />
       </div>
+
       <div className={sectionClasses.formRow}>
         <InputV2
           id="passportNumber"
-          type="text"
+          autoComplete="off"
+          type={showFields.passportNumber ? "text" : "password"}
           label={sections.personal.passportNumber}
           value={passportNumberValue}
           changeHandler={passportNumberChange}
@@ -684,6 +732,19 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           error={passportNumberError}
           isFocused={isPassportNumberFocused}
           extraClass={sectionClasses.halfInputWidth}
+          rightIcon={
+            showFields.passportNumber ? (
+              <i className="bi bi-eye-slash"></i>
+            ) : (
+              <i className="bi bi-eye"></i>
+            )
+          }
+          rightIconOnClick={() =>
+            dispatchVisibility({
+              type: TOGGLE_FIELD,
+              field: "passportNumber",
+            })
+          }
           isRequired
         />
 
@@ -692,6 +753,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           type="text"
           label={sections.personal.ssn}
           value={SSNValue}
+          autoComplete="off"
           changeHandler={SSNChange}
           blurHandler={SSNBlur}
           focusHandler={SSNFocus}
@@ -718,7 +780,8 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       {isEADRequired && (
         <InputV2
           id="eadNumber"
-          type="text"
+          autoComplete="off"
+          type={showFields.eadNumber ? "text" : "password"}
           label={sections.personal.eadNumber}
           value={eadNumberValue}
           changeHandler={eadNumberChange}
@@ -727,6 +790,19 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           error={eadNumberError}
           isFocused={isEadNumberFocused}
           extraClass={sectionClasses.fullInputWidth}
+          rightIcon={
+            showFields.eadNumber ? (
+              <i className="bi bi-eye-slash"></i>
+            ) : (
+              <i className="bi bi-eye"></i>
+            )
+          }
+          rightIconOnClick={() =>
+            dispatchVisibility({
+              type: TOGGLE_FIELD,
+              field: "eadNumber",
+            })
+          }
           isRequired={!isEADOptional}
         />
       )}
@@ -748,7 +824,8 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       {photoIDTypeValue && (
         <InputV2
           id="photoIDNumber"
-          type="text"
+          autoComplete="off"
+          type={showFields.photoIDNumber ? "text" : "password"}
           label={
             photoIDTypeValue === "DL"
               ? sections.personal.licenseNumber
@@ -761,6 +838,19 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
           error={photoIDNumberError}
           isFocused={isPhotoIDNumberFocused}
           extraClass={sectionClasses.fullInputWidth}
+          rightIcon={
+            showFields.photoIDNumber ? (
+              <i className="bi bi-eye-slash"></i>
+            ) : (
+              <i className="bi bi-eye"></i>
+            )
+          }
+          rightIconOnClick={() =>
+            dispatchVisibility({
+              type: TOGGLE_FIELD,
+              field: "photoIDNumber",
+            })
+          }
           isRequired
         />
       )}

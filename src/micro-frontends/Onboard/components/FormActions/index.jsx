@@ -19,9 +19,15 @@ const { save, close } = CONTENT.ONBOARD.candidateForm.buttons;
  * @param {boolean} isInNewRoute - Whether the form is part of a new route (navigation flow).
  * @param {Function} previousHandler - Function to handle the previous button action.
  * @param {Function} nextHandler - Function to handle the next button action.
+ * @param {Function} nextAndSaveHandler - Function to handle the next and save button action .
  * @returns {JSX.Element} The rendered FormActions component.
  */
-const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
+const FormActions = ({
+  isInNewRoute,
+  previousHandler,
+  nextHandler,
+  nextAndSaveHandler,
+}) => {
   const { isLoading } = useLoading(); // Fetch loading status for the button
   const { enableRefetch } = useUI(); // Refetch flag from UI state
   const { currentSectionIndex: index, isEditMode } = useSelector(
@@ -44,19 +50,20 @@ const FormActions = ({ isInNewRoute, previousHandler, nextHandler }) => {
       <div className={classes.navActions}>
         {/* Previous button: Disabled if it's the first section */}
         {index !== 0 && (
-          <Button
-            className={classes.button}
-            disabled={!isEditMode} // Disable if not in edit mode
-            onClick={previousHandler}
-          >
+          <Button className={classes.button} onClick={previousHandler}>
             <i className="bi bi-caret-left-fill" />
+          </Button>
+        )}
+        {index < 9 && !isInNewRoute && (
+          <Button className={classes.button} onClick={nextHandler}>
+            <i className="bi bi-caret-right-fill" />
           </Button>
         )}
         {/* Next button: Text changes based on loading status and current section */}
         <Button
           className={`${classes.button} ${isLoading[BUTTON] ? "loading" : ""}`}
           disabled={!isEditMode} // Disable if not in edit mode
-          onClick={nextHandler}
+          onClick={nextAndSaveHandler}
         >
           {
             isLoading[BUTTON]

@@ -158,9 +158,22 @@ const Form = () => {
 
   /**
    * Next button click handler
+   * Navigates to the next section of the form
+   */
+  const nextClickHandler = (event) => {
+    event.preventDefault();
+
+    // Hide sensitive fields on next in view mode
+    if (current === 1) personalRef.current?.hideSensitiveFieldsOnNext?.();
+
+    dispatch(inputActions.incrementCurrentSectionIndex());
+  };
+
+  /**
+   * Next and save button click handler
    * Submits the current section and navigates to the next section
    */
-  const nextClickHandler = async (event) => {
+  const nextAndSaveClickHandler = async (event) => {
     event.preventDefault();
 
     if (current === 0) {
@@ -215,6 +228,7 @@ const Form = () => {
           isInNewRoute={isInNewRoute}
           previousHandler={previousClickHandler}
           nextHandler={nextClickHandler}
+          nextAndSaveHandler={nextAndSaveClickHandler}
         />
       </form>
     </div>

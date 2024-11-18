@@ -5,7 +5,7 @@ import classes from "./index.module.scss";
 /**
  * InputV2 Component
  *
- * A styled input component with label, error handling, and focus control.
+ * A styled input component with label, error handling, focus control, and optional right icon.
  *
  * @param {Object} props - The component props.
  * @param {string} props.id - The id of the input element.
@@ -18,6 +18,8 @@ import classes from "./index.module.scss";
  * @param {string} [props.error] - Error message to display if validation fails.
  * @param {boolean} [props.isFocused] - Whether the input is focused initially.
  * @param {boolean} [props.isRequired] - Whether the input field is required.
+ * @param {React.ReactNode} [props.rightIcon] - Icon to be displayed on the right side of the input.
+ * @param {function} [props.rightIconOnClick] - Callback function for the right icon click.
  * @returns {JSX.Element} The InputV2 component.
  */
 const InputV2 = forwardRef(
@@ -33,6 +35,8 @@ const InputV2 = forwardRef(
       error,
       isFocused,
       isRequired = false,
+      rightIcon,
+      rightIconOnClick,
       ...props
     },
     ref
@@ -54,21 +58,33 @@ const InputV2 = forwardRef(
         <label htmlFor={id}>
           {label} {isRequired && <span className={classes.required}>*</span>}
         </label>
-        <input
-          ref={inputRef}
-          id={id}
-          className={`${isFocused ? classes.focused : ""} ${
-            error ? classes.error : ""
-          }`}
-          value={value}
-          onChange={changeHandler}
-          onBlur={blurHandler}
-          onFocus={focusHandler}
-          aria-required={isRequired}
-          data-error={error ? "true" : undefined}
-          data-focusable="true"
-          {...props}
-        />
+        <div className={classes.inputWrapper}>
+          <input
+            ref={inputRef}
+            id={id}
+            className={`${isFocused ? classes.focused : ""} ${
+              error ? classes.error : ""
+            }`}
+            value={value}
+            onChange={changeHandler}
+            onBlur={blurHandler}
+            onFocus={focusHandler}
+            aria-required={isRequired}
+            data-error={error ? "true" : undefined}
+            data-focusable="true"
+            {...props}
+          />
+          {rightIcon && (
+            <span
+              onClick={rightIconOnClick}
+              className={classes.rightIcon}
+              role="button"
+              tabIndex={0}
+            >
+              {rightIcon}
+            </span>
+          )}
+        </div>
         <small className={classes.errorText}>{error || ""}</small>
       </div>
     );
@@ -86,6 +102,8 @@ InputV2.propTypes = {
   error: PropTypes.string,
   isFocused: PropTypes.bool,
   isRequired: PropTypes.bool,
+  rightIcon: PropTypes.node,
+  rightIconOnClick: PropTypes.func,
 };
 
 InputV2.displayName = "InputVersion2";

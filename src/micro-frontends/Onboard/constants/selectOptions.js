@@ -15,16 +15,16 @@ export const VISA_STATUS_VALUES = {
   EB3: "EB-3", // EB-3 visa (Skilled Workers, Professionals)
   F1CPT: "F-1-CPT", // F-1 CPT (Curricular Practical Training)
   F1OPT: "F-1-OPT", // F-1 OPT (Optional Practical Training)
-  GREEN_CARD: "GreenCard", // Green Card (Permanent Resident)
+  GREEN_CARD: "Green-Card", // Green Card (Permanent Resident)
   H1B: "H-1B", // H-1B visa (Specialty Occupations)
   H4: "H-4", // H-4 visa (Dependent of H-1B Holder)
   J1: "J-1", // J-1 visa (Exchange Visitor)
   J2: "J-2", // J-2 visa (Dependent of J-1 Holder)
   L1: "L-1", // L-1 visa (Intracompany Transferee)
   L2: "L-2", // L-2 visa (Dependent of L-1 Holder)
-  OTHERS: "others", // Other visa types
+  OTHERS: "Others", // Other visa types
   TN: "TN", // TN visa (NAFTA Professionals)
-  US_CITIZEN: "USCitizen", // US Citizen status
+  US_CITIZEN: "US-Citizen", // US Citizen status
 };
 
 /**
@@ -38,16 +38,38 @@ export const ONBOARDING_STATUS_VALUES = {
 };
 
 /**
+ * Constants representing different onboarding status labels.
+ */
+export const ONBOARDING_STATUS_LABELS = {
+  YET_TO_REVIEW: "Yet To Review",
+  UNDER_REVIEW: "Under Review",
+  IN_PROGRESS: "In Progress",
+  COMPLETED: "Completed",
+};
+
+/**
  * Options for various sections of the form.
  * These options are used for dropdowns and selection fields in the UI.
  */
 export const OPTIONS = {
   // Onboarding status options
   ONBOARDING_STATUS: [
-    { value: ONBOARDING_STATUS_VALUES.YET_TO_REVIEW, label: "Yet To Review" },
-    { value: ONBOARDING_STATUS_VALUES.UNDER_REVIEW, label: "Under Review" },
-    { value: ONBOARDING_STATUS_VALUES.IN_PROGRESS, label: "In Progress" },
-    { value: ONBOARDING_STATUS_VALUES.COMPLETED, label: "Completed" },
+    {
+      value: ONBOARDING_STATUS_VALUES.YET_TO_REVIEW,
+      label: ONBOARDING_STATUS_LABELS.YET_TO_REVIEW,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.UNDER_REVIEW,
+      label: ONBOARDING_STATUS_LABELS.UNDER_REVIEW,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.IN_PROGRESS,
+      label: ONBOARDING_STATUS_LABELS.IN_PROGRESS,
+    },
+    {
+      value: ONBOARDING_STATUS_VALUES.COMPLETED,
+      label: ONBOARDING_STATUS_LABELS.COMPLETED,
+    },
   ],
   // Gender options
   GENDER: [
@@ -181,5 +203,6 @@ export const OPTIONS = {
     { value: "inProgress", label: "In Progress" },
     { value: "accepted", label: "Accepted" },
     { value: "rejected", label: "Rejected" },
+    { value: "notApplicable", label: "Not Applicable" },
   ],
 };

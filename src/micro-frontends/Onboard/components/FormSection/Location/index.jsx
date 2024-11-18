@@ -114,7 +114,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.LOCATION,
           field: FIELDS.LOCATION.USA_LOCATION,
-          value: usaAddress,
+          value: usaAddress || defaultAddress,
         })
       );
 
@@ -122,7 +122,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.LOCATION,
           field: FIELDS.LOCATION.INDIA_LOCATION,
-          value: indiaAddress,
+          value: indiaAddress || defaultAddress,
         })
       );
       dispatch(
@@ -151,7 +151,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
       <Address
         heading={sections.location.usaHeading}
         defaultValue={usaLocation}
-        id="current"
+        id="usaAddress"
         ref={usaLocRef}
       />
 
@@ -181,7 +181,7 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
                 !isHomeAddressOptional ? sections.location.indiaHeading : ""
               }
               defaultValue={indiaLocation}
-              id="current"
+              id="indiaAddress"
               ref={indiaLocRef}
               isRequired
             />
