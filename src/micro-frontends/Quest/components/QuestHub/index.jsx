@@ -1,10 +1,10 @@
 // import { Provider } from "react-redux";
 import Header from "../../../Atoms/components/Operations";
-// import QuestionGenerator from "../QuestionGenerator";
+import QuestionsGenerator from "../QuestionsGenerator";
 // import ConversationDisplay from "../ConversationDisplay";
 // import store from "../../store/store";
 import { PAGES } from "../../../../constants";
-// import classes from "./index.module.scss";
+import classes from "./index.module.scss";
 
 /**
  * QuestHub Component
@@ -18,15 +18,17 @@ import { PAGES } from "../../../../constants";
 const QuestHub = () => {
   return (
     // <Provider store={store}>
-    <Header
-      currentPage={PAGES.QUEST}
-      includeSearch={false} // Adjust based on whether search is needed
-      includePagination={false}
-    />
-    //   {/* <section className={classes.questHub}>
-    //     <QuestionGenerator />
-    //     <ConversationDisplay />
-    //   </section> */}
+    <>
+      <Header
+        currentPage={PAGES.QUEST}
+        includeSearch={false} // Adjust based on whether search is needed
+        includePagination={false}
+      />
+      <section className={classes.questHub}>
+        <QuestionsGenerator />
+        {/* <ConversationDisplay /> */}
+      </section>
+    </>
     // </Provider>
   );
 };
