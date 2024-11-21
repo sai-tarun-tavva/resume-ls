@@ -3,7 +3,7 @@ import Button from "../../../Atoms/components/Button";
 import { useInput } from "../../../Atoms/hooks";
 import { useLoading } from "../../../../store";
 import { questValidations } from "../../../../utilities";
-import { CONTENT, LOADING_ACTION_TYPES } from "../../../../constants";
+import { LOADING_ACTION_TYPES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 const { FETCH } = LOADING_ACTION_TYPES;

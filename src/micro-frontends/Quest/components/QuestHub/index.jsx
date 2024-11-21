@@ -1,8 +1,8 @@
-// import { Provider } from "react-redux";
+import { Provider } from "react-redux";
 import Header from "../../../Atoms/components/Operations";
 import QuestionsGenerator from "../QuestionsGenerator";
 // import ConversationDisplay from "../ConversationDisplay";
-// import store from "../../store/store";
+import store from "../../store/store";
 import { PAGES } from "../../../../constants";
 import classes from "./index.module.scss";
 
@@ -17,8 +17,7 @@ import classes from "./index.module.scss";
  */
 const QuestHub = () => {
   return (
-    // <Provider store={store}>
-    <>
+    <Provider store={store}>
       <Header
         currentPage={PAGES.QUEST}
         includeSearch={false} // Adjust based on whether search is needed
@@ -28,8 +27,7 @@ const QuestHub = () => {
         <QuestionsGenerator />
         {/* <ConversationDisplay /> */}
       </section>
-    </>
-    // </Provider>
+    </Provider>
   );
 };
 
