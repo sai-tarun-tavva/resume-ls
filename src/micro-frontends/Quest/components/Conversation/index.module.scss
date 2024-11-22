@@ -45,7 +45,7 @@
       margin-bottom: 1rem;
       gap: 0.63rem;
 
-      .bi {
+      i {
         font-size: 1.5rem;
         flex-shrink: 0;
       }
@@ -62,7 +62,7 @@
     .aiMessage {
       align-self: flex-start;
 
-      .bi {
+      i {
         color: var(--primary-color);
       }
 
@@ -77,8 +77,8 @@
       align-self: flex-end;
       flex-direction: row-reverse;
 
-      .bi {
-        color: var(--success-color);
+      i {
+        color: var(--text-lighter);
       }
 
       .messageContent {
