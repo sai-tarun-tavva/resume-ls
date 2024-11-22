@@ -672,6 +672,10 @@ export const CONTENT = {
    * QUEST Module content for assessing candidates.
    */
   QUEST: {
+    statusMessages: {
+      conversation:
+        "We are unable to determine the call status. Please check manually.",
+    },
     operations: {
       logoSuffix: "R",
       logo: "Quest",

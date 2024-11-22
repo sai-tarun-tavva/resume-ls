@@ -27,15 +27,30 @@ import classes from "./index.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
 
+/**
+ * CallerInput Component
+ *
+ * Manages user input for initiating calls, validates phone numbers, handles API communication,
+ * and displays calling information or conversations based on the current state.
+ *
+ * @component
+ * @returns {JSX.Element} The CallerInput component.
+ */
 const CallerInput = () => {
+  // Hooks for managing state and dispatch
   const { updateStatus, resetStatus } = useStatus();
   const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
   const dispatch = useDispatch();
+
+  // Redux state selectors
   const { questions, sessionID, conversation } = useSelector(
     (state) => state.result
   );
+
+  // Local state for managing phone number display
   const [phoneNumber, setPhoneNumber] = useState("");
 
+  // Custom hook for input management and validation
   const {
     value: phoneNumberValue,
     handleInputChange: phoneNumberChange,
@@ -45,74 +60,98 @@ const CallerInput = () => {
     clearValue: clearPhoneNumber,
   } = useInput("", questValidations.phone, transformPhoneNumber, true);
 
+  /*
+   * Polling for conversation updates when sessionID exists
+   */
   useEffect(() => {
     if (!sessionID) return;
 
     let failureCount = 0;
+
     const interval = setInterval(async () => {
-      const { status, data, isEnded } = await getConversation(
-        replaceRouteParam(END_POINTS.QUEST.GET_CONVERSATION, { sessionID })
-      );
+      try {
+        const { status, data, isEnded } = await getConversation(
+          replaceRouteParam(END_POINTS.QUEST.GET_CONVERSATION, { sessionID })
+        );
 
-      if (status === STATUS_CODES.SUCCESS) {
-        if (isEnded) {
-          dispatch(resultActions.updateConversation(data));
-          dispatch(resultActions.updateSessionID(""));
-          clearInterval(interval); // Stop polling if the call is ended
+        if (status === STATUS_CODES.SUCCESS) {
+          if (isEnded) {
+            dispatch(resultActions.updateConversation(data));
+            dispatch(resultActions.updateSessionID(""));
+            clearInterval(interval); // Stop polling if the call is ended
+          }
+        } else {
+          failureCount += 1;
+          if (failureCount >= 5) {
+            clearInterval(interval); // Stop polling after 5 failures
+            dispatch(resultActions.updateSessionID(""));
+            updateStatus({
+              message: CONTENT.QUEST.statusMessages.conversation,
+              type: "failure",
+            });
+          }
         }
-      } else {
-        failureCount += 1;
+      } catch (error) {
+        console.error("Failed to fetch conversation:", error);
+        updateStatus({
+          message: CONTENT.QUEST.statusMessages.conversation,
+          type: "failure",
+        });
+      }
+    }, 120000); // 2 minutes interval
 
-        // Stop polling after 5 failures and update status
-        if (failureCount >= 5) {
-          clearInterval(interval);
-          dispatch(resultActions.updateSessionID(""));
+    // Cleanup the interval on unmount or sessionID change
+    return () => clearInterval(interval);
+  }, [sessionID, dispatch, updateStatus]);
+
+  /**
+   * Handles the initiation of a call.
+   *
+   * @param {React.FormEvent} event - The form submission event.
+   */
+  const callHandler = async (event) => {
+    event.preventDefault();
+
+    if (isLoading[BUTTON]) return; // Prevent duplicate actions
+
+    await dispatchAsync(resetStatus); // Reset status before the call
+
+    if (!phoneNumberValue) {
+      forcePhoneNumberValidations(); // Trigger validations if input is empty
+    } else {
+      enableButtonLoading(); // Enable button loading state
+
+      try {
+        const formData = new FormData();
+        formData.append("target_number", extractOnlyDigits(phoneNumberValue));
+
+        const { status, data } = await initiateCall(formData);
+
+        if (status === STATUS_CODES.SUCCESS) {
+          dispatch(resultActions.updateSessionID(data));
+          setPhoneNumber(phoneNumberValue);
+          clearPhoneNumber(); // Clear input after successful submission
+        } else {
           updateStatus({
-            message:
-              "We are unable to determine the call status. Please check manually.",
+            message: CONTENT.COMMON.serverError,
             type: "failure",
           });
         }
-      }
-    }, 1.5 * 60 * 1000); // 2 minutes interval
-
-    return () => {
-      clearInterval(interval); // Cleanup on unmount or when sessionID changes
-    };
-  }, [sessionID, dispatch, updateStatus]);
-
-  const callHandler = async (event) => {
-    event.preventDefault();
-    if (isLoading[BUTTON]) return;
-
-    await dispatchAsync(resetStatus);
-
-    if (!phoneNumberValue) forcePhoneNumberValidations();
-    else {
-      enableButtonLoading();
-
-      const formData = new FormData();
-      formData.append("target_number", extractOnlyDigits(phoneNumberValue));
-
-      const { status, data } = await initiateCall(formData);
-
-      if (status === STATUS_CODES.SUCCESS) {
-        dispatch(resultActions.updateSessionID(data));
-        setPhoneNumber(phoneNumberValue);
-        clearPhoneNumber();
-      } else {
+      } catch (error) {
         updateStatus({
           message: CONTENT.COMMON.serverError,
           type: "failure",
         });
+        console.error("Call initiation failed:", error);
+      } finally {
+        disableButtonLoading(); // Disable button loading state
       }
-
-      disableButtonLoading();
     }
   };
 
   return (
     <>
+      {/* Phone number input and call button */}
       <div className={classes.callerInputContainer}>
         <InputV1
           id="phoneNumber"
@@ -136,6 +175,7 @@ const CallerInput = () => {
         </Button>
       </div>
 
+      {/* Conditional rendering based on state */}
       {isLoading[BUTTON] ? (
         <Loader extraClass={classes.loaderExtraClass} />
       ) : sessionID ? (

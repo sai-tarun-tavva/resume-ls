@@ -9,20 +9,24 @@ import classes from "./index.module.scss";
 /**
  * QuestHub Component
  *
- * Main hub for displaying question generation and conversation display within the RQuest application.
- * Wraps the `QuestionGenerator` and `CallHub` components with the Redux provider for state management.
+ * The central hub of the RQuest application, responsible for rendering the question generation
+ * and conversation display functionalities. It integrates Redux for state management
+ * and includes a common header for navigation.
  *
  * @component
- * @returns {JSX.Element} The QuestHub component containing a header, question generation, and conversation display sections.
+ * @returns {JSX.Element} The QuestHub component, including the Header, QuestionsGenerator, and CallHub components.
  */
 const QuestHub = () => {
   return (
     <Provider store={store}>
+      {/* Header section */}
       <Header
         currentPage={PAGES.QUEST}
-        includeSearch={false} // Adjust based on whether search is needed
-        includePagination={false}
+        includeSearch={false} // Toggle search functionality if required
+        includePagination={false} // Toggle pagination functionality if required
       />
+
+      {/* Main content section */}
       <section className={classes.questHub}>
         <QuestionsGenerator />
         <CallHub />
