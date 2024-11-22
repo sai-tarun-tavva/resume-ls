@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CallingDisplay from "../CallingDisplay";
+import Conversation from "../Conversation";
 import InputV1 from "../../../Atoms/components/Inputs/InputV1";
 import Button from "../../../Atoms/components/Button";
 import Loader from "../../../Atoms/components/Loader";
@@ -19,7 +21,6 @@ import {
   STATUS_CODES,
 } from "../../../../constants";
 import classes from "./index.module.scss";
-import CallingDisplay from "../CallingDisplay";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
 
@@ -27,7 +28,9 @@ const CallerInput = () => {
   const { updateStatus, resetStatus } = useStatus();
   const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
   const dispatch = useDispatch();
-  const { questions, sessionID } = useSelector((state) => state.result);
+  const { questions, sessionID, conversation } = useSelector(
+    (state) => state.result
+  );
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const {
@@ -98,6 +101,8 @@ const CallerInput = () => {
         <Loader extraClass={classes.loaderExtraClass} />
       ) : sessionID ? (
         <CallingDisplay phoneNumber={phoneNumber} />
+      ) : Object.keys(conversation).length > 0 ? (
+        <Conversation />
       ) : (
         <div className={classes.noContent}>
           <p>
