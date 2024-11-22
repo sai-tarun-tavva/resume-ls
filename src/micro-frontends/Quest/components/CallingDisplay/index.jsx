@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { formatTime } from "../../../../utilities";
 import classes from "./index.module.scss";
 
 const CallingDisplay = ({ phoneNumber }) => {
@@ -27,15 +28,6 @@ const CallingDisplay = ({ phoneNumber }) => {
     // Cleanup the timer when the component unmounts or the call ends
     return () => clearInterval(timer);
   }, [isCalling]);
-
-  // Format the timer as MM:SS
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
-    const secs = (seconds % 60).toString().padStart(2, "0");
-    return `${minutes}:${secs}`;
-  };
 
   return (
     <div className={classes.callingDisplayContainer}>
