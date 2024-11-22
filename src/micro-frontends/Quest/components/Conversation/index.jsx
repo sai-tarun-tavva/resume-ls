@@ -30,20 +30,24 @@ const Conversation = () => {
           <h2>{CONTENT.QUEST.input.conversation.heading}</h2>
         </div>
         <div className={classes.chatBody}>
-          {Object.entries(conversation).map(([key, entry], index) => (
+          {Object.entries(conversation).map(([key, entry]) => (
             <Fragment key={key}>
-              <div className={classes.aiMessage}>
-                <i className="bi bi-robot"></i>
-                <div className={classes.messageContent}>
-                  <p>{entry.ai_response}</p>
+              {entry?.ai_response && (
+                <div className={classes.aiMessage}>
+                  <i className="bi bi-robot"></i>
+                  <div className={classes.messageContent}>
+                    <p>{entry?.ai_response}</p>
+                  </div>
                 </div>
-              </div>
-              <div className={classes.userMessage}>
-                <div className={classes.messageContent}>
-                  <p>{entry.user_response}</p>
+              )}
+              {entry?.user_response && (
+                <div className={classes.userMessage}>
+                  <div className={classes.messageContent}>
+                    <p>{entry?.user_response}</p>
+                  </div>
+                  <i className="bi bi-person-circle"></i>
                 </div>
-                <i className="bi bi-person-circle"></i>
-              </div>
+              )}
             </Fragment>
           ))}
         </div>

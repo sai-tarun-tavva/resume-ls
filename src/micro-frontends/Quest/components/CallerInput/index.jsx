@@ -129,7 +129,7 @@ const CallerInput = () => {
 
         <Button
           onClick={callHandler}
-          disabled={questions.length === 0 || sessionID}
+          disabled={questions.length === 0 || sessionID !== ""}
           className={classes.buttonExtraClass}
         >
           <i className="bi bi-telephone" />
