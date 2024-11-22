@@ -37,6 +37,7 @@ export const CONTENT = {
       onboard: "Onboard",
       insight: "Insight",
       spark: "Spark",
+      quest: "Quest",
     },
     errors: {
       username: {
@@ -664,6 +665,41 @@ export const CONTENT = {
       [EXPERIENCE]: "Domain Experience",
       [SKILLS]: "Desired Skills",
       [HASHTAGS]: "Hashtags",
+    },
+  },
+
+  /**
+   * QUEST Module content for assessing candidates.
+   */
+  QUEST: {
+    statusMessages: {
+      conversation:
+        "We are unable to determine the call status. Please check manually.",
+    },
+    operations: {
+      logoSuffix: "R",
+      logo: "Quest",
+    },
+    input: {
+      text: {
+        placeholder: "Candidate Phone Number",
+        default: "Click {{buttonName}} to initiate the call",
+      },
+      textarea: {
+        label: "Job Description",
+        default: "Click {{buttonName}} to get started",
+      },
+      button: {
+        default: "Generate Questions",
+        loading: "Generating...",
+      },
+      conversation: {
+        heading: "Conversation",
+      },
+      call: {
+        calling: "Calling",
+        onCall: "On Call: ",
+      },
     },
   },
 };

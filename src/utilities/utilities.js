@@ -194,6 +194,20 @@ export const isCandidateNew = (dateCreated) => {
 };
 
 /**
+ * Formats a time duration in seconds into a MM:SS string format.
+ * @param {number} seconds - The duration in seconds to format.
+ * @returns {string} The formatted time in MM:SS format.
+ */
+
+export const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = (seconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${secs}`;
+};
+
+/**
  * Dispatches the action synchronously.
  * @param {function} action - The action to dispatch.
  * @returns {Promise<void>} A promise that resolves after the action is dispatched.

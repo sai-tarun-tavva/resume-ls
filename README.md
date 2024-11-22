@@ -1,12 +1,13 @@
 # 🛠️ RSuite: Comprehensive Talent Management Solution
 
-Welcome to the RSuite project – a robust suite of tools developed to streamline your hiring and onboarding workflows. Built for Logisoft, RSuite aims to improve efficiency in managing resumes, onboarding new candidates, and enhancing resume quality to improve ATS scores.
+Welcome to the RSuite project – a robust suite of tools developed to streamline your hiring and onboarding workflows. Built for Logisoft, RSuite aims to improve efficiency in managing resumes, onboarding new candidates, conducting automated interviews, and enhancing resume quality to improve ATS scores.
 
-This documentation provides an overview of the features in RInsight, ROnboard, and RSpark – the core tools of RSuite.
+This documentation provides an overview of the features in RInsight, ROnboard, RSpark, and RQuest – the core tools of RSuite.
 
 - 🔍 **RInsight**: Smart resume parsing and candidate management.
 - 📋 **ROnboard**: Efficient candidate onboarding system.
 - ⚡ **RSpark**: AI-powered resume optimization.
+- 🎯 **RQuest**: Automated interview system with AI-generated questions.
 
 ### Backend and Data Processing
 
@@ -17,9 +18,9 @@ This documentation provides an overview of the features in RInsight, ROnboard, a
 The RSuite application communicates with backend services through a set of API calls to handle various operations such as:
 
 - **Candidate Data Management**: The UI interfaces with the backend to retrieve, update, and manage candidate data, including their personal information, employment history, and educational background.
-- **AI Services**: RSuite integrates with AI-powered services like **OpenAI** (and potentially **Gemini AI** in the future) to provide features like resume analysis, suggestions for resume improvement, and keyword matching.
+- **AI Services**: RSuite integrates with AI-powered services like **OpenAI** (and potentially **Gemini AI** in the future) to provide features like resume analysis, suggestions for resume improvement, keyword matching, and interview question generation.
 
-The frontend sends requests to the backend, which processes and returns the relevant data to be displayed on the UI. While this project doesn't include the backend implementation, it relies heavily on external services (e.g., OpenAI for resume analysis) to enrich the user experience.
+The frontend sends requests to the backend, which processes and returns the relevant data to be displayed on the UI. While this project doesn't include the backend implementation, it relies heavily on external services (e.g., OpenAI for resume analysis and interview questions) to enrich the user experience.
 
 ## 🚀 Key Features
 
@@ -54,6 +55,14 @@ The frontend sends requests to the backend, which processes and returns the rele
   - Desired Skills
   - Hashtags
 - **Real-time Results**: View AI suggestions and improvements instantly on the right panel.
+
+### RQuest
+
+- **AI-Powered Question Generation**: Generate relevant interview questions based on job descriptions.
+- **Automated Phone Interviews**: Conduct automated phone interviews with candidates.
+- **Real-time Conversation Display**: Monitor interview progress and responses in real-time.
+- **Call Management**: Track call duration and status during interviews.
+- **Conversation History**: Review complete interview transcripts and AI-candidate interactions.
 
 ## 🛠️ Technology Stack
 
@@ -130,6 +139,14 @@ Before you begin, ensure you have the following installed:
 3. **Choose Actions**: Select from various analysis options.
 4. **View Results**: See AI-generated suggestions and improvements in the right panel.
 
+### RQuest
+
+1. **Enter Job Description**: Input the job description to generate relevant interview questions.
+2. **Review Questions**: View and verify AI-generated interview questions.
+3. **Initiate Interview**: Enter candidate's phone number and start the automated interview.
+4. **Monitor Progress**: Track the interview in real-time through the conversation display.
+5. **Review Results**: Access complete interview transcripts and AI-candidate interactions.
+
 ## 🤝 Contributing
 
 This project is for internal use at Logisoft. If you're part of the team and want to contribute, please reach out to the project lead for guidance.
@@ -138,15 +155,17 @@ This project is for internal use at Logisoft. If you're part of the team and wan
 
 This project is proprietary and intended for internal Logisoft use only.
 
-## Version History
+## 📈 Version History
 
-### 1.0.0
+### 🔍 1.0.0 - RInsight Launch
 - **RInsight**: Initial version containing the RInsight tool, which includes features for resume parsing, candidate management, and resume analysis.
 
-### 2.0.0
+### 📋 ⚡ 2.0.0 - Enhanced Talent Management
 - **ROnboard**: Added the ROnboard tool for efficient candidate onboarding, including features for managing candidate profiles and onboarding status.
 - **RSpark**: Introduced RSpark, an AI-powered resume optimization tool for enhancing resumes and improving ATS scores.
 
+### 🎯 3.0.0 - Automated Interviews
+- **RQuest**: Added RQuest, an automated interview system featuring AI-generated questions and phone interview capabilities.
 
 ## 📞 Support
 

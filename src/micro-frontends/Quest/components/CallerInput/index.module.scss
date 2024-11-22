@@ -1,0 +1,39 @@
+.callerInputContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .inputExtraClass {
+    margin-bottom: 0;
+
+    input {
+      width: 17rem;
+    }
+  }
+
+  .buttonExtraClass {
+    height: 3.5rem;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+
+    i {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.loaderExtraClass {
+  width: 130%;
+}
+
+.noContent {
+  color: var(--text-lighter);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 10rem;
+
+  i {
+    margin: 0 0.35rem;
+  }
+}

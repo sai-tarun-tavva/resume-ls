@@ -2,6 +2,7 @@ const WELCOME_HOST_PORT = "http://10.0.12.114:8000/";
 const INSIGHT_HOST_PORT = "http://10.0.12.114:8000/";
 const ONBOARD_HOST_PORT = "http://10.0.12.114:8000/";
 const SPARK_HOST_PORT = "http://10.0.12.114:8000/";
+// const QUEST_HOST_PORT = "http://10.0.12.114:8000";
 
 /**
  * API Endpoints Configuration
@@ -73,5 +74,23 @@ export const END_POINTS = {
    */
   SPARK: {
     GET_SUGGESTIONS: `${SPARK_HOST_PORT}ats/`,
+  },
+
+  /**
+   * QUEST Endpoints
+   *
+   * Handles operations related to generating questions, initializing call and fetching conversation for Quest functionality.
+   */
+  QUEST: {
+    // GENERATE_QUESTIONS: `${QUEST_HOST_PORT}set_questions/`,
+    GENERATE_QUESTIONS:
+      "https://run.mocky.io/v3/f8b35910-3055-4a4c-96bf-1ea5824ca235",
+    // INITIATE_CALL: `${QUEST_HOST_PORT}initiate_call/`,
+    INITIATE_CALL:
+      "https://run.mocky.io/v3/c26344c2-4d3f-449b-a629-800cbd0f6bf5",
+    // GET_CONVERSATION: `${QUEST_HOST_PORT}get-log-data/:sessionId/`,
+    GET_CONVERSATION:
+      // "https://run.mocky.io/v3/9630feca-04f3-4f99-872c-1112cc201f99", // without status
+      "https://run.mocky.io/v3/cb815b52-153a-4d3e-a8ae-7f11e6b774c0", // with status
   },
 };

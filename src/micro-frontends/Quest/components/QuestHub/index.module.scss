@@ -1,0 +1,10 @@
+.questHub {
+  display: flex;
+  overflow: hidden;
+  margin-top: 7.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
+}

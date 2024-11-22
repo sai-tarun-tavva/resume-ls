@@ -72,6 +72,10 @@ const Operations = ({
       logoIcon = "bi bi-lightning-charge-fill";
       displayContent = CONTENT.SPARK.operations;
       break;
+    case PAGES.QUEST:
+      logoIcon = "bi bi-bullseye";
+      displayContent = CONTENT.QUEST.operations;
+      break;
     default:
       break;
   }

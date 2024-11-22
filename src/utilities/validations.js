@@ -364,3 +364,18 @@ export const sparkValidations = {
     isEmpty(value) ? validationMsgs.chooseService.empty : "",
   actions: (value) => (isEmpty(value) ? validationMsgs.actions.empty : ""),
 };
+
+export const questValidations = {
+  jobDescription: (value) =>
+    isEmpty(value) ? validationMsgs.jobDescription.empty : "",
+  phone: (value) => {
+    const digitsOnly = value.replace(/[\s()-]+/g, "");
+    return isEmpty(value)
+      ? validationMsgs.phone.empty
+      : validateWithRegex(
+          digitsOnly,
+          REGEX.phoneRegex,
+          validationMsgs.phone.invalid
+        );
+  },
+};

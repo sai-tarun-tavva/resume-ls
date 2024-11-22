@@ -1,0 +1,27 @@
+.loaderExtraClass {
+  margin-top: 6rem !important;
+}
+
+.questions {
+  cursor: default;
+  min-height: 25rem;
+  height: 25rem;
+  height: auto;
+  overflow-y: auto;
+
+  .question {
+    background: var(--bg-dark);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    line-height: 1.5rem;
+  }
+}
+
+.noQuestions {
+  color: var(--text-lighter);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}

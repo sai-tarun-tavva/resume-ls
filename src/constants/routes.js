@@ -56,4 +56,15 @@ export const ROUTES = {
   SPARK: {
     HOME: "spark",
   },
+
+  /**
+   * Quest Routes
+   *
+   * Routes for the QUEST module, which handles the main Quest functionalities.
+   *
+   * @property {string} HOME - Main page for the Quest module.
+   */
+  QUEST: {
+    HOME: "quest",
+  },
 };
