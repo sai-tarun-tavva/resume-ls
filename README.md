@@ -155,16 +155,16 @@ This project is for internal use at Logisoft. If you're part of the team and wan
 
 This project is proprietary and intended for internal Logisoft use only.
 
-## Version History
+## 📈 Version History
 
-### 1.0.0
+### 🔍 1.0.0 - RInsight Launch
 - **RInsight**: Initial version containing the RInsight tool, which includes features for resume parsing, candidate management, and resume analysis.
 
-### 2.0.0
+### 📋 ⚡ 2.0.0 - Enhanced Talent Management
 - **ROnboard**: Added the ROnboard tool for efficient candidate onboarding, including features for managing candidate profiles and onboarding status.
 - **RSpark**: Introduced RSpark, an AI-powered resume optimization tool for enhancing resumes and improving ATS scores.
 
-### 3.0.0
+### 🎯 3.0.0 - Automated Interviews
 - **RQuest**: Added RQuest, an automated interview system featuring AI-generated questions and phone interview capabilities.
 
 ## 📞 Support
