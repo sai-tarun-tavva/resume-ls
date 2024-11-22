@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputV1 from "../../../Atoms/components/Inputs/InputV1";
 import Button from "../../../Atoms/components/Button";
@@ -27,6 +28,7 @@ const CallerInput = () => {
   const { isLoading, enableButtonLoading, disableButtonLoading } = useLoading();
   const dispatch = useDispatch();
   const { questions, sessionID } = useSelector((state) => state.result);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const {
     value: phoneNumberValue,
@@ -34,6 +36,7 @@ const CallerInput = () => {
     handleInputBlur: phoneNumberBlur,
     error: phoneNumberError,
     forceValidations: forcePhoneNumberValidations,
+    clearValue: clearPhoneNumber,
   } = useInput("", questValidations.phone, transformPhoneNumber, true);
 
   const callHandler = async (event) => {
@@ -53,6 +56,8 @@ const CallerInput = () => {
 
       if (status === STATUS_CODES.SUCCESS) {
         dispatch(resultActions.updateSessionID(data));
+        setPhoneNumber(phoneNumberValue);
+        clearPhoneNumber();
       } else {
         updateStatus({
           message: CONTENT.COMMON.serverError,
@@ -92,7 +97,7 @@ const CallerInput = () => {
       {isLoading[BUTTON] ? (
         <Loader extraClass={classes.loaderExtraClass} />
       ) : sessionID ? (
-        <CallingDisplay phoneNumber={phoneNumberValue} />
+        <CallingDisplay phoneNumber={phoneNumber} />
       ) : (
         <div className={classes.noContent}>
           <p>

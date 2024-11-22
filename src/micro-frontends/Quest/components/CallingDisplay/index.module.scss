@@ -46,6 +46,29 @@
     }
   }
 
+  .calling::after {
+    content: ".";
+    display: inline-block;
+    animation: ellipsis 1.5s steps(3, start) infinite;
+    vertical-align: bottom;
+    margin-left: 2px;
+
+    @keyframes ellipsis {
+      0%,
+      20% {
+        content: ".";
+      }
+      25%,
+      45% {
+        content: "..";
+      }
+      50%,
+      100% {
+        content: "...";
+      }
+    }
+  }
+
   span {
     font-weight: 600;
     color: #007bff;

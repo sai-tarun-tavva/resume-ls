@@ -42,7 +42,7 @@ const CallingDisplay = ({ phoneNumber }) => {
       <i className="bi bi-person-circle" />
       <p>+1 {phoneNumber}</p>
       {isCalling ? (
-        <p>Calling...</p>
+        <p className={classes.calling}>Calling</p>
       ) : (
         <p>
           On Call: <span>{formatTime(callDuration)}</span>
