@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CallingDisplay from "../CallingDisplay";
 import Conversation from "../Conversation";
@@ -11,12 +11,15 @@ import { resultActions } from "../../store";
 import {
   dispatchAsync,
   extractOnlyDigits,
+  getConversation,
   initiateCall,
   questValidations,
+  replaceRouteParam,
   transformPhoneNumber,
 } from "../../../../utilities";
 import {
   CONTENT,
+  END_POINTS,
   LOADING_ACTION_TYPES,
   STATUS_CODES,
 } from "../../../../constants";
@@ -41,6 +44,42 @@ const CallerInput = () => {
     forceValidations: forcePhoneNumberValidations,
     clearValue: clearPhoneNumber,
   } = useInput("", questValidations.phone, transformPhoneNumber, true);
+
+  useEffect(() => {
+    if (!sessionID) return;
+
+    let failureCount = 0;
+    const interval = setInterval(async () => {
+      const { status, data, isEnded } = await getConversation(
+        replaceRouteParam(END_POINTS.QUEST.GET_CONVERSATION, { sessionID })
+      );
+
+      if (status === STATUS_CODES.SUCCESS) {
+        if (isEnded) {
+          dispatch(resultActions.updateConversation(data));
+          dispatch(resultActions.updateSessionID(""));
+          clearInterval(interval); // Stop polling if the call is ended
+        }
+      } else {
+        failureCount += 1;
+
+        // Stop polling after 5 failures and update status
+        if (failureCount >= 5) {
+          clearInterval(interval);
+          dispatch(resultActions.updateSessionID(""));
+          updateStatus({
+            message:
+              "We are unable to determine the call status. Please check manually.",
+            type: "failure",
+          });
+        }
+      }
+    }, 1.5 * 60 * 1000); // 2 minutes interval
+
+    return () => {
+      clearInterval(interval); // Cleanup on unmount or when sessionID changes
+    };
+  }, [sessionID, dispatch, updateStatus]);
 
   const callHandler = async (event) => {
     event.preventDefault();
@@ -90,7 +129,7 @@ const CallerInput = () => {
 
         <Button
           onClick={callHandler}
-          disabled={questions.length === 0}
+          disabled={questions.length === 0 || sessionID}
           className={classes.buttonExtraClass}
         >
           <i className="bi bi-telephone" />

@@ -9,7 +9,7 @@ const CallingDisplay = ({ phoneNumber }) => {
     // Timer for the "Calling" phase
     const callingTimer = setTimeout(() => {
       setIsCalling(false); // Transition to "On Call"
-    }, 60000); // 1 minute = 60000ms
+    }, 45000); // 1 minute = 60000ms
 
     // Cleanup the timeout if the component unmounts before 1 min
     return () => clearTimeout(callingTimer);

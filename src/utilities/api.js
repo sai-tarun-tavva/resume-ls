@@ -526,7 +526,7 @@ export const updateCandidateStatus = async (url, body) => {
  * @param {Object} body - The request body containing whole details get suggestion
  * @returns {Promise<{ status: number, data: Object|null }>} The status and data from the response.
  */
-export const makeSuggestions = async (body = null) => {
+export const makeSuggestions = async (body) => {
   try {
     const response = await fetchWithToken(END_POINTS.SPARK.GET_SUGGESTIONS, {
       method: "POST",
@@ -556,7 +556,7 @@ export const makeSuggestions = async (body = null) => {
  * @param {Object} body - The request body containing job description to generate questions.
  * @returns {Promise<{ status: number, data: Object|null }>} The status and data from the response.
  */
-export const generateQuestions = async (body = null) => {
+export const generateQuestions = async (body) => {
   try {
     const response = await fetchWithToken(END_POINTS.QUEST.GENERATE_QUESTIONS, {
       method: "POST",
@@ -586,7 +586,7 @@ export const generateQuestions = async (body = null) => {
  * @param {Object} body - The request body containing the phone number to initiate call.
  * @returns {Promise<{ status: number, data: Object|null }>} The status and data from the response.
  */
-export const initiateCall = async (body = null) => {
+export const initiateCall = async (body) => {
   try {
     const response = await fetchWithToken(END_POINTS.QUEST.INITIATE_CALL, {
       method: "POST",
@@ -605,5 +605,36 @@ export const initiateCall = async (body = null) => {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Error generating questions:", error);
     return { status: 500, data: null };
+  }
+};
+
+/**
+ * Makes a POST request to initiate call.
+ *
+ * @async
+ * @function
+ * @param {string} url - The URL to which the request is sent.
+ * @returns {Promise<{ status: number, data: Object|null }>} The status and data from the response.
+ */
+export const getConversation = async (url) => {
+  try {
+    const response = await fetchWithToken(url);
+
+    if (!response.ok) {
+      // Assume any error that causes this block to execute is a server issue
+      return { status: response.status, data: null, isEnded: true };
+    } else {
+      // Return the response data and status
+      const resData = await response.json();
+      return {
+        status: response.status,
+        data: resData.log_data,
+        isEnded: resData.status,
+      };
+    }
+  } catch (error) {
+    // Assume any error that causes this block to execute is a server or network issue
+    console.error("Error fetching conversation:", error);
+    return { status: 500, data: null, isEnded: true };
   }
 };

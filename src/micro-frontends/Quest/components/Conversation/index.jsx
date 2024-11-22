@@ -1,35 +1,54 @@
-import React from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import audioFile from "../../../../assets/convo_notification.wav";
 import classes from "./index.module.scss";
 
 const Conversation = () => {
   const { conversation } = useSelector((state) => state.result);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    // Only play audio if conversation data exists
+    if (
+      conversation &&
+      Object.keys(conversation).length > 0 &&
+      audioRef.current
+    ) {
+      console.log("Audio should play");
+      audioRef.current.play().catch((error) => {
+        console.warn("Audio play failed:", error);
+      });
+    }
+  }, [conversation]);
 
   return (
-    <div className={classes.chatContainer}>
-      <div className={classes.chatHeader}>
-        <i className="bi bi-chat-dots"></i>
-        <h2>Conversation</h2>
-      </div>
-      <div className={classes.chatBody}>
-        {Object.entries(conversation).map(([key, entry], index) => (
-          <React.Fragment key={key}>
-            <div className={classes.aiMessage}>
-              <i className="bi bi-robot"></i>
-              <div className={classes.messageContent}>
-                <p>{entry.ai_response}</p>
+    <>
+      <audio ref={audioRef} src={audioFile} />
+      <div className={classes.chatContainer}>
+        <div className={classes.chatHeader}>
+          <i className="bi bi-chat-dots"></i>
+          <h2>Conversation</h2>
+        </div>
+        <div className={classes.chatBody}>
+          {Object.entries(conversation).map(([key, entry], index) => (
+            <Fragment key={key}>
+              <div className={classes.aiMessage}>
+                <i className="bi bi-robot"></i>
+                <div className={classes.messageContent}>
+                  <p>{entry.ai_response}</p>
+                </div>
               </div>
-            </div>
-            <div className={classes.userMessage}>
-              <div className={classes.messageContent}>
-                <p>{entry.user_response}</p>
+              <div className={classes.userMessage}>
+                <div className={classes.messageContent}>
+                  <p>{entry.user_response}</p>
+                </div>
+                <i className="bi bi-person-circle"></i>
               </div>
-              <i className="bi bi-person-circle"></i>
-            </div>
-          </React.Fragment>
-        ))}
+            </Fragment>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

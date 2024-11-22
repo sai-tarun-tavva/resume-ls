@@ -88,5 +88,9 @@ export const END_POINTS = {
     // INITIATE_CALL: `${QUEST_HOST_PORT}initiate_call/`,
     INITIATE_CALL:
       "https://run.mocky.io/v3/c26344c2-4d3f-449b-a629-800cbd0f6bf5",
+    // GET_CONVERSATION: `${QUEST_HOST_PORT}get-log-data/:sessionId/`,
+    GET_CONVERSATION:
+      // "https://run.mocky.io/v3/9630feca-04f3-4f99-872c-1112cc201f99", // without status
+      "https://run.mocky.io/v3/cb815b52-153a-4d3e-a8ae-7f11e6b774c0", // with status
   },
 };
