@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import audioFile from "../../../../assets/convo_notification.wav";
+import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
 const Conversation = () => {
@@ -14,7 +15,6 @@ const Conversation = () => {
       Object.keys(conversation).length > 0 &&
       audioRef.current
     ) {
-      console.log("Audio should play");
       audioRef.current.play().catch((error) => {
         console.warn("Audio play failed:", error);
       });
@@ -27,7 +27,7 @@ const Conversation = () => {
       <div className={classes.chatContainer}>
         <div className={classes.chatHeader}>
           <i className="bi bi-chat-dots"></i>
-          <h2>Conversation</h2>
+          <h2>{CONTENT.QUEST.input.conversation.heading}</h2>
         </div>
         <div className={classes.chatBody}>
           {Object.entries(conversation).map(([key, entry], index) => (

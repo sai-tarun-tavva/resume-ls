@@ -676,5 +676,26 @@ export const CONTENT = {
       logoSuffix: "R",
       logo: "Quest",
     },
+    input: {
+      text: {
+        placeholder: "Candidate Phone Number",
+        default: "Click {{buttonName}} to initiate the call",
+      },
+      textarea: {
+        label: "Job Description",
+        default: "Click {{buttonName}} to get started",
+      },
+      button: {
+        default: "Generate Questions",
+        loading: "Generating...",
+      },
+      conversation: {
+        heading: "Conversation",
+      },
+      call: {
+        calling: "Calling",
+        onCall: "On Call: ",
+      },
+    },
   },
 };

@@ -1,7 +1,11 @@
 import { useSelector } from "react-redux";
 import Loader from "../../../Atoms/components/Loader";
 import { useLoading } from "../../../../store";
-import { LOADER_TYPES, LOADING_ACTION_TYPES } from "../../../../constants";
+import {
+  CONTENT,
+  LOADER_TYPES,
+  LOADING_ACTION_TYPES,
+} from "../../../../constants";
 import classes from "./index.module.scss";
 
 const { FETCH } = LOADING_ACTION_TYPES;
@@ -23,7 +27,9 @@ const QuestionsDisplay = () => {
   ) : (
     <div className={classes.noQuestions}>
       <p>
-        Click <strong>Generate Questions</strong> to get started
+        {CONTENT.QUEST.input.textarea.default.split("{{buttonName}}")[0]}
+        <strong>{CONTENT.QUEST.input.button.default}</strong>
+        {CONTENT.QUEST.input.textarea.default.split("{{buttonName}}")[1]}
       </p>
     </div>
   );

@@ -117,7 +117,7 @@ const CallerInput = () => {
         <InputV1
           id="phoneNumber"
           type="tel"
-          placeholder="Candidate Phone Number"
+          placeholder={CONTENT.QUEST.input.text.placeholder}
           value={phoneNumberValue}
           onChange={phoneNumberChange}
           onBlur={phoneNumberBlur}
@@ -144,9 +144,9 @@ const CallerInput = () => {
         <Conversation />
       ) : (
         <div className={classes.noContent}>
-          <p>
-            Click <strong>Call Button</strong> to initiate the call
-          </p>
+          {CONTENT.QUEST.input.text.default.split("{{buttonName}}")[0]}
+          <i className="bi bi-telephone-fill" />
+          {CONTENT.QUEST.input.text.default.split("{{buttonName}}")[1]}
         </div>
       )}
     </>

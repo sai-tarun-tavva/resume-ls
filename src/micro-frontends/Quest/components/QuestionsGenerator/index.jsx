@@ -65,7 +65,7 @@ const QuestionsGenerator = () => {
       <form>
         <Textarea
           id="description"
-          label="Job Description"
+          label={CONTENT.QUEST.input.textarea.label}
           value={jobDescriptionValue}
           changeHandler={jobDescriptionChange}
           blurHandler={jobDescriptionBlur}
@@ -79,7 +79,9 @@ const QuestionsGenerator = () => {
           className={`${classes.button} ${isLoading[FETCH] ? "loading" : ""}`}
           onClick={generateHandler}
         >
-          {isLoading[FETCH] ? "Generating..." : "Generate Questions"}
+          {isLoading[FETCH]
+            ? CONTENT.QUEST.input.button.loading
+            : CONTENT.QUEST.input.button.default}
           <i className="bi bi-question-circle" />
         </Button>
 

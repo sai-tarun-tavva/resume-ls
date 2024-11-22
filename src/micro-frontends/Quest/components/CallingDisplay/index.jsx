@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { formatTime } from "../../../../utilities";
+import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
 const CallingDisplay = ({ phoneNumber }) => {
@@ -34,10 +35,11 @@ const CallingDisplay = ({ phoneNumber }) => {
       <i className="bi bi-person-circle" />
       <p>+1 {phoneNumber}</p>
       {isCalling ? (
-        <p className={classes.calling}>Calling</p>
+        <p className={classes.calling}>{CONTENT.QUEST.input.call.calling}</p>
       ) : (
         <p>
-          On Call: <span>{formatTime(callDuration)}</span>
+          {CONTENT.QUEST.input.call.onCall}
+          <span>{formatTime(callDuration)}</span>
         </p>
       )}
     </div>
