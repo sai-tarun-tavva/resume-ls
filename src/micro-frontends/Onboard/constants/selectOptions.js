@@ -22,7 +22,7 @@ export const VISA_STATUS_VALUES = {
   J2: "J-2", // J-2 visa (Dependent of J-1 Holder)
   L1: "L-1", // L-1 visa (Intracompany Transferee)
   L2: "L-2", // L-2 visa (Dependent of L-1 Holder)
-  OTHERS: "Others", // Other visa types
+  OTHERS: "Other", // Other visa types
   TN: "TN", // TN visa (NAFTA Professionals)
   US_CITIZEN: "US-Citizen", // US Citizen status
 };
