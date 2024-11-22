@@ -86,6 +86,7 @@ export const END_POINTS = {
     GENERATE_QUESTIONS:
       "https://run.mocky.io/v3/f8b35910-3055-4a4c-96bf-1ea5824ca235",
     // INITIATE_CALL: `${QUEST_HOST_PORT}initiate_call/`,
-    INITIATE_CALL: "",
+    INITIATE_CALL:
+      "https://run.mocky.io/v3/c26344c2-4d3f-449b-a629-800cbd0f6bf5",
   },
 };

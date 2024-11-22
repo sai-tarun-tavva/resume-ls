@@ -4,10 +4,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   questions: [],
   conversation: {},
+  sessionID: "",
 };
 
 /**
- * Results slice for managing and displaying results related to resume analysis.
+ * Results slice for managing and displaying results related to candidate interview.
  */
 const resultSlice = createSlice({
   name: "results",
@@ -33,6 +34,17 @@ const resultSlice = createSlice({
      */
     updateConversation(state, { payload }) {
       state.conversation = payload;
+    },
+
+    /**
+     * Updates the sessionID in the state.
+     *
+     * @param {Object} state - The current state of the slice.
+     * @param {Object} action - The dispatched action with payload data.
+     * @param {string} action.payload - The new session ID.
+     */
+    updateSessionID(state, { payload }) {
+      state.sessionID = payload;
     },
   },
 });
