@@ -27,22 +27,30 @@ const QuestionsDisplay = () => {
     // Display loader when data is being fetched
     <Loader type={LOADER_TYPES.BAR} extraClass={classes.loaderExtraClass} />
   ) : questions.length > 0 ? (
-    // Display the list of questions if available
-    <div className={classes.questions}>
-      {questions.map((question, index) => (
-        <div key={index} className={classes.question}>
-          {question}
-        </div>
-      ))}
+    <div className={classes.questionsContainer}>
+      <div className={classes.header}>
+        <h2>{CONTENT.QUEST.input.questions.list.heading}</h2>
+        <p>{CONTENT.QUEST.input.questions.list.paragraph}</p>
+      </div>
+      <ul className={classes.questionsList}>
+        {questions.map((question, index) => (
+          <li key={index} className={classes.questionItem}>
+            <span className={classes.questionNumber}>{index + 1}</span>
+            <div className={classes.questionContent}>
+              <p>{question}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   ) : (
     // Display placeholder message if no questions are available
-    <div className={classes.noQuestions}>
-      <p>
-        {CONTENT.QUEST.input.textarea.default.split("{{buttonName}}")[0]}
-        <strong>{CONTENT.QUEST.input.button.default}</strong>
-        {CONTENT.QUEST.input.textarea.default.split("{{buttonName}}")[1]}
-      </p>
+    <div className={classes.defaultMessageContainer}>
+      <h2>{CONTENT.QUEST.input.questions.none.heading}</h2>
+      <p>{CONTENT.QUEST.input.questions.none.paragraph}</p>
+      <div className={classes.iconContainer}>
+        <i className="bi bi-lightbulb"></i>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import resultReducer from "./result";
+import { calling, cleanUp, polling } from "../middleware";
 
 // Combining reducers into a single reducer object
 const reducer = {
@@ -14,6 +15,8 @@ const reducer = {
  */
 const store = configureStore({
   reducer: reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(polling, calling, cleanUp),
 });
 
 // Exporting the configured store

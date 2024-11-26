@@ -261,6 +261,7 @@ export const CONTENT = {
       insightParagraph: "Resumes parsed",
       onboardParagraph: "Candidates onboarded",
       sparkParagraph: "Changes suggested",
+      questParagraph: "Candidates interviewed",
     },
     authPanel: {
       placeholders: {
@@ -687,18 +688,49 @@ export const CONTENT = {
       },
       textarea: {
         label: "Job Description",
-        default: "Click {{buttonName}} to get started",
+      },
+      questions: {
+        none: {
+          heading: "Click Generate Questions",
+          paragraph:
+            "to get started on creating the perfect interview questions!",
+        },
+        list: {
+          heading: "Generated Questions",
+          paragraph:
+            "These questions are tailored based on the job description you provided:",
+        },
       },
       button: {
         default: "Generate Questions",
         loading: "Generating...",
       },
-      conversation: {
-        heading: "Conversation",
+      callerOverlay: {
+        title1: "Make a ",
+        title2: "Call",
+        title3: " Now",
+        subTitle: "Enter the phone number and connect instantly.",
+        button: {
+          default: "Call ",
+        },
       },
       call: {
         calling: "Calling",
         onCall: "On Call: ",
+      },
+      conversation: {
+        callother: "Call another candidate",
+        heading: "Conversation",
+        ending: "The conversation has been ended.",
+        callRejected: "The call was rejected. Please try again later.",
+        callEndedQuickly:
+          "The call was picked up but ended immediately. No conversation took place.",
+        callFailed:
+          "The call could not be connected due to a network or technical issue. ",
+        callBusy:
+          "The recipient's line is currently busy or the call was declined. Please try again later.",
+        callNoAnswer:
+          "The call rang but was not answered. The recipient might be unavailable at the moment. Please try again later.",
       },
     },
   },

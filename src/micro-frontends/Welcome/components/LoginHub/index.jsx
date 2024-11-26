@@ -19,15 +19,20 @@ const LoginHub = () => {
     useTargetCount(END_POINTS.WELCOME.FETCH_INSIGHT_COUNT);
   const { targetCount: onboardCount, isLoading: isOnboardCountLoading } =
     useTargetCount(END_POINTS.WELCOME.FETCH_ONBOARD_COUNT);
+  const { targetCount: questCount, isLoading: isQuestCountLoading } =
+    useTargetCount(END_POINTS.WELCOME.FETCH_QUEST_COUNT);
 
   // Render loader while fetching data, then render panels
-  return isInsightCountLoading || isOnboardCountLoading ? (
+  return isInsightCountLoading ||
+    isOnboardCountLoading ||
+    isQuestCountLoading ? (
     <Loader />
   ) : (
     <div className={classes.loginHub}>
       <WelcomePanel
         insightCount={insightCount.resume_count}
         onboardCount={onboardCount.candidates_count}
+        questCount={questCount.candidates_count}
       />
       <AuthPanel />
     </div>

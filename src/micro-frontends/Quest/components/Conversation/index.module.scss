@@ -1,3 +1,65 @@
+.callStatusMessage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem auto;
+  padding: 1.5rem;
+  text-align: center;
+
+  i {
+    margin-bottom: 1.5rem;
+    font-size: 3rem;
+    animation: pop 0.3s ease-out;
+    color: var(--error-color);
+  }
+
+  p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #2d3748;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .actionButton {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3182ce;
+    background-color: transparent;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s ease, transform 0.2s ease;
+    margin-top: 3rem;
+
+    &:hover {
+      color: #2b6cb0;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      color: #2a4365;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes pop {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
 .chatContainer {
   margin: 0 auto;
   background-color: var(--card-bg);
@@ -87,6 +149,38 @@
         border-bottom-right-radius: 0.25rem;
       }
     }
+
+    & > p {
+      align-self: center;
+      color: var(--text-lighter);
+      font-size: 0.88rem;
+      margin-top: 3rem;
+    }
+  }
+
+  .floatingAction {
+    position: absolute;
+    top: 2rem;
+    right: 1.5rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0.25rem 0.38rem rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: #2b6cb0;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: #2a4365;
+      transform: scale(1);
+    }
   }
 }
 
@@ -103,6 +197,14 @@
           max-width: 90%;
         }
       }
+    }
+
+    .floatingAction {
+      height: 2rem;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
     }
   }
 }

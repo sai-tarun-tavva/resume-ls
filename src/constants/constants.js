@@ -52,6 +52,23 @@ export const SPARK = {
 };
 
 /**
+ * QUEST Configuration
+ *
+ * Manages settings specific to the QUEST module.
+ *
+ * @property {number} CALL_STATUES - Different status values for the call.
+ */
+export const QUEST = {
+  CALL_STATUSES: {
+    COMPLETED: "completed",
+    CANCELED: "canceled",
+    FAILED: "failed",
+    BUSY: "busy",
+    NO_ANSWER: "no-answer",
+  },
+};
+
+/**
  * Loader Types
  *
  * Defines loading spinner or bar types.

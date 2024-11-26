@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import { handleLogout as logout } from "../../../../utilities";
 import { useUI } from "../../../../store";
 import classes from "./index.module.scss";
@@ -15,6 +16,7 @@ import classes from "./index.module.scss";
  */
 const Logout = ({ className = "" }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { resetUI } = useUI();
 
   /**
@@ -26,6 +28,7 @@ const Logout = ({ className = "" }) => {
   const handleLogout = () => {
     resetUI();
     logout();
+    dispatch({ type: "LOGOUT" }); // Dispatch the LOGOUT action
     navigate(`/`);
   };
 

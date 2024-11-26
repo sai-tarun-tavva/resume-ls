@@ -1,5 +1,8 @@
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import MainNavigation from "../../micro-frontends/Atoms/components/MainNavigation";
+import { useStatus } from "../../store";
+import { setUpdateStatus } from "../../micro-frontends/Quest/middleware";
 
 /**
  * ProtectedWrapper Component
@@ -13,6 +16,15 @@ import MainNavigation from "../../micro-frontends/Atoms/components/MainNavigatio
  * @returns {JSX.Element} A component that displays a navigation bar along with protected child content.
  */
 const ProtectedWrapper = ({ children }) => {
+  const { updateStatus } = useStatus();
+
+  useEffect(() => {
+    /**
+     * Provide the updateStatus function to the middleware
+     */
+    setUpdateStatus(updateStatus);
+  }, [updateStatus]);
+
   return (
     <>
       <MainNavigation />

@@ -33,6 +33,7 @@ const Textarea = forwardRef(
       blurHandler,
       isFocused = false,
       extraClass = "",
+      ...props
     },
     ref
   ) => {
@@ -68,6 +69,7 @@ const Textarea = forwardRef(
           data-focusable="true"
           rows={5} // Default height
           style={{ resize: "vertical" }} // Allow vertical resizing only
+          {...props}
         />
         <small className={classes.errorText}>{error || ""}</small>
       </div>

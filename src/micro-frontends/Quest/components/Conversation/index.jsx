@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-import audioFile from "../../../../assets/convo_notification.wav";
-import { CONTENT } from "../../../../constants";
+import { Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { resultActions } from "../../store";
+import { CONTENT, QUEST } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -14,34 +14,87 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The Conversation component, including AI and user message threads.
  */
 const Conversation = () => {
-  const { conversation } = useSelector((state) => state.result); // Retrieve conversation from Redux state
-  const audioRef = useRef(null); // Reference to the audio element
+  const dispatch = useDispatch();
+  const { conversation, callStatus } = useSelector((state) => state.result); // Retrieve conversation from Redux state
 
-  useEffect(() => {
-    /**
-     * Plays a notification sound when a new conversation entry is added.
-     */
-    if (
-      conversation &&
-      Object.keys(conversation).length > 0 &&
-      audioRef.current
-    ) {
-      audioRef.current.play().catch((error) => {
-        console.warn("Audio play failed:", error);
-      });
-    }
-  }, [conversation]);
+  /**
+   * Handles retry logic for initiating a new call.
+   *
+   * Resets the call status, and clears the list of questions
+   * to prepare for initiating another candidate call.
+   *
+   * @function retryHandler
+   * @returns {void}
+   */
+  const retryHandler = () => {
+    dispatch(resultActions.updateCallStatus(""));
+    dispatch(resultActions.updateQuestions([]));
+  };
+
+  // Function to render the status message with an optional button
+  const renderStatusMessage = (iconClass, text, buttonText) => (
+    <div className={classes.callStatusMessage}>
+      <i className={`bi ${iconClass}`}></i>
+      <p>{text}</p>
+      {buttonText && (
+        <p className={classes.actionButton} onClick={retryHandler}>
+          {buttonText}
+        </p>
+      )}
+    </div>
+  );
+
+  // Render content based on callStatus and conversation
+  if (callStatus === QUEST.CALL_STATUSES.CANCELED) {
+    return renderStatusMessage(
+      "bi-x-circle",
+      CONTENT.QUEST.input.conversation.callRejected,
+      "Try Again"
+    );
+  }
+
+  if (
+    callStatus === QUEST.CALL_STATUSES.COMPLETED &&
+    Object.keys(conversation).length === 0
+  ) {
+    return renderStatusMessage(
+      "bi-telephone-x",
+      CONTENT.QUEST.input.conversation.callEndedQuickly,
+      "Call Again"
+    );
+  }
+
+  if (callStatus === QUEST.CALL_STATUSES.FAILED) {
+    return renderStatusMessage(
+      "bi-exclamation-triangle",
+      CONTENT.QUEST.input.conversation.callFailed,
+      "Retry Call"
+    );
+  }
+
+  if (callStatus === QUEST.CALL_STATUSES.BUSY) {
+    return renderStatusMessage(
+      "bi-telephone-minus",
+      CONTENT.QUEST.input.conversation.callBusy,
+      "Try Again"
+    );
+  }
+
+  if (callStatus === QUEST.CALL_STATUSES.NO_ANSWER) {
+    return renderStatusMessage(
+      "bi-hourglass-split",
+      CONTENT.QUEST.input.conversation.callNoAnswer,
+      "Call Back"
+    );
+  }
 
   return (
     <>
-      {/* Audio element for notification sound */}
-      <audio ref={audioRef} src={audioFile} />
-
       {/* Chat container */}
       <div className={classes.chatContainer}>
         {/* Chat header */}
         <div className={classes.chatHeader}>
-          <i className="bi bi-chat-dots"></i>
+          <i className="bi bi-chat-dots" />
           <h2>{CONTENT.QUEST.input.conversation.heading}</h2>
         </div>
 
@@ -52,7 +105,7 @@ const Conversation = () => {
               {/* Render AI response if available */}
               {entry?.ai_response && (
                 <div className={classes.aiMessage}>
-                  <i className="bi bi-robot"></i>
+                  <i className="bi bi-robot" />
                   <div className={classes.messageContent}>
                     <p>{entry?.ai_response}</p>
                   </div>
@@ -70,6 +123,15 @@ const Conversation = () => {
               )}
             </Fragment>
           ))}
+
+          <p>{CONTENT.QUEST.input.conversation.ending}</p>
+        </div>
+
+        {/* Floating action text or button */}
+        <div className={classes.floatingAction}>
+          <p onClick={retryHandler}>
+            {CONTENT.QUEST.input.conversation.callother}
+          </p>
         </div>
       </div>
     </>

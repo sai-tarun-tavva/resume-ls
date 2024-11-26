@@ -29,6 +29,17 @@ const MainNavigation = () => {
       <ul>
         <li>
           <NavLink
+            to={`/${ROUTES.QUEST.HOME}`}
+            onClick={navClickHandler}
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+          >
+            {quest}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
             to={`/${ROUTES.ONBOARD.HOME}`}
             onClick={navClickHandler}
             className={({ isActive }) =>
@@ -58,17 +69,6 @@ const MainNavigation = () => {
             }
           >
             {spark}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to={`/${ROUTES.QUEST.HOME}`}
-            onClick={navClickHandler}
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-          >
-            {quest}
           </NavLink>
         </li>
       </ul>

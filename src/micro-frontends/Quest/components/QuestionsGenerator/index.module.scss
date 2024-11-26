@@ -15,13 +15,14 @@
     flex-direction: column;
     justify-content: start;
     height: auto;
+    margin-bottom: 5rem;
 
     .fullInputWidth {
       width: 100%;
       margin-bottom: 0.5rem;
 
       textarea {
-        height: 15rem;
+        height: 10rem;
       }
     }
 

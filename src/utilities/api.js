@@ -622,19 +622,19 @@ export const getConversation = async (url) => {
 
     if (!response.ok) {
       // Assume any error that causes this block to execute is a server issue
-      return { status: response.status, data: null, isEnded: true };
+      return { status: response.status, data: null, callStatus: "" };
     } else {
       // Return the response data and status
       const resData = await response.json();
       return {
         status: response.status,
         data: resData.log_data,
-        isEnded: resData.status,
+        callStatus: resData.status,
       };
     }
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Error fetching conversation:", error);
-    return { status: 500, data: null, isEnded: true };
+    return { status: 500, data: null, callStatus: "" };
   }
 };

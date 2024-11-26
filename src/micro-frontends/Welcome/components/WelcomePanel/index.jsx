@@ -11,17 +11,28 @@ import classes from "./index.module.scss";
  *
  * @param {number} insightCount - The target count to animate towards for parsed resumes.
  * @param {number} onboardCount - The target count to animate towards for onboarded candidates.
+ * @param {number} questCount - The target count to animate towards for interviewed quest candidates.
  * @returns {JSX.Element} Rendered WelcomePanel component
  */
-const WelcomePanel = ({ insightCount = 0, onboardCount = 0 }) => {
+const WelcomePanel = ({
+  insightCount = 0,
+  onboardCount = 0,
+  questCount = 0,
+}) => {
   const sparkCount = SPARK.SUGGESTED_CHANGES;
 
   const iCount = useCountAnimation(insightCount);
   const oCount = useCountAnimation(onboardCount);
   const sCount = useCountAnimation(sparkCount);
+  const qCount = useCountAnimation(questCount);
 
-  const { heading, insightParagraph, onboardParagraph, sparkParagraph } =
-    CONTENT.WELCOME.welcomePanel;
+  const {
+    heading,
+    insightParagraph,
+    onboardParagraph,
+    sparkParagraph,
+    questParagraph,
+  } = CONTENT.WELCOME.welcomePanel;
 
   return (
     <div className={classes.welcomePanel}>
@@ -33,6 +44,12 @@ const WelcomePanel = ({ insightCount = 0, onboardCount = 0 }) => {
       <h1>{heading}</h1>
 
       <div>
+        {questCount >= 0 && (
+          <div className={classes.counterWrapper}>
+            <span className={classes.countUp}>{qCount}</span>
+            <p>{questParagraph}</p>
+          </div>
+        )}
         {onboardCount >= 0 && (
           <div className={classes.counterWrapper}>
             <span className={classes.countUp}>{oCount}</span>
@@ -59,6 +76,7 @@ const WelcomePanel = ({ insightCount = 0, onboardCount = 0 }) => {
 WelcomePanel.propTypes = {
   insightCount: PropTypes.number,
   onboardCount: PropTypes.number,
+  questCount: PropTypes.number,
 };
 
 WelcomePanel.displayName = "WelcomePanel";

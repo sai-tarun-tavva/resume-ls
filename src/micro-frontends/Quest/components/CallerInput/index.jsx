@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CallingDisplay from "../CallingDisplay";
 import Conversation from "../Conversation";
@@ -9,18 +9,17 @@ import { useInput } from "../../../Atoms/hooks";
 import { useLoading, useStatus } from "../../../../store";
 import { resultActions } from "../../store";
 import {
+  determineSectionValidity,
   dispatchAsync,
   extractOnlyDigits,
-  getConversation,
   initiateCall,
   questValidations,
-  replaceRouteParam,
   transformPhoneNumber,
 } from "../../../../utilities";
 import {
   CONTENT,
-  END_POINTS,
   LOADING_ACTION_TYPES,
+  QUEST,
   STATUS_CODES,
 } from "../../../../constants";
 import classes from "./index.module.scss";
@@ -43,12 +42,9 @@ const CallerInput = () => {
   const dispatch = useDispatch();
 
   // Redux state selectors
-  const { questions, sessionID, conversation } = useSelector(
+  const { questions, sessionID, callStatus } = useSelector(
     (state) => state.result
   );
-
-  // Local state for managing phone number display
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   // Custom hook for input management and validation
   const {
@@ -61,62 +57,25 @@ const CallerInput = () => {
   } = useInput("", questValidations.phone, transformPhoneNumber, true);
 
   /*
-   * Polling for conversation updates when sessionID exists
+   * Polling for conversation updates when sessionID exists, this starts polling fetches for conversation with certain interval
    */
   useEffect(() => {
-    if (!sessionID) return;
-
-    let failureCount = 0;
-
-    const interval = setInterval(async () => {
-      try {
-        const { status, data, isEnded } = await getConversation(
-          replaceRouteParam(END_POINTS.QUEST.GET_CONVERSATION, { sessionID })
-        );
-
-        if (status === STATUS_CODES.SUCCESS) {
-          if (isEnded) {
-            dispatch(resultActions.updateConversation(data));
-            dispatch(resultActions.updateSessionID(""));
-            clearInterval(interval); // Stop polling if the call is ended
-          }
-        } else {
-          failureCount += 1;
-          if (failureCount >= 5) {
-            clearInterval(interval); // Stop polling after 5 failures
-            dispatch(resultActions.updateSessionID(""));
-            updateStatus({
-              message: CONTENT.QUEST.statusMessages.conversation,
-              type: "failure",
-            });
-          }
-        }
-      } catch (error) {
-        console.error("Failed to fetch conversation:", error);
-        updateStatus({
-          message: CONTENT.QUEST.statusMessages.conversation,
-          type: "failure",
-        });
-      }
-    }, 120000); // 2 minutes interval
-
-    // Cleanup the interval on unmount or sessionID change
-    return () => clearInterval(interval);
-  }, [sessionID, dispatch, updateStatus]);
+    dispatch(resultActions.startPolling());
+  }, [dispatch]);
 
   /**
    * Handles the initiation of a call.
    *
    * @param {React.FormEvent} event - The form submission event.
    */
-  const callHandler = async (event) => {
-    event.preventDefault();
+  const callHandler = async (e) => {
+    e.preventDefault();
 
     if (isLoading[BUTTON]) return; // Prevent duplicate actions
 
     await dispatchAsync(resetStatus); // Reset status before the call
 
-    if (!phoneNumberValue) {
+    if (!determineSectionValidity([phoneNumberError], [phoneNumberValue])) {
       forcePhoneNumberValidations(); // Trigger validations if input is empty
     } else {
       enableButtonLoading(); // Enable button loading state
@@ -129,7 +88,6 @@ const CallerInput = () => {
 
         if (status === STATUS_CODES.SUCCESS) {
           dispatch(resultActions.updateSessionID(data));
-          setPhoneNumber(phoneNumberValue);
           clearPhoneNumber(); // Clear input after successful submission
         } else {
           updateStatus({
@@ -150,46 +108,55 @@ const CallerInput = () => {
   };
 
   return (
-    <>
-      {/* Phone number input and call button */}
-      <div className={classes.callerInputContainer}>
-        <InputV1
-          id="phoneNumber"
-          type="tel"
-          placeholder={CONTENT.QUEST.input.text.placeholder}
-          value={phoneNumberValue}
-          onChange={phoneNumberChange}
-          onBlur={phoneNumberBlur}
-          error={phoneNumberError}
-          leftIcon={<i className="bi bi-telephone-fill" />}
-          extraClassControl={classes.inputExtraClass}
-          disabled={questions.length === 0}
-        />
-
-        <Button
-          onClick={callHandler}
-          disabled={questions.length === 0 || sessionID !== ""}
-          className={classes.buttonExtraClass}
-        >
-          <i className="bi bi-telephone" />
-        </Button>
+    <div className={classes.overlay}>
+      <div className={classes.content}>
+        {/* Conditional rendering based on state */}
+        {isLoading[BUTTON] ? (
+          <Loader extraClass={classes.loaderExtraClass} />
+        ) : sessionID ? (
+          <CallingDisplay />
+        ) : Object.values(QUEST.CALL_STATUSES).includes(callStatus) ? (
+          <Conversation />
+        ) : (
+          <>
+            <h1 className={classes.title}>
+              {CONTENT.QUEST.input.callerOverlay.title1}
+              <span className={classes.highlight}>
+                {CONTENT.QUEST.input.callerOverlay.title2}
+              </span>
+              {CONTENT.QUEST.input.callerOverlay.title3}
+            </h1>
+            <p className={classes.subTitle}>
+              {CONTENT.QUEST.input.callerOverlay.subTitle}
+            </p>
+            <div className={classes.inputSection}>
+              <InputV1
+                id="phoneNumber"
+                type="tel"
+                placeholder={CONTENT.QUEST.input.text.placeholder}
+                value={phoneNumberValue}
+                onChange={(event) => {
+                  phoneNumberChange(event);
+                  dispatch(resultActions.updatePhoneNumber(event.target.value));
+                }}
+                onBlur={phoneNumberBlur}
+                error={phoneNumberError}
+                extraClassControl={classes.inputExtraClass}
+                disabled={questions.length === 0 || sessionID !== ""}
+              />
+              <Button
+                onClick={callHandler}
+                disabled={questions.length === 0 || sessionID !== ""}
+                className={classes.buttonExtraClass}
+              >
+                {CONTENT.QUEST.input.callerOverlay.button.default}{" "}
+                <i className="bi bi-telephone-fill" />
+              </Button>
+            </div>
+          </>
+        )}
       </div>
-
-      {/* Conditional rendering based on state */}
-      {isLoading[BUTTON] ? (
-        <Loader extraClass={classes.loaderExtraClass} />
-      ) : sessionID ? (
-        <CallingDisplay phoneNumber={phoneNumber} />
-      ) : Object.keys(conversation).length > 0 ? (
-        <Conversation />
-      ) : (
-        <div className={classes.noContent}>
-          {CONTENT.QUEST.input.text.default.split("{{buttonName}}")[0]}
-          <i className="bi bi-telephone-fill" />
-          {CONTENT.QUEST.input.text.default.split("{{buttonName}}")[1]}
-        </div>
-      )}
-    </>
+    </div>
   );
 };
 

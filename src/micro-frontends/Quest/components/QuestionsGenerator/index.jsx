@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Textarea from "../../../Atoms/components/Inputs/Textarea";
 import Button from "../../../Atoms/components/Button";
 import QuestionsDisplay from "../QuestionsDisplay";
@@ -30,6 +30,7 @@ const { FETCH } = LOADING_ACTION_TYPES;
  */
 const QuestionsGenerator = () => {
   const dispatch = useDispatch();
+  const { jobDescription, sessionID } = useSelector((state) => state.result);
   const { isLoading, enableFetchLoading, disableFetchLoading } = useLoading();
   const { updateStatus, resetStatus } = useStatus();
 
@@ -42,7 +43,12 @@ const QuestionsGenerator = () => {
     error: jobDescriptionError,
     isFocused: isJobDescriptionFocused,
     forceValidations: forceJobDescriptionValidations,
-  } = useInput("", questValidations.jobDescription, undefined, true);
+  } = useInput(
+    jobDescription,
+    questValidations.jobDescription,
+    undefined,
+    true
+  );
 
   /**
    * Handles the generation of questions based on the job description.
@@ -54,6 +60,7 @@ const QuestionsGenerator = () => {
   const generateHandler = async (event) => {
     event.preventDefault();
     await dispatchAsync(resetStatus);
+    dispatch(resultActions.resetState());
 
     // Prevent duplicate fetch calls during loading
     if (isLoading[FETCH]) return;
@@ -99,8 +106,12 @@ const QuestionsGenerator = () => {
         <Textarea
           id="description"
           label={CONTENT.QUEST.input.textarea.label}
+          disabled={sessionID !== ""}
           value={jobDescriptionValue}
-          changeHandler={jobDescriptionChange}
+          changeHandler={(event) => {
+            jobDescriptionChange(event);
+            dispatch(resultActions.updateJobDescription(event.target.value));
+          }}
           blurHandler={jobDescriptionBlur}
           focusHandler={jobDescriptionFocus}
           error={jobDescriptionError}
@@ -111,6 +122,7 @@ const QuestionsGenerator = () => {
         {/* Submit button with loading state */}
         <Button
           className={`${classes.button} ${isLoading[FETCH] ? "loading" : ""}`}
+          disabled={sessionID !== ""}
           onClick={generateHandler}
         >
           {isLoading[FETCH]
