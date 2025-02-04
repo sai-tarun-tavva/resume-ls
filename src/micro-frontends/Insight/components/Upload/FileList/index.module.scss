@@ -27,12 +27,14 @@ $file-item-border-radius: 0.5rem;
     .fileName {
       flex-grow: 1;
       font-weight: 600;
+      font-size: 0.875rem;
       color: #333;
       cursor: default;
     }
 
     > i {
       margin-right: 0.75rem;
+      font-size: 0.875rem;
       color: var(--primary-color);
     }
 
@@ -41,6 +43,7 @@ $file-item-border-radius: 0.5rem;
       border: none;
       color: #dc3545;
       cursor: pointer;
+      font-size: 0.875rem;
       transition: color 0.3s ease;
 
       &:hover {

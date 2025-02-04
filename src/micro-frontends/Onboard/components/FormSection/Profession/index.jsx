@@ -8,7 +8,7 @@ import ListAdd from "../ListAdd";
 import SingleInput from "../../FormListItems/SingleInput";
 import PreviousExperience from "../../FormListItems/PreviousExperience";
 import Reference from "../../FormListItems/Reference";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultPrevExp, defaultReference, inputActions } from "../../../store";
@@ -22,8 +22,14 @@ import {
   INPUT_TYPES,
   CONTENT,
 } from "../../../../../constants";
-import { SECTIONS, FIELDS, OPTIONS } from "../../../constants";
+import {
+  SECTIONS,
+  FIELDS,
+  OPTIONS,
+  COMPANY_DETAILS_REQUIRED_VISA,
+} from "../../../constants";
 import sectionClasses from "../sections.module.scss";
+import classes from "./index.module.scss";
 
 const { BUTTON } = LOADING_ACTION_TYPES;
 const { sections } = CONTENT.ONBOARD.candidateForm;
@@ -46,18 +52,22 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
     currentSectionIndex,
     isEditMode,
     data: {
+      personal: { visaStatus },
       profession: {
         trainingAttended,
         experience: { years, months },
         previousExperience,
         technologiesKnown,
         references,
+        linkedInIdentifier,
       },
     },
   } = useSelector((state) => state.input);
 
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
+  const isCompanyDetailsRequired =
+    COMPANY_DETAILS_REQUIRED_VISA.includes(visaStatus);
 
   const { profession: validations } = onboardingValidations;
 
@@ -100,14 +110,35 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
     forceValidations: forceExperienceMonthsValidations,
   } = useInput(months, validations.experienceInMonths, undefined, true);
 
+  const {
+    value: linkedInIdentifierValue,
+    handleInputChange: linkedInIdentifierChange,
+    handleInputBlur: linkedInIdentifierBlur,
+    handleInputFocus: linkedInIdentifierFocus,
+    error: linkedInIdentifierError,
+    isFocused: isLinkedInIdentifierFocused,
+  } = useInput(
+    linkedInIdentifier,
+    (value) => validations.linkedInIdentifier(value, true),
+    undefined,
+    true
+  );
+
   // Refs for lists (previous experience, technologies, references)
   const technologiesRef = useRef();
   const prevExpRef = useRef();
   const referencesRef = useRef();
 
   // Collect all errors and values for the profession section
-  const allErrors = [experienceYearsError, experienceMonthsError];
-  const allValues = [experienceYearsValue, experienceMonthsValue];
+  const allErrors = [
+    experienceYearsError,
+    experienceMonthsError,
+    linkedInIdentifierError,
+  ];
+  const allValues = [
+    experienceYearsValue.toString(),
+    experienceMonthsValue.toString(),
+  ];
 
   // Check if the section is valid based on errors and values
   const isSectionValid = determineSectionValidity(allErrors, allValues);
@@ -124,10 +155,10 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
    * Focuses on errors if any validation fails.
    */
   const submit = async () => {
-    const {
-      isSectionValid: arePrevExperiencesValid,
-      listItems: prevExperiences,
-    } = prevExpRef?.current?.submit?.();
+    const prevExpResult = prevExpRef?.current?.submit?.();
+    const arePrevExperiencesValid = prevExpResult?.isSectionValid;
+    const prevExperiences = prevExpResult?.listItems;
+
     const { isSectionValid: areTechnologiesValid, listItems: technologies } =
       technologiesRef?.current?.submit?.();
 
@@ -138,9 +169,9 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
     // Check if the section is valid and all sub-sections (lists) are valid
     if (
       !isSectionValid ||
-      !arePrevExperiencesValid ||
+      arePrevExperiencesValid === false ||
       !areTechnologiesValid ||
-      !areReferencesValid
+      areReferencesValid === false
     ) {
       // Trigger force validations if any validation fails
       forceValidations();
@@ -180,7 +211,7 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
         inputActions.updateField({
           section: SECTIONS.PROFESSION,
           field: FIELDS.PROFESSION.PREVIOUS_EXPERIENCE,
-          value: prevExperiences,
+          value: prevExperiences || [],
         })
       );
       dispatch(
@@ -188,6 +219,13 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
           section: SECTIONS.PROFESSION,
           field: FIELDS.PROFESSION.REFERENCES,
           value: referencesList,
+        })
+      );
+      dispatch(
+        inputActions.updateField({
+          section: SECTIONS.PROFESSION,
+          field: FIELDS.PROFESSION.LINKEDIN_IDENTIFIER,
+          value: linkedInIdentifierValue,
         })
       );
       dispatch(
@@ -253,19 +291,27 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
         />
       </div>
 
-      <ListAdd
-        label={sections.profession.prevExpList.heading}
-        itemLabels={sections.profession.prevExpList.itemLabels}
-        element={(props) => <PreviousExperience {...props} />}
-        savedListItems={previousExperience}
-        validationFuncs={{
-          employerName: validations.employerName,
-          email: validations.employerEmail,
-          phone: validations.employerPhone,
-        }}
-        newValue={defaultPrevExp}
-        ref={prevExpRef}
-      />
+      {/* Only display if experience in years or month is not zero */}
+      {(+experienceYearsValue !== 0 || +experienceMonthsValue !== 0) && (
+        <ListAdd
+          label={sections.profession.prevExpList.heading}
+          itemLabels={sections.profession.prevExpList.itemLabels}
+          element={(props) => (
+            <PreviousExperience
+              isCompanyDetailsRequired={isCompanyDetailsRequired}
+              {...props}
+            />
+          )}
+          savedListItems={previousExperience}
+          validationFuncs={{
+            employerName: validations.employerName,
+            email: validations.employerEmail,
+            phone: validations.employerPhone,
+          }}
+          newValue={defaultPrevExp}
+          ref={prevExpRef}
+        />
+      )}
 
       <ListAdd
         label={sections.profession.technologyList.heading}
@@ -292,6 +338,23 @@ const Profession = forwardRef(({ isInNewRoute }, ref) => {
         }}
         newValue={defaultReference}
         ref={referencesRef}
+      />
+
+      <InputV2
+        id={"linkedin-identifier"}
+        type="text"
+        label={
+          CONTENT.ONBOARD.candidateForm.sections.profession.linkedInIdentifier
+        }
+        placeholder="your-profile/"
+        value={linkedInIdentifierValue}
+        changeHandler={linkedInIdentifierChange}
+        blurHandler={linkedInIdentifierBlur}
+        focusHandler={linkedInIdentifierFocus}
+        error={linkedInIdentifierError}
+        isFocused={isLinkedInIdentifierFocused}
+        extraClass={`${sectionClasses.fullInputWidth} ${classes.linkedInExtraClass}`}
+        prefix="https://www.linkedin.com/in/"
       />
     </fieldset>
   );

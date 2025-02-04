@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import Address from "../Address";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
@@ -16,8 +16,8 @@ import {
 import {
   FIELDS,
   SECTIONS,
-  HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
-  HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
+  HOME_ADDRESS_NOT_REQUIRED_VISA,
+  HOME_ADDRESS_OPTIONAL_VISA,
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
@@ -57,14 +57,13 @@ const Location = forwardRef(({ isInNewRoute }, ref) => {
    * If the visa status includes specific values, home address is not required.
    */
   const isExemptFromHomeAddress =
-    HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatus);
+    HOME_ADDRESS_NOT_REQUIRED_VISA.includes(visaStatus);
 
   /**
    * Determines if the home address is optional based on the visa status.
    * If the visa status includes specific values, home address is optional.
    */
-  const isHomeAddressOptional =
-    HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatus);
+  const isHomeAddressOptional = HOME_ADDRESS_OPTIONAL_VISA.includes(visaStatus);
 
   /**
    * If home address is not exempt, it will be required by default.

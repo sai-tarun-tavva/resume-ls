@@ -1,4 +1,5 @@
 import { CONTENT, REGEX } from "../constants";
+import { getEighteenYearsAgoDate } from "./utilities";
 
 const validationMsgs = CONTENT.COMMON.errors;
 
@@ -139,11 +140,45 @@ export const onboardingValidations = {
             validationMsgs.phone.invalid
           );
     },
-    dob: (value) => (isEmpty(value) ? validationMsgs.dob.empty : ""),
+    dob: (value) => {
+      if (isEmpty(value)) {
+        return validationMsgs.dob.empty;
+      }
+      const invalidMsg = validateWithRegex(
+        value,
+        REGEX.dateRegex,
+        validationMsgs.dob.invalid
+      );
+
+      if (invalidMsg) return invalidMsg;
+
+      // Extract month, day, and year
+      const [month, day, year] = value.split("/");
+
+      // Skip age validation if any part is '00'
+      if (month === "00" || day === "00" || year === "0000") {
+        return ""; // Accept partial dates without age restriction
+      }
+
+      // Convert DOB to comparable format (YYYY-MM-DD)
+      const formattedDOB = `${year}-${month.padStart(2, "0")}-${day.padStart(
+        2,
+        "0"
+      )}`;
+
+      // Compare DOB with 18 years ago date
+      if (formattedDOB > getEighteenYearsAgoDate()) {
+        return validationMsgs.dob.tooYoung; // Custom error message for underage
+      }
+
+      return "";
+    },
     gender: (value) => (isEmpty(value) ? validationMsgs.gender.empty : ""),
-    passportNumber: (value) =>
+    passportNumber: (value, isOptional) =>
       isEmpty(value)
-        ? validationMsgs.passportNumber.empty
+        ? isOptional
+          ? ""
+          : validationMsgs.passportNumber.empty
         : validateWithRegex(
             value,
             REGEX.passportNumberRegex,
@@ -309,6 +344,16 @@ export const onboardingValidations = {
 
     referenceCompany: (value) =>
       isEmpty(value) ? validationMsgs.referenceCompany.empty : "",
+    linkedInIdentifier: (value, isOptional) =>
+      isEmpty(value)
+        ? isOptional
+          ? ""
+          : validationMsgs.linkedInIdentifier.empty
+        : validateWithRegex(
+            value,
+            REGEX.linkedInIdentifierRegex,
+            validationMsgs.linkedInIdentifier.invalid
+          ),
   },
   offerLetter: {
     status: (value) =>
@@ -377,5 +422,115 @@ export const questValidations = {
           REGEX.phoneRegex,
           validationMsgs.phone.invalid
         );
+  },
+};
+
+export const forgeValidations = {
+  submission: {
+    date: (value) => (isEmpty(value) ? validationMsgs.date.empty : ""),
+    submitBy: (value) => (isEmpty(value) ? validationMsgs.name.empty : ""),
+  },
+  candidate: {
+    firstName: (value) =>
+      isEmpty(value) ? validationMsgs.firstName.empty : "",
+    lastName: (value) => (isEmpty(value) ? validationMsgs.lastName.empty : ""),
+    email: (value) => {
+      return isEmpty(value)
+        ? validationMsgs.email.empty
+        : undefined ||
+            validateWithRegex(
+              value,
+              REGEX.emailRegex,
+              validationMsgs.email.invalid
+            );
+    },
+    phone: (value) => {
+      const digitsOnly = value.replace(/[\s()-]+/g, "");
+      return isEmpty(value)
+        ? validationMsgs.phone.empty
+        : validateWithRegex(
+            digitsOnly,
+            REGEX.phoneRegex,
+            validationMsgs.phone.invalid
+          );
+    },
+    city: (value) => (isEmpty(value) ? validationMsgs.city.empty : ""),
+    state: (value) => (isEmpty(value) ? validationMsgs.state.empty : ""),
+    visaStatus: (value) =>
+      isEmpty(value) ? validationMsgs.visaStatus.empty : "",
+    experienceInYears: (value) =>
+      isEmpty(value)
+        ? validationMsgs.experienceInYears.empty
+        : value < 0 || value > 100
+        ? validationMsgs.experience.invalid
+        : undefined,
+    experienceInMonths: (value) =>
+      isEmpty(value) ? validationMsgs.experienceInMonths.empty : "",
+  },
+  requirement: {
+    clientName: (value) =>
+      isEmpty(value) ? validationMsgs.clientName.empty : "",
+    position: (value) => (isEmpty(value) ? validationMsgs.position.empty : ""),
+    rateFrequency: (value) =>
+      isEmpty(value) ? validationMsgs.rateFrequency.empty : "",
+    rate: (value) => {
+      const numericValue = Number(value);
+      return isEmpty(value)
+        ? validationMsgs.rate.empty
+        : isNaN(numericValue) || numericValue < 0
+        ? validationMsgs.rate.invalid
+        : undefined;
+    },
+    terms: (value) => (isEmpty(value) ? validationMsgs.terms.empty : ""),
+    city: (value) => (isEmpty(value) ? validationMsgs.city.empty : ""),
+    state: (value) => (isEmpty(value) ? validationMsgs.state.empty : ""),
+    primeVendor: (value) =>
+      isEmpty(value) ? validationMsgs.primeVendor.empty : "",
+    implementor: (value) =>
+      isEmpty(value) ? validationMsgs.projectImplementor.empty : "",
+  },
+  vendorOrEmployer: {
+    name: (value) => (isEmpty(value) ? validationMsgs.name.empty : ""),
+    companyName: (value) =>
+      isEmpty(value) ? validationMsgs.companyName.empty : "",
+    email: (value) => {
+      return isEmpty(value)
+        ? validationMsgs.email.empty
+        : undefined ||
+            validateWithRegex(
+              value,
+              REGEX.emailRegex,
+              validationMsgs.email.invalid
+            );
+    },
+    phone: (value, isOptional) => {
+      const digitsOnly = value.replace(/[\s()-]+/g, "");
+      return isEmpty(value)
+        ? isOptional
+          ? ""
+          : validationMsgs.phone.empty
+        : validateWithRegex(
+            digitsOnly,
+            REGEX.phoneRegex,
+            validationMsgs.phone.invalid
+          );
+    },
+    extension: (value, isOptional) => {
+      return isEmpty(value)
+        ? isOptional
+          ? ""
+          : validationMsgs.extension.empty
+        : validateWithRegex(
+            value,
+            REGEX.extensionRegex,
+            validationMsgs.extension.invalid
+          );
+    },
+  },
+};
+
+export const nexusValidations = {
+  URL: (value) => {
+    return isEmpty(value) ? validationMsgs.url.empty : undefined || ""; // validateWithRegex(value, REGEX.urlRegex, validationMsgs.url.invalid); // temporarily remove url regex validation
   },
 };

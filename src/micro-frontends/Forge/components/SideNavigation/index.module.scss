@@ -1,0 +1,40 @@
+.navigation {
+  position: fixed;
+  display: flex;
+  top: 7.7rem;
+  height: 3rem;
+  align-items: center;
+  background-color: var(--card-bg);
+  margin-bottom: 1rem;
+
+  &__container {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0 1rem;
+
+    a {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 0.15rem;
+      text-decoration: none;
+      transition: var(--transition);
+      color: var(--text-color);
+
+      &:hover {
+        background-color: var(--bg-color);
+      }
+
+      &.active {
+        background-color: #1e88e5;
+        color: var(--card-bg);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .navigation {
+    top: 11.7rem;
+  }
+}

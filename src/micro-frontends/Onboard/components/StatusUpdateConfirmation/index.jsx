@@ -2,10 +2,7 @@ import PropTypes from "prop-types";
 import Modal from "../../../Atoms/components/Modal";
 import Button from "../../../Atoms/components/Button";
 import { CONTENT } from "../../../../constants";
-import styles from "./index.module.scss";
-
-const { closeButton, onboardDetails, incompleteDetails } =
-  CONTENT.ONBOARD.candidates.statusUpdateModal;
+import classes from "./index.module.scss";
 
 /**
  * StatusUpdateConfirmation Component
@@ -16,79 +13,38 @@ const { closeButton, onboardDetails, incompleteDetails } =
  *
  * @component
  * @param {Object} props - The component props.
- * @param {boolean} props.isDetailsProvided - Indicates if all required candidate details have been provided.
  * @param {function} props.handleClose - Callback function to close the modal.
  * @param {function} props.handleEdit - Callback function to redirect to the edit page.
  * @returns {JSX.Element} The rendered StatusUpdateConfirmation component.
  */
-const StatusUpdateConfirmation = ({
-  isDetailsProvided,
-  handleClose,
-  handleEdit,
-}) => {
-  const buttonText = isDetailsProvided
-    ? closeButton.default
-    : incompleteDetails.editButton.default;
-
+const StatusUpdateConfirmation = ({ handleClose, handleEdit }) => {
   return (
     <Modal handleClose={handleClose}>
-      <div
-        className={`${styles.contentContainer} ${
-          isDetailsProvided ? styles.successStyle : styles.warningStyle
-        }`}
-      >
-        <div className={styles.innerContainer}>
-          {isDetailsProvided ? (
-            <div className={styles.message}>
-              <i className="bi bi-check-circle-fill" />
-              <div>
-                <h3>{onboardDetails.primaryMessageHeading}</h3>
-                <p>{onboardDetails.primaryMessageParagraph}</p>
-              </div>
-            </div>
-          ) : (
-            <div className={styles.message}>
-              <i className="bi bi-exclamation-triangle-fill" />
-              <div>
-                <h3>{incompleteDetails.primaryMessageHeading}</h3>
-                <p>{incompleteDetails.primaryMessageParagraph}</p>
-              </div>
-            </div>
-          )}
-
-          <div className={styles.footer}>
-            {!isDetailsProvided && (
-              <>
-                <p
-                  className={`${styles.secondaryMessage} ${styles.warningMessage}`}
-                >
-                  {incompleteDetails.secondaryMessage}
-                </p>
-                <p className={styles.confirmMessage}>
-                  {incompleteDetails.confirmMessage}
-                </p>
-              </>
-            )}
-
-            <div className={styles.buttonGroup}>
-              {!isDetailsProvided && (
-                <Button
-                  title={closeButton.default}
-                  className={styles.closeButton}
-                  onClick={handleClose}
-                >
-                  {closeButton.default}
-                </Button>
-              )}
-              <Button
-                title={buttonText}
-                className={styles.saveButton}
-                onClick={isDetailsProvided ? handleClose : handleEdit}
-              >
-                {buttonText}
-              </Button>
-            </div>
-          </div>
+      <div className={classes.container}>
+        <div className={classes.iconWrapper}>
+          <i className="bi bi-exclamation-circle-fill"></i>
+        </div>
+        <h2 className={classes.heading}>
+          {CONTENT.ONBOARD.candidates.statusUpdateModal.heading}
+        </h2>
+        <p className={classes.description}>
+          {CONTENT.ONBOARD.candidates.statusUpdateModal.description}
+        </p>
+        <div className={classes.actions}>
+          <Button
+            title={CONTENT.ONBOARD.candidates.statusUpdateModal.cancel}
+            className={classes.cancelButton}
+            onClick={handleClose}
+          >
+            {CONTENT.ONBOARD.candidates.statusUpdateModal.cancel}
+          </Button>
+          <Button
+            title={CONTENT.ONBOARD.candidates.statusUpdateModal.edit}
+            className={classes.editButton}
+            onClick={handleEdit}
+          >
+            {CONTENT.ONBOARD.candidates.statusUpdateModal.edit}
+          </Button>
         </div>
       </div>
     </Modal>
@@ -96,10 +52,10 @@ const StatusUpdateConfirmation = ({
 };
 
 StatusUpdateConfirmation.propTypes = {
-  isDetailsProvided: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
 };
 
 StatusUpdateConfirmation.displayName = "StatusUpdateConfirmation";
+
 export default StatusUpdateConfirmation;

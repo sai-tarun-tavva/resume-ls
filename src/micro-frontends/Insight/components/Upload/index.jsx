@@ -258,7 +258,12 @@ const Upload = () => {
         <FloatingButton
           title="Upload New Resume"
           clickHandler={toggleAllowUpload}
-          icon={<i className="bi bi-upload" />}
+          icon={
+            <i
+              style={{ WebkitTextStroke: "0.03rem" }}
+              className="bi bi-upload"
+            />
+          }
         />
       )}
     </>

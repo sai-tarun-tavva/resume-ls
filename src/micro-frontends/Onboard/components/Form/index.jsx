@@ -1,19 +1,35 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import FormProgress from "../FormProgress";
-import FormSection from "../FormSection";
-import FormActions from "../FormActions";
 import IconToggler from "../../../Atoms/components/IconToggler";
+import FormProgress from "../../../Atoms/components/FormProgress";
+import FormSections from "../../../Atoms/components/FormSections";
+import FormActions from "../../../Atoms/components/FormActions";
+import Onboarding from "../FormSection/Onboarding";
+import Personal from "../FormSection/Personal";
+import Location from "../FormSection/Location";
+import Relocation from "../FormSection/Relocation";
+import Education from "../FormSection/Education";
+import Profession from "../FormSection/Profession";
+import OfferLetter from "../FormSection/OfferLetter";
+import USTravelAndStay from "../FormSection/USTravelAndStay";
+import EmergencyContacts from "../FormSection/EmergencyContacts";
+import Miscellaneous from "../FormSection/Miscellaneous";
 import { useLoading, useStatus, useUI } from "../../../../store";
 import { inputActions } from "../../store";
 import {
-  addOnboardCandidate,
+  addFormRecord,
   dispatchAsync,
-  updateOnboardCandidate,
+  updateFormRecord,
 } from "../../../../utilities";
-import { CONTENT, ROUTES, STATUS_CODES } from "../../../../constants";
+import {
+  CONTENT,
+  END_POINTS,
+  ROUTES,
+  STATUS_CODES,
+} from "../../../../constants";
 import classes from "./index.module.scss";
+import { SECTION_TITLES } from "../../constants";
 
 /**
  * Form Component
@@ -73,8 +89,12 @@ const Form = () => {
       await dispatchAsync(resetStatus);
 
       const { status, apiData } = !idRef.current
-        ? await addOnboardCandidate(data)
-        : await updateOnboardCandidate(data, idRef.current);
+        ? await addFormRecord(data, END_POINTS.ONBOARD.ADD_CANDIDATE)
+        : await updateFormRecord(
+            data,
+            idRef.current,
+            END_POINTS.ONBOARD.UPDATE_CANDIDATE
+          );
 
       if (!idRef.current) idRef.current = apiData.id;
 
@@ -85,7 +105,7 @@ const Form = () => {
         });
       } else {
         if (isInNewRoute) {
-          if (current < 9)
+          if (current < SECTION_TITLES.length - 1)
             dispatch(inputActions.incrementCurrentSectionIndex());
           else {
             updateStatus({
@@ -122,6 +142,19 @@ const Form = () => {
     current,
   ]);
 
+  /**
+   * Handler for section title click event.
+   * Updates the current section index in the Redux store when a section is clicked.
+   *
+   * @param {number} index - The index of the section clicked.
+   */
+  const titleClickHandler = (index) => {
+    // Only allow navigating to previous sections or within a new route
+    if (index < current || !isInNewRoute) {
+      dispatch(inputActions.updateCurrentSectionIndex(index));
+    }
+  };
+
   // Refs for each form section
   const onboardingRef = useRef();
   const personalRef = useRef();
@@ -134,18 +167,18 @@ const Form = () => {
   const emergencyContactsRef = useRef();
   const miscellaneousRef = useRef();
 
-  const refs = {
-    onboarding: onboardingRef,
-    personal: personalRef,
-    location: locationRef,
-    relocation: relocationRef,
-    education: educationRef,
-    profession: professionRef,
-    offerLetter: offerLetterRef,
-    usTravelAndStay: usTravelAndStayRef,
-    emergencyContacts: emergencyContactsRef,
-    miscellaneous: miscellaneousRef,
-  };
+  const sections = [
+    { Component: Onboarding, ref: onboardingRef },
+    { Component: Personal, ref: personalRef },
+    { Component: Location, ref: locationRef },
+    { Component: Relocation, ref: relocationRef },
+    { Component: Education, ref: educationRef },
+    { Component: Profession, ref: professionRef },
+    { Component: OfferLetter, ref: offerLetterRef },
+    { Component: USTravelAndStay, ref: usTravelAndStayRef },
+    { Component: EmergencyContacts, ref: emergencyContactsRef },
+    { Component: Miscellaneous, ref: miscellaneousRef },
+  ];
 
   /**
    * Previous button click handler
@@ -211,7 +244,12 @@ const Form = () => {
 
   return (
     <div className={classes.formContainer}>
-      <FormProgress currentSectionIndex={current} isInNewRoute={isInNewRoute} />
+      <FormProgress
+        currentSectionIndex={current}
+        isInNewRoute={isInNewRoute}
+        titleClickHandler={titleClickHandler}
+        titles={SECTION_TITLES}
+      />
       {!isInNewRoute && (
         <IconToggler
           toggleMode={isEditMode}
@@ -222,13 +260,16 @@ const Form = () => {
       )}
       <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
         <div className={classes.carouselContainer}>
-          <FormSection currentSectionIndex={current} refs={refs} />
+          <FormSections currentSectionIndex={current} sections={sections} />
         </div>
         <FormActions
           isInNewRoute={isInNewRoute}
           previousHandler={previousClickHandler}
           nextHandler={nextClickHandler}
           nextAndSaveHandler={nextAndSaveClickHandler}
+          index={current}
+          isEditMode={isEditMode}
+          closeRedirectRoute={`/${ROUTES.ONBOARD.HOME}`}
         />
       </form>
     </div>

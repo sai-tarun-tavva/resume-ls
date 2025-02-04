@@ -6,7 +6,8 @@ import {
   getStatusesAsJoinedString,
 } from "../../../../utilities";
 import { LOADING_ACTION_TYPES, PAGES } from "../../../../constants";
-import { OPTIONS } from "../../../Onboard/constants";
+import { OPTIONS as ONBOARD_OPTIONS } from "../../../Onboard/constants";
+import { OPTIONS as FORGE_OPTIONS } from "../../../Forge/constants";
 import classes from "./index.module.scss";
 
 /**
@@ -50,6 +51,19 @@ const Pagination = ({
     currentPage = +nextPage - 1;
   }
 
+  let statusOptions = [];
+
+  switch (currentRoute) {
+    case PAGES.ONBOARD:
+      statusOptions = ONBOARD_OPTIONS.ONBOARDING_STATUS;
+      break;
+    case PAGES.FORGE:
+      statusOptions = FORGE_OPTIONS.SUBMISSION_STATUS;
+      break;
+    default:
+      break;
+  }
+
   const progressPercentage = totalPages ? (currentPage / totalPages) * 100 : 0;
 
   /**
@@ -65,7 +79,10 @@ const Pagination = ({
       searchTerm,
       currentRoute === PAGES.INSIGHT
         ? ""
-        : getStatusesAsJoinedString(OPTIONS.ONBOARDING_STATUS, selectedStatuses)
+        : getStatusesAsJoinedString(
+            statusOptions,
+            selectedStatuses[currentRoute]
+          )
     );
     enableRefetch();
     updateRefetchURL(url);

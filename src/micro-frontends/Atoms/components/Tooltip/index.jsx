@@ -5,13 +5,16 @@ import classes from "./index.module.scss";
 /**
  * Tooltip Component
  *
- * This component displays a tooltip with configurable behavior to show on hover or click.
+ * Displays a tooltip based on cursor behavior, such as hover, click, or pause-hover.
  *
  * @param {Object} props - Component props.
  * @param {React.ReactNode} props.baseContentToHover - The content that triggers the tooltip visibility.
  * @param {React.ReactNode} props.children - The content to display inside the tooltip.
- * @param {"hover" | "click"} [props.trigger="hover"] - Determines how the tooltip is triggered (hover or click).
+ * @param {"hover" | "click" | "pause-hover"} [props.trigger="hover"] - Determines how the tooltip is triggered.
  * @param {string} [props.extraClass] - Additional CSS class to style the tooltip wrapper.
+ * @param {number} [props.delay=300] - Delay in milliseconds before showing the tooltip after cursor stops moving.
+ * @param {number} [props.autoHideDelay=2000] - Delay in milliseconds before automatically hiding the tooltip.
+ * @param {boolean} [props.avoidDisplay=false] - Avoid displaying the tooltip entirely.
  * @returns {JSX.Element} The Tooltip component.
  */
 const Tooltip = ({
@@ -19,13 +22,62 @@ const Tooltip = ({
   children,
   trigger = "hover",
   extraClass,
+  delay = 300,
+  autoHideDelay = 2000,
+  avoidDisplay = false,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
   const tooltipRef = useRef(null);
+  const hoverTimeout = useRef(null);
+  const autoHideTimeout = useRef(null);
 
   /**
-   * Toggles tooltip visibility when the base element is clicked.
-   * Only active if the trigger type is set to "click".
+   * Handles cursor movement for "pause-hover" trigger type.
+   *
+   * @param {MouseEvent} event - Mouse event.
+   */
+  const handleMouseMove = (event) => {
+    if (trigger === "pause-hover") {
+      setIsVisible(false); // Hide tooltip immediately when cursor moves
+      clearTimeout(hoverTimeout.current);
+      clearTimeout(autoHideTimeout.current);
+
+      // Set a timeout to display tooltip if cursor stops moving
+      hoverTimeout.current = setTimeout(() => {
+        setPosition({ top: event.clientY + 10, left: event.clientX + 10 }); // Adjust for tooltip offset
+        setIsVisible(true);
+
+        // Auto-hide tooltip after the specified delay
+        autoHideTimeout.current = setTimeout(() => {
+          setIsVisible(false);
+        }, autoHideDelay);
+      }, delay);
+    }
+  };
+
+  /**
+   * Handles visibility for "hover" trigger type.
+   */
+  const handleMouseEnter = () => {
+    if (trigger === "hover") {
+      setIsVisible(true);
+    }
+  };
+
+  /**
+   * Hides tooltip when cursor leaves for "hover" and "pause-hover" trigger types.
+   */
+  const handleMouseLeave = () => {
+    if (trigger === "hover" || trigger === "pause-hover") {
+      clearTimeout(hoverTimeout.current);
+      clearTimeout(autoHideTimeout.current);
+      setIsVisible(false);
+    }
+  };
+
+  /**
+   * Toggles visibility for "click" trigger type.
    */
   const handleToggleVisibility = () => {
     if (trigger === "click") {
@@ -33,64 +85,39 @@ const Tooltip = ({
     }
   };
 
-  /**
-   * Shows the tooltip on mouse enter for "hover" trigger type.
-   */
-  const handleMouseEnter = () => {
-    if (trigger === "hover") setIsVisible(true);
-  };
-
-  /**
-   * Hides the tooltip on mouse leave for "hover" trigger type.
-   */
-  const handleMouseLeave = () => {
-    if (trigger === "hover") setIsVisible(false);
-  };
-
-  /**
-   * Handles outside clicks to close the tooltip if visible.
-   * Adds and removes event listener based on the "click" trigger type.
-   */
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Close the tooltip if a click occurs outside the tooltip element
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(event.target) &&
-        isVisible
-      ) {
-        setIsVisible(false);
-      }
-    };
-
-    if (trigger === "click") {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
+    // Clean up timeouts on component unmount
     return () => {
-      if (trigger === "click") {
-        document.removeEventListener("mousedown", handleClickOutside);
-      }
+      clearTimeout(hoverTimeout.current);
+      clearTimeout(autoHideTimeout.current);
     };
-  }, [isVisible, trigger]);
+  }, []);
 
   return (
     <div
       className={`${classes.tooltipWrapper} ${extraClass}`}
       onClick={handleToggleVisibility}
+      onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {/* The base element that triggers tooltip visibility */}
       <span>{baseContentToHover}</span>
       {/* Tooltip content */}
-      <div
-        ref={tooltipRef}
-        className={`${classes.tooltip} ${isVisible ? classes.visible : ""}`}
-      >
-        <div className={classes.tooltipArrow}></div>
-        <div className={classes.tooltipContent}>{children}</div>
-      </div>
+      {!avoidDisplay && isVisible && (
+        <div
+          ref={tooltipRef}
+          className={`${classes.tooltip} ${isVisible ? classes.visible : ""}`}
+          style={
+            trigger === "pause-hover"
+              ? { top: position.top, left: position.left }
+              : {}
+          }
+        >
+          <div className={classes.tooltipArrow}></div>
+          <div className={classes.tooltipContent}>{children}</div>
+        </div>
+      )}
     </div>
   );
 };
@@ -98,8 +125,11 @@ const Tooltip = ({
 Tooltip.propTypes = {
   baseContentToHover: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
-  trigger: PropTypes.oneOf(["click", "hover"]),
+  trigger: PropTypes.oneOf(["hover", "click", "pause-hover"]),
   extraClass: PropTypes.string,
+  delay: PropTypes.number,
+  autoHideDelay: PropTypes.number,
+  avoidDisplay: PropTypes.bool,
 };
 
 Tooltip.displayName = "Tooltip";

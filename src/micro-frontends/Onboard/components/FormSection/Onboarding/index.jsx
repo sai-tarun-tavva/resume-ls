@@ -2,7 +2,7 @@ import { useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";

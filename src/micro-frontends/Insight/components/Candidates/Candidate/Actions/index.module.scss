@@ -15,6 +15,10 @@
     inset 0 -0.1rem 0.25rem rgba(0, 0, 0, 0.2),
     0 0.1rem 0.25rem rgba(0, 0, 0, 0.1);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   &:last-child {
     margin-bottom: 0;
   }

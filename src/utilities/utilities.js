@@ -1,3 +1,6 @@
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import { saveAs } from "file-saver";
 import { INSIGHT } from "../constants";
 
 /**
@@ -113,7 +116,7 @@ export const highlightText = (text, highlight) => {
   // Remove logical operators and parentheses, then split remaining terms
   const cleanHighlight = highlight
     .replace(/[()]/g, "") // Remove parentheses
-    .replace(/\b(AND|OR)\b/g, "") // Remove logical operators
+    .replace(/\b(AND|OR|and|or)\b/g, "") // Remove logical operators
     .trim();
 
   const quotedTerms = extractQuotedTerms(cleanHighlight); // Extract terms inside quotes
@@ -287,6 +290,72 @@ export const convertDate = (dateStr, includeTime = true) => {
 };
 
 /**
+ * Handles the process of generating and downloading a PDF file with plain text content.
+ *
+ * This function accepts an array of text strings, organizes them into a PDF layout,
+ * and ensures proper pagination. Each line is wrapped to fit within the margins
+ * of the PDF and spans multiple pages if necessary.
+ *
+ * @param {string[]} overview - An array of strings representing the content to include in the PDF.
+ */
+export const handleTextDownloadAsPDF = async (overview) => {
+  if (!overview || overview.length === 0) {
+    alert("No content to download.");
+    return;
+  }
+
+  try {
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = 210; // A4 width in mm
+    const margin = 10; // 10mm margin on each side
+    const usableWidth = pageWidth - 2 * margin;
+    const lineHeight = 10; // Line height in mm
+    const fontSize = 12;
+
+    pdf.setFont("Helvetica", "normal");
+    pdf.setFontSize(fontSize);
+
+    let yOffset = margin;
+
+    overview.forEach((line) => {
+      const splitText = pdf.splitTextToSize(line, usableWidth);
+
+      splitText.forEach((text) => {
+        if (yOffset + lineHeight > pdf.internal.pageSize.height - margin) {
+          pdf.addPage(); // Add a new page if we're out of space
+          yOffset = margin;
+        }
+        pdf.text(text, margin, yOffset);
+        yOffset += lineHeight;
+      });
+    });
+
+    pdf.save("overview_content.pdf");
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    alert("Failed to generate PDF. Please check the console for details.");
+  }
+};
+
+/**
+ * Formats a given timestamp into a user-friendly string in the "America/New_York" timezone.
+ * @param {number|string|Date} timestamp - The timestamp to format. Can be a number (milliseconds since epoch),
+ *                                         a string (parsable by Date), or a Date object.
+ * @returns {string} The formatted timestamp as a string (e.g., "Jan 11, 3:00 PM").
+ */
+export const formatTimestamp = (timestamp) => {
+  const date = new Date(timestamp);
+  return date.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+    timeZone: "America/New_York",
+  });
+};
+
+/**
  * Returns the appropriate file icon based on the file extension.
  * @param {string} fileName - The name of the file.
  * @returns {JSX.Element} The icon for the file type.
@@ -439,7 +508,7 @@ export const getExperienceDisplayText = (years, months) => {
   } else if (months) {
     return `${months}M`;
   } else {
-    return "";
+    return "0Y 0M";
   }
 };
 
@@ -565,4 +634,104 @@ export const getValueByLabel = (options, label) => {
  */
 export const getLabelByValue = (options, value) => {
   return options.find((option) => option.value === value)?.label;
+};
+
+/**
+ * Generates empty rows for a table with a specified number of rows and columns.
+ *
+ * @param {number} rowLength - The number of empty rows to generate.
+ * @param {number} colLength - The number of columns in each row.
+ * @returns {JSX.Element[]} An array of JSX elements representing empty rows with the specified number of columns.
+ */
+export const getEmptyRows = (rowLength, colLength) => {
+  return Array.from({
+    length: rowLength,
+  }).map((_, index) => (
+    <tr key={`empty-${index}`} className="empty-row">
+      {Array.from({ length: colLength }).map((_, index) => (
+        <td key={index}>&nbsp;</td>
+      ))}
+    </tr>
+  ));
+};
+
+/**
+ * Exports data to an Excel file with specified column widths and applies basic styling.
+ *
+ * @param {Array} worksheetData - Array of objects representing the data to export.
+ * @param {Object} columnWidths - Object specifying the width of each column by key.
+ * @param {String} appName - App name to be used in creating the file name.
+ */
+export const exportToExcel = (worksheetData, columnWidths, appName) => {
+  // Check if data is empty
+  if (!worksheetData || worksheetData.length === 0) {
+    // Create a worksheet with only headers based on columnWidths
+    const headers = Object.keys(columnWidths);
+    const emptyRow = headers.reduce((acc, header) => {
+      acc[header] = "";
+      return acc;
+    }, {});
+
+    worksheetData = [emptyRow]; // Add one empty row to include headers
+  }
+
+  // Convert to worksheet
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData, {
+    header: Object.keys(columnWidths), // Explicitly specify headers
+    skipHeader: false,
+  });
+
+  // Set column widths
+  worksheet["!cols"] = Object.entries(columnWidths).map(([, width]) => ({
+    width,
+  }));
+
+  // Apply styling
+  const headerStyle = {
+    font: { bold: true },
+    fill: { fgColor: { rgb: "E6E6E6" } },
+    alignment: { horizontal: "center" },
+  };
+
+  // Apply header styling only if we have a valid range
+  const range = XLSX.utils.decode_range(worksheet["!ref"]);
+  if (range) {
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const address = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (worksheet[address]) {
+        worksheet[address].s = headerStyle;
+      }
+    }
+
+    // Apply auto filter only if we have a valid range
+    worksheet["!autofilter"] = {
+      ref: XLSX.utils.encode_range({
+        s: { r: 0, c: 0 },
+        e: { r: range.e.r, c: range.e.c },
+      }),
+    };
+  }
+
+  // Create workbook and append worksheet
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Candidates");
+
+  // Write to file
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+    bookSST: false,
+    compression: true,
+  });
+
+  const blob = new Blob([excelBuffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  // Generate filename with current date
+  const filename = `${appName}Candidates_${
+    new Date().toISOString().split("T")[0]
+  }.xlsx`;
+
+  saveAs(blob, filename);
 };

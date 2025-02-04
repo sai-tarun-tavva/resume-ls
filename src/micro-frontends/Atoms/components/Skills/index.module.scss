@@ -4,7 +4,7 @@
   flex-direction: column;
   overflow-y: auto;
   margin-right: 1.9rem;
-  height: 7rem;
+  height: 6.5rem;
 
   &.smaller {
     margin-top: 2rem;
@@ -29,6 +29,7 @@
 
   .noSkill {
     color: #555555;
+    font-size: 0.875rem;
   }
 }
 

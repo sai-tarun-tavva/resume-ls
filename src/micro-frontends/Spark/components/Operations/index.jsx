@@ -80,7 +80,12 @@ const Operations = () => {
   };
 
   const allErrors = [jobDescriptionError, chooseResumeError, serviceTypeError];
-  const allValues = [jobDescriptionValue, chooseResumeFile, serviceTypeValue];
+  const allValues = [
+    jobDescriptionValue,
+    chooseResumeFile,
+    serviceTypeValue,
+    selectedActions.length > 0,
+  ];
 
   const isSectionValid = determineSectionValidity(allErrors, allValues);
 

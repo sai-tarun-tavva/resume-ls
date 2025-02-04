@@ -4,15 +4,18 @@ import Header from "../../../Atoms/components/Header";
 import Logo from "../../../Atoms/components/Logo";
 import Search from "../../../Atoms/components/Search";
 import Pagination from "../../../Atoms/components/Pagination";
+import Profile from "../Profile";
 import Logout from "../../../Atoms/components/LogOut";
 import { useUI } from "../../../../store";
 import {
   buildFetchCandidatesUrl,
   getStatusesAsJoinedString,
 } from "../../../../utilities";
-import { OPTIONS } from "../../../Onboard/constants";
+import { OPTIONS as ONBOARD_OPTIONS } from "../../../Onboard/constants";
+import { OPTIONS as FORGE_OPTIONS } from "../../../Forge/constants";
 import {
   ONBOARD,
+  FORGE,
   CONTENT,
   END_POINTS,
   ROUTES,
@@ -30,6 +33,7 @@ import classes from "./index.module.scss";
  * @param {string} props.count - Indicates the count to be displayed.
  * @param {boolean} [props.includeSearch=true] - Whether to include the search functionality.
  * @param {boolean} [props.includePagination=true] - Whether to include pagination functionality.
+ * @param {JSX.Element} [props.extraOps] - Additional operations specific to the product.
  * @returns {JSX.Element} The Operations component.
  */
 const Operations = ({
@@ -37,8 +41,11 @@ const Operations = ({
   count,
   includeSearch = true,
   includePagination = true,
+  extraOps,
 }) => {
   const location = useLocation();
+  const formType = location.pathname.split("/")[3];
+
   const {
     state: {
       pagination: { previousPage, nextPage, totalCount },
@@ -51,7 +58,12 @@ const Operations = ({
     updateSearchTerm,
   } = useUI();
 
-  let logoIcon, displayContent, enableOpsRoute, apiEndpoint, candidatesPerPage;
+  let logoIcon,
+    displayContent,
+    enableOpsRoute,
+    apiEndpoint,
+    candidatesPerPage,
+    statusOptions = [];
 
   switch (currentPage) {
     case PAGES.INSIGHT:
@@ -67,14 +79,29 @@ const Operations = ({
       enableOpsRoute = ROUTES.ONBOARD.HOME;
       apiEndpoint = END_POINTS.ONBOARD.FETCH_CANDIDATES;
       candidatesPerPage = ONBOARD.CANDIDATES_PER_PAGE;
+      statusOptions = ONBOARD_OPTIONS.ONBOARDING_STATUS;
       break;
     case PAGES.SPARK:
-      logoIcon = "bi bi-lightning-charge-fill";
+      logoIcon = "bi bi-lightning-charge";
       displayContent = CONTENT.SPARK.operations;
       break;
     case PAGES.QUEST:
       logoIcon = "bi bi-bullseye";
       displayContent = CONTENT.QUEST.operations;
+      break;
+    case PAGES.FORGE:
+      logoIcon = "bi bi-nut";
+      displayContent = CONTENT.FORGE.operations;
+      enableOpsRoute = `${ROUTES.FORGE.HOME}/${formType}`;
+      apiEndpoint =
+        END_POINTS.FORGE[(formType || ROUTES.FORGE.SALES.VIEW).toUpperCase()]
+          .FETCH_RECORDS;
+      candidatesPerPage = FORGE.CANDIDATES_PER_PAGE;
+      statusOptions = FORGE_OPTIONS.SUBMISSION_STATUS;
+      break;
+    case PAGES.NEXUS:
+      logoIcon = "bi bi-link-45deg";
+      displayContent = CONTENT.NEXUS.operations;
       break;
     default:
       break;
@@ -82,10 +109,14 @@ const Operations = ({
 
   const { logoSuffix, logo } = displayContent;
   const searchPlaceholder = displayContent?.search?.placeholder;
-  const searchFields = displayContent?.search?.searchFields;
+  let searchFields = displayContent?.search?.searchFields;
+
+  if (currentPage === PAGES.FORGE)
+    searchFields = displayContent?.search?.searchFields[formType];
+
   const totalCountText = displayContent?.countInfo;
   const enableOperations = location.pathname === `/${enableOpsRoute}`;
-  const displayCount = [PAGES.ONBOARD].includes(currentPage);
+  const displayCount = [PAGES.ONBOARD, PAGES.FORGE].includes(currentPage);
 
   /**
    * Handles the search on submit event.
@@ -102,8 +133,8 @@ const Operations = ({
         currentPage === PAGES.INSIGHT
           ? ""
           : getStatusesAsJoinedString(
-              OPTIONS.ONBOARDING_STATUS,
-              selectedStatuses
+              statusOptions,
+              selectedStatuses[currentPage]
             )
       )
     );
@@ -141,11 +172,20 @@ const Operations = ({
           apiEndpoint={apiEndpoint}
         />
       )}
-      <Logout
-        className={
-          !includeSearch && !includePagination ? classes.logoutExtraClass : ""
-        }
-      />
+      <div
+        className={classes.extraOpsLogoutContainer}
+        style={{
+          marginLeft: includeSearch || includePagination ? "unset" : "auto",
+        }}
+      >
+        {extraOps}
+        <Profile />
+        <Logout
+          className={
+            !includeSearch && !includePagination ? classes.logoutExtraClass : ""
+          }
+        />
+      </div>
     </Header>
   );
 };
@@ -155,6 +195,7 @@ Operations.propTypes = {
   count: PropTypes.number,
   includeSearch: PropTypes.bool,
   includePagination: PropTypes.bool,
+  extraOps: PropTypes.node,
 };
 
 Operations.displayName = "Operations";

@@ -37,3 +37,19 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .generatorContainer {
+    width: 100%;
+    height: unset;
+    position: unset;
+
+    form {
+      .fullInputWidth {
+        textarea {
+          height: 20rem;
+        }
+      }
+    }
+  }
+}

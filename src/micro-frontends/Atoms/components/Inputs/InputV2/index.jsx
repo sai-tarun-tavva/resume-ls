@@ -20,6 +20,7 @@ import classes from "./index.module.scss";
  * @param {boolean} [props.isRequired] - Whether the input field is required.
  * @param {React.ReactNode} [props.rightIcon] - Icon to be displayed on the right side of the input.
  * @param {function} [props.rightIconOnClick] - Callback function for the right icon click.
+ * @param {string} [props.prefix] - Text or symbol to display before the input field.
  * @returns {JSX.Element} The InputV2 component.
  */
 const InputV2 = forwardRef(
@@ -37,6 +38,7 @@ const InputV2 = forwardRef(
       isRequired = false,
       rightIcon,
       rightIconOnClick,
+      prefix = "",
       ...props
     },
     ref
@@ -59,6 +61,7 @@ const InputV2 = forwardRef(
           {label} {isRequired && <span className={classes.required}>*</span>}
         </label>
         <div className={classes.inputWrapper}>
+          {prefix && <span className={classes.prefix}>{prefix}</span>}
           <input
             ref={inputRef}
             id={id}
@@ -104,6 +107,7 @@ InputV2.propTypes = {
   isRequired: PropTypes.bool,
   rightIcon: PropTypes.node,
   rightIconOnClick: PropTypes.func,
+  prefix: PropTypes.string,
 };
 
 InputV2.displayName = "InputVersion2";

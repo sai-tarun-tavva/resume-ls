@@ -19,7 +19,6 @@
     align-items: center;
     height: 100%;
     margin-left: auto;
-    margin-right: 2rem;
 
     li {
       position: relative;
@@ -72,6 +71,40 @@
           }
         }
       }
+    }
+  }
+
+  .logoContainer {
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 1rem 0 1.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease, transform 0.3s ease,
+      box-shadow 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 1);
+      transform: scale(1.05);
+      box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.15);
+
+      .logo {
+        opacity: 1;
+        filter: brightness(100%);
+        transform: scale(1.1);
+      }
+    }
+
+    .logo {
+      width: 1.2rem;
+      height: 1.2rem;
+      opacity: 0.85;
+      transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+      filter: brightness(90%);
     }
   }
 }

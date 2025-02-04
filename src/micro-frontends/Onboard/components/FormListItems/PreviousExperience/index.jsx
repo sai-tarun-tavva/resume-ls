@@ -2,6 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Address from "../../FormSection/Address"; // Address input for the employer's address
 import { useInput } from "../../../../Atoms/hooks";
+import { defaultAddress } from "../../../store";
 import {
   determineSectionValidity,
   extractOnlyDigits,
@@ -22,9 +23,13 @@ import classes from "./index.module.scss";
  * @param {Object} defaultValue - The default values for the fields.
  * @param {Object} validationFuncs - The validation functions for the fields.
  * @param {string} id - Unique identifier for the form fields.
+ * @param {Boolean} isCompanyDetailsRequired - Flag to determine the company details requirement.
  */
 const PreviousExperience = forwardRef(
-  ({ labels, defaultValue, validationFuncs, id }, ref) => {
+  (
+    { labels, defaultValue, validationFuncs, id, isCompanyDetailsRequired },
+    ref
+  ) => {
     // Destructure the labels for each field
     const {
       employerName: nameLabel,
@@ -86,8 +91,13 @@ const PreviousExperience = forwardRef(
     );
 
     // Collect all errors and values for the current section
-    const allErrors = [nameError, emailIdError, phoneNumberError];
-    const allValues = [nameValue, emailIdValue, phoneNumberValue];
+    let allErrors = [nameError];
+    let allValues = [nameValue];
+
+    if (isCompanyDetailsRequired) {
+      allErrors = [...allErrors, emailIdError, phoneNumberError];
+      allValues = [...allValues, emailIdValue, phoneNumberValue];
+    }
 
     // Determine if the section is valid
     const isSectionValid = determineSectionValidity(allErrors, allValues);
@@ -97,8 +107,11 @@ const PreviousExperience = forwardRef(
      */
     const forceValidations = () => {
       forceNameValidations();
-      forceEmailValidations();
-      forcePhoneNumberValidations();
+
+      if (isCompanyDetailsRequired) {
+        forceEmailValidations();
+        forcePhoneNumberValidations();
+      }
     };
 
     /**
@@ -114,9 +127,9 @@ const PreviousExperience = forwardRef(
 
       const prevExp = {
         employerName: nameValue,
-        phone: extractOnlyDigits(phoneNumberValue),
-        email: emailIdValue,
-        address,
+        phone: extractOnlyDigits(phoneNumberValue) || "",
+        email: emailIdValue || "",
+        address: address || defaultAddress,
       };
 
       // If any validation fails, return false and force validations
@@ -156,42 +169,46 @@ const PreviousExperience = forwardRef(
           isRequired
         />
 
-        <div className={classes.prevExpRow}>
-          {/* Email and Phone input fields */}
-          <InputV2
-            id={`${emailIdLabel} ${id}`}
-            label={`${emailIdLabel} ${id}`}
-            value={emailIdValue}
-            changeHandler={emailIdChange}
-            blurHandler={emailIdBlur}
-            focusHandler={emailIdFocus}
-            isFocused={isEmailIdFocused}
-            error={emailIdError}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-          <InputV2
-            id={`${phoneNumberLabel} ${id}`}
-            label={`${phoneNumberLabel} ${id}`}
-            value={phoneNumberValue}
-            changeHandler={phoneNumberChange}
-            blurHandler={phoneNumberBlur}
-            focusHandler={phoneNumberFocus}
-            isFocused={isPhoneNumberFocused}
-            error={phoneNumberError}
-            extraClass={classes.halfInputWidth}
-            isRequired
-          />
-        </div>
+        {isCompanyDetailsRequired && (
+          <>
+            <div className={classes.prevExpRow}>
+              {/* Email and Phone input fields */}
+              <InputV2
+                id={`${emailIdLabel} ${id}`}
+                label={`${emailIdLabel} ${id}`}
+                value={emailIdValue}
+                changeHandler={emailIdChange}
+                blurHandler={emailIdBlur}
+                focusHandler={emailIdFocus}
+                isFocused={isEmailIdFocused}
+                error={emailIdError}
+                extraClass={classes.halfInputWidth}
+                isRequired
+              />
+              <InputV2
+                id={`${phoneNumberLabel} ${id}`}
+                label={`${phoneNumberLabel} ${id}`}
+                value={phoneNumberValue}
+                changeHandler={phoneNumberChange}
+                blurHandler={phoneNumberBlur}
+                focusHandler={phoneNumberFocus}
+                isFocused={isPhoneNumberFocused}
+                error={phoneNumberError}
+                extraClass={classes.halfInputWidth}
+                isRequired
+              />
+            </div>
 
-        {/* Address input field for employer */}
-        <Address
-          heading={`${addressLabel} ${id}`}
-          defaultValue={addressDefaultValue}
-          id={`companyAddress${id}`}
-          ref={addressRef}
-          extraClass={classes.fullInputWidth}
-        />
+            {/* Address input field for employer */}
+            <Address
+              heading={`${addressLabel} ${id}`}
+              defaultValue={addressDefaultValue}
+              id={`companyAddress${id}`}
+              ref={addressRef}
+              extraClass={classes.fullInputWidth}
+            />
+          </>
+        )}
       </>
     );
   }

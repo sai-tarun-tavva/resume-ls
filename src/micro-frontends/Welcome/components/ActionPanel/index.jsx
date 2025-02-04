@@ -1,6 +1,6 @@
-import { useState } from "react";
+// import { useState } from "react";
 import AuthForm from "../AuthForm";
-import { CONTENT } from "../../../../constants";
+// import { CONTENT } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -12,15 +12,19 @@ import classes from "./index.module.scss";
  * @returns {JSX.Element} The rendered ActionPanel component.
  */
 const ActionPanel = () => {
-  const [isLogin, setIsLogin] = useState(true); // State to toggle between login and sign-up
-  const { login, signUp } = CONTENT.WELCOME.authPanel.advisor;
+  // const [isLogin, setIsLogin] = useState(true); // State to toggle between login and sign-up
+  // const { login, signUp } = CONTENT.WELCOME.authPanel.advisor;
 
   return (
     <div className={classes.actionPanel}>
-      <AuthForm haveAccount={isLogin} />
-      <p onClick={() => setIsLogin((prevValue) => !prevValue)}>
+      {/* <AuthForm haveAccount={isLogin} /> */}
+      <AuthForm haveAccount={true} />
+      {/* <p
+        style={{ fontSize: "0.875rem" }}
+        onClick={() => setIsLogin((prevValue) => !prevValue)}
+      >
         {isLogin ? login : signUp}
-      </p>
+      </p> */}
     </div>
   );
 };

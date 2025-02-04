@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { CONTENT, PAGES, ROUTES } from "../../../../constants";
+import { CONTENT, ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
 /**
@@ -16,20 +16,23 @@ const PageNotFound = () => {
   const location = useLocation();
   const previousRoute = location.state?.from || "";
 
+  let redirectUrl = `/${ROUTES.INSIGHT.HOME}`;
+
+  if (previousRoute.includes(ROUTES.ONBOARD.HOME.split("/")[0])) {
+    redirectUrl = `/${ROUTES.ONBOARD.HOME}`;
+  } else if (previousRoute.includes(ROUTES.FORGE.SALES.VIEW)) {
+    redirectUrl = `/${ROUTES.FORGE.HOME}/${ROUTES.FORGE.SALES.VIEW}`;
+  } else if (previousRoute.includes(ROUTES.FORGE.RECRUIT.VIEW)) {
+    redirectUrl = `/${ROUTES.FORGE.HOME}/${ROUTES.FORGE.RECRUIT.VIEW}`;
+  }
+
   return (
     <div className={classes.notFoundContainer}>
       <h1 className={classes.notFoundTitle}>{title}</h1>
       <p className={classes.notFoundMessage}>{message}</p>
       <p className={classes.notFoundSuggestion}>
         {suggestionStart}
-        <Link
-          to={
-            previousRoute.includes(PAGES.ONBOARD)
-              ? `/${ROUTES.ONBOARD.HOME}`
-              : `/${ROUTES.INSIGHT.HOME}`
-          }
-          replace
-        >
+        <Link to={redirectUrl} replace>
           {suggestedPageName}
         </Link>
         {suggestionEnd}

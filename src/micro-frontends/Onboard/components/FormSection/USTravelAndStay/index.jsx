@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import ListAdd from "../ListAdd";
 import Address from "../Address";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
@@ -72,7 +72,7 @@ const USTravelAndStay = forwardRef((_, ref) => {
     forceValidations: forceUsEntryValidations,
   } = useInput(
     usEntry,
-    (value) => validations.usEntry(value, isUSStayAddressesOptional),
+    (value) => validations.usEntry(value, isPortOfEntryOptional),
     undefined,
     true
   );
@@ -166,20 +166,17 @@ const USTravelAndStay = forwardRef((_, ref) => {
       {/* Address section that can have multiple items */}
       <ListAdd
         label={sections.usTravelAndStay.stayAddressesList.label}
-        helperText={sections.usTravelAndStay.stayAddressesList.helper}
+        helperText={
+          isUSStayAddressesOptional
+            ? ""
+            : sections.usTravelAndStay.stayAddressesList.helper
+        }
         heading={sections.usTravelAndStay.stayAddressesList.heading}
         element={(props) => <Address {...props} />}
-        savedListItems={
-          stayAddresses.length > 0
-            ? stayAddresses
-            : !isUSStayAddressesOptional
-            ? [defaultAddress]
-            : []
-        }
+        savedListItems={stayAddresses.length > 0 ? stayAddresses : []}
         newValue={defaultAddress}
         ref={stayAddressesRef}
         extraClass={sectionClasses.addressFullInputWidth}
-        mandatoryItems={isUSStayAddressesOptional ? 0 : 1}
         maxItems={3}
       />
     </fieldset>

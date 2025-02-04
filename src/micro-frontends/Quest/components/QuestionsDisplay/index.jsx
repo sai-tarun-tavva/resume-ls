@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import Loader from "../../../Atoms/components/Loader";
+import MarkdownDisplay from "../../../Atoms/components/MarkdownDisplay";
 import { useLoading } from "../../../../store";
 import {
   CONTENT,
@@ -35,9 +36,8 @@ const QuestionsDisplay = () => {
       <ul className={classes.questionsList}>
         {questions.map((question, index) => (
           <li key={index} className={classes.questionItem}>
-            <span className={classes.questionNumber}>{index + 1}</span>
             <div className={classes.questionContent}>
-              <p>{question}</p>
+              <MarkdownDisplay analysisResult={[question]} />
             </div>
           </li>
         ))}

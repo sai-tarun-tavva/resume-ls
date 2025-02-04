@@ -161,6 +161,7 @@ export const FIELDS = {
     TECHNOLOGIES_KNOWN: "technologiesKnown", // Key for the technologies known by the candidate
     PREVIOUS_EXPERIENCE: "previousExperience", // Key for the candidate's previous work experience
     REFERENCES: "references", // Key for the candidate's professional references
+    LINKEDIN_IDENTIFIER: "linkedInIdentifier", // Key for the candidate's linkedin profile url's identifier
   },
   OFFER_LETTER: {
     STATUS: "status", // Key for the offer letter status

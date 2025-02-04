@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import RadioGroup from "../../../../Atoms/components/Inputs/RadioGroup";
 import Select from "../../../../Atoms/components/Inputs/Select";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";
@@ -18,7 +18,6 @@ import {
   determineSectionValidity,
   extractOnlyDigits,
   focusErrorsIfAny,
-  getEighteenYearsAgoDate,
   onboardingValidations,
   transformPhoneNumber,
   transformSSN,
@@ -36,9 +35,10 @@ import {
   SEVIS_DSO_REQUIRED_VISA,
   EAD_NOT_REQUIRED_VISA,
   EAD_OPTIONAL_VISA,
-  HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA,
-  HOME_ADDRESS_CONTACT_OPTIONAL_VISA,
+  HOME_ADDRESS_NOT_REQUIRED_VISA,
+  HOME_ADDRESS_OPTIONAL_VISA,
   PORT_OF_ENTRY_NOT_REQUIRED_VISA,
+  PASSPORT_OPTIONAL_VISA,
 } from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 
@@ -203,16 +203,6 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
   } = useInput(maritalStatus);
 
   const {
-    value: passportNumberValue,
-    handleInputChange: passportNumberChange,
-    handleInputBlur: passportNumberBlur,
-    handleInputFocus: passportNumberFocus,
-    error: passportNumberError,
-    isFocused: isPassportNumberFocused,
-    forceValidations: forcePassportNumberValidations,
-  } = useInput(passportNumber, validations.passportNumber, undefined, true);
-
-  const {
     value: visaStatusValue,
     handleInputChange: visaStatusChange,
     handleInputBlur: visaStatusBlur,
@@ -227,6 +217,23 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     EAD_NOT_REQUIRED_VISA.includes(visaStatusValue) || visaStatusValue === ""
   );
   const isEADOptional = EAD_OPTIONAL_VISA.includes(visaStatusValue);
+
+  const isPassportOptional = PASSPORT_OPTIONAL_VISA.includes(visaStatusValue);
+
+  const {
+    value: passportNumberValue,
+    handleInputChange: passportNumberChange,
+    handleInputBlur: passportNumberBlur,
+    handleInputFocus: passportNumberFocus,
+    error: passportNumberError,
+    isFocused: isPassportNumberFocused,
+    forceValidations: forcePassportNumberValidations,
+  } = useInput(
+    passportNumber,
+    (value) => validations.passportNumber(value, isPassportOptional),
+    undefined,
+    true
+  );
 
   const {
     value: eadNumberValue,
@@ -348,7 +355,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
     phoneNumberValue,
     genderValue,
     dobValue,
-    passportNumberValue,
+    isPassportOptional ? true : passportNumberValue,
     visaStatusValue,
     isEADRequired ? (isEADOptional ? true : eadNumberValue) : true,
     SSNValue,
@@ -413,8 +420,8 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
 
         // Resetting Home address and emergency contact details if visa status is not one of Green card, U.S. Citizen, EB-1, EB-2, EB-3, Others
         if (
-          HOME_ADDRESS_CONTACT_NOT_REQUIRED_VISA.includes(visaStatusValue) ||
-          HOME_ADDRESS_CONTACT_OPTIONAL_VISA.includes(visaStatusValue)
+          HOME_ADDRESS_NOT_REQUIRED_VISA.includes(visaStatusValue) ||
+          HOME_ADDRESS_OPTIONAL_VISA.includes(visaStatusValue)
         ) {
           dispatch(
             inputActions.updateField({
@@ -691,16 +698,16 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
       <div className={sectionClasses.formRow}>
         <InputV2
           id="dob"
-          type="date"
+          type="text"
           label={sections.personal.dob}
           value={dobValue}
+          placeholder="mm/dd/yyyy"
           changeHandler={dobChange}
           blurHandler={dobBlur}
           focusHandler={dobFocus}
           error={dobError}
           isFocused={isDobFocused}
           extraClass={sectionClasses.halfInputWidth}
-          max={getEighteenYearsAgoDate()}
           isRequired
         />
 
@@ -745,7 +752,7 @@ const Personal = forwardRef(({ isInNewRoute }, ref) => {
               field: "passportNumber",
             })
           }
-          isRequired
+          isRequired={!isPassportOptional}
         />
 
         <InputV2

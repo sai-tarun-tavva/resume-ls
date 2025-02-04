@@ -1,8 +1,7 @@
-const WELCOME_HOST_PORT = "http://10.0.12.114:8000/";
-const INSIGHT_HOST_PORT = "http://10.0.12.114:8000/";
-const ONBOARD_HOST_PORT = "http://10.0.12.114:8000/";
-const SPARK_HOST_PORT = "http://10.0.12.114:8000/";
-// const QUEST_HOST_PORT = "http://10.0.12.114:8000";
+const BASE_URL =
+  process.env.REACT_APP_ENV === "development"
+    ? process.env.REACT_APP_BACKEND_URL // Hardcoded URL for development
+    : `http://${window.location.hostname}:${process.env.REACT_APP_BACKEND_PORT}/`; // Use front-end hostname and backend port for deployed environments
 
 /**
  * API Endpoints Configuration
@@ -14,18 +13,19 @@ export const END_POINTS = {
   /**
    * WELCOME Endpoints
    *
-   * Handles user authentication, login, logout, and token management.
+   * Handles user authentication, login, logout, token management and fetching number of records in each tool.
    */
   WELCOME: {
-    FETCH_INSIGHT_COUNT: `${INSIGHT_HOST_PORT}resume_count/`,
-    FETCH_ONBOARD_COUNT: `${ONBOARD_HOST_PORT}candidates_count/`,
-    // FETCH_QUEST_COUNT: `${QUEST_HOST_PORT}candidates_count/`,
-    FETCH_QUEST_COUNT:
-      "https://run.mocky.io/v3/56f779ad-3d23-43f4-a25c-98c63fece745",
-    LOGIN: `${WELCOME_HOST_PORT}login/`,
-    LOGOUT: `${WELCOME_HOST_PORT}logout/`,
-    SIGN_UP: `${WELCOME_HOST_PORT}signup/`,
-    REFRESH_TOKEN: `${WELCOME_HOST_PORT}api/token/refresh/`,
+    FETCH_INSIGHT_COUNT: `${BASE_URL}resume_count/`,
+    FETCH_ONBOARD_COUNT: `${BASE_URL}candidates_count/`,
+    FETCH_QUEST_COUNT: `${BASE_URL}i_count/`,
+    FETCH_SALES_COUNT: `${BASE_URL}sales_count/`,
+    FETCH_RECRUIT_COUNT: `${BASE_URL}recruit_count/`,
+    LOGIN: `${BASE_URL}login/`,
+    LOGOUT: `${BASE_URL}logout/`,
+    SIGN_UP: `${BASE_URL}signup/`,
+    REFRESH_TOKEN: `${BASE_URL}api/token/refresh/`,
+    FETCH_USERNAMES: `${BASE_URL}usernames/`,
   },
 
   /**
@@ -36,16 +36,18 @@ export const END_POINTS = {
    */
   INSIGHT: {
     FETCH_CANDIDATES: {
-      url: `${INSIGHT_HOST_PORT}resume_list/`,
+      url: `${BASE_URL}resume_list/`,
       params: { limit: "limit", page: "page", query: "query" },
     },
-    EDIT_CANDIDATE: `${INSIGHT_HOST_PORT}resume/{{id}}/edit/`,
-    VIEW_RESUME: `${INSIGHT_HOST_PORT}view-file/`,
-    DOWNLOAD_RESUME: `${INSIGHT_HOST_PORT}home/resume/download/`,
-    UPLOAD_RESUME: `${INSIGHT_HOST_PORT}upload-file/`,
-    BATCH_PROCESS: `${INSIGHT_HOST_PORT}/dummy`, // Pending implementation
-    FETCH_SUGGESTED_SKILLS: `${INSIGHT_HOST_PORT}search-skills/?query=`,
-    CREATE_NEW_SKILL: `${INSIGHT_HOST_PORT}add-skills`,
+    EDIT_CANDIDATE: `${BASE_URL}resume/{{id}}/edit/`,
+    VIEW_RESUME: `${BASE_URL}view-file/`,
+    DOWNLOAD_RESUME: `${BASE_URL}home/resume/download/`,
+    UPLOAD_RESUME: `${BASE_URL}upload-file/`,
+    BATCH_PROCESS: `${BASE_URL}/dummy`, // Pending implementation
+    // BATCH_PROCESS_STATUS: `${BASE_URL}upload-folder/`,
+    BATCH_PROCESS_STATUS: `https://run.mocky.io/v3/6b925522-43f2-4072-b45a-4d2f95efd812`,
+    FETCH_SUGGESTED_SKILLS: `${BASE_URL}search-skills/?query=`,
+    CREATE_NEW_SKILL: `${BASE_URL}add-skills`,
   },
 
   /**
@@ -56,7 +58,7 @@ export const END_POINTS = {
    */
   ONBOARD: {
     FETCH_CANDIDATES: {
-      url: `${ONBOARD_HOST_PORT}candidates_filter/`,
+      url: `${BASE_URL}candidates_filter/`,
       params: {
         limit: "limit",
         page: "page",
@@ -64,10 +66,10 @@ export const END_POINTS = {
         statuses: "status",
       },
     },
-    FETCH_CANDIDATE: `${ONBOARD_HOST_PORT}candidates_get/:id/`,
-    ADD_CANDIDATE: `${ONBOARD_HOST_PORT}candidates/`,
-    UPDATE_CANDIDATE: `${ONBOARD_HOST_PORT}candidates/:id/`,
-    UPDATE_STATUS: `${ONBOARD_HOST_PORT}update_status/:id/`,
+    FETCH_CANDIDATE: `${BASE_URL}candidates_get/:id/`,
+    ADD_CANDIDATE: `${BASE_URL}candidates/`,
+    UPDATE_CANDIDATE: `${BASE_URL}candidates/:id/`,
+    UPDATE_STATUS: `${BASE_URL}update_status/:id/`,
   },
 
   /**
@@ -76,7 +78,7 @@ export const END_POINTS = {
    * Handles operations related to generating suggestions, such as fetching ATS suggestions for Spark functionality.
    */
   SPARK: {
-    GET_SUGGESTIONS: `${SPARK_HOST_PORT}ats/`,
+    GET_SUGGESTIONS: `${BASE_URL}ats/`,
   },
 
   /**
@@ -85,17 +87,56 @@ export const END_POINTS = {
    * Handles operations related to generating questions, initializing call and fetching conversation for Quest functionality.
    */
   QUEST: {
-    // GENERATE_QUESTIONS: `${QUEST_HOST_PORT}set_questions/`,
-    GENERATE_QUESTIONS:
-      "https://run.mocky.io/v3/f8b35910-3055-4a4c-96bf-1ea5824ca235",
-    // INITIATE_CALL: `${QUEST_HOST_PORT}initiate_call/`,
-    INITIATE_CALL:
-      "https://run.mocky.io/v3/c26344c2-4d3f-449b-a629-800cbd0f6bf5",
-    // GET_CONVERSATION: `${QUEST_HOST_PORT}get-log-data/:sessionId/`,
-    GET_CONVERSATION:
-      // "https://run.mocky.io/v3/9630feca-04f3-4f99-872c-1112cc201f99", // without status
-      // "https://run.mocky.io/v3/cb815b52-153a-4d3e-a8ae-7f11e6b774c0", // with status
-      "https://run.mocky.io/v3/afc2ebd6-1175-4278-b6b3-4417524690a2", // status completed
-    // "https://run.mocky.io/v3/b38adeff-a655-454d-9308-4816d40d5667", // status canceled
+    GENERATE_QUESTIONS: `${BASE_URL}set_questions/`,
+    INITIATE_CALL: `${BASE_URL}initiate_call/`,
+    GET_CONVERSATION: `${BASE_URL}get_log_data/:sessionID/`,
+  },
+
+  /**
+   * FORGE Endpoints
+   *
+   * Manages sales and recruiting related operations for candidates, including fetching, adding,
+   * and updating submission records.
+   */
+  FORGE: {
+    SALES: {
+      FETCH_RECORDS: {
+        url: `${BASE_URL}sales_filter/`,
+        params: {
+          limit: "limit",
+          page: "page",
+          query: "query",
+          statuses: "status",
+        },
+      },
+      FETCH_RECORD: `${BASE_URL}sales_get_id/:id/`,
+      ADD_RECORD: `${BASE_URL}sales_records/`,
+      UPDATE_RECORD: `${BASE_URL}update_sales/:id/`,
+      UPDATE_RECORD_STATUS: `${BASE_URL}update_status_sales/:id/`,
+    },
+    RECRUIT: {
+      FETCH_RECORDS: {
+        url: `${BASE_URL}recruits_filter/`,
+        params: {
+          limit: "limit",
+          page: "page",
+          query: "query",
+          statuses: "status",
+        },
+      },
+      FETCH_RECORD: `${BASE_URL}recruit_get_id/:id/`,
+      ADD_RECORD: `${BASE_URL}recruit_records/`,
+      UPDATE_RECORD: `${BASE_URL}update_recruit/:id/`,
+      UPDATE_RECORD_STATUS: `${BASE_URL}update_status_recruit/:id/`,
+    },
+  },
+
+  /**
+   * NEXUS Endpoints
+   *
+   * Handles operations related to web scraping, such as fetching website overviews for Nexus functionality.
+   */
+  NEXUS: {
+    WEB_SCRAP: `${BASE_URL}web_scrap/`,
   },
 };

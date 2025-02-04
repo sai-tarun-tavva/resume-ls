@@ -9,30 +9,63 @@ const {
   DISABLE_REFETCH,
   UPDATE_CANDIDATES_PER_PAGE,
   UPDATE_SELECTED_STATUSES,
+  SHOW_SIDE_BAR,
+  HIDE_SIDE_BAR,
+  UPDATE_SIDE_BAR_RECORD_ID,
+  UPDATE_USERNAMES,
   RESET_ALL,
 } = UI_ACTION_TYPES;
 
 // Initial state for the UI context
+/**
+ * @type {Object}
+ * @property {Object} pagination - Stores pagination details like previous, next page and total count.
+ * @property {number} candidatesPerPage - Number of candidates displayed per page.
+ * @property {string} searchTerm - Search term for filtering candidates.
+ * @property {Object} selectedStatuses - Selected statuses for filtering candidates for Onboard and Forge.
+ * @property {boolean} refetch - Flag to determine whether to re-fetch the candidates.
+ * @property {string} refetchURL - URL to refetch the candidates data.
+ * @property {boolean} isSideBarVisible - Flag to control sidebar visibility.
+ * @property {string} sideBarRecordId - Record ID for displaying sidebar status history.
+ * @property {string} usernames - Usernames for displaying in dropdown of Forge form.
+ */
 const initialState = {
   pagination: {
-    previousPage: "", // Page number to fetch previous set of candidates
-    nextPage: "", // Page number to fetch next set of candidates
-    totalCount: 0, // Total number of candidates available
+    previousPage: "",
+    nextPage: "",
+    totalCount: 0,
   },
-  candidatesPerPage: INSIGHT.CANDIDATES_PER_PAGE, // Number of candidates per page
-  searchTerm: "", // Term to search/filter the candidates
+  candidatesPerPage: INSIGHT.CANDIDATES_PER_PAGE,
+  searchTerm: "",
   selectedStatuses: {
-    // To search/filter the candidates with selected statuses
-    inProgress: true,
-    yetToReview: true,
-    underReview: true,
-    completed: false,
+    onboard: {
+      inProgress: true,
+      yetToReview: true,
+      underReview: true,
+      onboarded: true,
+      marketing: true,
+      placed: true,
+    },
+    forge: {
+      submitted: true,
+      interviewed: true,
+      noResponse: true,
+      hold: true,
+      selected: true,
+      rejected: true,
+    },
   },
-  refetch: false, // Flag to determine whether to re-fetch the candidates
-  refetchURL: "", // URL to refetch corresponding set of candidates
+  refetch: false,
+  refetchURL: "",
+  isSideBarVisible: false,
+  sideBarRecordId: "",
+  usernames: [],
 };
 
 // Creating the UI context
+/**
+ * UIContext - Context for managing UI state.
+ */
 const UIContext = createContext(initialState);
 
 /**
@@ -61,15 +94,27 @@ const uiReducer = (state, action) => {
     case UPDATE_CANDIDATES_PER_PAGE:
       return { ...state, candidatesPerPage: payload };
     case UPDATE_SELECTED_STATUSES:
+      const { tool, status } = payload;
       return {
         ...state,
         selectedStatuses: {
           ...state.selectedStatuses,
-          [payload]: !state.selectedStatuses[payload],
+          [tool]: {
+            ...state.selectedStatuses[tool],
+            [status]: !state.selectedStatuses[tool][status],
+          },
         },
       };
+    case SHOW_SIDE_BAR:
+      return { ...state, isSideBarVisible: true };
+    case HIDE_SIDE_BAR:
+      return { ...state, isSideBarVisible: false };
+    case UPDATE_SIDE_BAR_RECORD_ID:
+      return { ...state, sideBarRecordId: payload };
+    case UPDATE_USERNAMES:
+      return { ...state, usernames: payload };
     case RESET_ALL:
-      return { ...initialState, refetch: true };
+      return { ...initialState, usernames: state.usernames, refetch: true };
     default:
       return state;
   }
@@ -136,10 +181,40 @@ const UIContextProvider = ({ children }) => {
 
   /**
    * Updates the selected statuses used for filtering data.
-   * @param {string} status - The status to be updated.
+   * @param {string} payload - The payload that has tool and status to be updated.
    */
-  const updateSelectedStatuses = useCallback((status) => {
-    dispatch({ type: UPDATE_SELECTED_STATUSES, payload: status });
+  const updateSelectedStatuses = useCallback((payload) => {
+    dispatch({ type: UPDATE_SELECTED_STATUSES, payload });
+  }, []);
+
+  /**
+   * Displays the side bar.
+   */
+  const showSideBar = useCallback(() => {
+    dispatch({ type: SHOW_SIDE_BAR });
+  }, []);
+
+  /**
+   * Hides the side bar.
+   */
+  const hideSideBar = useCallback(() => {
+    dispatch({ type: HIDE_SIDE_BAR });
+  }, []);
+
+  /**
+   * Updates the record id used for displaying status in side bar.
+   * @param {string} payload - The payload that has record id to be updated.
+   */
+  const updateSideBarRecordId = useCallback((payload) => {
+    dispatch({ type: UPDATE_SIDE_BAR_RECORD_ID, payload });
+  }, []);
+
+  /**
+   * Updates the usernames for displaying in Forge form.
+   * @param {string} payload - The payload that has all available usernames to be updated.
+   */
+  const updateUsernames = useCallback((payload) => {
+    dispatch({ type: UPDATE_USERNAMES, payload });
   }, []);
 
   /**
@@ -149,6 +224,9 @@ const UIContextProvider = ({ children }) => {
     dispatch({ type: RESET_ALL });
   }, []);
 
+  /**
+   * Context object containing state and actions for managing UI state.
+   */
   const uiCtx = {
     state,
     updateSearchTerm,
@@ -159,6 +237,10 @@ const UIContextProvider = ({ children }) => {
     resetUI,
     updateCandidatesPerPage,
     updateSelectedStatuses,
+    showSideBar,
+    hideSideBar,
+    updateSideBarRecordId,
+    updateUsernames,
   };
 
   return <UIContext.Provider value={uiCtx}>{children}</UIContext.Provider>;

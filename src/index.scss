@@ -37,6 +37,7 @@ html {
 
   --error-color: rgb(239, 67, 67);
   --error-light: rgb(255, 241, 240);
+  --error-hover: rgb(204, 56, 56);
   --error-shadow: rgba(239, 68, 68, 0.5);
 
   --warning-color: rgb(230, 155, 45);
@@ -84,6 +85,7 @@ html:hover .floating-button-global {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  line-height: 1;
 
   &:disabled {
     cursor: not-allowed;
@@ -117,8 +119,8 @@ mark {
 }
 
 ::-webkit-scrollbar {
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.35rem;
+  height: 0.35rem;
 }
 
 ::-webkit-scrollbar-thumb {

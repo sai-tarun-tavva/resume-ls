@@ -2,6 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from "react";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Address from "../../FormSection/Address"; // Address input for the employer's address
 import { useInput } from "../../../../Atoms/hooks";
+import { defaultAddress } from "../../../store";
 import { determineSectionValidity } from "../../../../../utilities";
 import classes from "./index.module.scss";
 
@@ -18,9 +19,13 @@ import classes from "./index.module.scss";
  * @param {Object} defaultValue - The default values for the fields.
  * @param {Object} validationFuncs - The validation functions for the fields.
  * @param {string} id - Unique identifier for the form fields.
+ * @param {Boolean} isUniversityDetailsRequired - Flag to determine the university details requirement.
  */
 const SchoolOrUniversity = forwardRef(
-  ({ labels, defaultValue, validationFuncs, id }, ref) => {
+  (
+    { labels, defaultValue, validationFuncs, id, isUniversityDetailsRequired },
+    ref
+  ) => {
     const addressRef = useRef();
 
     // Destructure the labels for each field
@@ -121,7 +126,7 @@ const SchoolOrUniversity = forwardRef(
         universityName: universityNameValue,
         stream: streamValue,
         passedMonthAndYear: passedMonthAndYearValue,
-        address,
+        address: address || defaultAddress,
       };
 
       // If any validation fails, return false and force validations
@@ -188,13 +193,15 @@ const SchoolOrUniversity = forwardRef(
           extraClass={classes.fullInputWidth}
           isRequired
         />
-        <Address
-          heading={`${addressLabel} ${id}`}
-          defaultValue={addressDefaultValue}
-          id={`universityAddress${id}`}
-          ref={addressRef}
-          extraClass={classes.fullInputWidth}
-        />
+        {isUniversityDetailsRequired && (
+          <Address
+            heading={`${addressLabel} ${id}`}
+            defaultValue={addressDefaultValue}
+            id={`universityAddress${id}`}
+            ref={addressRef}
+            extraClass={classes.fullInputWidth}
+          />
+        )}
       </>
     );
   }

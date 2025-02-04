@@ -4,7 +4,7 @@ import ListAdd from "../ListAdd";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import SchoolOrUniversity from "../../FormListItems/SchoolOrUniversity";
 import SingleInput from "../../FormListItems/SingleInput";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { defaultUniversity, inputActions } from "../../../store";
 import {
@@ -15,7 +15,12 @@ import {
   transformPhoneNumber,
 } from "../../../../../utilities";
 import { CONTENT, LOADING_ACTION_TYPES } from "../../../../../constants";
-import { SECTIONS, FIELDS, SEVIS_DSO_REQUIRED_VISA } from "../../../constants";
+import {
+  SECTIONS,
+  FIELDS,
+  SEVIS_DSO_REQUIRED_VISA,
+  UNIVERSITY_DETAILS_REQUIRED_VISA,
+} from "../../../constants";
 import sectionClasses from "../sections.module.scss";
 import { useLoading } from "../../../../../store";
 
@@ -47,6 +52,8 @@ const Education = forwardRef((_, ref) => {
   const certificationsRef = useRef();
   const universitiesRef = useRef();
   const isSevisDSORequired = SEVIS_DSO_REQUIRED_VISA.includes(visaStatus);
+  const isUniversityDetailsRequired =
+    UNIVERSITY_DETAILS_REQUIRED_VISA.includes(visaStatus);
   const sectionRef = useSectionInputsFocus(currentSectionIndex);
   const { isLoading } = useLoading();
   const { education: validations } = onboardingValidations;
@@ -263,10 +270,13 @@ const Education = forwardRef((_, ref) => {
       <ListAdd
         label={sections.education.universityList.heading}
         itemLabels={sections.education.universityList.itemLabels}
-        element={(props) => <SchoolOrUniversity {...props} />}
-        savedListItems={
-          universities.length > 0 ? universities : [defaultUniversity]
-        }
+        element={(props) => (
+          <SchoolOrUniversity
+            isUniversityDetailsRequired={isUniversityDetailsRequired}
+            {...props}
+          />
+        )}
+        savedListItems={universities.length > 0 ? universities : []}
         validationFuncs={{
           universityName: validations.universityName,
           stream: validations.universityStream,
@@ -274,8 +284,6 @@ const Education = forwardRef((_, ref) => {
         }}
         newValue={defaultUniversity}
         ref={universitiesRef}
-        mandatoryItems={1}
-        helperText={sections.education.universityList.helper}
       />
       {/* Dynamic list for additional certifications */}
       <ListAdd

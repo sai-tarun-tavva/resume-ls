@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import { CONTENT } from "../../../../../constants";
@@ -27,8 +28,23 @@ const Actions = ({
   const { header, items: actionItems } = CONTENT.SPARK.operations.actions;
   const errorMessage = CONTENT.COMMON.errors.actions.empty;
 
+  const [selectAll, setSelectAll] = useState(false);
+
   /**
-   * Handles changes to the selected actions, adding or removing actions based on checkbox state.
+   * Handles the 'Select All' checkbox change.
+   * Updates the selectAll state and clears or sets the error message.
+   */
+  const handleSelectAllChange = () => {
+    setSelectAll((prev) => {
+      setActionsError(!prev ? "" : errorMessage);
+      return !prev;
+    });
+  };
+
+  /**
+   * Handles individual checkbox changes for action items.
+   * Updates the selected actions list by adding or removing the action key.
+   * Also validates and sets the error state if no actions are selected.
    *
    * @param {ChangeEvent} event - The change event triggered by the checkbox.
    */
@@ -47,7 +63,8 @@ const Actions = ({
   };
 
   /**
-   * Prevents form submission when the Enter key is pressed on a checkbox.
+   * Prevents form submission when the Enter key is pressed
+   * while focusing on any checkbox, maintaining proper form flow.
    *
    * @param {KeyboardEvent} event - The keyboard event triggered on key press.
    */
@@ -57,11 +74,38 @@ const Actions = ({
     }
   };
 
+  /**
+   * Effect to handle changes in 'selectAll' state.
+   * When 'selectAll' is true, all actions are selected. Otherwise, actions are cleared.
+   * This effect ensures consistency between the 'select all' checkbox and the individual checkboxes.
+   */
+  useEffect(() => {
+    setSelectedActions(selectAll ? Object.keys(actionItems) : []);
+    // Clear error if actions are selected when 'Select All' is clicked
+    setActionsError(selectAll ? "" : actionsError);
+  }, [
+    selectAll,
+    actionItems,
+    setSelectedActions,
+    setActionsError,
+    actionsError,
+  ]);
+
   return (
     <section className={classes.actionsContainer}>
-      <h3 className={classes.title}>
-        {header} {isRequired && <span className={classes.required}>*</span>}
-      </h3>
+      <div className={classes.header}>
+        <h3 className={classes.title}>
+          {header} {isRequired && <span className={classes.required}>*</span>}
+        </h3>
+        <Checkbox
+          id="select-all"
+          label="Select all"
+          value={selectAll}
+          changeHandler={handleSelectAllChange}
+          extraClass={classes.extraSelectAllControl}
+          onKeyDown={preventSubmitOnEnter}
+        />
+      </div>
       <div className={classes.actions}>
         {Object.entries(actionItems).map(([apiKey, name], index) => (
           <Checkbox

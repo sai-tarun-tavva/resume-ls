@@ -19,13 +19,14 @@ const Header = ({ id, name, size, onClose }) => {
       <span>{`${name} (${size})`}</span>
       <span className={classes.actions}>
         <a
-          title="Download"
-          href={`${END_POINTS.INSIGHT.DOWNLOAD_RESUME}${id}`}
-          download={name}
+          title="Open in new tab"
+          href={`${END_POINTS.INSIGHT.VIEW_RESUME}${id}`}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <i className={`bi bi-download`}></i>
+          <i className="bi bi-box-arrow-up-right" />
         </a>
-        <span onClick={onClose}>
+        <span title="Close" onClick={onClose}>
           <i className="bi bi-x" />
         </span>
       </span>

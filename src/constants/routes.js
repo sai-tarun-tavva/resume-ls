@@ -39,7 +39,7 @@ export const ROUTES = {
    * @property {string} CANDIDATE_FORM.VIEW - Route for viewing an existing candidate by ID.
    */
   ONBOARD: {
-    HOME: "onboard/candidates",
+    HOME: "hatch/candidates",
     CANDIDATE_FORM: {
       NEW: "new",
       VIEW: "view/:id",
@@ -66,5 +66,45 @@ export const ROUTES = {
    */
   QUEST: {
     HOME: "quest",
+  },
+
+  /**
+   * FORGE Routes
+   *
+   * Routes for the FORGE module, which includes record creation, viewing, and editing for sales and recruitment.
+   *
+   * @property {string} HOME - Main page for viewing all records.
+   * @property {Object} SALES - Routes for sales records.
+   * @property {string} SALES.VIEW - Route for viewing sales records.
+   * @property {string} SALES.NEW - Route for creating a new sales record.
+   * @property {string} SALES.EDIT - Route for editing an existing sales record by ID.
+   * @property {Object} RECRUIT - Routes for recruitment records.
+   * @property {string} RECRUIT.VIEW - Route for viewing recruitment records.
+   * @property {string} RECRUIT.NEW - Route for creating a new recruitment record.
+   * @property {string} RECRUIT.EDIT - Route for editing an existing recruitment record by ID.
+   */
+  FORGE: {
+    HOME: "forge/records",
+    SALES: {
+      VIEW: "sales",
+      NEW: "sales/new",
+      EDIT: "sales/view/:id",
+    },
+    RECRUIT: {
+      VIEW: "recruit",
+      NEW: "recruit/new",
+      EDIT: "recruit/view/:id",
+    },
+  },
+
+  /**
+   * Nexus Routes
+   *
+   * Routes for the NEXUS module, which handles the main Nexus functionalities.
+   *
+   * @property {string} HOME - Main page for the Nexus module.
+   */
+  NEXUS: {
+    HOME: "nexus",
   },
 };

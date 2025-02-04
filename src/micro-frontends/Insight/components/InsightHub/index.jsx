@@ -2,6 +2,7 @@ import { Provider } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Operations from "../../../Atoms/components/Operations";
 import Upload from "../Upload";
+import BatchStatus from "../BatchStatus";
 import store from "../../store/store";
 import { PAGES } from "../../../../constants";
 
@@ -16,7 +17,7 @@ import { PAGES } from "../../../../constants";
 const InsightHub = () => {
   return (
     <Provider store={store}>
-      <Operations currentPage={PAGES.INSIGHT} />
+      <Operations currentPage={PAGES.INSIGHT} extraOps={<BatchStatus />} />
       <Outlet />
       <Upload />
     </Provider>

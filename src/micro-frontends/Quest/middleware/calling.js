@@ -3,6 +3,7 @@ import callingSound from "../../../assets/calling.mp3";
 import onCallAliceSound from "../../../assets/alice-voice.mp3";
 import onCallBackgroundSound from "../../../assets/alice-background.mp3";
 import notificationSound from "../../../assets/convo_notification.wav";
+import { QUEST } from "../../../constants";
 
 let callDurationInterval = null;
 let callingTimeoutId = null;
@@ -64,10 +65,13 @@ const clearNotificationAudio = () => {
  */
 const calling = (store) => (next) => (action) => {
   /**
-   * Handles session initiation when a valid session ID is updated.
+   * Handles session initiation when callStatus is updated with "calling".
    * Plays the calling sound and transitions to "on call" state after 1 minute.
    */
-  if (action.type === resultActions.updateSessionID.type && action.payload) {
+  if (
+    action.type === resultActions.updateCallStatus.type &&
+    action.payload === QUEST.CALL_STATUSES.CALLING
+  ) {
     // Clear any existing resources (timeouts, intervals, audio)
     if (callingTimeoutId) {
       clearTimeout(callingTimeoutId);
@@ -124,11 +128,14 @@ const calling = (store) => (next) => (action) => {
   }
 
   /**
-   * Handles cleanup when the session ends (no session ID) or user logs out.
+   * Handles cleanup when the callStatus is not "calling" or user logs out.
    * Stops all audio, clears timers, and resets state.
    */
   if (
-    (action.type === resultActions.updateSessionID.type && !action.payload) ||
+    (action.type === resultActions.updateCallStatus.type &&
+      Object.values(QUEST.CALL_STATUSES)
+        .filter((status) => status !== QUEST.CALL_STATUSES.CALLING)
+        .includes(action.payload)) ||
     action.type === "LOGOUT"
   ) {
     // Clear all audio instances
@@ -137,7 +144,12 @@ const calling = (store) => (next) => (action) => {
     clearNotificationAudio();
 
     // If the session ends, play a notification sound with a delay of 1s
-    if (action.type === resultActions.updateSessionID.type && !action.payload) {
+    if (
+      action.type === resultActions.updateCallStatus.type &&
+      Object.values(QUEST.CALL_STATUSES)
+        .filter((status) => status !== QUEST.CALL_STATUSES.CALLING)
+        .includes(action.payload)
+    ) {
       setTimeout(() => {
         notificationAudio = new Audio(notificationSound);
         notificationAudio.play().catch((error) => {

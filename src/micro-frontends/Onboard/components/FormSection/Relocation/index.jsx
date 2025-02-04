@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Checkbox from "../../../../Atoms/components/Inputs/Checkbox";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Address from "../Address";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { defaultAddress, inputActions } from "../../../store";

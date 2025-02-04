@@ -1,0 +1,269 @@
+.tooltipStatusExtraClass {
+  & > div {
+    width: 25rem !important;
+    top: 3.75rem !important;
+    left: unset !important;
+    right: -3.25rem !important;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    & > div:first-child {
+      display: none;
+    }
+  }
+}
+
+.loaderExtraClass {
+  margin: unset;
+
+  & > div {
+    width: 1rem;
+  }
+}
+
+.batchStatus {
+  text-align: center;
+  margin: 0 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  .progressWrapper {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: rotate(-90deg);
+    }
+
+    .circularProgress {
+      width: 100%;
+      max-width: 2.5rem;
+      height: auto;
+    }
+
+    .progressBackground {
+      fill: none;
+      stroke: rgba(224, 224, 224, 0.4);
+      stroke-width: 5;
+    }
+
+    .progressForeground {
+      fill: none;
+      stroke-linecap: round;
+      stroke-width: 5;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Status-specific styles
+  &.no-files {
+    .icon {
+      color: #9ca3af;
+      opacity: 0.7;
+      animation: unset;
+    }
+
+    .progressForeground {
+      stroke: var(--success-color);
+      animation: drawCircle 1s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+  }
+
+  &.processing {
+    .icon {
+      color: var(--primary-color);
+      animation: float 2s ease-in-out infinite;
+    }
+
+    .progressForeground {
+      stroke: var(--primary-color);
+    }
+  }
+
+  &.processing-warning {
+    .icon {
+      color: var(--warning-color);
+      animation: float 1.5s ease-in-out infinite;
+    }
+
+    .progressForeground {
+      stroke: var(--warning-color);
+    }
+  }
+
+  &.error {
+    .icon {
+      color: var(--error-color);
+      animation: shake 1s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+      animation-timing-function: ease-in-out;
+      animation-delay: 0s, 1s;
+    }
+
+    .progressForeground {
+      stroke: var(--error-color);
+      animation: fadeInOut 2s ease-in-out infinite;
+    }
+  }
+
+  &.processed {
+    .icon {
+      color: var(--success-color);
+      animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .progressForeground {
+      stroke: var(--success-color);
+      animation: drawCircle 1s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+  }
+}
+
+.statusMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.8);
+
+  .messageWrapper {
+    margin-left: 0.5rem;
+  }
+
+  .processCount {
+    font-size: 0.875rem;
+    color: #6b7280;
+    width: 25rem;
+    background: rgba(243, 244, 246, 0.8);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    animation: slideIn 0.3s ease-out;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    strong {
+      color: #374151;
+      font-weight: 600;
+    }
+  }
+
+  .warningIcon {
+    font-size: 1.5rem;
+    color: var(--warning-color);
+  }
+
+  .clockIcon {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+
+  .iconStatus {
+    font-size: 1.25rem;
+
+    &.no-files,
+    &.processed {
+      color: var(--success-color);
+    }
+
+    &.error {
+      color: var(--error-color);
+    }
+  }
+}
+
+// Modern Animations
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(-50%, -47%);
+  }
+  50% {
+    transform: translate(-50%, -53%);
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate(-51%, -50%);
+  }
+  20%,
+  80% {
+    transform: translate(-49%, -50%);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate(-51%, -50%);
+  }
+  40%,
+  60% {
+    transform: translate(-49%, -50%);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes drawCircle {
+  0% {
+    stroke-dasharray: 0, 126;
+  }
+  100% {
+    stroke-dasharray: 126, 126;
+  }
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

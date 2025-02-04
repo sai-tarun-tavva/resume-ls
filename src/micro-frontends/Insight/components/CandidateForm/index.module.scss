@@ -90,6 +90,12 @@
 
     .candidateForm {
       max-width: 90%;
+
+      .buttonGroup {
+        position: unset;
+        top: unset;
+        right: unset;
+      }
     }
 
     .skillsSection {
@@ -99,13 +105,21 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .candidateFormContainer {
     .candidateForm {
-      .buttonGroup {
-        position: unset;
-        top: unset;
-        right: unset;
+      max-width: unset;
+      .inputColumns {
+        padding: unset;
+      }
+    }
+    .skillsSection {
+      width: 95%;
+      padding-right: unset;
+      margin: 0 auto;
+
+      .skillsContainer {
+        padding-top: 0.01rem;
       }
     }
   }

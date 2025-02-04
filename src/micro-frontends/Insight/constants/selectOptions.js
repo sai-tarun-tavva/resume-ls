@@ -26,3 +26,11 @@ export const OPTIONS = {
     },
   ],
 };
+
+export const BATCH_PROCESS_STATUS = {
+  NO_FILES: "no-files",
+  PROCESSING: "processing",
+  PROCESSING_WARNING: "processing-warning",
+  ERROR: "error",
+  PROCESSED: "processed",
+};

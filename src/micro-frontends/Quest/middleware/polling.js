@@ -17,17 +17,20 @@ const setUpdateStatus = (callback) => {
 };
 
 /**
- * Middleware for handling polling based on sessionID changes.
- * Starts polling when a valid sessionID is set, and stops when the session ends or polling is explicitly stopped.
+ * Middleware for handling polling based on callStatus changes.
+ * Starts polling when a callStatus is set as calling, and stops when the session ends or polling is explicitly stopped.
  *
  * @function polling
  * @param {Object} store - The Redux store instance.
  * @returns {Function} Middleware function for Redux.
  */
 const polling = (store) => (next) => async (action) => {
-  // Handles sessionID updates
-  if (action.type === resultActions.updateSessionID.type) {
-    const sessionID = action.payload; // Extract the new sessionID from the action payload
+  // Handles call updates
+  if (
+    action.type === resultActions.updateCallStatus.type &&
+    action.payload === QUEST.CALL_STATUSES.CALLING
+  ) {
+    const sessionID = store.getState().result.sessionID; // Extract the new sessionID from the action payload
 
     if (pollingInterval) {
       clearInterval(pollingInterval); // Clear any existing polling interval to avoid duplicates
@@ -48,7 +51,11 @@ const polling = (store) => (next) => async (action) => {
 
             // If the API call is successful
             if (status === STATUS_CODES.SUCCESS) {
-              if (Object.values(QUEST.CALL_STATUSES).includes(callStatus)) {
+              if (
+                Object.values(QUEST.CALL_STATUSES)
+                  .filter((status) => status !== QUEST.CALL_STATUSES.CALLING)
+                  .includes(callStatus)
+              ) {
                 // If the session has ended, update the conversation and stop polling
                 store.dispatch(resultActions.updateConversation(data));
                 store.dispatch(resultActions.updateCallStatus(callStatus));
@@ -66,6 +73,7 @@ const polling = (store) => (next) => async (action) => {
               if (failureCount >= 5) {
                 clearInterval(pollingInterval);
                 store.dispatch(resultActions.updateSessionID(""));
+                store.dispatch(resultActions.updateCallStatus("server-error"));
 
                 // Trigger a failure status update using the provided callback
                 if (updateStatusCallback) {

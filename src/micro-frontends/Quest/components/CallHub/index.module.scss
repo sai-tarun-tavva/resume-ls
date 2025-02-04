@@ -5,4 +5,13 @@
   position: fixed;
   overflow: hidden;
   width: 70%;
+
+  @media (max-width: 768px) {
+    flex: unset;
+    margin-left: unset;
+    position: unset;
+    height: auto;
+    width: 100%;
+    overflow: unset;
+  }
 }

@@ -1,5 +1,6 @@
 import { formatFileSize, replaceRouteParam } from "./utilities";
-import { END_POINTS } from "../constants";
+import { BATCH_PROCESS_STATUS } from "../micro-frontends/Insight/constants";
+import { CONTENT, END_POINTS } from "../constants";
 
 /**
  * Makes an API call using the provided URL and options, including handling of the access token.
@@ -156,6 +157,38 @@ export const handleLogout = async () => {
   }
   sessionStorage.clear();
   localStorage.clear();
+};
+
+/**
+ * Fetches all usernames from the API.
+ *
+ * @async
+ * @function fetchUsernames
+ * @param {string} url - The URL to fetch the usernames from.
+ * @returns {Promise<{ status: number, data: Array|null }>} The status and an array of usernames, or null if an error occurs.
+ */
+export const fetchUsernames = async (url) => {
+  try {
+    const response = await fetchWithToken(url, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      console.error("Error fetching usernames:", response.statusText);
+      return { status: response.status, data: null };
+    }
+
+    const resData = await response.json();
+
+    // Assuming the usernames are in an array under the key `usernames`
+    return { status: response.status, data: resData.usernames || [] };
+  } catch (error) {
+    console.error(
+      "Server or network issue while fetching usernames:",
+      error.message
+    );
+    return { status: 500, data: null };
+  }
 };
 
 /**
@@ -380,7 +413,7 @@ export const createNewSkill = async (body) => {
  * @param {string} url - The URL to which the request is sent.
  * @returns {Promise<Object>} An object containing the response status and an array of candidate data.
  */
-export const fetchOnboardCandidates = async (url) => {
+export const fetchFormRecords = async (url) => {
   try {
     const response = await fetchWithToken(url, {
       method: "GET",
@@ -404,7 +437,7 @@ export const fetchOnboardCandidates = async (url) => {
  * @param {string} url - The url of the API.
  * @returns {Promise<Object>} An object containing the response status and the candidate data.
  */
-export const fetchCandidateById = async (url) => {
+export const fetchFormRecordById = async (url) => {
   try {
     const response = await fetchWithToken(url, {
       method: "GET",
@@ -421,16 +454,17 @@ export const fetchCandidateById = async (url) => {
 };
 
 /**
- * Onboards the new candidate by adding him.
+ * Adds the new record.
  *
  * @async
  * @function
- * @param {Object} body - The request body containing new candidate to be added.
+ * @param {Object} body - The request body containing new record to be added.
+ * @param {string} url - The url of the API.
  * @returns {Promise<Object>} An object containing the response status.
  */
-export const addOnboardCandidate = async (body) => {
+export const addFormRecord = async (body, url) => {
   try {
-    const response = await fetchWithToken(END_POINTS.ONBOARD.ADD_CANDIDATE, {
+    const response = await fetchWithToken(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -453,26 +487,24 @@ export const addOnboardCandidate = async (body) => {
 };
 
 /**
- * Updates the existing candidate.
+ * Updates the existing record.
  *
  * @async
  * @function
- * @param {Object} body - The request body containing whole candidate with new details to be updated.
- * @param {Object} id - The id of the candidate to be updated.
+ * @param {Object} body - The request body containing whole record with new details to be updated.
+ * @param {Object} id - The id of the record to be updated.
+ * @param {string} url - The url of the API.
  * @returns {Promise<Object>} An object containing the response status.
  */
-export const updateOnboardCandidate = async (body, id) => {
+export const updateFormRecord = async (body, id, url) => {
   try {
-    const response = await fetchWithToken(
-      replaceRouteParam(END_POINTS.ONBOARD.UPDATE_CANDIDATE, { id }),
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
-    );
+    const response = await fetchWithToken(replaceRouteParam(url, { id }), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
     const resData = await response.json();
 
     // Return status
@@ -497,7 +529,7 @@ export const updateOnboardCandidate = async (body, id) => {
  * @param {Object} body - The request body containing the new status to set for the candidate.
  * @returns {Promise<Object>} An object containing the response status and API data.
  */
-export const updateCandidateStatus = async (url, body) => {
+export const updateFormRecordStatus = async (url, body) => {
   try {
     const response = await fetchWithToken(url, {
       method: "PUT",
@@ -560,7 +592,7 @@ export const generateQuestions = async (body) => {
   try {
     const response = await fetchWithToken(END_POINTS.QUEST.GENERATE_QUESTIONS, {
       method: "POST",
-      body,
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
@@ -569,7 +601,7 @@ export const generateQuestions = async (body) => {
     } else {
       // Return the response data and status
       const resData = await response.json();
-      return { status: response.status, data: resData.questions };
+      return { status: response.status, data: resData };
     }
   } catch (error) {
     // Assume any error that causes this block to execute is a server or network issue
@@ -590,7 +622,7 @@ export const initiateCall = async (body) => {
   try {
     const response = await fetchWithToken(END_POINTS.QUEST.INITIATE_CALL, {
       method: "POST",
-      body,
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
@@ -636,5 +668,112 @@ export const getConversation = async (url) => {
     // Assume any error that causes this block to execute is a server or network issue
     console.error("Error fetching conversation:", error);
     return { status: 500, data: null, callStatus: "" };
+  }
+};
+
+/**
+ * Function to connect to the streaming API and handle progress updates.
+ *
+ * @param {Function} setStatus - Function to update the status state.
+ * @param {Function} setMessage - Function to update the message state.
+ * @param {Function} setTotalFiles - Function to update the totalFiles state.
+ * @param {Function} setProcessedFiles - Function to update the processedFiles state.
+ */
+export const getInsightBatchProcessStatus = async (
+  setStatus,
+  setMessage,
+  setTotalFiles,
+  setProcessedFiles
+) => {
+  try {
+    const response = await fetchWithToken(
+      END_POINTS.INSIGHT.BATCH_PROCESS_STATUS,
+      {
+        method: "POST",
+      }
+    );
+
+    if (!response.body) {
+      throw new Error("ReadableStream not supported by the response.");
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+
+    let done = false;
+    while (!done) {
+      const { value, done: readerDone } = await reader.read();
+      done = readerDone;
+
+      if (value) {
+        const chunk = decoder.decode(value, { stream: true });
+        const data = JSON.parse(chunk); // Ensure the chunked data is parsed
+
+        const success = data?.success;
+        const warning = data?.warning;
+        const newMessage = data?.message;
+        const processedFiles = data?.processedFiles;
+        const totalFiles = data?.totalFiles;
+
+        setMessage(newMessage);
+
+        if (processedFiles?.toString() && totalFiles?.toString()) {
+          setTotalFiles(totalFiles);
+          setProcessedFiles(processedFiles);
+        }
+
+        if (!success) {
+          setStatus(BATCH_PROCESS_STATUS.ERROR);
+        } else {
+          if (warning) {
+            setStatus(BATCH_PROCESS_STATUS.PROCESSING_WARNING);
+          } else {
+            if (processedFiles === totalFiles)
+              setStatus(BATCH_PROCESS_STATUS.PROCESSED);
+            else if (!processedFiles && !totalFiles)
+              setStatus(BATCH_PROCESS_STATUS.NO_FILES);
+            else setStatus(BATCH_PROCESS_STATUS.PROCESSING);
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Streaming API error:", error);
+    setStatus(BATCH_PROCESS_STATUS.ERROR);
+    setMessage(CONTENT.COMMON.serverError);
+  }
+};
+
+/**
+ * Makes a POST request to the web scraping API to fetch website overview.
+ *
+ * @async
+ * @function fetchWebsiteOverview
+ * @param {string} url - The website URL to be scraped.
+ * @returns {Promise<{ status: number, data: Array|null }>} The status and data from the response.
+ */
+export const fetchWebsiteOverview = async (url) => {
+  try {
+    const response = await fetchWithToken(END_POINTS.NEXUS.WEB_SCRAP, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url }),
+    });
+
+    if (!response.ok) {
+      // Handle error response
+      console.error("Failed to fetch website overview:", response.statusText);
+      return { status: response.status, data: null };
+    }
+
+    // Parse and return response data
+    const resData = await response.json();
+    return { status: response.status, data: resData.data };
+  } catch (error) {
+    // Handle network or server error
+    console.error("Error fetching website overview:", error.message);
+    return { status: 500, data: null };
   }
 };

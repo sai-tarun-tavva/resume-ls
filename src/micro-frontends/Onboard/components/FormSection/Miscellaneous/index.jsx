@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Textarea from "../../../../Atoms/components/Inputs/Textarea";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";

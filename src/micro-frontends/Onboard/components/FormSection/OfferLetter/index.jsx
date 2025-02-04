@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InputV2 from "../../../../Atoms/components/Inputs/InputV2";
 import Select from "../../../../Atoms/components/Inputs/Select";
 import Textarea from "../../../../Atoms/components/Inputs/Textarea";
-import { useSectionInputsFocus } from "../../../hooks";
+import { useSectionInputsFocus } from "../../../../../hooks";
 import { useInput } from "../../../../Atoms/hooks";
 import { useLoading } from "../../../../../store";
 import { inputActions } from "../../../store";
@@ -71,6 +71,8 @@ const OfferLetter = forwardRef((_, ref) => {
     isFocused: isStatusFocused,
     forceValidations: forceStatusValidations,
   } = useInput(status, statusValidationFunc, undefined, true);
+
+  const isStatusApplicable = statusValue !== "notApplicable";
 
   /**
    * Handle input for the "Marketing Name" field
@@ -143,23 +145,26 @@ const OfferLetter = forwardRef((_, ref) => {
   );
 
   // Group all errors and values for validation
-  const allErrors = [
-    statusError,
-    marketingNameError,
-    designationError,
+  const sharedErrors = [statusError, marketingNameError, designationError];
+  const sharedValues = [statusValue, marketingNameValue, designationValue];
+
+  const additionalErrors = [
     startDateError,
     endDateError,
     rolesAndResponsibilitiesError,
   ];
-
-  const allValues = [
-    statusValue,
-    marketingNameValue,
-    designationValue,
+  const additionalValues = [
     startDateValue,
     endDateValue,
     rolesAndResponsibilitiesValue,
   ];
+
+  const allErrors = isStatusApplicable
+    ? [...sharedErrors, ...additionalErrors]
+    : sharedErrors;
+  const allValues = isStatusApplicable
+    ? [...sharedValues, ...additionalValues]
+    : sharedValues;
 
   /**
    * Determines if the offer letter section is valid based on errors and values
@@ -173,9 +178,12 @@ const OfferLetter = forwardRef((_, ref) => {
     forceStatusValidations();
     forceMarketingNameValidations();
     forceDesignationValidations();
-    forceStartDateValidations();
-    forceEndDateValidations();
-    forceRolesValidations();
+
+    if (isStatusApplicable) {
+      forceStartDateValidations();
+      forceEndDateValidations();
+      forceRolesValidations();
+    }
   };
 
   /**
@@ -213,21 +221,21 @@ const OfferLetter = forwardRef((_, ref) => {
         inputActions.updateField({
           section: SECTIONS.OFFER_LETTER,
           field: FIELDS.OFFER_LETTER.START_DATE,
-          value: startDateValue,
+          value: isStatusApplicable ? startDateValue : "",
         })
       );
       dispatch(
         inputActions.updateField({
           section: SECTIONS.OFFER_LETTER,
           field: FIELDS.OFFER_LETTER.END_DATE,
-          value: endDateValue,
+          value: isStatusApplicable ? endDateValue : "",
         })
       );
       dispatch(
         inputActions.updateField({
           section: SECTIONS.OFFER_LETTER,
           field: FIELDS.OFFER_LETTER.ROLES_AND_RESPONSIBILITIES,
-          value: rolesAndResponsibilitiesValue,
+          value: isStatusApplicable ? rolesAndResponsibilitiesValue : "",
         })
       );
       dispatch(
@@ -265,6 +273,7 @@ const OfferLetter = forwardRef((_, ref) => {
         extraClass={sectionClasses.fullInputWidth}
         isRequired
       />
+
       <div className={sectionClasses.formRow}>
         <InputV2
           id="marketingName"
@@ -293,48 +302,52 @@ const OfferLetter = forwardRef((_, ref) => {
         />
       </div>
 
-      <div className={sectionClasses.formRow}>
-        <InputV2
-          id="startDate"
-          label={sections.offerLetter.startDate}
-          type="date"
-          value={startDateValue}
-          changeHandler={startDateChange}
-          blurHandler={startDateBlur}
-          focusHandler={startDateFocus}
-          error={startDateError}
-          isFocused={isStartDateFocused}
-          extraClass={sectionClasses.halfInputWidth}
-          isRequired
-        />
+      {isStatusApplicable && (
+        <>
+          <div className={sectionClasses.formRow}>
+            <InputV2
+              id="startDate"
+              label={sections.offerLetter.startDate}
+              type="date"
+              value={startDateValue}
+              changeHandler={startDateChange}
+              blurHandler={startDateBlur}
+              focusHandler={startDateFocus}
+              error={startDateError}
+              isFocused={isStartDateFocused}
+              extraClass={sectionClasses.halfInputWidth}
+              isRequired
+            />
 
-        <InputV2
-          id="endDate"
-          label={sections.offerLetter.endDate}
-          type="date"
-          value={endDateValue}
-          changeHandler={endDateChange}
-          blurHandler={endDateBlur}
-          focusHandler={endDateFocus}
-          error={endDateError}
-          isFocused={isEndDateFocused}
-          extraClass={sectionClasses.halfInputWidth}
-          isRequired
-        />
-      </div>
+            <InputV2
+              id="endDate"
+              label={sections.offerLetter.endDate}
+              type="date"
+              value={endDateValue}
+              changeHandler={endDateChange}
+              blurHandler={endDateBlur}
+              focusHandler={endDateFocus}
+              error={endDateError}
+              isFocused={isEndDateFocused}
+              extraClass={sectionClasses.halfInputWidth}
+              isRequired
+            />
+          </div>
 
-      <Textarea
-        id="rolesAndResponsibilities"
-        label={sections.offerLetter.rolesAndResponsibilities}
-        value={rolesAndResponsibilitiesValue}
-        changeHandler={rolesAndResponsibilitiesChange}
-        blurHandler={rolesAndResponsibilitiesBlur}
-        focusHandler={rolesAndResponsibilitiesFocus}
-        error={rolesAndResponsibilitiesError}
-        isFocused={isRolesAndResponsibilitiesFocused}
-        extraClass={sectionClasses.fullInputWidth}
-        isRequired
-      />
+          <Textarea
+            id="rolesAndResponsibilities"
+            label={sections.offerLetter.rolesAndResponsibilities}
+            value={rolesAndResponsibilitiesValue}
+            changeHandler={rolesAndResponsibilitiesChange}
+            blurHandler={rolesAndResponsibilitiesBlur}
+            focusHandler={rolesAndResponsibilitiesFocus}
+            error={rolesAndResponsibilitiesError}
+            isFocused={isRolesAndResponsibilitiesFocused}
+            extraClass={sectionClasses.fullInputWidth}
+            isRequired
+          />
+        </>
+      )}
     </fieldset>
   );
 });

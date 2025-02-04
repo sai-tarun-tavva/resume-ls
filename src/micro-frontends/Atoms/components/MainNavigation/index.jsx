@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { ROUTES } from "../../../../constants";
+import Logo from "../../../../assets/logo-icon.png";
 import { useUI } from "../../../../store";
-import { CONTENT } from "../../../../constants";
+import { CONTENT, LOGISOFT_URL, ROUTES } from "../../../../constants";
 import classes from "./index.module.scss";
 
-const { insight, onboard, spark, quest } = CONTENT.COMMON.mainNavigation;
+const { insight, onboard, spark, quest, forge, nexus } =
+  CONTENT.COMMON.mainNavigation;
 
 /**
  * MainNavigation Component
@@ -71,7 +72,42 @@ const MainNavigation = () => {
             {spark}
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to={`/${ROUTES.FORGE.HOME}`}
+            onClick={navClickHandler}
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+          >
+            {forge}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to={`/${ROUTES.NEXUS.HOME}`}
+            onClick={navClickHandler}
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+          >
+            {nexus}
+          </NavLink>
+        </li>
       </ul>
+      <div
+        className={classes.logoContainer}
+        title="Logisoft Technologies"
+        onClick={() => {
+          window.open(LOGISOFT_URL, "_blank");
+        }}
+      >
+        <img
+          src={Logo}
+          alt={CONTENT.WELCOME.welcomePanel.logoAlt}
+          className={classes.logo}
+        />
+      </div>
     </nav>
   );
 };

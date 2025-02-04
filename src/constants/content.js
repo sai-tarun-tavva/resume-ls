@@ -24,22 +24,31 @@ export const CONTENT = {
    */
   COMMON: {
     serverError: "Server error, please try again later.",
-    noCandidateRecord: "No candidates found.",
+    noCandidateRecord: "No records found.",
     searchTooltipHeader: "Searches by:",
     pageTitles: {
-      welcome: "Resume Suite",
-      insight: "Resume Insight",
-      onboard: "Resume Onboard",
-      spark: "Resume Spark",
+      welcome: "Recruit Smarter",
+      insight: "Glint",
+      onboard: "Hatch",
+      spark: "Spark",
+      forge: "Forge",
+      quest: "Quest",
+      nexus: "Nexus",
     },
     mainNavigation: {
       heading: "Resume Suite",
-      onboard: "Onboard",
-      insight: "Insight",
+      onboard: "Hatch",
+      insight: "Glint",
       spark: "Spark",
       quest: "Quest",
+      forge: "Forge",
+      nexus: "Nexus",
     },
     errors: {
+      url: {
+        empty: "URL is required.",
+        invalid: "Please enter a valid URL.",
+      },
       username: {
         empty: "Username is required.",
         invalid:
@@ -59,6 +68,10 @@ export const CONTENT = {
       phone: {
         empty: "Phone number is required.",
         invalid: "Phone number must contain exactly 10 digits.",
+      },
+      extension: {
+        empty: "Extension is required.",
+        invalid: "Extension must contain 1 to 7 digits.",
       },
       linkedInUrl: {
         empty: "LinkedIn URL is required.",
@@ -88,6 +101,8 @@ export const CONTENT = {
       },
       dob: {
         empty: "Date of birth is required.",
+        invalid: "Please enter a valid date of birth. (mm/dd/yyyy)",
+        tooYoung: "Candidate must be 18 years old.",
       },
       gender: {
         empty: "Gender is required.",
@@ -200,6 +215,10 @@ export const CONTENT = {
       referenceCompany: {
         empty: "Reference company is required.",
       },
+      linkedInIdentifier: {
+        empty: "LinkedIn identifier is required.",
+        invalid: "Please enter a valid LinkedIn identifier.",
+      },
       offerLetterStatus: {
         empty: "Offer letter status is required.",
       },
@@ -236,6 +255,32 @@ export const CONTENT = {
       actions: {
         empty: "Please select at least one action.",
       },
+      clientName: {
+        empty: "Client Name is required.",
+      },
+      position: {
+        empty: "Position is required.",
+      },
+      rateFrequency: {
+        empty: "Rate Frequency is required.",
+      },
+      rate: {
+        empty: "Rate is required.",
+        invalid: "Rate must be a positive number.",
+      },
+      terms: {
+        empty: "Terms are required.",
+      },
+
+      primeVendor: {
+        empty: "Prime Vendor is required.",
+      },
+      projectImplementor: {
+        empty: "Project Implementor is required.",
+      },
+      companyName: {
+        empty: "Company Name is required.",
+      },
     },
     pageNotFound: {
       title: "404",
@@ -244,6 +289,38 @@ export const CONTENT = {
       suggestionStart: "Head back to the ",
       suggestionEnd: " to find the perfect candidate!",
       suggestedPageName: "Home page",
+    },
+    historySideBar: {
+      heading: "Status Timeline",
+      statusMessages: {
+        "Under Review": "Application is under review by the team.",
+        "In Progress": "Processing application and verifying details.",
+        Placed: "Candidate has been successfully placed.",
+        Marketing: "Profile is being marketed to clients.",
+        Onboarded: "Candidate has been onboarded and is ready to start.",
+        "Yet To Review": "Application has been submitted but not yet reviewed.",
+        Submitted:
+          "Profile has been submitted to the client or vendor for review.",
+        Interviewed: "Candidate has completed the interview process.",
+        "No Response": "No response received from the client or vendor yet.",
+        Hold: "Application has been put on hold by the client or team.",
+        Selected: "Candidate has been selected for the position.",
+        Rejected: "Candidate has been rejected for the role.",
+      },
+      icons: {
+        "Under Review": "🔍",
+        "In Progress": "⏳",
+        "Yet To Review": "🕒",
+        Placed: "🏆",
+        Marketing: "📣",
+        Onboarded: "✅",
+        Submitted: "📤",
+        Interviewed: "🎤",
+        "No Response": "🚫",
+        Hold: "⏸️",
+        Selected: "🎯",
+        Rejected: "❌",
+      },
     },
   },
 
@@ -257,11 +334,17 @@ export const CONTENT = {
     },
     welcomePanel: {
       logoAlt: "Logisoft logo",
-      heading: "Empowering Resumes, Elevating Careers",
+      heading1: "Recruit",
+      heading2: "Smarter",
+      subHeading: "Empowering Resumes, Elevating Careers",
       insightParagraph: "Resumes parsed",
       onboardParagraph: "Candidates onboarded",
       sparkParagraph: "Changes suggested",
       questParagraph: "Candidates interviewed",
+      salesParagraph: "Profiles submitted",
+      recruitParagraph: "Candidates recruited",
+      footerParagraph1: "Developed by ",
+      footerParagraph2: "Logisoft Technologies Inc.",
     },
     authPanel: {
       placeholders: {
@@ -329,7 +412,7 @@ export const CONTENT = {
     },
     operations: {
       logoSuffix: "R",
-      logo: "Insight",
+      logo: "Glint",
       countInfo: "Total resumes: ",
       search: {
         placeholder: "Search...",
@@ -404,16 +487,26 @@ export const CONTENT = {
         success_update_status_completed:
           "Successfully onboarded the candidate!",
         failure:
-          "Failed to update candidate information. Please try again later.",
+          "Failed to add or update candidate information. Please try again later.",
       },
     },
     operations: {
       logoSuffix: "R",
-      logo: "Onboard",
+      logo: "Hatch",
       countInfo: "Total candidates: ",
       search: {
         placeholder: "Search...",
-        searchFields: ["Status", "First name", "Last name", "Email", "Mobile"],
+        searchFields: [
+          "Status",
+          "First name",
+          "Last name",
+          "Email",
+          "Mobile",
+          "City",
+          "State",
+          "Reference",
+          "Technology",
+        ],
       },
     },
     candidates: {
@@ -426,9 +519,10 @@ export const CONTENT = {
         companyName: "Company",
         technology: "Technology",
         name: "Full Name",
-        marketingName: "Marketing Name",
+        marketingName: "M.Name",
         visaStatus: "Visa",
-        location: "Location",
+        city: "City",
+        state: "State",
         relocation: "Reloc",
         phone: "Mobile",
         email: "Email",
@@ -442,26 +536,11 @@ export const CONTENT = {
       },
       noCandidates: "No candidates available",
       statusUpdateModal: {
-        closeButton: {
-          default: "Close",
-        },
-        onboardDetails: {
-          primaryMessageHeading: "Onboarding Complete",
-          primaryMessageParagraph:
-            "The candidate has been successfully onboarded. All required details have been provided, and the candidate has been removed from the active onboarding list.",
-        },
-        incompleteDetails: {
-          primaryMessageHeading: "Incomplete Candidate Details",
-          primaryMessageParagraph:
-            "Some required details for this candidate have not been provided. Please complete all necessary information before setting the status to COMPLETED.",
-          secondaryMessage:
-            "Make sure to review all sections of the candidate form to confirm that every field is filled out accurately.",
-          confirmMessage:
-            "Click EDIT to provide the missing information, or CANCEL to return later.",
-          editButton: {
-            default: "Edit",
-          },
-        },
+        heading: "Action Required",
+        description:
+          "Complete all required sections and click 'Save' for optional sections before finalizing.",
+        cancel: "Cancel",
+        edit: "Edit Details",
       },
     },
     candidateForm: {
@@ -475,9 +554,9 @@ export const CONTENT = {
       },
       sections: {
         onboarding: {
-          date: "Onboarding Date",
+          date: "Date",
           status: {
-            label: "Onboarding Status",
+            label: "Status",
             helper: "(Considered IN PROGRESS by default)",
           },
         },
@@ -501,7 +580,7 @@ export const CONTENT = {
           referenceName: "Reference Name",
         },
         location: {
-          usaHeading: "Address in USA",
+          usaHeading: "Current Location in USA",
           haveIndian: {
             label:
               "Have any address in India (if applicable) or another country?",
@@ -548,7 +627,7 @@ export const CONTENT = {
           expYears: "Experience in Years",
           expMonths: "Experience in Months",
           prevExpList: {
-            heading: "Any past experience?",
+            heading: "Add past experience",
             itemLabels: {
               employerName: "Company Name",
               email: "Company Email",
@@ -571,6 +650,7 @@ export const CONTENT = {
             },
             helper: "(atleast two references are preferred)",
           },
+          linkedInIdentifier: "LinkedIn Identifier",
         },
         offerLetter: {
           status: "Offer Letter Status",
@@ -731,6 +811,197 @@ export const CONTENT = {
           "The recipient's line is currently busy or the call was declined. Please try again later.",
         callNoAnswer:
           "The call rang but was not answered. The recipient might be unavailable at the moment. Please try again later.",
+      },
+    },
+  },
+
+  /**
+   * FORGE Module content for sales and recruit records management.
+   */
+  FORGE: {
+    statusMessages: {
+      form: {
+        success_add: "Successfully added new record!",
+        success_update: "Successfully updated the record!",
+        success_update_status: "Successfully updated record status!",
+        success_update_status_completed: "Successfully placed the candidate!",
+        failure: "Failed to add or update record. Please try again later.",
+      },
+    },
+    operations: {
+      logoSuffix: "R",
+      logo: "Forge",
+      countInfo: "Total records: ",
+      search: {
+        placeholder: "Search...",
+        searchFields: {
+          sales: [
+            "Status",
+            "Submit by",
+            "Client name",
+            "P.Vendor",
+            "Implementor",
+            "Position",
+            "City",
+            "State",
+            "Cand first name",
+            "Cand last name",
+            "V.Name",
+            "V.Company",
+          ],
+          recruit: [
+            "Status",
+            "Submit by",
+            "Cand first name",
+            "Cand last name",
+            "Cand exp",
+            "Cand city",
+            "Cand state",
+            "Cand visa",
+            "Client name",
+            "Position",
+            "SP name",
+            "SP company",
+          ],
+        },
+      },
+    },
+    sideNavigation: {
+      sales: "Sales",
+      recruit: "Recruit",
+    },
+    records: {
+      columnHeaders: {
+        sales: {
+          status: "Status",
+          date: "Date",
+          submittedBy: "Submit By",
+          lastUpdated: "Last Update",
+          candidateName: "Cand Name",
+          clientName: "Client Name",
+          position: "Position",
+          rate: "Rate",
+          terms: "Terms",
+          city: "City",
+          state: "State",
+          vendor: "P.Vendor",
+          implementor: "Implementor",
+          vendorName: "V.Name",
+          vendorCompany: "V.Company",
+          vendorPhone: "V.Mobile",
+          vendorAlternatePhone: "V.Alt Mob",
+          vendorExtension: "V.Ext",
+          vendorEmail: "V.Email",
+          remarks: "Remarks",
+        },
+        recruit: {
+          status: "Status",
+          date: "Date",
+          submittedBy: "Submit By",
+          lastUpdated: "Last Update",
+          candidateName: "Cand Name",
+          candidatePhone: "Cand Mobile",
+          candidateEmail: "Cand Email",
+          candidateExp: "Cand Exp",
+          candidateCity: "Cand City",
+          candidateState: "Cand State",
+          visaStatus: "Visa",
+          clientName: "Client Name",
+          position: "Position",
+          rate: "Rate",
+          terms: "Terms",
+          employerName: "SP Name",
+          employerCompany: "SP Company",
+          employerPhone: "SP Mobile",
+          employerAlternatePhone: "SP Alt Mob",
+          employerExtension: "SP Ext",
+          employerEmail: "SP Email",
+          remarks: "Remarks",
+        },
+      },
+      noCandidates: "No records available",
+    },
+    candidateForm: {
+      sections: {
+        submission: {
+          date: "Date",
+          by: {
+            sales: "Your Name (Sales Person Name)",
+            recruit: "Your Name (Recruiter Name)",
+          },
+        },
+        candidate: {
+          firstName: "First Name",
+          lastName: "Last Name",
+          emailId: "Email ID",
+          phone: "Phone Number",
+          city: "City",
+          state: "State",
+          visa: "Visa Status",
+          expYears: "Experience in Years",
+          expMonths: "Experience in Months",
+        },
+        requirement: {
+          clientName: "Client Name",
+          position: "Position",
+          rateFreq: "Rate Period",
+          rate: "Rate in $",
+          terms: "Terms",
+          city: "City",
+          state: "State",
+          primeVendor: "Prime Vendor",
+          implementor: "Project Implementor",
+        },
+        vendorOrEmployer: {
+          name: "Name",
+          company: "Company Name",
+          phone: "Phone Number",
+          alternatePhone: "Alternate Phone Number",
+          extension: "Extension",
+          email: "Email ID",
+        },
+        miscellaneous: {
+          remarks: "Remarks",
+        },
+      },
+      buttons: {
+        close: "Close",
+        save: {
+          default: "Save",
+          next: "Save & Next",
+          loading: "Saving...",
+        },
+      },
+    },
+  },
+
+  /**
+   * NEXUS Module content for displaying overview of websites.
+   */
+  NEXUS: {
+    operations: {
+      logoSuffix: "R",
+      logo: "Nexus",
+    },
+    input: {
+      urlLabel: "Type a URL",
+      buttons: {
+        scrape: {
+          default: "Scrape",
+          loading: "Scraping... ",
+        },
+      },
+    },
+    overview: {
+      loader: "Analyzing website content",
+      welcome: {
+        heading: "Website Analysis",
+        subHeading:
+          "Enter a URL above to discover its structure and components",
+        feature1: "Structure Analysis",
+        feature2: "Component Mapping",
+        feature3: "Performance Insights",
+        indicator: "Start here",
       },
     },
   },

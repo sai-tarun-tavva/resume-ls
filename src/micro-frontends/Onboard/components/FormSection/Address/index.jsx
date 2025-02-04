@@ -9,7 +9,7 @@ import {
 } from "../../../../../utilities";
 import { FIELDS_ADDRESS, OPTIONS } from "../../../constants";
 import classes from "./index.module.scss";
-import states from "../../../constants/countries.json";
+import states from "../../../../../constants/countries.json";
 import { CONTENT } from "../../../../../constants";
 
 let isInitial = true;

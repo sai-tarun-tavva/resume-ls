@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import QuestHub from "../../micro-frontends/Quest/components/QuestHub";
+import { CONTENT } from "../../constants";
 
 /**
  * Quest Component
@@ -19,7 +20,7 @@ const Quest = () => {
   return (
     <>
       <Helmet>
-        <title>Resume Quest</title>
+        <title>{CONTENT.COMMON.pageTitles.quest}</title>
       </Helmet>
       <QuestHub />
     </>

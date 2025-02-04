@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import MainNavigation from "../../micro-frontends/Atoms/components/MainNavigation";
-import { useStatus } from "../../store";
+import { useStatus, useUI } from "../../store";
 import { setUpdateStatus } from "../../micro-frontends/Quest/middleware";
+import { fetchUsernames } from "../../utilities";
+import { END_POINTS, STATUS_CODES } from "../../constants";
 
 /**
  * ProtectedWrapper Component
@@ -17,6 +19,7 @@ import { setUpdateStatus } from "../../micro-frontends/Quest/middleware";
  */
 const ProtectedWrapper = ({ children }) => {
   const { updateStatus } = useStatus();
+  const { updateUsernames } = useUI();
 
   useEffect(() => {
     /**
@@ -24,6 +27,23 @@ const ProtectedWrapper = ({ children }) => {
      */
     setUpdateStatus(updateStatus);
   }, [updateStatus]);
+
+  useEffect(() => {
+    /**
+     * Fetch the available usernames
+     */
+    const getUsernames = async () => {
+      const { status, data } = await fetchUsernames(
+        END_POINTS.WELCOME.FETCH_USERNAMES
+      );
+
+      if (status === STATUS_CODES.SUCCESS) {
+        updateUsernames(data);
+      }
+    };
+
+    getUsernames();
+  }, [updateUsernames]);
 
   return (
     <>

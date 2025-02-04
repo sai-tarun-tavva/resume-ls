@@ -1,0 +1,37 @@
+.formContainer {
+  position: fixed;
+  width: 100%;
+  top: 7.5rem;
+  left: 0;
+  height: 6rem;
+  z-index: 2;
+  padding: 2rem;
+  background: #ffffff;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+
+  .extraInputClass {
+    margin-top: 1rem;
+    margin-bottom: unset;
+    width: 85%;
+
+    input {
+      border-radius: 0.5rem 0 0 0.5rem;
+    }
+  }
+
+  .button {
+    padding: 0.85rem 1.25rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    box-shadow: unset;
+    border: 0.1rem solid var(--primary-color);
+    width: 15%;
+    font-weight: bold;
+
+    &:disabled {
+      border: 0.1rem solid #eaedf0;
+    }
+  }
+}

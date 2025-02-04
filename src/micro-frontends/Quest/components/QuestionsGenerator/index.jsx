@@ -13,6 +13,7 @@ import {
 import {
   CONTENT,
   LOADING_ACTION_TYPES,
+  QUEST,
   STATUS_CODES,
 } from "../../../../constants";
 import classes from "./index.module.scss";
@@ -30,7 +31,7 @@ const { FETCH } = LOADING_ACTION_TYPES;
  */
 const QuestionsGenerator = () => {
   const dispatch = useDispatch();
-  const { jobDescription, sessionID } = useSelector((state) => state.result);
+  const { jobDescription, callStatus } = useSelector((state) => state.result);
   const { isLoading, enableFetchLoading, disableFetchLoading } = useLoading();
   const { updateStatus, resetStatus } = useStatus();
 
@@ -72,15 +73,16 @@ const QuestionsGenerator = () => {
       enableFetchLoading();
 
       try {
-        const formData = new FormData();
-        formData.append("job_description", jobDescriptionValue);
+        const payload = { job_description: jobDescriptionValue };
 
-        const { status, data } = await generateQuestions(formData);
+        const { status, data } = await generateQuestions(payload);
 
         if (status === STATUS_CODES.SUCCESS) {
-          dispatch(resultActions.updateQuestions(data));
+          dispatch(resultActions.updateQuestions(data.questions));
+          dispatch(resultActions.updateSessionID(data.session_id));
         } else {
           dispatch(resultActions.updateQuestions([]));
+          dispatch(resultActions.updateSessionID(""));
           updateStatus({
             message: CONTENT.COMMON.serverError,
             type: "failure",
@@ -106,7 +108,7 @@ const QuestionsGenerator = () => {
         <Textarea
           id="description"
           label={CONTENT.QUEST.input.textarea.label}
-          disabled={sessionID !== ""}
+          disabled={callStatus === QUEST.CALL_STATUSES.CALLING}
           value={jobDescriptionValue}
           changeHandler={(event) => {
             jobDescriptionChange(event);
@@ -122,7 +124,7 @@ const QuestionsGenerator = () => {
         {/* Submit button with loading state */}
         <Button
           className={`${classes.button} ${isLoading[FETCH] ? "loading" : ""}`}
-          disabled={sessionID !== ""}
+          disabled={callStatus === QUEST.CALL_STATUSES.CALLING}
           onClick={generateHandler}
         >
           {isLoading[FETCH]

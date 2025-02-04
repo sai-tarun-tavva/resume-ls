@@ -81,13 +81,15 @@ const CallerInput = () => {
       enableButtonLoading(); // Enable button loading state
 
       try {
-        const formData = new FormData();
-        formData.append("target_number", extractOnlyDigits(phoneNumberValue));
+        const payload = {
+          target_number: extractOnlyDigits(phoneNumberValue),
+          session_id: sessionID,
+        };
 
-        const { status, data } = await initiateCall(formData);
+        const { status } = await initiateCall(payload);
 
         if (status === STATUS_CODES.SUCCESS) {
-          dispatch(resultActions.updateSessionID(data));
+          dispatch(resultActions.updateCallStatus(QUEST.CALL_STATUSES.CALLING));
           clearPhoneNumber(); // Clear input after successful submission
         } else {
           updateStatus({
@@ -113,9 +115,11 @@ const CallerInput = () => {
         {/* Conditional rendering based on state */}
         {isLoading[BUTTON] ? (
           <Loader extraClass={classes.loaderExtraClass} />
-        ) : sessionID ? (
+        ) : callStatus === QUEST.CALL_STATUSES.CALLING ? (
           <CallingDisplay />
-        ) : Object.values(QUEST.CALL_STATUSES).includes(callStatus) ? (
+        ) : Object.values(QUEST.CALL_STATUSES)
+            .filter((status) => status !== QUEST.CALL_STATUSES.CALLING)
+            .includes(callStatus) ? (
           <Conversation />
         ) : (
           <>
@@ -130,23 +134,30 @@ const CallerInput = () => {
               {CONTENT.QUEST.input.callerOverlay.subTitle}
             </p>
             <div className={classes.inputSection}>
-              <InputV1
-                id="phoneNumber"
-                type="tel"
-                placeholder={CONTENT.QUEST.input.text.placeholder}
-                value={phoneNumberValue}
-                onChange={(event) => {
-                  phoneNumberChange(event);
-                  dispatch(resultActions.updatePhoneNumber(event.target.value));
-                }}
-                onBlur={phoneNumberBlur}
-                error={phoneNumberError}
-                extraClassControl={classes.inputExtraClass}
-                disabled={questions.length === 0 || sessionID !== ""}
-              />
+              <div>
+                <p>
+                  +1 <span />
+                </p>
+                <InputV1
+                  id="phoneNumber"
+                  type="tel"
+                  placeholder={CONTENT.QUEST.input.text.placeholder}
+                  value={phoneNumberValue}
+                  onChange={(event) => {
+                    phoneNumberChange(event);
+                    dispatch(
+                      resultActions.updatePhoneNumber(event.target.value)
+                    );
+                  }}
+                  onBlur={phoneNumberBlur}
+                  error={phoneNumberError}
+                  extraClassControl={classes.inputExtraClass}
+                  disabled={questions.length === 0}
+                />
+              </div>
               <Button
                 onClick={callHandler}
-                disabled={questions.length === 0 || sessionID !== ""}
+                disabled={questions.length === 0}
                 className={classes.buttonExtraClass}
               >
                 {CONTENT.QUEST.input.callerOverlay.button.default}{" "}

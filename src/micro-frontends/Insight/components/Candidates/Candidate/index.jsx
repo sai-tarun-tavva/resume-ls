@@ -57,13 +57,14 @@ const Candidate = ({ candidate, openResumeInNewTab }) => {
    * @param {Event} event - The event triggered by the edit action.
    */
   const handleView = (event) => {
+    event.preventDefault();
+
     if (openResumeInNewTab) {
       window.open(
         `${END_POINTS.INSIGHT.VIEW_RESUME}${candidate.id}/`,
         "_blank"
       );
     } else {
-      event.preventDefault();
       dispatch(viewResumeActions.showResume());
       dispatch(viewResumeActions.updateId(candidate.id));
     }

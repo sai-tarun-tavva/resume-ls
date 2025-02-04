@@ -36,6 +36,13 @@ const Upload = ({
   const fileInputRef = useRef(null);
 
   /**
+   * Handles clicking on the entire dropzone to trigger file input
+   */
+  const handleDropzoneClick = () => {
+    fileInputRef.current.click();
+  };
+
+  /**
    * Handles the "Enter" or "Space" key press events to trigger file input click.
    *
    * @param {KeyboardEvent} event - The keydown event.
@@ -74,6 +81,11 @@ const Upload = ({
         }`}
         onDrop={dropHandler}
         onDragOver={dragOverHandler}
+        onClick={handleDropzoneClick}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="button"
+        aria-label="Click to upload file"
       >
         <input
           type="file"
@@ -86,14 +98,7 @@ const Upload = ({
         <i className={`bi bi-cloud-upload ${classes.icon}`}></i>
         <p className={classes.text}>
           {drag}
-          <label
-            tabIndex={0}
-            htmlFor={id}
-            className={classes.browse}
-            onKeyDown={handleKeyDown}
-          >
-            {browse}
-          </label>
+          <span className={classes.browse}>{browse}</span>
         </p>
       </div>
       {file && (
@@ -105,6 +110,7 @@ const Upload = ({
             tabIndex={0}
             onClick={resetFile}
             onKeyDown={handleRemoveKeyDown}
+            aria-label="Remove file"
           ></i>
         </div>
       )}

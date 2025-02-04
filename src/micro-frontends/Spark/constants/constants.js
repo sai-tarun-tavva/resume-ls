@@ -53,6 +53,8 @@ export const OPERATION_UI_API_KEYS = {
  */
 export const SERVICE_TYPE_OPTIONS = [
   { value: "", label: "" }, // Placeholder option
-  // { value: "gemini", label: "GeminiAI" }, // Uncomment if GeminiAI becomes available
-  { value: "openai", label: "OpenAI" }, // Option for OpenAI
+  { value: "llama-3.0", label: "Llama 3.0" }, // Option for Llama 3.0
+  { value: "gemini", label: "Gemini 2.0" }, // Option for Gemini 2.0
+  { value: "openai", label: "GPT 3.5" }, // Option for OpenAI 3.5
+  { value: "openai-4.0", label: "GPT 4.0 (Premium)" }, // Option for OpenAI 4.0
 ];
